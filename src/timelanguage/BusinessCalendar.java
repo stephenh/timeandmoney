@@ -4,20 +4,24 @@ import java.util.*;
 
 
 class BusinessCalendar {
-	static BusinessCalendar current = new BusinessCalendar();
-	
 	private Set holidays;
 	
-	private BusinessCalendar() {
-		holidays = initializeHolidays();		
+	static BusinessCalendar defaultBusinessCalendar() {
+		BusinessCalendar calendar = new BusinessCalendar();
+		calendar.setHolidays(defaultHolidays());
+		return calendar;
 	}
-
-	private Set initializeHolidays() {
+	static private Set defaultHolidays() {
 		Set collected = new HashSet();
 		String[] dates = HolidayDates.ALL;
 		for (int i = 0; i < dates.length; i++)
 			collected.add(TimePoint.from(dates[i], "yyyy/MM/dd"));
 		return collected;
+	}
+	
+	
+	private void setHolidays(Set set) {
+		holidays = set;
 	}
 
 	int getElapsedBusinessDays(TimeInterval interval) {
@@ -29,6 +33,16 @@ class BusinessCalendar {
 		}
 		return tally;
 	}
+	
+	TimePoint nearestBusinessDay(TimePoint day) {
+		TimePoint current = day;
+		int guard = 0;
+		while (!isBusinessDay(current)) {
+			current = current.nextDay();
+		}
+		return current;
+	}
+	
 
 	boolean isHoliday(TimePoint day) {
 		for (Iterator iterator = holidays.iterator(); iterator.hasNext();) {
@@ -39,13 +53,34 @@ class BusinessCalendar {
 		return false;
 	}
 
+	public boolean isWeekend(TimePoint day) {
+		Calendar calday = day.asJavaCalendar();
+		return 
+		(calday.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) ||
+		(calday.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY);
+	}
+	
 	boolean isBusinessDay(TimePoint day) {
-		return !day.isWeekend() && !isHoliday(day);
+		return !isWeekend(day) && !isHoliday(day);
+	}
+	public Iterator businessDaysIterator(TimeInterval anInterval) {
+		final TimeInterval interval = anInterval;
+		return new Iterator() {
+			TimePoint next = interval.start();
+			
+			public boolean hasNext() {
+				return interval.includes(next);
+			}	
+			public Object next() {
+				Object current = next;
+				next = nearestBusinessDay(next.nextDay());
+				return current;
+			}
+			public void remove() {}
+		};
 	}
 
-	private static final int openForBusiness = (8 * 60); /* 8:00 AM */
-	private static final int closeForBusiness = (17 * 60); /* 5:00 PM */
-	boolean isBusinessHours(TimePoint now) {
+/*	boolean isBusinessHours(TimePoint now) {
 		Calendar date = now.asJavaCalendar();
 		int theHour = date.get(Calendar.HOUR_OF_DAY);
 		int theMinute = date.get(Calendar.MINUTE);
@@ -55,11 +90,11 @@ class BusinessCalendar {
 			timeAsMinutes <=  closeForBusiness;
 	}
 
-	boolean isInBusiness(TimePoint now) {
-		return isBusinessDay(now) && isBusinessHours(now);
+	boolean isInBusiness(TimePoint point) {
+		return isBusinessDay(point) && isBusinessHours(point);
 	}
 
-	/** Returns true if <now> is a holiday.  
+	    Returns true if <now> is a holiday.  
 		An alternative to using <Holidays.ALL>
 		
 		It makes no effort to recognize "half-day holidays", 
@@ -73,8 +108,10 @@ class BusinessCalendar {
 			Labor Day
 			Thanksgiving
 			Christmas
-	 */
-	boolean isFederalHoliday(Calendar now) {
+	 
+	
+	boolean isFederalHoliday(TimePoint point) {
+		Calendar javaCal = point.asJavaCalendar();
 		int[] month_date = { Calendar.JANUARY, 1, Calendar.JULY, 4, Calendar.DECEMBER, 25, };
 		int[] month_weekday_monthweek = { Calendar.JANUARY, Calendar.MONDAY, 3, // MLK Day, 3rd monday in Jan
 			Calendar.FEBRUARY, Calendar.MONDAY, 3, // President's day
@@ -84,10 +121,10 @@ class BusinessCalendar {
 
 		// Columbus Day is a federal holiday.
 		// it is the second Monday in October
-		int mm = now.get(Calendar.MONTH);
-		int dd = now.get(Calendar.DAY_OF_MONTH);
-		int dw = now.get(Calendar.DAY_OF_WEEK);
-		int wm = now.get(Calendar.WEEK_OF_MONTH);
+		int mm = javaCal.get(Calendar.MONTH);
+		int dd = javaCal.get(Calendar.DAY_OF_MONTH);
+		int dw = javaCal.get(Calendar.DAY_OF_WEEK);
+		int wm = javaCal.get(Calendar.WEEK_OF_MONTH);
 
 		// go over the month/day-of-month entries, return true on full match
 		for (int i = 0; i < month_date.length; i += 2) {
@@ -103,10 +140,11 @@ class BusinessCalendar {
 					return true;
 		}
 
-		if ((mm == Calendar.MAY) && (dw == Calendar.MONDAY) && (wm == now.getMaximum(Calendar.WEEK_OF_MONTH))) /* last week in May */
+		if ((mm == Calendar.MAY) && (dw == Calendar.MONDAY) && (wm == javaCal.getMaximum(Calendar.WEEK_OF_MONTH))) // last week in May 
 			return true;
 
 		return false;
 	}
+*/
 
 }

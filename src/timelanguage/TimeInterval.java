@@ -101,11 +101,19 @@ public class TimeInterval {
 			}	
 			public Object next() {
 				Object current = next;
-				next = next.plus(Duration.days(1));
+				next = next.nextDay();
 				return current;
 			}
 			public void remove() {}
 		};
+	}
+
+	public static TimeInterval dayOf(TimePoint tempus) {
+		return TimeInterval.from(tempus.backToMidnight(), true, Duration.days(1), false);
+	}
+
+	public TimePoint start() {
+		return start;
 	}
 	
 }

@@ -13,8 +13,16 @@ public class TimePointTest extends TestCase {
 		assertEquals(expected, TimePoint.atMidnight(2004, 1, 1));
 		assertEquals(expected, TimePoint.from(2004, 1, 1, 0));
 		assertEquals(expected, TimePoint.from(2004, 1, 1, 12, AM));
-		assertEquals(expected, TimePoint.from(Calendars.parseDate("2004/1/1", "yyyy/MM/dd")));
+		assertEquals(expected, TimePoint.from("2004/1/1", "yyyy/MM/dd"));
 		assertEquals(TimePoint.from(2004, 1, 1, 12), TimePoint.from(2004, 1, 1, 12, PM));
+	}
+	
+	public void testStringFormat() {
+		TimePoint point = TimePoint.from(2004, 3, 12, 5, 3, 14, 0);
+		//Try stupid date/time format, which couldn't work by accident.
+		assertEquals("3-04-12 3:5:14", point.toString("M-yy-d m:h:s"));
+		assertEquals("3-04-12", point.toString("M-yy-d"));
+		
 	}
 
 	private Date javaUtilDateDec20_2003() {
@@ -36,7 +44,20 @@ public class TimePointTest extends TestCase {
 		Date approxNow = new Date();
 		assertEquals("if the clock does not ticks during test ...", approxNow, now.asJavaUtilDate());
 	}
+	
+	public void testAtMidnight() {
+		TimePoint threeOClock = TimePoint.from(2004, 11, 22, 3);
+		assertEquals(TimePoint.atMidnight(2004, 11, 22), threeOClock.backToMidnight());
+	}
 
+	
+	public void testFromString() {
+		TimePoint expected = TimePoint.from(2004, 3, 29, 22, 44, 58, 0);
+		String source = "2004-Mar-29 10:44:58 PM";
+		String pattern = "yyyy-MMM-dd hh:mm:ss a";
+		assertEquals(expected, TimePoint.from(source, pattern));
+	}
+	
 	public void testEquals() {
 		TimePoint createdFromJavaDate = TimePoint.from(javaUtilDateDec20_2003());
 		TimePoint dec5_2003 = TimePoint.atMidnight(2003, 12, 5);
@@ -76,59 +97,6 @@ public class TimePointTest extends TestCase {
 		assertFalse(dec20_2003.isAfter(oneSecondLater));
 	}
 
-	public void testIsWeekend() {
-		TimePoint saturday = TimePoint.atMidnight(2004, 1, 10);
-		assertTrue(saturday.isWeekend());
-
-		TimePoint sunday = TimePoint.atMidnight(2004, 1, 11);
-		assertTrue(sunday.isWeekend());
-
-		TimePoint day = sunday.nextDay();
-		for (int i = 0; i < 5; i++) {
-			assertFalse("it's a midweek day", day.isWeekend());
-			day = day.nextDay();
-		}
-		assertTrue("finally, the weekend is here...", day.isWeekend());
-
-		TimePoint newYearEve = TimePoint.atMidnight(2004, 1, 1); // it's a Thursday
-		assertFalse("a holiday is not a weekend day", newYearEve.isWeekend());
-	}
-
-	public void testIsHoliday() {
-		TimePoint newYearEve = TimePoint.atMidnight(2004, 1, 1); // it's a Thursday
-		assertTrue("hey, it's a holiday", newYearEve.isHoliday());
-
-		TimePoint theDayAfter = newYearEve.nextDay();
-		assertFalse("a day later", theDayAfter.isHoliday());
-	}
-
-	public void testIsBusinessDay() {
-		TimePoint day = TimePoint.atMidnight(2004, 1, 12); // it's a Monday
-		for (int i = 0; i < 5; i++) {
-			assertTrue("another working day", day.isBusinessDay());
-			day = day.nextDay();
-		}
-		assertFalse("finally, saturday arrived ...", day.isBusinessDay());
-		assertFalse("... then sunday", day.nextDay().isBusinessDay());
-
-		TimePoint newYearEve = TimePoint.atMidnight(2004, 1, 1); // it's a Thursday
-		assertFalse("hey, it's a holiday", newYearEve.isBusinessDay());
-	}
-
-	public void testNearestBusinessDay() {
-		TimePoint saturday = TimePoint.atMidnight(2004, 1, 10);
-		TimePoint sunday = saturday.nextDay();
-		TimePoint monday = sunday.nextDay();
-		assertEquals(monday, saturday.nearestBusinessDay());
-		assertEquals(monday, sunday.nearestBusinessDay());
-		assertEquals(monday, monday.nearestBusinessDay());
-
-		TimePoint newYearEve = TimePoint.atMidnight(2004, 1, 1); // it's a Thursday
-		assertEquals("it's a holiday & a thursady; wait till friday", newYearEve.nextDay(), newYearEve.nearestBusinessDay());
-
-		TimePoint christmas = TimePoint.atMidnight(2004, 12, 24); // it's a Friday
-		assertEquals("it's a holiday & a friday; wait till monday", TimePoint.atMidnight(2004, 12, 27), christmas.nearestBusinessDay());
-	}
 
 	public void testIncrementDuration() {
 		TimePoint dec20_2003 = TimePoint.atMidnight(2003, 12, 20);
@@ -158,6 +126,12 @@ public class TimePointTest extends TestCase {
 		assertFalse(dec20_2003.isAfter(period));
 		assertFalse(dec21_2003.isBefore(period));
 		assertFalse(dec21_2003.isAfter(period));
+	}
+	
+	public void testNextDay() {
+		TimePoint dec19_2003 = TimePoint.atMidnight(2003, 12, 19);
+		TimePoint dec20_2003 = TimePoint.atMidnight(2003, 12, 20);
+		assertEquals(dec20_2003, dec19_2003.nextDay());
 	}
 
 }

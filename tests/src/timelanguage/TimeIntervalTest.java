@@ -10,8 +10,15 @@ public class TimeIntervalTest extends TestCase {
 	private TimePoint dec22_2003 = TimePoint.atMidnight(2003, 12, 22);
 	private TimePoint dec23_2003 = TimePoint.atMidnight(2003, 12, 23);
 
+	public void testDayOf() {
+		TimePoint tempus = TimePoint.from(1984, 11, 22, 1);
+		TimeInterval interval = TimeInterval.dayOf(tempus);
+		assertEquals(interval.start, TimePoint.atMidnight(1984, 11, 22));
+		assertEquals(interval.end, TimePoint.atMidnight(1984, 11, 23));
+	}
+
 	public void testBeforeClosed() {
-		TimeInterval interval = TimeInterval.closed(dec20_2003, dec22_2003);
+			TimeInterval interval = TimeInterval.closed(dec20_2003, dec22_2003);
 		// Only the upper end should matter for this test.
 		assertFalse(interval.isBefore(dec21_2003));
 		assertFalse(interval.isBefore(dec22_2003));
@@ -101,4 +108,5 @@ public class TimeIntervalTest extends TestCase {
 		assertEquals(TimePoint.from(2004, 2, 7, 10), it.next());
 		assertFalse(it.hasNext());
 	}
+	
 }
