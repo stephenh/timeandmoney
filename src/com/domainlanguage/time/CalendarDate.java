@@ -27,9 +27,10 @@ public class CalendarDate extends CalendarInterval {
 	}
 
 	public static CalendarDate from(String dateString, String pattern) {
-		TimeZone zone = TimeZone.getTimeZone("Universal");
-		TimePoint point = TimePoint.parseFrom(dateString, pattern, zone);
-		return CalendarDate.from(point, zone);
+		TimeZone arbitraryZone = TimeZone.getTimeZone("Universal"); 
+		//Any timezone works, as long as the same one is used throughout.
+		TimePoint point = TimePoint.parseFrom(dateString, pattern, arbitraryZone);
+		return CalendarDate.from(point, arbitraryZone);
 	}
 	
 	public static CalendarDate from(TimePoint timePoint, TimeZone zone) {
@@ -51,9 +52,10 @@ public class CalendarDate extends CalendarInterval {
 	}
 
 	public String toString(String pattern) {
-		TimeZone zone = TimeZone.getTimeZone("Universal");
-		TimePoint point = startAsTimePoint(zone);
-		return point.toString(pattern, zone);
+		TimeZone arbitraryZone = TimeZone.getTimeZone("Universal"); 
+		//Any timezone works, as long as the same one is used throughout.
+		TimePoint point = startAsTimePoint(arbitraryZone);
+		return point.toString(pattern, arbitraryZone);
 	}
 	
 	public boolean isBefore(CalendarDate other) {
@@ -179,6 +181,5 @@ public class CalendarDate extends CalendarInterval {
 		Calendar calendar = _asJavaCalendarUniversalZoneMidnight();
 		return calendar.get(Calendar.DAY_OF_WEEK);
 	}
-
 	
 }

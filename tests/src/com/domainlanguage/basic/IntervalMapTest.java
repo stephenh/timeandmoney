@@ -48,19 +48,40 @@ public class IntervalMapTest extends TestCase {
 		
 	}
 	
-	public void testConstruction() {
+	public void testConstructionOverwriteOverlap() {
 		IntervalMap map = new LinearIntervalMap();
 		map.put(Interval.closed(new Integer(1), new Integer(3)), "one-three");
 		map.put(Interval.closed(new Integer(5), new Integer(9)), "five-nine");
 		map.put(Interval.open(new Integer(9), new Integer(12)), "ten-eleven");
-		ConcreteInterval eleven_thirteen = Interval.closed(new Integer(11), new Integer(13));
+		assertEquals("ten-eleven", map.get(new Integer(10)));
+		assertEquals("ten-eleven", map.get(new Integer(11)));
+		assertNull(map.get(new Integer(12)));
+		
+		Interval eleven_thirteen = Interval.closed(new Integer(11), new Integer(13));
 		assertTrue(map.containsIntersectingKey(eleven_thirteen));
-		try {
-			map.put(eleven_thirteen, "eleven-thirteen");
-			fail("Throw exception when key intervals intersect"); //TODO: Maybe this should just override the overlapping part of the preexisting interval
-		}
-		catch (Exception e) {
-			
-		}
+		map.put(eleven_thirteen, "eleven-thirteen");
+		assertEquals("ten-eleven", map.get(new Integer(10)));
+		assertEquals("eleven-thirteen", map.get(new Integer(11)));
+		assertEquals("eleven-thirteen", map.get(new Integer(12)));
 	}
+
+	public void testConstructionOverwriteMiddle() {
+		IntervalMap map = new LinearIntervalMap();
+		map.put(Interval.closed(new Integer(1), new Integer(3)), "one-three");
+		map.put(Interval.closed(new Integer(5), new Integer(9)), "five-nine");
+		map.put(Interval.open(new Integer(9), new Integer(12)), "ten-eleven");
+		assertEquals("five-nine", map.get(new Integer(6)));
+		assertEquals("five-nine", map.get(new Integer(7)));
+		assertEquals("five-nine", map.get(new Integer(8)));
+		assertEquals("five-nine", map.get(new Integer(9)));
+		
+		Interval seven_eight = Interval.closed(new Integer(7), new Integer(8));
+		assertTrue(map.containsIntersectingKey(seven_eight));
+		map.put(seven_eight, "seven-eight");
+		assertEquals("five-nine", map.get(new Integer(6)));
+		assertEquals("seven-eight", map.get(new Integer(7)));
+		assertEquals("seven-eight", map.get(new Integer(8)));
+		assertEquals("five-nine", map.get(new Integer(9)));
+	}
+
 }

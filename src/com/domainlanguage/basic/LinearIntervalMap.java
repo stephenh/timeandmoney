@@ -9,19 +9,37 @@ package com.domainlanguage.basic;
 import java.util.*;
 
 public class LinearIntervalMap implements IntervalMap{
-	private Map keyValues = new HashMap(); 
+	private Map keyValues = new HashMap();
 
-	/* (non-Javadoc)
-	 * @see com.domainlanguage.basic.IntervalMap#put(com.domainlanguage.basic.ComparableInterval, java.lang.Object)
-	 */
 	public void put(Interval keyInterval, Object value) {
-		if (containsIntersectingKey(keyInterval)) throw new RuntimeException("IntervalMap keys can't intersect.");
+		remove(keyInterval);
 		keyValues.put(keyInterval, value);
 	}
 
-	/* (non-Javadoc)
-	 * @see com.domainlanguage.basic.IntervalMap#get(java.lang.Object)
-	 */
+	public void remove(Interval keyInterval) {
+		List intervalSequence = intersectingKeys(keyInterval);
+		for (Iterator iter = intervalSequence.iterator(); iter.hasNext();) {
+			Interval oldInterval = (Interval) iter.next();
+			Object oldValue = keyValues.get(oldInterval);
+			keyValues.remove(oldInterval);
+			List complementIntervalSequence = keyInterval.complementRelativeTo(oldInterval);
+			directPut(complementIntervalSequence, oldValue);
+		}
+	}
+	
+	private void removeIntervalSequence(List intervalSequence) {
+		for (Iterator iter = intervalSequence.iterator(); iter.hasNext();) {
+			remove((Interval) iter.next());
+		}
+	}
+	
+	private void directPut(List intervalSequence, Object value) {
+		for (Iterator iter = intervalSequence.iterator(); iter.hasNext();) {
+			Interval interval = (Interval) iter.next();
+			keyValues.put(interval, value);
+		}
+	}
+
 	public Object get(Comparable key) {
 		Interval keyInterval = findKeyIntervalContaining(key);
 //		if (keyInterval == null) return null;
@@ -42,15 +60,20 @@ public class LinearIntervalMap implements IntervalMap{
 		return null;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.domainlanguage.basic.IntervalMap#containsIntersectingKey(com.domainlanguage.basic.ComparableInterval)
-	 */
-	public boolean containsIntersectingKey(Interval otherInterval) {
+	private List intersectingKeys(Interval otherInterval) {
+		List intervalSequence = new ArrayList();
 		Iterator it = keyValues.keySet().iterator();
 		while (it.hasNext()) {
 			Interval keyInterval = (Interval)it.next();
-			if (keyInterval.intersects(otherInterval)) return true;
+			if (keyInterval.intersects(otherInterval)) intervalSequence.add(keyInterval);
 		}
-		return false;
+		return intervalSequence;
 	}
+	
+	public boolean containsIntersectingKey(Interval otherInterval) {
+		return !intersectingKeys(otherInterval).isEmpty();
+	}
+
 }
+ 
+ 

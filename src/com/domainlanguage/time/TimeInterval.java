@@ -11,7 +11,7 @@ import java.util.Iterator;
 import com.domainlanguage.basic.*;
 
 
-public class TimeInterval extends Interval {
+public class TimeInterval extends ConcreteInterval {
 	public static final TimeInterval ALWAYS = over(TimePoint.FAR_PAST, TimePoint.FAR_FUTURE);
 
 	
@@ -20,6 +20,7 @@ public class TimeInterval extends Interval {
 	}
 
 	public static TimeInterval over(TimePoint start, TimePoint end) {
+		//Uses the common default for time intervals, [start, end).
 		return over(start, true, end, false);
 	}
 
@@ -29,6 +30,7 @@ public class TimeInterval extends Interval {
 	}
 	
 	public static TimeInterval from(TimePoint start, Duration length) {
+		//Uses the common default for time intervals, [start, end).
 		return from(start, true, length, false);
 	}
 
@@ -38,6 +40,7 @@ public class TimeInterval extends Interval {
 	}
 	
 	public static TimeInterval preceding(TimePoint end, Duration length) {
+		//Uses the common default for time intervals, [start, end).
 		return preceding(end, true, length, false);
 	}
 
@@ -57,36 +60,17 @@ public class TimeInterval extends Interval {
 		return over(TimePoint.FAR_PAST, end);
 	} 
 
-	private TimePoint lowerLimit;
-	private boolean includesLowerLimit;
-	private TimePoint upperLimit;
-	private boolean includesUpperLimit;
-
 	public TimeInterval(TimePoint lower, boolean lowerIncluded, TimePoint upper, boolean upperIncluded) {
 //		assert lower.compareTo(upper) < 0;  //This should really be an Interval invariant.
-		lowerLimit = lower;
-		includesLowerLimit = lowerIncluded;
-		upperLimit = upper;
-		includesUpperLimit = upperIncluded;
+		super(lower, lowerIncluded, upper, upperIncluded);
 	}
 
 	public Interval newOfSameType(Comparable lower, boolean isLowerClosed, Comparable upper, boolean isUpperClosed) {
 		return new TimeInterval((TimePoint)lower, isLowerClosed, (TimePoint)upper, isUpperClosed);
 	}
 	
-	public Comparable upperLimit() {
-		return upperLimit;
-	}
-	public Comparable lowerLimit() {
-		return lowerLimit;
-	}
-	public boolean includesLowerLimit() {
-		return includesLowerLimit;
-	}
-	public boolean includesUpperLimit() {
-		return includesUpperLimit;
-	}
-
+	
+	
 	public boolean isBefore(TimePoint point) {
 		return isBelow(point);
 	}
@@ -122,23 +106,8 @@ public class TimeInterval extends Interval {
 		return (TimePoint) upperLimit();
 	}
 	
-	public TimeInterval intersect(TimeInterval other) {
-		Interval intersection = intersect((Interval) other);
-		TimePoint start = (TimePoint)intersection.lowerLimit();
-		TimePoint end = (TimePoint)intersection.upperLimit();
-		return new TimeInterval(start, intersection.includesLowerLimit(), end, intersection.includesUpperLimit());
+	public TimeInterval intersect(TimeInterval interval) {
+		return (TimeInterval)intersect((Interval)interval);
 	}
-	
-	/**
-	 * @TODO This is duplicated across ConcreteComparableInterval
-	 */
-	public Interval intersect(Interval other) {
-		Comparable intersectLowerBound = greaterOfLowerLimits(other);
-		Comparable intersectUpperBound = lesserOfUpperLimits(other);
-		if (intersectLowerBound.compareTo(intersectUpperBound) > 0) return open(intersectLowerBound, intersectLowerBound);
-
-		return Interval.over(intersectLowerBound, greaterOfLowerIncluded(other), intersectUpperBound, lesserOfUpperIncluded(other));
-	}
-
-
 }
+ 

@@ -77,20 +77,19 @@ public class Duration implements Comparable, Serializable {
 	}
 	
 	/**
-	 * TODO What SHOULD this do if the guard fails?
+	 * TODO What SHOULD happen if assertion fails?
 	 */
 	public Duration plus(Duration other) {
-		if (!other.unit.isConvertibleTo(this.unit)) return null;
+		assert other.unit.isConvertibleTo(this.unit);
 		long newQuantity = this.inBaseUnits() + other.inBaseUnits();
 		return new Duration(newQuantity, unit.baseUnit());
 	}
 
 	/**
-	 * TODO What SHOULD this do if the guard fails?
 	 * TODO What SHOULD happen if assertion fails?
 	 */
 	public Duration minus(Duration other) {
-		if (!other.unit.isConvertibleTo(this.unit)) return null;
+		assert other.unit.isConvertibleTo(this.unit);
 		assert this.compareTo(other) >= 0;
 		long newQuantity = this.inBaseUnits() - other.inBaseUnits();
 		return new Duration(newQuantity, unit.baseUnit());

@@ -73,18 +73,7 @@ public abstract class CalendarInterval extends Interval {
 	}
 	
 	public int hashCode() {
-		return upperLimit().hashCode();
-	}
-
-	public static final CalendarInterval NEVER = CalendarDate.FAR_FUTURE;
-
-	public CalendarInterval intersect(CalendarInterval other) {
-		if (!intersects(other)) return NEVER;
-	
-		CalendarDate intersectLowerBound = (CalendarDate) greaterOfLowerLimits(other);
-		CalendarDate intersectUpperBound = (CalendarDate) lesserOfUpperLimits(other);
-	
-		return inclusive(intersectLowerBound, intersectUpperBound);
+		return lowerLimit().hashCode();
 	}
 
 	public Duration length() {
