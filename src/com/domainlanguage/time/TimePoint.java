@@ -48,7 +48,7 @@ public class TimePoint implements Comparable, Serializable {
 	}
 
 	private static int convertedTo24hour(int hour, String am_pm) {
-		int translatedAmPm = am_pm.equalsIgnoreCase("AM") ? 0 : 12;
+		int translatedAmPm = "AM".equalsIgnoreCase(am_pm) ? 0 : 12;
 		translatedAmPm -= (hour == 12) ? 12 : 0;
 		return hour + translatedAmPm;
 	}
