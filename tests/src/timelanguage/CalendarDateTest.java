@@ -45,6 +45,18 @@ public class CalendarDateTest extends TestCase {
 		//Now a nonsense pattern, to make sure it isn't succeeding by accident.
 		assertEquals("#17-03/02 2003", feb17.toString("#d-yy/MM yyyy"));
 	}
+
+	public void testFromFormattedString() {
+		assertEquals(feb17, CalendarDate.from("2/17/2003", "M/d/yyyy"));
+		//Now a nonsense pattern, to make sure it isn't succeeding by accident.
+		assertEquals(feb17, CalendarDate.from("#17-03/02 2003", "#d-yy/MM yyyy"));
+	}
+	
+	public void testFromTimePoint() {
+		TimePoint feb18Hour0Ct = TimePoint.atMidnight(2003, 2, 18, gmt);
+		CalendarDate mapped = CalendarDate.from(feb18Hour0Ct, ct);
+		assertEquals(CalendarDate.from(2003, 2, 17), mapped);
+	}
 //	public String getSqlString() {
 //		_formatter.applyPattern("#M/d/yyyy#");
 //		return _formatter.format(getTime());

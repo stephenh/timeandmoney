@@ -1,5 +1,6 @@
 package timelanguage;
 
+import java.util.Iterator;
 import java.util.TimeZone;
 
 import junit.framework.TestCase;
@@ -7,6 +8,8 @@ import junit.framework.TestCase;
 public class CalendarIntervalTest extends TestCase {
 
 	CalendarDate may1 = CalendarInterval.date(2004, 5, 1);
+	CalendarDate may2 = CalendarInterval.date(2004, 5, 2);
+	CalendarDate may3 = CalendarInterval.date(2004, 5, 3);
 	CalendarDate may20 = CalendarInterval.date(2004, 5, 20);
 	CalendarDate may31 = CalendarInterval.date(2004, 5, 31);
 	CalendarDate apr15 = CalendarInterval.date(2004, 4, 15);
@@ -41,4 +44,20 @@ public class CalendarIntervalTest extends TestCase {
 	    assertFalse(may.equals(CalendarInterval.inclusive(may1, may20)));
 	  }
 
+ 	public void testDaysAdd() {
+ 		assertEquals(may20, may1.plusDays(19));
+ 	}
+ 	public void testDaysIterator() {
+ 		Iterator iter = CalendarInterval.inclusive(may1, may3).daysIterator();
+ 		assertTrue(iter.hasNext());
+ 		assertEquals(may1, iter.next());
+ 		assertTrue(iter.hasNext());
+ 		assertEquals(may2, iter.next());
+ 		assertTrue(iter.hasNext());
+ 		assertEquals(may3, iter.next());
+ 		assertFalse(iter.hasNext());
+		
+ 	}
+
+ 	
 }

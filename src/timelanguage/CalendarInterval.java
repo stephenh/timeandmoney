@@ -1,5 +1,6 @@
 package timelanguage;
 
+import java.util.Iterator;
 import java.util.TimeZone;
 
 import fundamental.ComparableInterval;
@@ -30,6 +31,14 @@ public abstract class CalendarInterval extends ComparableInterval {
 	public boolean includesUpperLimit() {
 		return true;
 	}
+	
+	public CalendarDate start() {
+		return (CalendarDate)getLowerBound();
+	}
+
+	public CalendarDate end() {
+		return (CalendarDate)getUpperBound();
+	}
 
 	public boolean equals(Object arg) {
 		if (!(arg instanceof CalendarInterval)) return false;
@@ -52,5 +61,31 @@ public abstract class CalendarInterval extends ComparableInterval {
 		return inclusive(intersectLowerBound, intersectUpperBound);
 	}
 
-
+	public int lengthInDays() {
+		Iterator iter = daysIterator();
+		int count = 0;
+		while(iter.hasNext()) {
+			count++;
+			iter.next();
+		}
+		return count;
+	}
+	
+	public Iterator daysIterator() {
+		final CalendarDate start = (CalendarDate)getLowerBound();
+		final CalendarDate end = (CalendarDate)getUpperBound();
+		return new Iterator() {
+			CalendarDate next = start;
+			public boolean hasNext() {
+				return !next.isAfter(end);
+			}	
+			public Object next() {
+				Object current = next;
+				next = next.plusDays(1);
+				return current;
+			}
+			public void remove() {}
+		};
+	}
+	
 }

@@ -21,53 +21,49 @@ class BusinessCalendar {
 		holidays.addAll(days);
 	}
 
-	int getElapsedBusinessDays(TimeInterval interval) {
+	public int getElapsedBusinessDays(CalendarInterval interval) {
 		int tally = 0;
 		Iterator it = interval.daysIterator();
 		while (it.hasNext()) {
-			tally++;
-			it.next();
+			if (isBusinessDay((CalendarDate)it.next())) tally++;
 		}
 		return tally;
 	}
 	
-	TimePoint nearestBusinessDay(TimePoint day) {
-		TimePoint current = day;
+	public CalendarDate nearestBusinessDay(CalendarDate day) {
+		CalendarDate current = day;
 		int guard = 0;
 		while (!isBusinessDay(current)) {
-			current = current.nextDay();
+			current = current.plusDays(1);
 		}
 		return current;
 	}
 	
 
-	boolean isHoliday(TimePoint day) {
-		for (Iterator iterator = holidays.iterator(); iterator.hasNext();) {
-			TimePoint each = (TimePoint) iterator.next();
-			if (each.isSameCalendarDayAs(day)) 
-				return true;
-		}
-		return false;
+	public boolean isHoliday(CalendarDate day) {
+		return holidays.contains(day);
 	}
 
-	public boolean isWeekend(TimePoint day) {
-		Calendar calday = day.asJavaCalendar();
+	public boolean isWeekend(CalendarDate day) {
+		Calendar calday = day._asJavaCalendarUniversalZoneMidnight();
 		return 
 		(calday.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) ||
 		(calday.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY);
 	}
 	
-	boolean isBusinessDay(TimePoint day) {
+	public boolean isBusinessDay(CalendarDate day) {
 		return !isWeekend(day) && !isHoliday(day);
 	}
-	public Iterator businessDaysIterator(TimeInterval anInterval) {
-		final TimeInterval interval = anInterval;
+
+	public Iterator businessDaysIterator(CalendarInterval anInterval) {
+		final CalendarInterval interval = anInterval;
 		return new Iterator() {
-			TimePoint next = interval.start();
+			CalendarDate next = interval.start();
 			
 			public boolean hasNext() {
 				return interval.includes(next);
 			}	
+
 			public Object next() {
 				Object current = next;
 				next = nearestBusinessDay(next.nextDay());

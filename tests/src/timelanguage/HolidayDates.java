@@ -48,7 +48,7 @@ class HolidayDates {
 		Set dates = new HashSet();
 		String[] strings = COMMON_US_HOLIDAYS;
 		for (int i = 0; i < strings.length; i++)
-			dates.add(TimePoint.from(strings[i], "yyyy/MM/dd"));
+			dates.add(CalendarDate.from(strings[i], "yyyy/MM/dd"));
 		return dates;
 	}
 

@@ -59,8 +59,12 @@ public class  TimePoint implements Comparable, Magnitude {
 	}
 
 	public static TimePoint from(String dateString, String pattern) {
+		return from(dateString, pattern, TimeZone.getTimeZone("Universal"));
+	}
+	
+	public static TimePoint from(String dateString, String pattern, TimeZone zone) {
 		DateFormat format = new SimpleDateFormat(pattern);
-		format.setTimeZone(TimeZone.getTimeZone("GMT"));
+		format.setTimeZone(zone);
 		Date date = format.parse(dateString, new ParsePosition(0));
 		return from(date);
 	}

@@ -20,6 +20,31 @@ public class CalendarDate extends CalendarInterval {
 		this.day = day;
 	}
 
+	public static CalendarDate from(String dateString, String pattern) {
+		TimeZone zone = TimeZone.getTimeZone("Universal");
+		TimePoint point = TimePoint.from(dateString, pattern, zone);
+		return CalendarDate.from(point, zone);
+	}
+	
+	public static CalendarDate from(TimePoint timePoint, TimeZone zone) {
+		Calendar calendar = timePoint.asJavaCalendar();
+		calendar.setTimeZone(zone);
+		int year = calendar.get(Calendar.YEAR);
+		int month = calendar.get(Calendar.MONTH) + 1; //T&M Lib counts January as 1
+		int date = calendar.get(Calendar.DATE);
+		return CalendarDate.from(year, month, date);
+	}
+
+	public String toString() {
+		return toString("yyyy-M-d"); //default for console
+	}
+
+	public String toString(String pattern) {
+		TimeZone zone = TimeZone.getTimeZone("Universal");
+		TimePoint point = startAsTimePoint(zone);
+		return point.toString(pattern, zone);
+	}
+	
 	public boolean isBefore(CalendarDate other) {
 		if (year < other.year) return true;
 		if (year > other.year) return false;
@@ -59,6 +84,32 @@ public class CalendarDate extends CalendarInterval {
 		return this;
 	}
 
+	public CalendarDate nextDay() {
+		return this.plusDays(1);
+	}
+
+	public CalendarDate plusDays(int increment) {
+		Calendar calendar = _asJavaCalendarUniversalZoneMidnight();
+		calendar.add(Calendar.DATE, increment);
+		int year = calendar.get(Calendar.YEAR);
+		int month = calendar.get(Calendar.MONTH) + 1;
+		int day = calendar.get(Calendar.DATE);
+		return CalendarDate.from(year, month, day);
+	}
+	
+	Calendar _asJavaCalendarUniversalZoneMidnight() {
+		TimeZone zone = TimeZone.getTimeZone("Universal");
+		Calendar calendar = Calendar.getInstance(zone);
+		calendar.set(Calendar.YEAR, year);
+		calendar.set(Calendar.MONTH, month-1);
+		calendar.set(Calendar.DATE, day);
+		calendar.set(Calendar.HOUR_OF_DAY, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		calendar.set(Calendar.MILLISECOND, 0);
+		return calendar;
+	}
+	
 	public TimeInterval asTimeInterval(TimeZone zone) {
 		return TimeInterval.from(startAsTimePoint(zone), true, Duration.days(1), false);
 	}
@@ -73,15 +124,6 @@ public class CalendarDate extends CalendarInterval {
 		calendar.set(Calendar.SECOND, 0);
 		calendar.set(Calendar.MILLISECOND, 0);
 		return TimePoint.from(calendar);
-	}
-
-	public String toString() {
-		return toString("yyyy-M-d"); //default for console
-	}
-	public String toString(String pattern) {
-		TimeZone zone = TimeZone.getTimeZone("Universal");
-		TimePoint point = startAsTimePoint(zone);
-		return point.toString(pattern, zone);
 	}
 
 	public CalendarInterval through(CalendarDate otherDate) {
