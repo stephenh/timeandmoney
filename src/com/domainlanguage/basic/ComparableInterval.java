@@ -1,7 +1,7 @@
 /**
  *
- * This code is provided under the following licence: 
- * MIT Licence
+ * This code is provided under the MIT licence. 
+ * See enclosed file, licence.txt.
  * timeandmoney.sourceforge.net
  * Copyright 2004, Domain Language, Inc.
  */

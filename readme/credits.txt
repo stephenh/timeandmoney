@@ -4,4 +4,4 @@ and some nice unit tests for TimeInterval.
 Benny Sadeh contributed the initial version of BusinessCalendar and TimeUnit, and
 did some refactoring on the code base.
 Vlad Gitlevich and John Corbett each acted as programming pairs.
-Alan Lovejoy, years ago, helped clarify the TimePoint/Duration/Interval distinction.
+Alan Love joyhelped clarify the TimePoint/Duration/Interval distinction.
