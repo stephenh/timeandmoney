@@ -17,7 +17,7 @@ public class  TimePoint implements Comparable {
 
 	final long millisecondsFromEpoc;
 	
-	public static TimePoint atMidnight(int year, int month, int date) {
+	public static TimePoint atMidnightGMT(int year, int month, int date) {
 		return from(year, month, date, 0, 0, 0, 0);
 	}
 
@@ -101,13 +101,9 @@ public class  TimePoint implements Comparable {
 		return (int) millisecondsFromEpoc;
 	}
 
-	public TimePoint backToMidnight() {
-		Calendar cal =asJavaCalendar();
-		cal.set(Calendar.HOUR, 0);
-		cal.set(Calendar.MINUTE, 0);
-		cal.set(Calendar.SECOND, 0);
-		cal.set(Calendar.MILLISECOND, 0);
-		return TimePoint.from(cal);
+	public TimePoint backToMidnight(TimeZone zone) {
+		CalendarDate date = CalendarDate.from(this, zone);
+		return date.asTimeInterval(zone).start();
 	}
 	
 	public boolean isSameCalendarDayAs(TimePoint other) {

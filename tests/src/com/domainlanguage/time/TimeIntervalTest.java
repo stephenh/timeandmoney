@@ -11,11 +11,11 @@ import java.util.*;
 import junit.framework.*;
 
 public class TimeIntervalTest extends TestCase {
-	private TimePoint dec19_2003 = TimePoint.atMidnight(2003, 12, 19);
-	private TimePoint dec20_2003 = TimePoint.atMidnight(2003, 12, 20);
-	private TimePoint dec21_2003 = TimePoint.atMidnight(2003, 12, 21);
-	private TimePoint dec22_2003 = TimePoint.atMidnight(2003, 12, 22);
-	private TimePoint dec23_2003 = TimePoint.atMidnight(2003, 12, 23);
+	private TimePoint dec19_2003 = TimePoint.atMidnightGMT(2003, 12, 19);
+	private TimePoint dec20_2003 = TimePoint.atMidnightGMT(2003, 12, 20);
+	private TimePoint dec21_2003 = TimePoint.atMidnightGMT(2003, 12, 21);
+	private TimePoint dec22_2003 = TimePoint.atMidnightGMT(2003, 12, 22);
+	private TimePoint dec23_2003 = TimePoint.atMidnightGMT(2003, 12, 23);
 
 	public void testBeforeClosed() {
 			TimeInterval interval = TimeInterval.closed(dec20_2003, dec22_2003);
@@ -121,15 +121,15 @@ public class TimeIntervalTest extends TestCase {
 
 	public void testEverFrom() {
 		TimeInterval afterDec20 = TimeInterval.everFrom(dec20_2003);
-		assertTrue(afterDec20.includes(TimePoint.atMidnight(2062, 3, 5)));
-		assertFalse(afterDec20.includes(TimePoint.atMidnight(1776, 7, 4)));
+		assertTrue(afterDec20.includes(TimePoint.atMidnightGMT(2062, 3, 5)));
+		assertFalse(afterDec20.includes(TimePoint.atMidnightGMT(1776, 7, 4)));
 		assertTrue(afterDec20.includes(dec20_2003));
 	}
 
 	public void testEverUntil() {
 		TimeInterval afterDec20 = TimeInterval.everPreceding(dec20_2003);
-		assertFalse(afterDec20.includes(TimePoint.atMidnight(2062, 3, 5)));
-		assertTrue(afterDec20.includes(TimePoint.atMidnight(1776, 7, 4)));
+		assertFalse(afterDec20.includes(TimePoint.atMidnightGMT(2062, 3, 5)));
+		assertTrue(afterDec20.includes(TimePoint.atMidnightGMT(1776, 7, 4)));
 		assertFalse(afterDec20.includes(dec20_2003));
 	}
 

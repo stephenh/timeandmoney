@@ -17,15 +17,15 @@ public class TimePointTest extends TestCase {
 	TimeZone pt = TimeZone.getTimeZone("America/Los_Angeles");
 	TimeZone ct = TimeZone.getTimeZone("America/Chicago");
 
-	TimePoint dec19_2003 = TimePoint.atMidnight(2003, 12, 19);
-	TimePoint dec20_2003 = TimePoint.atMidnight(2003, 12, 20);
-	TimePoint dec21_2003 = TimePoint.atMidnight(2003, 12, 21);
-	TimePoint dec22_2003 = TimePoint.atMidnight(2003, 12, 22);
+	TimePoint dec19_2003 = TimePoint.atMidnightGMT(2003, 12, 19);
+	TimePoint dec20_2003 = TimePoint.atMidnightGMT(2003, 12, 20);
+	TimePoint dec21_2003 = TimePoint.atMidnightGMT(2003, 12, 21);
+	TimePoint dec22_2003 = TimePoint.atMidnightGMT(2003, 12, 22);
 
 	
 	public void testCreationWithDefaultTimeZone() {
 		TimePoint expected = TimePoint.from(2004, 1, 1, 0, 0, 0, 0);
-		assertEquals("at midnight", expected, TimePoint.atMidnight(2004, 1, 1));
+		assertEquals("at midnight", expected, TimePoint.atMidnightGMT(2004, 1, 1));
 		assertEquals("hours in 24hr clock", expected, TimePoint.from(2004, 1, 1, 0));
 		assertEquals("hours in 12hr clock", expected, TimePoint.from(2004, 1, 1, 12, AM));
 		assertEquals("date from formatted String", expected, TimePoint.from("2004/1/1", "yyyy/MM/dd"));
@@ -73,7 +73,7 @@ public class TimePointTest extends TestCase {
 	}
 
 	public void testAsJavaUtilDate() {
-		TimePoint dec20_2003 = TimePoint.atMidnight(2003, 12, 20);
+		TimePoint dec20_2003 = TimePoint.atMidnightGMT(2003, 12, 20);
 		assertEquals(javaUtilDateDec20_2003(), dec20_2003.asJavaUtilDate());
 	}
 
@@ -83,9 +83,12 @@ public class TimePointTest extends TestCase {
 		assertEquals("if the clock does not ticks during test ...", approxNow, now.asJavaUtilDate());
 	}
 	
-	public void testAtMidnight() {
+	public void testBackToMidnight() {
 		TimePoint threeOClock = TimePoint.from(2004, 11, 22, 3);
-		assertEquals(TimePoint.atMidnight(2004, 11, 22), threeOClock.backToMidnight());
+		assertEquals(TimePoint.atMidnightGMT(2004, 11, 22), threeOClock.backToMidnight(gmt));
+		TimePoint thirteenOClock = TimePoint.from(2004, 11, 22, 13);
+		assertEquals(TimePoint.atMidnightGMT(2004, 11, 22), thirteenOClock.backToMidnight(gmt));
+
 	}
 
 	
@@ -98,8 +101,8 @@ public class TimePointTest extends TestCase {
 	
 	public void testEquals() {
 		TimePoint createdFromJavaDate = TimePoint.from(javaUtilDateDec20_2003());
-		TimePoint dec5_2003 = TimePoint.atMidnight(2003, 12, 5);
-		TimePoint dec20_2003 = TimePoint.atMidnight(2003, 12, 20);
+		TimePoint dec5_2003 = TimePoint.atMidnightGMT(2003, 12, 5);
+		TimePoint dec20_2003 = TimePoint.atMidnightGMT(2003, 12, 20);
 		assertEquals(createdFromJavaDate, dec20_2003);
 		assertTrue(createdFromJavaDate.equals(dec20_2003));
 		assertFalse(createdFromJavaDate.equals(dec5_2003));
@@ -112,17 +115,17 @@ public class TimePointTest extends TestCase {
 		assertTrue("same minute", TimePoint.from(2000, 1, 1, 8, 0, 30, 0).isSameCalendarDayAs(thePoint));
 		assertTrue("same hour", TimePoint.from(2000, 1, 1, 8, 30, 0, 0).isSameCalendarDayAs(thePoint));
 		assertTrue("same day", TimePoint.from(2000, 1, 1, 8, PM).isSameCalendarDayAs(thePoint));
-		assertTrue("midnight (in the moring), start of same day", TimePoint.atMidnight(2000, 1, 1).isSameCalendarDayAs(thePoint));
+		assertTrue("midnight (in the moring), start of same day", TimePoint.atMidnightGMT(2000, 1, 1).isSameCalendarDayAs(thePoint));
 
-		assertFalse("midnight (night), start of next day", TimePoint.atMidnight(2000, 1, 2).isSameCalendarDayAs(thePoint));
+		assertFalse("midnight (night), start of next day", TimePoint.atMidnightGMT(2000, 1, 2).isSameCalendarDayAs(thePoint));
 		assertFalse("next day", TimePoint.from(2000, 1, 2, 8, AM).isSameCalendarDayAs(thePoint));
 		assertFalse("next month", TimePoint.from(2000, 2, 1, 8, AM).isSameCalendarDayAs(thePoint));
 		assertFalse("next year", TimePoint.from(2001, 1, 1, 8, AM).isSameCalendarDayAs(thePoint));
 	}
 
 	public void testBeforeAfter() {
-		TimePoint dec5_2003 = TimePoint.atMidnight(2003, 12, 5);
-		TimePoint dec20_2003 = TimePoint.atMidnight(2003, 12, 20);
+		TimePoint dec5_2003 = TimePoint.atMidnightGMT(2003, 12, 5);
+		TimePoint dec20_2003 = TimePoint.atMidnightGMT(2003, 12, 20);
 		assertTrue(dec5_2003.isBefore(dec20_2003));
 		assertFalse(dec20_2003.isBefore(dec20_2003));
 		assertFalse(dec20_2003.isBefore(dec5_2003));
