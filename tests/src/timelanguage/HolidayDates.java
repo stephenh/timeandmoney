@@ -1,5 +1,7 @@
 package timelanguage;
 
+import java.util.*;
+
 
 /** dates are taken from: http://www.opm.gov/fedhol/index.htm
 	note: when a holiday falls on a non-workday -- Saturday or Sunday --
@@ -7,9 +9,9 @@ package timelanguage;
 	on Sunday) or Friday (if the holiday falls on Saturday).
 	a holiday falls on a nonworkday will be referred to as a "deferred" holiday.
 */
-interface HolidayDates {
+class HolidayDates {
 
-	String[] ALL = new String[] {
+	static String[] COMMON_US_HOLIDAYS = new String[] {
 		                    
 		// 2004
 		"2004/01/01", /* New Year's Day */
@@ -18,8 +20,6 @@ interface HolidayDates {
 		"2004/05/31", /* Memorial Day */
 		"2004/07/05", /* United States of America's Independence Day, July 4 */ //revisit:defered
 		"2004/09/06", /* Labor Day */
-//		"2004/10/11", /* Columbus Day */revisit
-//		"2004/11/11", /* Veterans Day */revisit
 		"2004/11/25", /* Thanksgiving Day */
 		"2004/12/24", /* Christmas Day, December 25 - Friday - deferred from Saturday */
 		"2004/12/31", /* New Year's Day for January 1, 2005 - Friday - deferred from Saturday */
@@ -30,8 +30,6 @@ interface HolidayDates {
 		"2005/05/30", /* Memorial Day */
 		"2005/07/04", /* United States of America's Independence Day, July 4 */
 		"2005/09/05", /* Labor Day */
-//		"2005/10/10", /* Columbus Day */revisit
-//		"2005/11/11", /* Veterans Day */revisit
 		"2005/11/24", /* Thanksgiving Day */
 		"2005/12/26", /* Christmas Day, December 25 - Monday - deferred from Sunday */
                
@@ -42,11 +40,16 @@ interface HolidayDates {
 		"2006/05/29", /* Memorial Day */
 		"2006/07/04", /* United States of America's Independence Day, July 4 */
 		"2006/09/04", /* Labor Day */
-//		"2006/10/09", /* Columbus Day */revisit
-//		"2006/11/10", /* Veterans Day */revisit
 		"2006/11/23", /* Thanksgiving Day */
 		"2006/12/25", /* Christmas Day, December 25 */
 	};	
 	
-	
+	static Set defaultHolidays() {
+		Set dates = new HashSet();
+		String[] strings = COMMON_US_HOLIDAYS;
+		for (int i = 0; i < strings.length; i++)
+			dates.add(TimePoint.from(strings[i], "yyyy/MM/dd"));
+		return dates;
+	}
+
 }

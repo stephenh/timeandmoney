@@ -14,8 +14,6 @@
 
 package fundamental;
 
-import timelanguage.CalendarDate;
-import timelanguage.CalendarInterval;
 
 public abstract class ComparableInterval implements Comparable {
 	

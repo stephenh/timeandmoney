@@ -4,24 +4,21 @@ import java.util.*;
 
 
 class BusinessCalendar {
-	private Set holidays;
+	private Set holidays = new HashSet();
 	
 	static BusinessCalendar defaultBusinessCalendar() {
 		BusinessCalendar calendar = new BusinessCalendar();
-		calendar.setHolidays(defaultHolidays());
+		calendar.addHolidays(defaultHolidays());
 		return calendar;
 	}
-	static private Set defaultHolidays() {
-		Set collected = new HashSet();
-		String[] dates = HolidayDates.ALL;
-		for (int i = 0; i < dates.length; i++)
-			collected.add(TimePoint.from(dates[i], "yyyy/MM/dd"));
-		return collected;
+	
+	static Set defaultHolidays() {
+		// Meant to be rewritten for particular organization.
+		return new HashSet();
 	}
 	
-	
-	private void setHolidays(Set set) {
-		holidays = set;
+	public void addHolidays(Set days) {
+		holidays.addAll(days);
 	}
 
 	int getElapsedBusinessDays(TimeInterval interval) {
