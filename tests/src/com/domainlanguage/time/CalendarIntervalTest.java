@@ -43,11 +43,11 @@ public class CalendarIntervalTest extends TestCase {
 	}
 
 	public void testIncludes() {
-		assertFalse("apr15", may.includes(apr15));
-		assertTrue("may1", may.includes(may1));
-		assertTrue("may20", may.includes(may20));
-		assertFalse("jun1", may.includes(jun1));
-		assertTrue("may", may.includes(may));
+		assertFalse("apr15", may.covers(apr15));
+		assertTrue("may1", may.covers(may1));
+		assertTrue("may20", may.covers(may20));
+		assertFalse("jun1", may.covers(jun1));
+		assertTrue("may", may.covers(may));
 	}
 	
  	public void testEquals() {

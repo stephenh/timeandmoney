@@ -12,7 +12,12 @@ import com.domainlanguage.basic.*;
 import com.domainlanguage.util.*;
 
 
-public class TimeInterval extends ConcreteInterval {
+public class TimeInterval extends Interval {
+	private Comparable lowerLimit;
+	private boolean includesLowerLimit;
+	private Comparable upperLimit;
+	private boolean includesUpperLimit;
+
 	public static final TimeInterval ALWAYS = over(TimePoint.FAR_PAST, TimePoint.FAR_FUTURE);
 
 	public static TimeInterval over(TimePoint start, boolean closedStart, TimePoint end, boolean closedEnd) {
@@ -64,9 +69,29 @@ public class TimeInterval extends ConcreteInterval {
 //		assert start.compareTo(end) < 0;  //This should really be an Interval invariant.
 //	revisit: also, as with any java assert, an AssertionError will be thrown only if compiled with the -ea option (enableassertions)
 //	so maybe we want to throw an IllegalArgumentException instead?		
-		super(start, startIncluded, end, endIncluded);
+		assert start.compareTo(end) <= 0;
+		lowerLimit = start;
+		includesLowerLimit = startIncluded;
+		upperLimit = end;
+		includesUpperLimit = endIncluded;
 	}
 
+	public Comparable upperLimit() {
+		return upperLimit;
+	}
+	
+	public Comparable lowerLimit() {
+		return lowerLimit;
+	}
+	
+	public boolean includesLowerLimit() {
+		return includesLowerLimit;
+	}
+	
+	public boolean includesUpperLimit() {
+		return includesUpperLimit;
+	}
+	
 	public Interval newOfSameType(Comparable start, boolean isStartClosed, Comparable end, boolean isEndClosed) {
 		return new TimeInterval((TimePoint) start, isStartClosed, (TimePoint) end, isEndClosed);
 	}
@@ -104,7 +129,7 @@ public class TimeInterval extends ConcreteInterval {
 		return new ImmutableIterator() {
 			TimeInterval next = segmentLength.startingFrom(start());
 			public boolean hasNext() {
-				return totalInterval.includes(next);
+				return totalInterval.covers(next);
 			}	
 			public Object next() {
 				if (!hasNext()) return null;
@@ -126,6 +151,7 @@ public class TimeInterval extends ConcreteInterval {
 	public TimeInterval intersect(TimeInterval interval) {
 		return (TimeInterval)intersect((Interval)interval);
 	}
+
 	
 }
  

@@ -11,29 +11,29 @@ import java.util.*;
 import com.domainlanguage.time.*;
 
 
-class EventCalendar {
+class AppointmentCalendar {
 	TimeZone defaultZone;
 	Set events = new HashSet();
 	
-	EventCalendar(TimeZone zone) {
+	AppointmentCalendar(TimeZone zone) {
 		defaultZone = zone;
 	}
 	
-	void add(CalendarEvent anEvent) {
+	void add(Appointment anEvent) {
 		events.add(anEvent);
 	}
 	
-	Collection eventsFor(CalendarDate calDate) {
-		Set daysEvents = new HashSet();
+	List dailyScheduleFor(CalendarDate calDate) {
+		List daysAppointments = new ArrayList();
 		TimeInterval day = calDate.asTimeInterval(defaultZone);
 		Iterator it = events.iterator();
 		while (it.hasNext()) {
-			CalendarEvent event = (CalendarEvent)it.next();
+			Appointment event = (Appointment)it.next();
 			if (event.getTimeInterval().intersects(day)) {
-				daysEvents.add(event);
+				daysAppointments.add(event);
 			}
 		}
-		return daysEvents;
+		return daysAppointments;
 	}
 	
 }

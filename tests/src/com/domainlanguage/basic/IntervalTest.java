@@ -26,6 +26,8 @@ public class IntervalTest extends TestCase {
 	private Interval c1_1o = Interval.over(new BigDecimal(1), true, new BigDecimal(1), false);
 	private Interval c1_1c = Interval.over(new BigDecimal(1), true, new BigDecimal(1), true);
 	private Interval o1_1o = Interval.over(new BigDecimal(1), false, new BigDecimal(1), false);
+	private Interval o1_10o = Interval.open(new BigDecimal(1), new BigDecimal(10));
+	private Interval o10_12o = Interval.open(new BigDecimal(10), new BigDecimal(12));
 
 //TODO: either fix those tests, or delete them (Benny)
 //	public void testAssertions() {
@@ -158,17 +160,29 @@ public class IntervalTest extends TestCase {
 		assertEquals(new BigDecimal(6), c12_16c.lesserOfUpperLimits(c4_6c));
 	}
 
-	public void testIncludesInterval() {
-		assertFalse(c5_10c.includes(c1_10c));
-		assertTrue(c1_10c.includes(c5_10c));
-		assertFalse(c4_6c.includes(c1_10c));
-		assertTrue(c1_10c.includes(c4_6c));
-		assertTrue(c5_10c.includes(c5_10c));
+	public void testCoversInterval() {
+		assertFalse(c5_10c.covers(c1_10c));
+		assertTrue(c1_10c.covers(c5_10c));
+		assertFalse(c4_6c.covers(c1_10c));
+		assertTrue(c1_10c.covers(c4_6c));
+		assertTrue(c5_10c.covers(c5_10c));
 		Interval halfOpen5_10 = Interval.over(new BigDecimal(5), false, new BigDecimal(10), true);
-		assertTrue("closed incl left-open", c5_10c.includes(halfOpen5_10));
-		assertTrue("left-open incl left-open", halfOpen5_10.includes(halfOpen5_10));
-		assertFalse("left-open doesn't include closed", halfOpen5_10.includes(c5_10c));
+		assertTrue("closed incl left-open", c5_10c.covers(halfOpen5_10));
+		assertTrue("left-open incl left-open", halfOpen5_10.covers(halfOpen5_10));
+		assertFalse("left-open doesn't include closed", halfOpen5_10.covers(c5_10c));
 		//TODO: Need to test other half-open case and full-open case.
+	}
+	
+	public void testGap() {
+		Interval c1_3c = Interval.closed(new Integer(1), new Integer(3));
+		Interval c5_7c = Interval.closed(new Integer(5), new Integer(7));
+		Interval o3_5o = Interval.open(new Integer(3), new Integer(5));
+		Interval c2_3o = Interval.over(new Integer(2), true, new Integer(3), false);
+
+		assertEquals(o3_5o, c1_3c.gap(c5_7c));
+		assertTrue(c1_3c.gap(o3_5o).isEmpty());
+		assertTrue(c1_3c.gap(c2_3o).isEmpty());
+		assertTrue(c2_3o.gap(o3_5o).isSingleElement());
 	}
 
 	public void testRelativeComplementDisjoint() {

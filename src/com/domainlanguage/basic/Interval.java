@@ -23,16 +23,15 @@ import java.util.*;
  */
 public abstract class Interval implements Comparable, Serializable {
 	
-	//revisit: maybe return an Interval? (Benny)
-	public static ConcreteInterval closed(Comparable lower, Comparable upper) {
+	public static Interval closed(Comparable lower, Comparable upper) {
 		return new ConcreteInterval(lower, true, upper, true);
 	}
 
-	public static ConcreteInterval open(Comparable lower, Comparable upper) {
+	public static Interval open(Comparable lower, Comparable upper) {
 		return new ConcreteInterval(lower, false, upper, false);
 	}
 
-	public static ConcreteInterval over(Comparable lower, boolean lowerIncluded, Comparable upper, boolean upperIncluded) {
+	public static Interval over(Comparable lower, boolean lowerIncluded, Comparable upper, boolean upperIncluded) {
 		return new ConcreteInterval(lower, lowerIncluded, upper, upperIncluded);
 	}
 
@@ -58,18 +57,15 @@ public abstract class Interval implements Comparable, Serializable {
 
 	public abstract Interval newOfSameType(Comparable lower, boolean isLowerClosed, Comparable upper, boolean isUpperClosed);
 
-	public boolean intersects(Interval other) {
-		int comparison = greaterOfLowerLimits(other).compareTo(lesserOfUpperLimits(other));
-		if (comparison < 0) return true;
-		if (comparison > 0) return false;
-		return greaterOfLowerIncluded(other) && lesserOfUpperIncluded(other);
+	public Interval emptyOfSameType() {
+		return newOfSameType(lowerLimit(), false, lowerLimit(), false);
 	}
-
+	
 	public boolean includes(Comparable value) {
 		return !this.isBelow(value) && !this.isAbove(value);
 	}
 
-	public boolean includes(Interval other) {
+	public boolean covers(Interval other) {
 		int lowerComparison = lowerLimit().compareTo(other.lowerLimit());
 		boolean lowerPass = 
 			this.includes(other.lowerLimit()) ||
@@ -90,6 +86,7 @@ public abstract class Interval implements Comparable, Serializable {
 	}
 	
 	public boolean isEmpty() {
+		//TODO: Consider explicit empty interval
 		//A 'degenerate' interval is an empty set, {}. 
 		return isOpen() && upperLimit().equals(lowerLimit());		
 	}
@@ -145,7 +142,7 @@ public abstract class Interval implements Comparable, Serializable {
 		return other.lowerLimit();
 	}
 
-	public Comparable lesserOfUpperLimits(Interval other) {
+	Comparable lesserOfUpperLimits(Interval other) {
 		int upperComparison = upperLimit().compareTo(other.upperLimit());
 		if (upperComparison <= 0) return this.upperLimit();
 		return other.upperLimit();
@@ -157,14 +154,24 @@ public abstract class Interval implements Comparable, Serializable {
 		return other.upperLimit();
 	}
 
-	private boolean greaterOfLowerIncluded(Interval other) {
+	private boolean greaterOfLowerIncludedInIntersection(Interval other) {
 		Comparable limit = greaterOfLowerLimits(other);
 		return this.includes(limit) && other.includes(limit);
 	}
 
-	private boolean lesserOfUpperIncluded(Interval other) {
+	private boolean lesserOfUpperIncludedInIntersection(Interval other) {
 		Comparable limit = lesserOfUpperLimits(other);
 		return this.includes(limit) && other.includes(limit);
+	}
+
+	private boolean greaterOfLowerIncludedInUnion(Interval other) {
+		Comparable limit = greaterOfLowerLimits(other);
+		return this.includes(limit) || other.includes(limit);
+	}
+
+	private boolean lesserOfUpperIncludedInUnion(Interval other) {
+		Comparable limit = lesserOfUpperLimits(other);
+		return this.includes(limit) || other.includes(limit);
 	}
 
 	public boolean equals(Object object) {
@@ -189,6 +196,29 @@ public abstract class Interval implements Comparable, Serializable {
 		//revisit: weired choice. would definately impare IntervalMap
 		//why not sepend it on lowerLimit & upperLimit ?
 		return 0;
+	}
+	
+	public boolean intersects(Interval other) {
+		int comparison = greaterOfLowerLimits(other).compareTo(lesserOfUpperLimits(other));
+		if (comparison < 0) return true;
+		if (comparison > 0) return false;
+		return greaterOfLowerIncludedInIntersection(other) && lesserOfUpperIncludedInIntersection(other);
+	}
+
+	public Interval intersect(Interval other) {
+		Comparable intersectLowerBound = greaterOfLowerLimits(other);
+		Comparable intersectUpperBound = lesserOfUpperLimits(other);
+		if (intersectLowerBound.compareTo(intersectUpperBound) > 0) return emptyOfSameType();
+		return newOfSameType(intersectLowerBound, greaterOfLowerIncludedInIntersection(other), intersectUpperBound, lesserOfUpperIncludedInIntersection(other));
+	}
+	
+	public Interval gap(Interval other) {
+		if (this.intersects(other)) return this.emptyOfSameType();
+		
+		return newOfSameType(lesserOfUpperLimits(other), 
+				!lesserOfUpperIncludedInUnion(other), 
+				greaterOfLowerLimits(other), 
+				!greaterOfLowerIncludedInUnion(other));
 	}
 
 	/** see: http://en.wikipedia.org/wiki/Set_theoretic_complement */
@@ -217,15 +247,4 @@ public abstract class Interval implements Comparable, Serializable {
 		return newOfSameType(this.upperLimit(), !this.includesUpperLimit(), other.upperLimit(), other.includesUpperLimit());
 	}
 
-	public Interval intersect(Interval other) {
-		Comparable intersectLowerBound = greaterOfLowerLimits(other);
-		Comparable intersectUpperBound = lesserOfUpperLimits(other);
-		if (intersectLowerBound.compareTo(intersectUpperBound) > 0) return emptyOfSameType();
-		return newOfSameType(intersectLowerBound, greaterOfLowerIncluded(other), intersectUpperBound, lesserOfUpperIncluded(other));
-	}
-	
-	public Interval emptyOfSameType() {
-		return newOfSameType(lowerLimit(), false, lowerLimit(), false);
-	}
-	
 }

@@ -16,9 +16,9 @@ public abstract class AnnualDateSpecification extends DateSpecification {
 
 	public CalendarDate firstOccurrenceIn(CalendarInterval interval) {
 		CalendarDate firstTry = ofYear(interval.start().year);
-		if (interval.includes(firstTry)) return firstTry;
+		if (interval.covers(firstTry)) return firstTry;
 		CalendarDate secondTry = ofYear(interval.start().year + 1);
-		if (interval.includes(secondTry)) return secondTry;
+		if (interval.covers(secondTry)) return secondTry;
 		return null;
 	}
 
@@ -35,7 +35,7 @@ public abstract class AnnualDateSpecification extends DateSpecification {
 				Object current = next;
 				year += 1;
 				next = spec.ofYear(year);
-				if (!interval.includes(next)) next = null;
+				if (!interval.covers(next)) next = null;
 				return current;
 			}
 		};

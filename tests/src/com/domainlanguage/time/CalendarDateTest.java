@@ -69,8 +69,8 @@ public class CalendarDateTest extends TestCase {
 //	}
 
 	  public void testIncludes(){
-	    assertTrue(feb17.includes(feb17));
-	    assertFalse(feb17.includes(mar13));
+	    assertTrue(feb17.covers(feb17));
+	    assertFalse(feb17.covers(mar13));
 	  }
 	  
 	  public void testDayOfWeek() {

@@ -64,7 +64,7 @@ class BusinessCalendar {
 		return new ImmutableIterator() {
 			CalendarDate next = interval.start();
 			public boolean hasNext() {
-				return interval.includes(next);
+				return interval.covers(next);
 			}	
 			public Object next() {
 				Object current = next;

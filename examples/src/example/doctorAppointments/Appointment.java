@@ -8,8 +8,9 @@ package example.doctorAppointments;
 
 import com.domainlanguage.time.*;
 
-class CalendarEvent {
+class Appointment {
 	private TimeInterval timeInterval;
+	private String description;
 	
 	public void setTimeInterval(TimeInterval anInterval) {
 		timeInterval = anInterval;

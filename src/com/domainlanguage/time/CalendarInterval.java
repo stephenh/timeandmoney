@@ -116,7 +116,7 @@ public abstract class CalendarInterval extends Interval {
 		return new ImmutableIterator() {
 			CalendarInterval next = segmentLength.startingFrom(start());
 			public boolean hasNext() {
-				return totalInterval.includes(next);
+				return totalInterval.covers(next);
 			}	
 			public Object next() {
 				if (!hasNext()) return null;
