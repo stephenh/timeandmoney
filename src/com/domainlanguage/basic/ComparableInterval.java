@@ -23,7 +23,7 @@ public abstract class ComparableInterval implements Comparable {
 	}
 
 	public static ConcreteComparableInterval over(Comparable lower, boolean lowerIncluded, Comparable upper, boolean upperIncluded) {
-		return new ConcreteComparableInterval(lower, upperIncluded, upper, upperIncluded);
+		return new ConcreteComparableInterval(lower, lowerIncluded, upper, upperIncluded);
 	}
 
 	
@@ -52,26 +52,26 @@ public abstract class ComparableInterval implements Comparable {
 	}
 	
 	public Comparable greaterOfLowerLimits(ComparableInterval other) {
-		int lowerComparison = upperLimit().compareTo(other.upperLimit());
-		if (lowerComparison >= 0) return this.upperLimit();
-		return other.upperLimit();
+		int lowerComparison = lowerLimit().compareTo(other.lowerLimit());
+		if (lowerComparison >= 0) return this.lowerLimit();
+		return other.lowerLimit();
 	}
 
 	public boolean greaterOfLowerIncluded(ComparableInterval other) {
-		int lowerComparison = upperLimit().compareTo(other.upperLimit());
+		int lowerComparison = lowerLimit().compareTo(other.lowerLimit());
 		if (lowerComparison > 0) return this.includesLowerLimit();
 		if (lowerComparison < 0) return other.includesLowerLimit();
 		return this.includesLowerLimit() && other.includesLowerLimit();
 	}
 
 	public Comparable lesserOfUpperLimits(ComparableInterval other) {
-		int upperComparison = lowerLimit().compareTo(other.lowerLimit());
-		if (upperComparison <= 0) return this.lowerLimit();
-		return other.lowerLimit();
+		int upperComparison = upperLimit().compareTo(other.upperLimit());
+		if (upperComparison <= 0) return this.upperLimit();
+		return other.upperLimit();
 	}
 
 	public boolean lesserOfUpperIncluded(ComparableInterval other) {
-		int upperComparison = lowerLimit().compareTo(other.lowerLimit());
+		int upperComparison = upperLimit().compareTo(other.upperLimit());
 		if (upperComparison < 0) return this.includesUpperLimit();
 		if (upperComparison > 0) return other.includesUpperLimit();
 		return this.includesUpperLimit() && other.includesUpperLimit();
@@ -83,12 +83,12 @@ public abstract class ComparableInterval implements Comparable {
 	}
 
 	public boolean includes(ComparableInterval other) {
-		int lowerComparison = upperLimit().compareTo(other.upperLimit());
-			boolean lowerPass = this.includes(other.upperLimit()) ||
+		int lowerComparison = lowerLimit().compareTo(other.lowerLimit());
+			boolean lowerPass = this.includes(other.lowerLimit()) ||
 				(lowerComparison == 0 && !other.includesLowerLimit());
 
-		int upperComparison = lowerLimit().compareTo(other.lowerLimit());
-			boolean upperPass = this.includes(other.lowerLimit()) ||
+		int upperComparison = upperLimit().compareTo(other.upperLimit());
+			boolean upperPass = this.includes(other.upperLimit()) ||
 				(upperComparison == 0 && !other.includesUpperLimit());
 			
 		return lowerPass && upperPass;
@@ -111,13 +111,13 @@ public abstract class ComparableInterval implements Comparable {
 	}
 	
 	public boolean isBelow(Comparable value) {
-		int comparison = lowerLimit().compareTo(value);
+		int comparison = upperLimit().compareTo(value);
 		return comparison < 0 ||
 			(comparison == 0 && !includesUpperLimit());
 	}
 
 	public boolean isAbove(Comparable value) {
-		int comparison = upperLimit().compareTo(value);
+		int comparison = lowerLimit().compareTo(value);
 		return comparison > 0 ||
 			(comparison == 0 && !includesLowerLimit());
 	}
@@ -125,9 +125,9 @@ public abstract class ComparableInterval implements Comparable {
 	public String toString() {
 		StringBuffer buffer = new StringBuffer();
 		buffer.append(includesLowerLimit() ? "[" : "(");
-		buffer.append(upperLimit().toString());
-		buffer.append(", ");
 		buffer.append(lowerLimit().toString());
+		buffer.append(", ");
+		buffer.append(upperLimit().toString());
 		buffer.append(includesUpperLimit() ? "]" : ")");
 		return buffer.toString();
 	}

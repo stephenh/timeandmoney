@@ -15,6 +15,14 @@ import junit.framework.TestCase;
 
 public class ComparableIntervalTest extends TestCase {
 
+   	ComparableInterval r5_10 = ComparableInterval.closed(new BigDecimal(5),new BigDecimal(10));
+    ComparableInterval r1_10 = ComparableInterval.closed(new BigDecimal(1),new BigDecimal(10));
+    ComparableInterval r4_6 = ComparableInterval.closed(new BigDecimal(4),new BigDecimal(6));
+    ComparableInterval r5_15 = ComparableInterval.closed(new BigDecimal(5),new BigDecimal(15));
+    ComparableInterval r12_16 = ComparableInterval.closed(new BigDecimal(12),new BigDecimal(16));
+    ComparableInterval x10_12 = ComparableInterval.over(new BigDecimal(10), false, new BigDecimal(12), true);
+
+    
 //	public void testAssertions() {
 //		//Redundant, maybe, but with all the compiler default
 //		//confusion at the moment, I decided to throw this in.
@@ -25,7 +33,17 @@ public class ComparableIntervalTest extends TestCase {
 //			//Correct. Do nothing.
 //		}
 //	}
-	
+
+	public void testIsBelow() {
+	  	ComparableInterval range = ComparableInterval.closed(new BigDecimal(-5.5), new BigDecimal(6.6));
+	    assertFalse (range.isBelow(new BigDecimal(5.0)));
+	    assertFalse (range.isBelow(new BigDecimal(-5.5)));
+	    assertFalse (range.isBelow(new BigDecimal(-5.4999)));
+	    assertFalse (range.isBelow(new BigDecimal(6.6)));
+	    assertTrue (range.isBelow(new BigDecimal(6.601)));
+	    assertFalse (range.isBelow(new BigDecimal(-5.501)));
+	  }
+
 	public void testIncludes() {
 	  	ComparableInterval range = ComparableInterval.closed(new BigDecimal(-5.5), new BigDecimal(6.6));
 	    assertTrue (range.includes(new BigDecimal(5.0)));
@@ -68,29 +86,36 @@ public class ComparableIntervalTest extends TestCase {
 //	    assertTrue(range.includes(5.5001));
 //	  }
 		public void testIntersection() {
-	   	ComparableInterval r5_10 = ComparableInterval.closed(new BigDecimal(5),new BigDecimal(10));
-	    ComparableInterval r1_10 = ComparableInterval.closed(new BigDecimal(1),new BigDecimal(10));
-	    ComparableInterval r4_6 = ComparableInterval.closed(new BigDecimal(4),new BigDecimal(6));
-	    ComparableInterval r5_15 = ComparableInterval.closed(new BigDecimal(5),new BigDecimal(15));
-	    ComparableInterval r12_16 = ComparableInterval.closed(new BigDecimal(12),new BigDecimal(16));
-	    ComparableInterval x10_12 = ComparableInterval.over(new BigDecimal(10), false, new BigDecimal(12), true);
-	    assertTrue ("r5_10.intersects(r1_10)",r5_10.intersects(r1_10));
-	    assertTrue ("r1_10.intersects(r5_10)",r1_10.intersects(r5_10));
-	    assertTrue ("r4_6.intersects(r1_10)",r4_6.intersects(r1_10));
-	    assertTrue ("r1_10.intersects(r4_6)",r1_10.intersects(r4_6));
-	    assertTrue ("r5_10.intersects(r5_15)",r5_10.intersects(r5_15));
-	    assertTrue ("r5_15.intersects(r1_10)",r5_15.intersects(r1_10));
-	    assertTrue ("r1_10.intersects(r5_15)",r1_10.intersects(r5_15));
-	    assertFalse ("r1_10.intersects(r12_16)",r1_10.intersects(r12_16));
-	    assertFalse ("r12_16.intersects(r1_10)",r12_16.intersects(r1_10));
-	    assertTrue ("r5_10.intersects(r5_10)",r5_10.intersects(r5_10));
-	    assertFalse ("r1_10.intersects(x10_12)",r1_10.intersects(x10_12));
-	    assertFalse ("x10_12.intersects(r1_10)",x10_12.intersects(r1_10));
+		    assertTrue ("r5_10.intersects(r1_10)",r5_10.intersects(r1_10));
+		    assertTrue ("r1_10.intersects(r5_10)",r1_10.intersects(r5_10));
+		    assertTrue ("r4_6.intersects(r1_10)",r4_6.intersects(r1_10));
+		    assertTrue ("r1_10.intersects(r4_6)",r1_10.intersects(r4_6));
+		    assertTrue ("r5_10.intersects(r5_15)",r5_10.intersects(r5_15));
+		    assertTrue ("r5_15.intersects(r1_10)",r5_15.intersects(r1_10));
+		    assertTrue ("r1_10.intersects(r5_15)",r1_10.intersects(r5_15));
+		    assertFalse ("r1_10.intersects(r12_16)",r1_10.intersects(r12_16));
+		    assertFalse ("r12_16.intersects(r1_10)",r12_16.intersects(r1_10));
+		    assertTrue ("r5_10.intersects(r5_10)",r5_10.intersects(r5_10));
+		    assertFalse ("r1_10.intersects(x10_12)",r1_10.intersects(x10_12));
+		    assertFalse ("x10_12.intersects(r1_10)",x10_12.intersects(r1_10));
 	 	}
+
+		public void testGreaterOfLowerLimits() {
+		    assertEquals(new BigDecimal(5), r5_10.greaterOfLowerLimits(r1_10));
+		    assertEquals(new BigDecimal(5), r1_10.greaterOfLowerLimits(r5_10));
+		    assertEquals(new BigDecimal(12), r1_10.greaterOfLowerLimits(r12_16));
+		    assertEquals(new BigDecimal(12), r12_16.greaterOfLowerLimits(r1_10));
+	 	}
+
+		public void testLesserOfUpperLimits() {
+		    assertEquals(new BigDecimal(10), r5_10.lesserOfUpperLimits(r1_10));
+		    assertEquals(new BigDecimal(10), r1_10.lesserOfUpperLimits(r5_10));
+		    assertEquals(new BigDecimal(6), r4_6.lesserOfUpperLimits(r12_16));
+		    assertEquals(new BigDecimal(6), r12_16.lesserOfUpperLimits(r4_6));
+	 	}
+
+		
 		public void testIncludesRange() {
-	   	ComparableInterval r5_10 = ComparableInterval.closed(new BigDecimal(5),new BigDecimal(10));
-	    ComparableInterval r1_10 = ComparableInterval.closed(new BigDecimal(1),new BigDecimal(10));
-	    ComparableInterval r4_6 = ComparableInterval.closed(new BigDecimal(4),new BigDecimal(6));
 	    assertFalse (r5_10.includes(r1_10));
 	    assertTrue (r1_10.includes(r5_10));
 	    assertFalse (r4_6.includes(r1_10));

@@ -23,10 +23,10 @@ public class ConcreteComparableInterval extends ComparableInterval {
 	
 
 	public Comparable upperLimit() {
-		return lowerLimit;
+		return upperLimit;
 	}
 	public Comparable lowerLimit() {
-		return upperLimit;
+		return lowerLimit;
 	}
 	public boolean includesLowerLimit() {
 		return includesLowerLimit;

@@ -40,11 +40,11 @@ public abstract class CalendarInterval extends ComparableInterval {
 	}
 	
 	public CalendarDate start() {
-		return (CalendarDate)upperLimit();
+		return (CalendarDate)lowerLimit();
 	}
 
 	public CalendarDate end() {
-		return (CalendarDate)lowerLimit();
+		return (CalendarDate)upperLimit();
 	}
 
 	public boolean equals(Object arg) {
@@ -79,8 +79,8 @@ public abstract class CalendarInterval extends ComparableInterval {
 	}
 	
 	public Iterator daysIterator() {
-		final CalendarDate start = (CalendarDate)upperLimit();
-		final CalendarDate end = (CalendarDate)lowerLimit();
+		final CalendarDate start = (CalendarDate)lowerLimit();
+		final CalendarDate end = (CalendarDate)upperLimit();
 		return new Iterator() {
 			CalendarDate next = start;
 			public boolean hasNext() {

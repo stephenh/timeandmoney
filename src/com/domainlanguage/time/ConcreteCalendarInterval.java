@@ -29,11 +29,11 @@ class ConcreteCalendarInterval extends CalendarInterval {
 	}
 
 	public Comparable upperLimit() {
-		return start;
+		return end;
 	}
 
 	public Comparable lowerLimit() {
-		return end;
+		return start;
 	}
 
 

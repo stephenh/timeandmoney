@@ -46,8 +46,10 @@ public class Money implements Comparable{
 		return new Money (amount.negate(), currency);
 	}
 
-	//TODO Shouldn't "amount" return BigInteger?
-	public double amount() {
+	public BigInteger amount(){
+		return amount;
+	}
+	public double amountAsDouble() {
 		return amount.doubleValue() / 100;
 	}
 	
@@ -99,15 +101,15 @@ public class Money implements Comparable{
 //		return currency.getFormat().format(amount());
 //	}
 
-	public Money multiply (double arg) {
-		return Money.valueOf(amount() * arg, currency);
+	public Money times (double arg) {
+		return Money.valueOf(amountAsDouble() * arg, currency);
 	}
 
 	public String toString() {
-		return currency.toString() + " " + amount();
+		return currency.toString() + " " + amountAsDouble();
 	}
 
-	public Money[] divide(int denominator) {
+	public Money[] dividedBy(int denominator) {
 		BigInteger bigDenominator = BigInteger.valueOf(denominator);
 		Money[] result = new Money[denominator];
 		BigInteger simpleResult = amount.divide(bigDenominator);

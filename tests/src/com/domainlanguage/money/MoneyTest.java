@@ -23,8 +23,8 @@ public class MoneyTest extends TestCase {
 		Money.dollars(10);
 	}
 
-	public void testAmount() {
-		assertEquals (2.51, d2_51.amount(), 1e-3);
+	public void testAmountAsDouble() {
+		assertEquals (2.51, d2_51.amountAsDouble(), 1e-3);
 	}
 
 	public void testAdditionOfDifferentCurrencies() {
@@ -35,7 +35,7 @@ public class MoneyTest extends TestCase {
 	}	
 	
 	public void testDivide3() {
-		 Money[] actual =  Money.dollars(100).divide(3);
+		 Money[] actual =  Money.dollars(100).dividedBy(3);
 		 Money[] expected = {Money.dollars(33.34), Money.dollars(33.33),Money.dollars(33.33)};
 		 for (int i = 0;i<expected.length ; i++ ) {
 		   assertEquals (expected[i], actual[i]);
@@ -43,7 +43,7 @@ public class MoneyTest extends TestCase {
 	}
 
 	public void testDivideAllButOne() {
-		 Money[] expected =  Money.dollars(1.09).divide(10);
+		 Money[] expected =  Money.dollars(1.09).dividedBy(10);
 		 for (int i = 0; i<9 ; i++ ) {
 		   assertEquals (expected[i], Money.dollars(0.11));
 		 }

@@ -1,6 +1,6 @@
 Eric Evans has been the primary developer and designer of TimeLanguage.
-Martin Fowler contributed the initial version of what became CalendarDate
-and some nice unit tests for TimeInterval.
+Martin Fowler contributed the initial version of Money, the class that 
+became CalendarDate and some nice unit tests for TimeInterval.
 Benny Sadeh contributed the initial version of BusinessCalendar and TimeUnit, and
 did some refactoring on the code base.
 Vlad Gitlevich and John Corbett each acted as programming pairs.
