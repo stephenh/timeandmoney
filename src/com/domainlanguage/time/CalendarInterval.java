@@ -69,10 +69,10 @@ public abstract class CalendarInterval extends Interval {
 		return (CalendarDate) upperLimit();
 	}
 
-	public boolean equals(Object arg) {
+	public boolean equals(Object object) {
 		//revisit: maybe use: Reflection.equalsOverClassAndNull(this, other)
-		if (!(arg instanceof CalendarInterval)) return false;
-		CalendarInterval other = (CalendarInterval) arg;
+		if (!(object instanceof CalendarInterval)) return false;
+		CalendarInterval other = (CalendarInterval) object;
 		return 
 			this.upperLimit().equals(other.upperLimit()) && 
 			this.lowerLimit().equals(other.lowerLimit());

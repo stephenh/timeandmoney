@@ -81,14 +81,14 @@ public class CalendarDate extends CalendarInterval {
 		return super.compareTo(other);
 	}
 
-	public boolean equals(Object other) {
+	public boolean equals(Object object) {
 		//revisit: maybe use: Reflection.equalsOverClassAndNull(this, other)
-		if (!(other instanceof CalendarDate)) return false;
-		CalendarDate otherDate = (CalendarDate) other;
+		if (!(object instanceof CalendarDate)) return false;
+		CalendarDate other = (CalendarDate) object;
 		return 
-			this.year == otherDate.year &&
-			this.month == otherDate.month &&
-			this.day == otherDate.day;
+			this.year == other.year &&
+			this.month == other.month &&
+			this.day == other.day;
 	}
 
 	public int hashCode() {

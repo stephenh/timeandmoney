@@ -130,10 +130,10 @@ public class Duration implements Comparable, Serializable {
 		return Ratio.of(inBaseUnits(), divisor.inBaseUnits());
 	}
 
-	public boolean equals(Object arg) {
+	public boolean equals(Object object) {
 		//revisit: maybe use: Reflection.equalsOverClassAndNull(this, other)
-		if (!(arg instanceof Duration)) return false;
-		Duration other = (Duration) arg;
+		if (!(object instanceof Duration)) return false;
+		Duration other = (Duration) object;
 		if (!this.unit.isConvertibleTo(other.unit)) return false;
 		return this.inBaseUnits() == other.inBaseUnits();
 	}

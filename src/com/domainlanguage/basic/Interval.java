@@ -167,22 +167,22 @@ public abstract class Interval implements Comparable, Serializable {
 		return this.includes(limit) && other.includes(limit);
 	}
 
-	public boolean equals(Object other) {
+	public boolean equals(Object object) {
 		//revisit: maybe use: Reflection.equalsOverClassAndNull(this, other)
-		if (!(other instanceof Interval)) return false;
+		if (!(object instanceof Interval)) return false;
 		
-		Interval otherInterval = ((Interval)other);
+		Interval other = ((Interval)object);
 		boolean thisEmpty = this.isEmpty();
-		boolean otherEmpty = otherInterval.isEmpty();
+		boolean otherEmpty = other.isEmpty();
 		if (thisEmpty & otherEmpty) return true;
 		if (thisEmpty ^ otherEmpty) return false;
 
 		boolean thisSingle = this.isSingleElement();
-		boolean otherSingle = otherInterval.isSingleElement();
-		if (thisSingle & otherSingle) return this.lowerLimit().equals(otherInterval.lowerLimit());
+		boolean otherSingle = other.isSingleElement();
+		if (thisSingle & otherSingle) return this.lowerLimit().equals(other.lowerLimit());
 		if (thisSingle ^ otherSingle) return false;
 		
-		return compareTo(other) == 0;
+		return compareTo(object) == 0;
 	}
 	
 	public int hashCode() {
