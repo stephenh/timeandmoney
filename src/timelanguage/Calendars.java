@@ -8,19 +8,20 @@ abstract public class Calendars {
 	static public final Calendar THE_BEGGINING = from(Long.MIN_VALUE);
 	static public final Calendar THE_END = from(Long.MAX_VALUE);
     
-	static public Calendar dayAfter(Calendar todayCalendar) {
-		TimePoint todayPoint = TimePoint.from(todayCalendar);
-		TimePoint tomorrowPoint = todayPoint.plus(Duration.days(1));
+	static public Calendar dayAfter(Calendar aCalendar) {
+		TimePoint tomorrowPoint = TimePoint.from(aCalendar).plus(Duration.days(1));
 		return tomorrowPoint.asJavaCalendar();
 //		Calendar tomorrowCalendar = (Calendar) today.clone();
 //		tomorrow.add(Calendar.DATE, 1);
 //		return tomorrow;
 	}
 
-	static public Calendar dayBefore(Calendar today) {
-		Calendar yesterday = (Calendar) today.clone();
-		yesterday.add(Calendar.DATE, -1);
-		return yesterday;
+	static public Calendar dayBefore(Calendar aCalendar) {
+		return TimePoint.from(aCalendar).minus(Duration.days(1)).asJavaCalendar();
+
+//		Calendar yesterday = (Calendar) aCalendar.clone();
+//		yesterday.add(Calendar.DATE, -1);
+//		return yesterday;
 	}
 
 	static public String formatDate(Calendar calendar, String pattern) {
