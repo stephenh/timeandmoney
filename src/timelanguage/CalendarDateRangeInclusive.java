@@ -16,18 +16,19 @@ class CalendarDateRangeInclusive extends CalendarInterval {
 		this.end = end;
 	}
 	
-	public CalendarDate start() {
+	public TimeInterval asTimeInterval(TimeZone zone) {
+		TimePoint startPoint = start.asTimeInterval(zone).start();
+		TimePoint endPoint = end.asTimeInterval(zone).end();
+		return TimeInterval.over(startPoint, endPoint);
+	}
+
+	public Comparable getLowerBound() {
 		return start;
 	}
 
-	public CalendarDate end() {
+	public Comparable getUpperBound() {
 		return end;
 	}
 
-	public TimeInterval asTimeInterval(TimeZone zone) {
-		TimePoint startPoint = start().asTimeInterval(zone).start();
-		TimePoint endPoint = end().asTimeInterval(zone).end();
-		return TimeInterval.over(startPoint, endPoint);
-	}
 
 }

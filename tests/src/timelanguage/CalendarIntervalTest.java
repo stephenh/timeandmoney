@@ -8,6 +8,7 @@ public class CalendarIntervalTest extends TestCase {
 
 	CalendarDate may1 = CalendarInterval.date(2004, 5, 1);
 	CalendarDate may20 = CalendarInterval.date(2004, 5, 20);
+	CalendarDate may31 = CalendarInterval.date(2004, 5, 31);
 	CalendarDate apr15 = CalendarInterval.date(2004, 4, 15);
 	CalendarDate jun1 = CalendarInterval.date(2004, 6, 1);
 	CalendarInterval may = CalendarInterval.inclusive(2004, 5, 1, 2004, 5, 31);
@@ -33,4 +34,11 @@ public class CalendarIntervalTest extends TestCase {
 		assertFalse("jun1", may.includes(jun1));
 		assertTrue("may", may.includes(may));
 	}
+	
+ 	public void testEquals() {
+	    assertTrue(may.equals(CalendarInterval.inclusive(may1, may31)));
+	    assertFalse(may.equals(may1));
+	    assertFalse(may.equals(CalendarInterval.inclusive(may1, may20)));
+	  }
+
 }

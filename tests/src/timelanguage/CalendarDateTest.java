@@ -50,5 +50,14 @@ public class CalendarDateTest extends TestCase {
 //		return _formatter.format(getTime());
 //	}
 
-	
+	  public void testIncludes(){
+	    assertTrue(feb17.includes(feb17));
+	    assertFalse(feb17.includes(mar13));
+	  }
+	  
+	  public void testToString() {
+	  	CalendarDate date = CalendarInterval.date(2004, 5, 28);
+	  	assertEquals("2004-5-28", date.toString());
+	  }
+
 }

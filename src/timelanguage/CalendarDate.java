@@ -3,10 +3,12 @@ package timelanguage;
 import java.util.Calendar;
 import java.util.TimeZone;
 
-public class CalendarDate extends CalendarInterval implements Comparable {
+public class CalendarDate extends CalendarInterval {
 	int year;
 	int month; // January = 1, February = 2 ...
 	int day;
+
+	public static final CalendarDate FAR_FUTURE = from(9999, 9, 9);	
 
 	static CalendarDate from(int year, int month, int day) {
 		return new CalendarDate(year, month, day);
@@ -28,6 +30,13 @@ public class CalendarDate extends CalendarInterval implements Comparable {
 
 	public boolean isAfter(CalendarDate other) {
 		return !(isBefore(other) || equals(other));
+	}
+
+	public int compareTo(Object other) {
+		CalendarDate otherDate = (CalendarDate)other;
+		if (this.isBefore(otherDate)) return -1;
+		if (this.isAfter(otherDate)) return 1;
+		return 0;
 	}
 
 	public boolean equals(Object other) {
@@ -66,13 +75,9 @@ public class CalendarDate extends CalendarInterval implements Comparable {
 		return TimePoint.from(calendar);
 	}
 
-	public int compareTo(Object other) {
-		CalendarDate otherDate = (CalendarDate)other;
-		if (this.isBefore(otherDate)) return -1;
-		if (this.isAfter(otherDate)) return 1;
-		return 0;
+	public String toString() {
+		return toString("yyyy-M-d"); //default for console
 	}
-	
 	public String toString(String pattern) {
 		TimeZone zone = TimeZone.getTimeZone("Universal");
 		TimePoint point = startAsTimePoint(zone);
@@ -81,6 +86,14 @@ public class CalendarDate extends CalendarInterval implements Comparable {
 
 	public CalendarInterval through(CalendarDate otherDate) {
 		return CalendarInterval.inclusive(this, otherDate);
+	}
+
+	public Comparable getLowerBound() {
+		return this;
+	}
+
+	public Comparable getUpperBound() {
+		return this;
 	}
 	
 }

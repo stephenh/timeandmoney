@@ -42,32 +42,12 @@ public class MFDateIntervalTest extends TestCase {
 		CalendarInterval[] overlap = {r1_15, r1_10, r16_2, f3_9};
 
 		
-		  public void testBasic() {
-		    assertTrue(r15_15.includes(jan1));
-		    assertTrue(r15_15.includes(jan15));
-		    assertTrue(r15_15.includes(dec15));
-		    assertTrue(!r15_15.includes(jan16));
-		    assertTrue(!r15_15.includes(dec14));
-		  }
-
-		  public void testOneDate(){
-		    assertTrue(r2_2.includes(feb2));
-		    assertTrue(r2_2.includes(r2_2));
-		    assertTrue(r16_2.includes(r2_2));
-		  }
 
 //		  public void testEmpty() {
 //		    assertFalse(r15_15.isEmpty());
 //		    assertTrue(dec15.through(dec14).isEmpty());
 //		    assertTrue(CalendarInterval.NEVER.isEmpty());
 //		  }
-		  
-		  public void testIncludesRange() {
-		    assertTrue(r15_15.includes(r15_15));
-		    assertTrue(r15_15.includes(r1_15));
-		    assertTrue(!r1_15.includes(r15_15));
-		    assertTrue(!r1_16.includes(r15_15));
-			}
 		  
 //		  public void testOverlaps() {
 //		  	assertTrue(r1_15.intersects(r1_16));
@@ -80,11 +60,6 @@ public class MFDateIntervalTest extends TestCase {
 //		  	assertFalse(r16_2.intersects(r15_15));
 //		  }
 		  
-		 	public void testEquals() {
-		    assertEquals(r1_15,CalendarInterval.inclusive(jan1, jan15));
-		    assertFalse(r1_15.equals(r1_16));
-		    assertFalse(r15_15.equals(r15_16));
-		  }
 //			public void testCompare() {
 //		   	assertTrue(dec15.compareTo(jan1) < 0);
 //		 	assertTrue(r15_15.compareTo(r1_15) < 0);

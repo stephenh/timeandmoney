@@ -6,39 +6,45 @@
  * Copyright 2004, Domain Language, Inc.
  */
 
+/**
+ * Definition consistent with mathematical "interval"
+ * see http://en.wikipedia.org/wiki/Interval_(mathematics)
+ * 
+ */
+
 package fundamental;
 
+public abstract class ComparableInterval implements Comparable {
+	
+	public static ConcreteComparableInterval closed(Comparable lower, Comparable upper) {
+		return new ConcreteComparableInterval(lower, true, upper, true);
+	}
 
-public class ComparableInterval {
-	private Comparable lowerBound;
-	private boolean lowerBoundIncluded;
-	private Comparable upperBound;
-	private boolean upperBoundIncluded;
-	
-	ComparableInterval(Comparable lower, boolean lowerIncluded, Comparable upper, boolean upperIncluded) {
-		assert lower.compareTo(upper) < 0;
-		lowerBound = lower;
-		lowerBoundIncluded = lowerIncluded;
-		upperBound = upper;
-		upperBoundIncluded = upperIncluded;
+	public static ConcreteComparableInterval open(Comparable lower, Comparable upper) {
+		return new ConcreteComparableInterval(lower, false, upper, false);
 	}
-	
-	public static ComparableInterval closed(Comparable lower, Comparable upper) {
-		return new ComparableInterval(lower, true, upper, true);
+
+	public static ConcreteComparableInterval over(Comparable lower, boolean lowerIncluded, Comparable upper, boolean upperIncluded) {
+		return new ConcreteComparableInterval(lower, upperIncluded, upper, upperIncluded);
 	}
+
 	
-	public Comparable getLowerBound() {
+	public abstract Comparable getLowerBound();
 		//Warning: This method should generally be used for display
 		//purposes and interactions with closely coupled classes.
 		//Look for (or add) other methods to do computations.
-		return lowerBound;
-	}
-	public Comparable getUpperBound() {
+	public abstract Comparable getUpperBound();
 		//Warning: This method should generally be used for display
 		//purposes and interactions with closely coupled classes.
 		//Look for (or add) other methods to do computations.
-		return upperBound;
-	}
+	public abstract boolean isLowerBoundIncluded();
+		//Warning: This method should generally be used for display
+		//purposes and interactions with closely coupled classes.
+		//Look for (or add) other methods to do computations.
+	public abstract boolean isUpperBoundIncluded();
+		//Warning: This method should generally be used for display
+		//purposes and interactions with closely coupled classes.
+		//Look for (or add) other methods to do computations.
 	
 	public boolean intersects(ComparableInterval other) {
 		int comparison = greaterOfLowerBounds(other).compareTo(lesserOfUpperBounds(other));
@@ -47,61 +53,80 @@ public class ComparableInterval {
 		return greaterOfLowerIncluded(other) && lesserOfUpperIncluded(other);
 	}
 	
-	private Comparable greaterOfLowerBounds(ComparableInterval other) {
-		int lowerComparison = lowerBound.compareTo(other.lowerBound);
-		if (lowerComparison >= 0) return this.lowerBound;
-		return other.lowerBound;
+	public Comparable greaterOfLowerBounds(ComparableInterval other) {
+		int lowerComparison = getLowerBound().compareTo(other.getLowerBound());
+		if (lowerComparison >= 0) return this.getLowerBound();
+		return other.getLowerBound();
 	}
 
-	private boolean greaterOfLowerIncluded(ComparableInterval other) {
-		int lowerComparison = lowerBound.compareTo(other.lowerBound);
-		if (lowerComparison > 0) return this.lowerBoundIncluded;
-		if (lowerComparison < 0) return other.lowerBoundIncluded;
-		return this.lowerBoundIncluded && other.lowerBoundIncluded;
+	public boolean greaterOfLowerIncluded(ComparableInterval other) {
+		int lowerComparison = getLowerBound().compareTo(other.getLowerBound());
+		if (lowerComparison > 0) return this.isLowerBoundIncluded();
+		if (lowerComparison < 0) return other.isLowerBoundIncluded();
+		return this.isLowerBoundIncluded() && other.isLowerBoundIncluded();
 	}
 
-	private Comparable lesserOfUpperBounds(ComparableInterval other) {
-		int upperComparison = upperBound.compareTo(other.upperBound);
-		if (upperComparison <= 0) return this.upperBound;
-		return other.upperBound;
+	public Comparable lesserOfUpperBounds(ComparableInterval other) {
+		int upperComparison = getUpperBound().compareTo(other.getUpperBound());
+		if (upperComparison <= 0) return this.getUpperBound();
+		return other.getUpperBound();
 	}
 
-	private boolean lesserOfUpperIncluded(ComparableInterval other) {
-		int upperComparison = upperBound.compareTo(other.upperBound);
-		if (upperComparison < 0) return this.upperBoundIncluded;
-		if (upperComparison > 0) return other.upperBoundIncluded;
-		return this.upperBoundIncluded && other.upperBoundIncluded;
+	public boolean lesserOfUpperIncluded(ComparableInterval other) {
+		int upperComparison = getUpperBound().compareTo(other.getUpperBound());
+		if (upperComparison < 0) return this.isUpperBoundIncluded();
+		if (upperComparison > 0) return other.isUpperBoundIncluded();
+		return this.isUpperBoundIncluded() && other.isUpperBoundIncluded();
 	}
 	
 	
 	public boolean includes(Comparable value) {
-		return !this.isBefore(value) && !this.isAfter(value);
+		return !this.isBelow(value) && !this.isAbove(value);
 	}
 
 	public boolean includes(ComparableInterval other) {
-		int lowerComparison = lowerBound.compareTo(other.lowerBound);
-			boolean lowerPass = this.includes(other.lowerBound) ||
-				(lowerComparison == 0 && !other.lowerBoundIncluded);
+		int lowerComparison = getLowerBound().compareTo(other.getLowerBound());
+			boolean lowerPass = this.includes(other.getLowerBound()) ||
+				(lowerComparison == 0 && !other.isLowerBoundIncluded());
 
-		int upperComparison = upperBound.compareTo(other.upperBound);
-			boolean upperPass = this.includes(other.upperBound) ||
-				(upperComparison == 0 && !other.upperBoundIncluded);
+		int upperComparison = getUpperBound().compareTo(other.getUpperBound());
+			boolean upperPass = this.includes(other.getUpperBound()) ||
+				(upperComparison == 0 && !other.isUpperBoundIncluded());
 			
 		return lowerPass && upperPass;
 	
 	}
+	
 
-
-	private boolean isBefore(Comparable value) {
-		int comparison = upperBound.compareTo(value);
+	public boolean isBelow(Comparable value) {
+		int comparison = getUpperBound().compareTo(value);
 		return comparison < 0 ||
-			(comparison == 0 && !upperBoundIncluded);
+			(comparison == 0 && !isUpperBoundIncluded());
 	}
 
-	private boolean isAfter(Comparable value) {
-		int comparison = lowerBound.compareTo(value);
+	public boolean isAbove(Comparable value) {
+		int comparison = getLowerBound().compareTo(value);
 		return comparison > 0 ||
-			(comparison == 0 && !lowerBoundIncluded);
+			(comparison == 0 && !isLowerBoundIncluded());
 	}
+
+	public String toString() {
+		StringBuffer buffer = new StringBuffer();
+		buffer.append(isLowerBoundIncluded() ? "[" : "(");
+		buffer.append(getLowerBound().toString());
+		buffer.append(", ");
+		buffer.append(getUpperBound().toString());
+		buffer.append(isUpperBoundIncluded() ? "]" : ")");
+		return buffer.toString();
+	}
+
+	public int compareTo(Object arg) {
+		ComparableInterval other = (ComparableInterval) arg;
+		if (!getLowerBound().equals(other.getLowerBound())) return getLowerBound().compareTo(other.getLowerBound());
+		if (isLowerBoundIncluded() && !other.isLowerBoundIncluded()) return -1;
+		if (!isLowerBoundIncluded() && other.isLowerBoundIncluded()) return 1;
+		return getUpperBound().compareTo(other.getUpperBound());
+	}
+
 
 }

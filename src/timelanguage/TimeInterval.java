@@ -1,19 +1,11 @@
 package timelanguage;
-/**
- * Definition consistent with mathematical "interval"
- * see http://en.wikipedia.org/wiki/Interval_(mathematics)
- * 
- */
+
 import java.util.Iterator;
 
-public class TimeInterval {
-	public static final TimeInterval ALWAYS = over(TimePoint.FAR_PAST, TimePoint.FAR_FUTURE);
-	public static final TimeInterval NEVER = over(TimePoint.FAR_FUTURE, TimePoint.FAR_FUTURE);
+import fundamental.*;
 
-	public final TimePoint start;
-	public final TimePoint end;
-	public final boolean closedStart;
-	public final boolean closedEnd;
+public class TimeInterval extends ConcreteComparableInterval {
+	public static final TimeInterval ALWAYS = over(TimePoint.FAR_PAST, TimePoint.FAR_FUTURE);
 
 	
 	public static TimeInterval over(TimePoint start, boolean closedStart, TimePoint end, boolean closedEnd) {
@@ -33,13 +25,13 @@ public class TimeInterval {
 		return from(start, true, length, false);
 	}
 
-	public static TimeInterval until(TimePoint end, boolean startClosed, Duration length, boolean endClosed) {
+	public static TimeInterval preceding(TimePoint end, boolean startClosed, Duration length, boolean endClosed) {
 		TimePoint start = end.minus(length);
 		return over(start, startClosed, end, endClosed);
 	}
 	
-	public static TimeInterval until(TimePoint end, Duration length) {
-		return until(end, true, length, false);
+	public static TimeInterval preceding(TimePoint end, Duration length) {
+		return preceding(end, true, length, false);
 	}
 
 	public static TimeInterval closed(TimePoint start, TimePoint end) {
@@ -54,61 +46,32 @@ public class TimeInterval {
 		return over(start, TimePoint.FAR_FUTURE);
 	} 
 
-	public static TimeInterval everUntil(TimePoint end) {
+	public static TimeInterval everPreceding(TimePoint end) {
 		return over(TimePoint.FAR_PAST, end);
 	} 
 
-	private TimeInterval(TimePoint start, boolean closedStart, TimePoint end, boolean closedEnd) {
-		this.start = start;
-		this.closedStart = closedStart;
-		this.end = end;
-		this.closedEnd = closedEnd;
-	}
-
-	public String toString() {
-		StringBuffer buffer = new StringBuffer();
-		buffer.append(closedStart ? "[" : "(");
-		buffer.append(start.toString());
-		buffer.append(", ");
-		buffer.append(end.toString());
-		buffer.append(closedEnd ? "]" : ")");
-		return buffer.toString();
-	}
-
-	public boolean includes(TimePoint point) {
-		return !this.isBefore(point) && !this.isAfter(point);
+	public TimeInterval(TimePoint start, boolean closedStart, TimePoint end, boolean closedEnd) {
+		super(start, closedStart, end, closedEnd);
 	}
 
 	public boolean isBefore(TimePoint point) {
-		if (end().isBefore(point)) return true;
-		if (end().isAfter(point)) return false;
-		//Equal to end, so period is before it if it isn't included
-		return !closedEnd;
+		return isBelow(point);
 	}
 
 	public boolean isAfter(TimePoint point) {
-		if (start().isAfter(point)) return true;
-		if (start().isBefore(point)) return false;
-		//must be equal to start, so period is after it if it isn't included
-		return !closedStart;
+		return isAbove(point);
 	}
 
-	public int compareTo(Object arg) {
-		TimeInterval other = (TimeInterval) arg;
-		if (!start().equals(other.start())) return start().compareTo(other.start());
-		return end().compareTo(other.end());
-	}
-	
 	public Duration length() {
-		long difference = end.millisecondsFromEpoc - start.millisecondsFromEpoc;
+		long difference = end().millisecondsFromEpoc - start().millisecondsFromEpoc;
 		return Duration.milliseconds(difference);
 	}
 	
 	public Iterator daysIterator() {
 		return new Iterator() {
-			TimePoint next = start;
+			TimePoint next = start();
 			public boolean hasNext() {
-				return end.isAfter(next);
+				return end().isAfter(next);
 			}	
 			public Object next() {
 				Object current = next;
@@ -120,32 +83,17 @@ public class TimeInterval {
 	}
 
 	public TimePoint start() {
-		return start;
+		return (TimePoint) getLowerBound();
 	}
 	public TimePoint end() {
-		return end;
+		return (TimePoint) getUpperBound();
 	}
 	
-
 	public TimeInterval intersect(TimeInterval other) {
-		TimePoint intersectStart = start();
-		TimePoint intersectEnd = end();
-		if (start().isBefore(other.start())) {
-			intersectStart = other.start();
-		} else if (start().isAfter(other.start())) {
-			intersectStart = start();
-		}
-		if (end().isAfter(other.end())) {
-			intersectEnd = other.end();
-		} else if (end().isBefore(other.end())) {
-			intersectEnd = end();
-		}
-		if (intersectEnd.isBefore(intersectStart)) return NEVER;
-		return TimeInterval.over(intersectStart, intersectEnd);
+		ComparableInterval intersection = intersect((ComparableInterval) other);
+		TimePoint start = (TimePoint)intersection.getLowerBound();
+		TimePoint end = (TimePoint)intersection.getUpperBound();
+		return new TimeInterval(start, intersection.isLowerBoundIncluded(), end, intersection.isUpperBoundIncluded());
 	}
-	
-	public boolean intersects(TimeInterval other) {
-		TimeInterval intersection = this.intersect(other);
-		return !(intersection.start().equals(NEVER.start()) && intersection.end().equals(NEVER.end()));
-	}
+
 }

@@ -2,7 +2,11 @@ package timelanguage;
 
 import java.util.TimeZone;
 
-public abstract class CalendarInterval {
+import fundamental.ComparableInterval;
+
+public abstract class CalendarInterval extends ComparableInterval {
+
+	public static final CalendarInterval NEVER = CalendarDate.FAR_FUTURE;
 	
 	public static CalendarDate date(int year, int month, int day) {
 		return CalendarDate.from(year, month, day);
@@ -21,12 +25,31 @@ public abstract class CalendarInterval {
 	
 	public abstract TimeInterval asTimeInterval(TimeZone zone);
 	
-	public abstract CalendarDate start();
+	public boolean isLowerBoundIncluded() {
+		return true;
+	}
 
-	public abstract CalendarDate end();
+	public boolean isUpperBoundIncluded() {
+		return true;
+	}
 
-	public boolean includes(CalendarInterval other) {
-		return !start().isAfter(other.start()) && !end().isBefore(other.end());
+	public CalendarInterval intersect(CalendarInterval other) {
+		if (!intersects(other)) return NEVER;
+
+		CalendarDate intersectLowerBound = (CalendarDate) greaterOfLowerBounds(other);
+		CalendarDate intersectUpperBound = (CalendarDate) lesserOfUpperBounds(other);
+
+		return inclusive(intersectLowerBound, intersectUpperBound);
+	}
+	
+	public boolean equals(Object arg) {
+		if (!(arg instanceof CalendarInterval)) return false;
+		CalendarInterval other = (CalendarInterval) arg;
+		return getLowerBound().equals(other.getLowerBound()) && getUpperBound().equals(other.getUpperBound());
+	}
+	
+	public int hashCode() {
+		return getLowerBound().hashCode();
 	}
 
 }

@@ -73,13 +73,13 @@ public class TimeIntervalTest extends TestCase {
 		Duration twoDays = Duration.days(2);
 		TimeInterval following = TimeInterval.from(dec20_2003, true, twoDays, true);
 		assertEquals("[ dec20", dec20_2003, following.start());
-		assertEquals("dec 22]", dec22_2003, following.end);
+		assertEquals("dec 22]", dec22_2003, following.end());
 		
 	}
 
 	public void testCreateWithDurationUntil() {
 		Duration twoDays = Duration.days(2);
-		TimeInterval preceding = TimeInterval.until(dec21_2003, true, twoDays, true);
+		TimeInterval preceding = TimeInterval.preceding(dec21_2003, true, twoDays, true);
 		assertEquals("[ dec19", dec19_2003, preceding.start());
 		assertEquals("dec21 )", dec21_2003, preceding.end());
 	}
@@ -120,7 +120,7 @@ public class TimeIntervalTest extends TestCase {
 	}
 
 	public void testEverUntil() {
-		TimeInterval afterDec20 = TimeInterval.everUntil(dec20_2003);
+		TimeInterval afterDec20 = TimeInterval.everPreceding(dec20_2003);
 		assertFalse(afterDec20.includes(TimePoint.atMidnight(2062, 3, 5)));
 		assertTrue(afterDec20.includes(TimePoint.atMidnight(1776, 7, 4)));
 		assertFalse(afterDec20.includes(dec20_2003));
