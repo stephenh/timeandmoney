@@ -15,12 +15,12 @@ if you want to check Price ranges, make an interval for each Money range. Any
 class of yours which implements Comparable can have logical intervals defined
 this way.
 
-Java Version Requirements
--------------------------
-v 1.5:  The money package depends on the java.util.Currency class. This dependency
+Java Version Requirement: 1.4
+-----------------------------
+Currency:  The money package depends on the java.util.Currency class. This dependency
 could be eliminated by adding a Currency class to the library. For now, it seems
 simpler to use what the Sun provided.
 
-assertions: Many methods state preconditions using Java assert statement, which was
-added in v 1.4(?) and is by default ignored. This can be made backward compatible by
-commenting out the assert statements.
+assert: Many methods state preconditions using Java assert statement, which is ignored,
+by default, in 1.4, but will not compile in earlier Java versions. This can be made 
+backward compatible by commenting out the assert statements.
