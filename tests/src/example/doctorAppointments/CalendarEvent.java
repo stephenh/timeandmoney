@@ -8,7 +8,7 @@ package example.doctorAppointments;
 
 import com.domainlanguage.time.TimeInterval;
 
-public class CalendarEvent {
+class CalendarEvent {
 	private TimeInterval timeInterval;
 	
 	public void setTimeInterval(TimeInterval anInterval) {

@@ -85,10 +85,6 @@ public class CalendarDateTest extends TestCase {
 	  	CalendarInterval nov2004 = CalendarInterval.inclusive(2004, 11, 1, 2004, 11, 30);
 	  	assertEquals(nov2004, nov6_2004.month());
 
-	  	CalendarDate dec6_2004 = CalendarDate.date(2004, 12, 6);
-	  	CalendarInterval dec2004 = CalendarInterval.inclusive(2004, 12, 1, 2004, 12, 31);
-	  	assertEquals(nov2004, nov6_2004.month());
-
 	  	CalendarDate feb9_2004 = CalendarDate.date(2004, 2, 9);
 	  	CalendarInterval feb2004 = CalendarInterval.inclusive(2004, 2, 1, 2004, 2, 29);
 	  	assertEquals(feb2004, feb9_2004.month());

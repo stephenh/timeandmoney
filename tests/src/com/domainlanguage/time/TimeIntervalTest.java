@@ -167,11 +167,8 @@ public class TimeIntervalTest extends TestCase {
 	
 	public void testSubintervalIterator() {
 		TimePoint d4_h10 = TimePoint.atGMT(2004, 2, 4, 10, 0);
-		TimePoint d5_h10 = TimePoint.atGMT(2004, 2, 5, 10, 0);
 		TimePoint d6_h10 = TimePoint.atGMT(2004, 2, 6, 10, 0);
-		TimePoint d7_h10 = TimePoint.atGMT(2004, 2, 7, 10, 0);
 		TimePoint d8_h10 = TimePoint.atGMT(2004, 2, 8, 10, 0);
-		TimePoint d9_h10 = TimePoint.atGMT(2004, 2, 9, 10, 0);
 		TimePoint d9_h2 = TimePoint.atGMT(2004, 2, 9, 2, 0);
 
 		TimeInterval interval = TimeInterval.over(d4_h10, d9_h2);

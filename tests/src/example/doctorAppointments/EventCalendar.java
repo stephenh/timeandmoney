@@ -11,19 +11,19 @@ import java.util.*;
 import com.domainlanguage.time.*;
 
 
-public class EventCalendar {
+class EventCalendar {
 	TimeZone defaultZone;
 	Set events = new HashSet();
 	
-	public EventCalendar(TimeZone zone) {
+	EventCalendar(TimeZone zone) {
 		defaultZone = zone;
 	}
 	
-	public void add(CalendarEvent anEvent) {
+	void add(CalendarEvent anEvent) {
 		events.add(anEvent);
 	}
 	
-	public Collection eventsFor(CalendarDate calDate) {
+	Collection eventsFor(CalendarDate calDate) {
 		Set daysEvents = new HashSet();
 		TimeInterval day = calDate.asTimeInterval(defaultZone);
 		Iterator it = events.iterator();
