@@ -141,6 +141,10 @@ public class CalendarDate extends CalendarInterval {
 		return CalendarDate.from(year, month, day);
 	}
 	
+	public CalendarDate plus(Duration length) {
+		return length.addedTo(this);
+	}
+	
 	Calendar asJavaCalendarUniversalZoneMidnight() {
 		TimeZone zone = TimeZone.getTimeZone("Universal");
 		Calendar calendar = Calendar.getInstance(zone);

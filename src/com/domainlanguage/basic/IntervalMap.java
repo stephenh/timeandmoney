@@ -6,8 +6,6 @@
 
 package com.domainlanguage.basic;
 
-//revisit: can't see the justification for this interface (Benny)
-// we can easily have a CompositeInterval instead
 public interface IntervalMap {
 	void put(Interval keyInterval, Object value);
 	Object get(Comparable key);

@@ -39,6 +39,11 @@ public abstract class CalendarInterval extends Interval {
 		CalendarDate endDate = date(year + 1, 1, 1).plusDays(-1);
 		return inclusive(startDate, endDate);
 	}
+	
+	public static CalendarInterval startingFrom(CalendarDate start, Duration length) {
+		// Uses the common default for calendar intervals, [start, end].
+		return inclusive(start, start.plus(length).plusDays(-1));
+	}
 
 	public abstract TimeInterval asTimeInterval(TimeZone zone);
 
@@ -100,6 +105,28 @@ public abstract class CalendarInterval extends Interval {
 		return (int)(diffMillis/TimeUnitConversionFactors.millisecondsPerDay);
 	}
 
+	public Iterator subintervalIterator(Duration subintervalLength) {
+		//assert TimeUnit.day.compareTo(subintervalLength.normalizedUnit()) <= 0;
+		if (TimeUnit.day.compareTo(subintervalLength.normalizedUnit()) > 0) {
+			throw new IllegalArgumentException("CalendarIntervals must be a whole number of days or months.");
+		}
+
+		final Interval totalInterval = this;
+		final Duration segmentLength = subintervalLength;
+		return new ImmutableIterator() {
+			CalendarInterval next = segmentLength.startingFrom(start());
+			public boolean hasNext() {
+				return totalInterval.includes(next);
+			}	
+			public Object next() {
+				if (!hasNext()) return null;
+				Object current = next;
+				next = segmentLength.startingFrom(next.end().plusDays(1));
+				return current;
+			}
+		};
+	}
+	
 	public Iterator daysIterator() {
 		final CalendarDate start = (CalendarDate) lowerLimit();
 		final CalendarDate end = (CalendarDate) upperLimit();

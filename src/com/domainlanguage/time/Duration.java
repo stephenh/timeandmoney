@@ -165,6 +165,18 @@ public class Duration implements Comparable, Serializable {
 		return buffer.toString();
 	}
 	
+	public TimeUnit normalizedUnit() {
+		TimeUnit[] units = unit.descendingUnits();
+		long baseAmount = inBaseUnits();
+		for (int i = 0; i < units.length; i++) {
+			TimeUnit aUnit = units[i];
+			long remainder = baseAmount % aUnit.factor;
+			if (remainder == 0) return aUnit;
+		}
+		return null;
+		
+	}
+	
 	public int hashCode() {
 		return (int) quantity;
 	}
@@ -181,6 +193,10 @@ public class Duration implements Comparable, Serializable {
 	
 	public TimeInterval startingFrom(TimePoint start) {
 		return TimeInterval.startingFrom(start, this);
+	}
+	
+	public CalendarInterval startingFrom(CalendarDate start) {
+		return CalendarInterval.startingFrom(start, this);
 	}
 
 	public TimeInterval preceding(TimePoint end) {

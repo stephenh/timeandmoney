@@ -131,4 +131,27 @@ public class DurationTest extends TestCase {
 		assertTrue(twoHours.compareTo(oneHour) > 0);
 	}
 
+	public void testStartingFromTimePoint() {
+		TimePoint dec20At1 = TimePoint.atGMT(2003, 12, 20, 01, 0, 0, 0);
+		TimePoint dec20At3 = TimePoint.atGMT(2003, 12, 20, 03, 0, 0, 0);
+		TimeInterval dec20_1_3 = dec20At1.until(dec20At3);
+		assertEquals(dec20_1_3, Duration.hours(2).startingFrom(dec20At1));
+	}
+
+	public void testStartingFromCalendarDate() {
+		CalendarDate dec20 = CalendarDate.date(2004, 12, 20);
+		CalendarDate dec26 = CalendarDate.date(2004, 12, 26);		
+		CalendarInterval dec20_26 = dec20.through(dec26);
+		assertEquals(dec20_26, Duration.days(7).startingFrom(dec20));
+	}
+	
+	public void testNormalizedUnit() {
+		assertEquals(TimeUnit.second, Duration.seconds(30).normalizedUnit());
+		assertEquals(TimeUnit.minute, Duration.seconds(120).normalizedUnit());
+
+		assertEquals(TimeUnit.day, Duration.hours(24).normalizedUnit());
+		assertEquals(TimeUnit.hour, Duration.hours(25).normalizedUnit());
+	
+	}
+
 }

@@ -172,7 +172,7 @@ public class TimeIntervalTest extends TestCase {
 		TimePoint d9_h2 = TimePoint.atGMT(2004, 2, 9, 2, 0);
 
 		TimeInterval interval = TimeInterval.over(d4_h10, d9_h2);
-		Iterator it = interval.iterator(Duration.days(2));
+		Iterator it = interval.subintervalIterator(Duration.days(2));
 		assertTrue(it.hasNext());
 		assertEquals(TimeInterval.over(d4_h10, d6_h10), it.next());
 		assertTrue(it.hasNext());
@@ -180,7 +180,7 @@ public class TimeIntervalTest extends TestCase {
 		assertFalse(it.hasNext());
 		assertNull(it.next());
 
-		it = interval.iterator(Duration.weeks(1));
+		it = interval.subintervalIterator(Duration.weeks(1));
 		assertFalse(it.hasNext());
 		
 		TimePoint h2 = d9_h2;
@@ -190,7 +190,7 @@ public class TimeIntervalTest extends TestCase {
 		TimePoint h8 = TimePoint.atGMT(2004, 2, 9, 8, 0);
 		
 		TimeInterval interval2 = TimeInterval.over(h2, h8);
-		it = interval2.iterator(Duration.minutes(90));
+		it = interval2.subintervalIterator(Duration.minutes(90));
 		assertTrue(it.hasNext());
 		assertEquals(TimeInterval.over(h2, h3_m30), it.next());
 		assertTrue(it.hasNext());

@@ -17,6 +17,7 @@ public class CalendarIntervalTest extends TestCase {
 	CalendarDate may1 = CalendarInterval.date(2004, 5, 1);
 	CalendarDate may2 = CalendarInterval.date(2004, 5, 2);
 	CalendarDate may3 = CalendarInterval.date(2004, 5, 3);
+	CalendarDate may14 = CalendarInterval.date(2004, 5, 14);
 	CalendarDate may20 = CalendarInterval.date(2004, 5, 20);
 	CalendarDate may31 = CalendarInterval.date(2004, 5, 31);
 	CalendarDate apr15 = CalendarInterval.date(2004, 4, 15);
@@ -70,13 +71,46 @@ public class CalendarIntervalTest extends TestCase {
 		
  	}
  	
+	public void testSubintervalIterator() {
+ 		CalendarInterval may1_3 = CalendarInterval.inclusive(may1, may3);
+		Iterator iter = may1_3.subintervalIterator(Duration.days(1));
+ 		assertTrue(iter.hasNext());
+ 		assertEquals(may1, iter.next());
+ 		assertTrue(iter.hasNext());
+ 		assertEquals(may2, iter.next());
+ 		assertTrue(iter.hasNext());
+ 		assertEquals(may3, iter.next());
+ 		assertFalse(iter.hasNext());
+
+ 		iter = may1_3.subintervalIterator(Duration.days(2));
+ 		assertTrue(iter.hasNext());
+ 		assertEquals(may1.through(may2), iter.next());
+ 		assertFalse(iter.hasNext());
+
+ 		try {	
+ 			iter = may1_3.subintervalIterator(Duration.hours(25));
+ 			fail("CalendarInterval should not accept subinterval length that is not a multiple of days.");
+ 		} catch(IllegalArgumentException e) {
+ 			assertTrue(true);
+ 		}
+ 		
+		iter = may1_3.subintervalIterator(Duration.months(1));
+		assertFalse(iter.hasNext());
+		
+		CalendarInterval apr15_jun1 = CalendarInterval.inclusive(apr15, jun1);
+		iter = apr15_jun1.subintervalIterator(Duration.months(1));
+ 		assertTrue(iter.hasNext());
+ 		assertEquals(apr15.through(may14), iter.next());
+ 		assertFalse(iter.hasNext());
+	}
+ 	
  	public void testLength() {
  		assertEquals(Duration.days(3), may1.through(may3).length());
  		CalendarInterval may2002_july2004 =CalendarInterval.inclusive(2002, 5, 1, 2004, 7, 1);
  		// (5/1/2002-4/30/2003) 365 days + (-4/30/2004) 366 + (5/1-7/31) 31+30+1 =  793 days
  		assertEquals(Duration.days(793), may2002_july2004.length());
  		assertEquals(Duration.months(26), may2002_july2004.lengthInMonths());
- 		
+ 		assertEquals(Duration.months(1), apr15.through(may14).lengthInMonths());
  	}
 
     public void testComplements() {

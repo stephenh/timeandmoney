@@ -33,10 +33,18 @@ public class TimeUnitTest extends TestCase {
 	}
 	
 	public void testComparison() {
+		assertEquals(0, TimeUnit.hour.compareTo(TimeUnit.hour));
 		assertTrue(TimeUnit.hour.compareTo(TimeUnit.millisecond) >0);
+		assertTrue(TimeUnit.millisecond.compareTo(TimeUnit.hour) <0);
 		assertTrue(TimeUnit.day.compareTo(TimeUnit.hour) > 0);
+		assertTrue(TimeUnit.hour.compareTo(TimeUnit.day) < 0);
+
 		assertTrue(TimeUnit.month.compareTo(TimeUnit.day) > 0);
+		assertTrue(TimeUnit.day.compareTo(TimeUnit.month) < 0);
 		assertTrue(TimeUnit.quarter.compareTo(TimeUnit.hour) > 0);
+
+		assertEquals(0, TimeUnit.month.compareTo(TimeUnit.month));
+		assertTrue(TimeUnit.quarter.compareTo(TimeUnit.year) < 0);
 		assertTrue(TimeUnit.year.compareTo(TimeUnit.quarter) > 0);
 	}
 	

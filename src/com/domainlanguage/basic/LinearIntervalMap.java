@@ -8,7 +8,6 @@ package com.domainlanguage.basic;
 
 import java.util.*;
 
-//revisit: can't see the justification for this class (Benny)
 public class LinearIntervalMap implements IntervalMap{
 	private Map keyValues = new HashMap();
 

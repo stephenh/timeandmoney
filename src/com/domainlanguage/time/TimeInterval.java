@@ -98,7 +98,7 @@ public class TimeInterval extends ConcreteInterval {
 		};
 	}
 
-	public Iterator iterator(Duration subintervalLength) {
+	public Iterator subintervalIterator(Duration subintervalLength) {
 		final Duration segmentLength = subintervalLength;
 		final Interval totalInterval = this;
 		return new ImmutableIterator() {
