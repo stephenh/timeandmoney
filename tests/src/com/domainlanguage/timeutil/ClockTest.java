@@ -52,7 +52,7 @@ public class ClockTest extends TestCase {
 			fail("Clock cannot answer today() without a timezone.");
 		} catch (RuntimeException e) {
 			assertTrue("Correctly threw exception", true);
-		};
+		}
 		
 	}
 
