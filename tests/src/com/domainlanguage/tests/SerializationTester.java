@@ -7,9 +7,7 @@ import java.io.*;
 
 import junit.framework.*;
 
-/**
- * @author Vladimir Gitlevich
- */
+
 public class SerializationTester {
 	private static final String TEST_FILE = "test.txt";
 
