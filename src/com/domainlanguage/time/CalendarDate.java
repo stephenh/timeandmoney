@@ -71,10 +71,13 @@ public class CalendarDate extends CalendarInterval {
 	}
 
 	public int compareTo(Object other) {
-		CalendarDate otherDate = (CalendarDate)other;
-		if (this.isBefore(otherDate)) return -1;
-		if (this.isAfter(otherDate)) return 1;
-		return 0;
+		if (other instanceof CalendarDate) {
+			CalendarDate otherDate = (CalendarDate)other;
+			if (this.isBefore(otherDate)) return -1;
+			if (this.isAfter(otherDate)) return 1;
+			return 0;
+		}
+		return super.compareTo(other);
 	}
 
 	public boolean equals(Object other) {

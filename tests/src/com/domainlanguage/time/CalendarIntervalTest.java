@@ -80,16 +80,22 @@ public class CalendarIntervalTest extends TestCase {
  	}
 
     public void testComplements() {
-        CalendarDate today = CalendarDate.date(2004, 12, 1);
-        CalendarDate tomorrow = today.plusDays(1);
-        CalendarInterval todayOn = CalendarInterval.inclusive(today, CalendarDate.FAR_FUTURE);
-        CalendarInterval tomorrowOn = CalendarInterval.inclusive(tomorrow, CalendarDate.FAR_FUTURE);
+        CalendarInterval may1Onward = CalendarInterval.inclusive(may1, CalendarDate.FAR_FUTURE);
+        CalendarInterval may2Onward = CalendarInterval.inclusive(may2, CalendarDate.FAR_FUTURE);
 
-        List complementList = tomorrowOn.complementRelativeTo(todayOn);
+        List complementList = may2Onward.complementRelativeTo(may1Onward);
         assertEquals(1, complementList.size());
         CalendarInterval complement = (CalendarInterval) complementList.iterator().next();
         assertTrue(complement.isClosed());
-        assertEquals(today, complement);
+        assertEquals(may1, complement);
     }
-
+    public void	testSingleDateCalendarIntervalCompare() {
+ 	    CalendarInterval may1_may1 = CalendarInterval.inclusive(may1, may1);
+ 	    assertEquals(may1, may1_may1);
+ 	    assertEquals(0, may1.compareTo(may1_may1));
+ 	    assertEquals(0, may1_may1.compareTo(may1));
+        CalendarInterval may1_may2 = CalendarInterval.inclusive(may1, may2);	       
+        assertTrue(may1.compareTo(may1_may2)<0);
+        assertTrue(may1_may2.compareTo(may1)>0);
+    }
 }
