@@ -162,9 +162,10 @@ public class Money implements Comparable, Serializable {
 
 	/**
 	 * TODO Many apps require carrying extra precision in intermediate calculations.
-	 * This will require some variation on dividedBy that accepts a scale and returns...?
-	 * Currently, the invariant of Money is that the scale is the currencies standard
-	 * scale, but this will probably have to be suspended or elaborated in intermediate calcs.
+	 * The use of Ratio is a beginning, but need a comprehensive solution.
+	 * Currently, an invariant of Money is that the scale is the currencies standard
+	 * scale, but this will probably have to be suspended or elaborated in intermediate 
+	 * calcs, or handled with defered calculations like Ratio.
 	 */
 
 	public Money times(BigDecimal factor) {
@@ -221,7 +222,7 @@ public class Money implements Comparable, Serializable {
 		return currency.toString() + " " + amount();
 	}
 	
-//	TODO Provide some currency-dependent formatting. Java 1.5 Currency doesn't do it.	
+//	TODO Provide some currency-dependent formatting. Java 1.4 Currency doesn't do it.	
 //	public String formatString() {
 //		return currency.formatString(amount());
 //	}
