@@ -14,15 +14,15 @@ public class AllTests extends TestSuite {
 	
     static public TestSuite suite() {
         TestSuite suite = new TestSuite();
-		String[] exludedPackages = new String[] {
+		String[] excludedPackages = new String[] {
 //			"???.", //note: add a package name to exclude it
 		};
-		TestSuite[] exludedSuites = new TestSuite[] {
+		TestSuite[] excludedSuites = new TestSuite[] {
 //			???.suite(),  //note: add a suite name to exclude it  
 		};
 		FilteredTestCaseCollector collector = new FilteredTestCaseCollector();
-		collector.exludedPackages(exludedPackages);
-		collector.exludedSuites(exludedSuites);	
+		collector.exludedPackages(excludedPackages);
+		collector.exludedSuites(excludedSuites);	
 		Enumeration enumeration = collector.collectTests();
 		while (enumeration.hasMoreElements())
 			try {
