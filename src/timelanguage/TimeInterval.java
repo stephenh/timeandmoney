@@ -4,7 +4,7 @@ import java.util.Iterator;
 
 import fundamental.*;
 
-public class TimeInterval extends ConcreteComparableInterval {
+public class TimeInterval extends ComparableInterval {
 	public static final TimeInterval ALWAYS = over(TimePoint.FAR_PAST, TimePoint.FAR_FUTURE);
 
 	
@@ -50,8 +50,29 @@ public class TimeInterval extends ConcreteComparableInterval {
 		return over(TimePoint.FAR_PAST, end);
 	} 
 
-	public TimeInterval(TimePoint start, boolean closedStart, TimePoint end, boolean closedEnd) {
-		super(start, closedStart, end, closedEnd);
+	private TimePoint lowerLimit;
+	private boolean includesLowerLimit;
+	private TimePoint upperLimit;
+	private boolean includesUpperLimit;
+
+	public TimeInterval(TimePoint lower, boolean lowerIncluded, TimePoint upper, boolean upperIncluded) {
+//		assert lower.compareTo(upper) < 0;
+		lowerLimit = lower;
+		includesLowerLimit = lowerIncluded;
+		upperLimit = upper;
+		includesUpperLimit = upperIncluded;
+	}
+	public Comparable getLowerBound() {
+		return lowerLimit;
+	}
+	public Comparable getUpperBound() {
+		return upperLimit;
+	}
+	public boolean includesLowerLimit() {
+		return includesLowerLimit;
+	}
+	public boolean includesUpperLimit() {
+		return includesUpperLimit;
 	}
 
 	public boolean isBefore(TimePoint point) {
@@ -93,7 +114,18 @@ public class TimeInterval extends ConcreteComparableInterval {
 		ComparableInterval intersection = intersect((ComparableInterval) other);
 		TimePoint start = (TimePoint)intersection.getLowerBound();
 		TimePoint end = (TimePoint)intersection.getUpperBound();
-		return new TimeInterval(start, intersection.isLowerBoundIncluded(), end, intersection.isUpperBoundIncluded());
+		return new TimeInterval(start, intersection.includesLowerLimit(), end, intersection.includesUpperLimit());
+	}
+	
+	/**
+	 * @TODO This is duplicated across ConcreteComparableInterval
+	 */
+	public ComparableInterval intersect(ComparableInterval other) {
+		Comparable intersectLowerBound = greaterOfLowerLimits(other);
+		Comparable intersectUpperBound = lesserOfUpperLimits(other);
+		if (intersectLowerBound.compareTo(intersectUpperBound) > 0) return open(intersectLowerBound, intersectLowerBound);
+
+		return ComparableInterval.over(intersectLowerBound, greaterOfLowerIncluded(other), intersectUpperBound, lesserOfUpperIncluded(other));
 	}
 
 }

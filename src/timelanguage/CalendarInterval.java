@@ -25,19 +25,19 @@ public abstract class CalendarInterval extends ComparableInterval {
 	
 	public abstract TimeInterval asTimeInterval(TimeZone zone);
 	
-	public boolean isLowerBoundIncluded() {
+	public boolean includesLowerLimit() {
 		return true;
 	}
 
-	public boolean isUpperBoundIncluded() {
+	public boolean includesUpperLimit() {
 		return true;
 	}
 
 	public CalendarInterval intersect(CalendarInterval other) {
 		if (!intersects(other)) return NEVER;
 
-		CalendarDate intersectLowerBound = (CalendarDate) greaterOfLowerBounds(other);
-		CalendarDate intersectUpperBound = (CalendarDate) lesserOfUpperBounds(other);
+		CalendarDate intersectLowerBound = (CalendarDate) greaterOfLowerLimits(other);
+		CalendarDate intersectUpperBound = (CalendarDate) lesserOfUpperLimits(other);
 
 		return inclusive(intersectLowerBound, intersectUpperBound);
 	}

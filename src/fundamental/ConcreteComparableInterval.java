@@ -10,36 +10,36 @@ package fundamental;
 
 
 public class ConcreteComparableInterval extends ComparableInterval {
-	private Comparable lowerBound;
-	private boolean lowerBoundIncluded;
-	private Comparable upperBound;
-	private boolean upperBoundIncluded;
+	private Comparable lowerLimit;
+	private boolean includesLowerLimit;
+	private Comparable upperLimit;
+	private boolean includesUpperLimit;
 
 	public ConcreteComparableInterval(Comparable lower, boolean lowerIncluded, Comparable upper, boolean upperIncluded) {
-		assert lower.compareTo(upper) < 0;
-		lowerBound = lower;
-		lowerBoundIncluded = lowerIncluded;
-		upperBound = upper;
-		upperBoundIncluded = upperIncluded;
+//		assert lower.compareTo(upper) < 0;
+		lowerLimit = lower;
+		includesLowerLimit = lowerIncluded;
+		upperLimit = upper;
+		includesUpperLimit = upperIncluded;
 	}
 	
 
 	public Comparable getLowerBound() {
-		return lowerBound;
+		return lowerLimit;
 	}
 	public Comparable getUpperBound() {
-		return upperBound;
+		return upperLimit;
 	}
-	public boolean isLowerBoundIncluded() {
-		return lowerBoundIncluded;
+	public boolean includesLowerLimit() {
+		return includesLowerLimit;
 	}
-	public boolean isUpperBoundIncluded() {
-		return upperBoundIncluded;
+	public boolean includesUpperLimit() {
+		return includesUpperLimit;
 	}
 
 	public ComparableInterval intersect(ComparableInterval other) {
-		Comparable intersectLowerBound = greaterOfLowerBounds(other);
-		Comparable intersectUpperBound = lesserOfUpperBounds(other);
+		Comparable intersectLowerBound = greaterOfLowerLimits(other);
+		Comparable intersectUpperBound = lesserOfUpperLimits(other);
 		if (intersectLowerBound.compareTo(intersectUpperBound) > 0) return open(intersectLowerBound, intersectLowerBound);
 
 		return ComparableInterval.over(intersectLowerBound, greaterOfLowerIncluded(other), intersectUpperBound, lesserOfUpperIncluded(other));
