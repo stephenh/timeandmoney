@@ -64,6 +64,13 @@ public class CalendarIntervalTest extends TestCase {
  		assertFalse(iter.hasNext());
 		
  	}
+ 	
+ 	public void testLength() {
+ 		assertEquals(Duration.days(3), may1.through(may3).length());
+ 		CalendarInterval may2002_july2004 =CalendarInterval.inclusive(2002, 5, 1, 2004, 7, 1);
+ 		assertEquals(Duration.months(26), may2002_july2004.lengthInMonths());
+ 		
+ 	}
 
  	
 }

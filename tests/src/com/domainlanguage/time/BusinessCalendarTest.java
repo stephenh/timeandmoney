@@ -21,7 +21,7 @@ public class BusinessCalendarTest extends TestCase {
 		CalendarDate nov1 = CalendarDate.from(2004, 11, 1);
 		CalendarDate nov30 = CalendarDate.from(2004, 11, 30);
 		CalendarInterval interval = CalendarInterval.inclusive(nov1, nov30);
-		assertEquals(30, interval.lengthInDays());
+		assertEquals(30, interval.lengthInDaysInt());
 		// 1 holiday (Thanksgiving on a Thursday) + 8 weekend days.
 		assertEquals(21, businessCalendar().getElapsedBusinessDays(interval));
 	}

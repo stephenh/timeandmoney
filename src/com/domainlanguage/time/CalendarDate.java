@@ -99,9 +99,22 @@ public class CalendarDate extends CalendarInterval {
 		return this.plusDays(1);
 	}
 
+	public CalendarDate nextMonth() {
+		return this.plusMonths(1);
+	}
+
 	public CalendarDate plusDays(int increment) {
 		Calendar calendar = _asJavaCalendarUniversalZoneMidnight();
 		calendar.add(Calendar.DATE, increment);
+		int year = calendar.get(Calendar.YEAR);
+		int month = calendar.get(Calendar.MONTH) + 1;
+		int day = calendar.get(Calendar.DATE);
+		return CalendarDate.from(year, month, day);
+	}
+
+	public CalendarDate plusMonths(int increment) {
+		Calendar calendar = _asJavaCalendarUniversalZoneMidnight();
+		calendar.add(Calendar.MONTH, increment);
 		int year = calendar.get(Calendar.YEAR);
 		int month = calendar.get(Calendar.MONTH) + 1;
 		int day = calendar.get(Calendar.DATE);

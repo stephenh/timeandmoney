@@ -6,6 +6,7 @@
 
 package com.domainlanguage.time;
 
+import java.util.*;
 import java.util.Iterator;
 import java.util.TimeZone;
 
@@ -68,7 +69,23 @@ public abstract class CalendarInterval extends ComparableInterval {
 		return inclusive(intersectLowerBound, intersectUpperBound);
 	}
 
-	public int lengthInDays() {
+	public Duration length() {
+		return Duration.days(lengthInDaysInt());
+	}
+
+	public Duration lengthInMonths() {
+		return Duration.months(lengthInMonthsInt());
+	}
+	
+	public int lengthInMonthsInt() {
+		Calendar calStart = start()._asJavaCalendarUniversalZoneMidnight();
+		Calendar calEnd = end()._asJavaCalendarUniversalZoneMidnight();
+		int yearDiff  = calEnd.get(Calendar.YEAR) - calStart.get(Calendar.YEAR); 
+        int monthDiff = yearDiff * 12 + calEnd.get(Calendar.MONTH) - calStart.get(Calendar.MONTH);
+        return monthDiff;
+	}
+	
+	public int lengthInDaysInt() {
 		Iterator iter = daysIterator();
 		int count = 0;
 		while(iter.hasNext()) {

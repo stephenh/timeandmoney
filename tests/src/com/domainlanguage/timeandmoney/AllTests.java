@@ -6,16 +6,19 @@
 
 package com.domainlanguage.timeandmoney;
 
-import com.domainlanguage.basic.ComparableIntervalTest;
 import junit.framework.*;
 
 public class AllTests extends TestCase {
 	public static Test suite() {
 		TestSuite suite = new TestSuite();
 
-		suite.addTest(new TestSuite(ComparableIntervalTest.class));
+		//Unit Tests
+		suite.addTest(com.domainlanguage.basic.BasicTests.suite());
 		suite.addTest(com.domainlanguage.time.AllTests.suite());
 		suite.addTest(com.domainlanguage.money.AllTests.suite());
+
+		//Usage Examples
+		suite.addTest(new TestSuite(example.insuranceRates.CalculateRate.class));
 
 		return suite;
 	}
