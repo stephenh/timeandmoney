@@ -6,6 +6,8 @@
 
 package com.domainlanguage.time;
 
+import java.util.Iterator;
+
 public abstract class DateSpecification {
 
 	public static DateSpecification fixed(int month, int day) {
@@ -19,5 +21,9 @@ public abstract class DateSpecification {
 	public static DateSpecification nthOccuranceOfWeekdayInMonth(int month, int dayOfWeek, int n) {
 		return new FloatingDateSpecification(month, dayOfWeek, n);
 	}
+
+	public abstract CalendarDate firstIn(CalendarInterval interval);
+
+	public abstract Iterator iterateOver(CalendarInterval ylate2002_early2005);
 
 }

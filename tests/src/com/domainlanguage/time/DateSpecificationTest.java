@@ -7,6 +7,7 @@
 package com.domainlanguage.time;
 
 import java.util.Calendar;
+import java.util.Iterator;
 
 import junit.framework.TestCase;
 
@@ -27,5 +28,32 @@ public class DateSpecificationTest extends TestCase {
 		assertFalse(thanksgiving.isSatisfiedBy(CalendarDate.date(2002, 11, 25)));		
 		assertEquals(CalendarDate.date(2002, 11, 28), thanksgiving.ofYear(2002));
 		assertTrue(thanksgiving.isSatisfiedBy(CalendarDate.date(2002, 11, 28)));		
+	}
+	
+	public void testSelectFirstFromInterval() {
+		DateSpecification independenceDay = DateSpecification.fixed(7, 4);
+		CalendarInterval y2002_2004 = CalendarInterval.inclusive(2002, 1, 1, 2004, 12, 31);
+		assertEquals(CalendarDate.date(2002, 7, 4), independenceDay.firstIn(y2002_2004));
+		CalendarInterval ylate2002_2004 = CalendarInterval.inclusive(2002, 8, 1, 2004, 12, 31);
+		assertEquals(CalendarDate.date(2003, 7, 4), independenceDay.firstIn(ylate2002_2004));
+		CalendarInterval ylate2002 = CalendarInterval.inclusive(2002, 8, 1, 2002, 12, 31);
+		assertNull(independenceDay.firstIn(ylate2002));
+		CalendarInterval ylate2002_early2003 = CalendarInterval.inclusive(2002, 8, 1, 2003, 6, 30);
+		assertNull(independenceDay.firstIn(ylate2002_early2003));
+	}
+	
+	public void testIterateThroughInterval() {
+		DateSpecification independenceDay = DateSpecification.fixed(7, 4);
+		CalendarInterval ylate2002_early2005 = CalendarInterval.inclusive(2002, 8, 1, 2005, 6, 31);
+		Iterator it = independenceDay.iterateOver(ylate2002_early2005);
+		assertTrue(it.hasNext());
+		assertEquals(CalendarDate.date(2003,7,4), it.next());
+		assertTrue(it.hasNext());
+		assertEquals(CalendarDate.date(2004,7,4), it.next());
+		assertFalse(it.hasNext());
+		assertNull(it.next());
+		
+		
+		
 	}
 }

@@ -6,6 +6,8 @@
 
 package com.domainlanguage.time;
 
+import java.util.Iterator;
+
 class FloatingDateSpecification extends DateSpecification {
 	int month;
 	int dayOfWeek;
@@ -38,6 +40,22 @@ class FloatingDateSpecification extends DateSpecification {
 	 */
 	public boolean isSatisfiedBy(CalendarDate date) {
 		return ofYear(date.year).equals(date);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.domainlanguage.time.DateSpecification#firstIn(com.domainlanguage.time.CalendarInterval)
+	 */
+	public CalendarDate firstIn(CalendarInterval interval) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.domainlanguage.time.DateSpecification#iterateOver(com.domainlanguage.time.CalendarInterval)
+	 */
+	public Iterator iterateOver(CalendarInterval ylate2002_early2005) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
