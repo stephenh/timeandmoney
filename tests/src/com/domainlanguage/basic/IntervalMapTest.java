@@ -6,32 +6,28 @@
 
 package com.domainlanguage.basic;
 
-import java.util.*;
-import java.util.Map;
-
 import junit.framework.TestCase;
 
 public class IntervalMapTest extends TestCase {
 	
 	public void testLookup() {
-		Map regularOldMap = new HashMap();
-		
+
 		IntervalMap map = new LinearIntervalMap();
 		map.put(Interval.closed(new Integer(1), new Integer(3)), "one-three");
 		map.put(Interval.closed(new Integer(5), new Integer(9)), "five-nine");
 		map.put(Interval.open(new Integer(9), new Integer(12)), "ten-eleven");
 		
-		assertFalse(map.includesKey(new Integer(0)));
-		assertTrue(map.includesKey(new Integer(1)));
-		assertTrue(map.includesKey(new Integer(2)));
-		assertTrue(map.includesKey(new Integer(3)));
-		assertFalse(map.includesKey(new Integer(4)));
-		assertTrue(map.includesKey(new Integer(5)));
-		assertTrue(map.includesKey(new Integer(9)));
-		assertTrue(map.includesKey(new Integer(11)));
-		assertFalse(map.includesKey(new Integer(12)));
-		assertFalse(map.includesKey(new Integer(13)));
-		assertFalse(map.includesKey(null));
+		assertFalse(map.containsKey(new Integer(0)));
+		assertTrue(map.containsKey(new Integer(1)));
+		assertTrue(map.containsKey(new Integer(2)));
+		assertTrue(map.containsKey(new Integer(3)));
+		assertFalse(map.containsKey(new Integer(4)));
+		assertTrue(map.containsKey(new Integer(5)));
+		assertTrue(map.containsKey(new Integer(9)));
+		assertTrue(map.containsKey(new Integer(11)));
+		assertFalse(map.containsKey(new Integer(12)));
+		assertFalse(map.containsKey(new Integer(13)));
+		assertFalse(map.containsKey(null));
 
 		assertNull(map.get(new Integer(0)));
 		assertEquals("one-three", map.get(new Integer(1)));
@@ -45,6 +41,18 @@ public class IntervalMapTest extends TestCase {
 		assertNull(map.get(new Integer(12)));
 		assertNull(map.get(new Integer(13)));
 		assertNull(map.get(null));
+		
+	}
+	
+	public void testRemove() {
+		IntervalMap map = new LinearIntervalMap();
+		map.put(Interval.closed(new Integer(1), new Integer(10)), "one-ten");
+		map.remove(Interval.closed(new Integer(3), new Integer(5)));
+		assertEquals("one-ten", map.get(new Integer(2)));
+		assertNull(map.get(new Integer(3)));
+		assertNull(map.get(new Integer(4)));
+		assertNull(map.get(new Integer(5)));
+		assertEquals("one-ten", map.get(new Integer(6)));
 		
 	}
 	
@@ -82,6 +90,26 @@ public class IntervalMapTest extends TestCase {
 		assertEquals("seven-eight", map.get(new Integer(7)));
 		assertEquals("seven-eight", map.get(new Integer(8)));
 		assertEquals("five-nine", map.get(new Integer(9)));
+	}
+	
+	public void testConstructionOverwriteMultiple() {
+		IntervalMap map = new LinearIntervalMap();
+		map.put(Interval.closed(new Integer(1), new Integer(2)), "one-two");
+		map.put(Interval.closed(new Integer(3), new Integer(4)), "three-four");
+		map.put(Interval.closed(new Integer(5), new Integer(6)), "five-six");
+		map.put(Interval.closed(new Integer(8), new Integer(9)), "eight-nine");
+		
+		map.put(Interval.closed(new Integer(3), new Integer(8)), "three-eight");
+
+		assertEquals("one-two", map.get(new Integer(2)));
+		assertEquals("three-eight", map.get(new Integer(3)));
+		assertEquals("three-eight", map.get(new Integer(4)));
+		assertEquals("three-eight", map.get(new Integer(5)));
+		assertEquals("three-eight", map.get(new Integer(6)));
+		assertEquals("three-eight", map.get(new Integer(7)));
+		assertEquals("three-eight", map.get(new Integer(8)));
+		assertEquals("eight-nine", map.get(new Integer(9)));
+		
 	}
 
 }

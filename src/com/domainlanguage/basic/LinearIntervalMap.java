@@ -46,7 +46,7 @@ public class LinearIntervalMap implements IntervalMap{
 		return keyValues.get(keyInterval);
 	}
 	
-	public boolean includesKey(Comparable key) {
+	public boolean containsKey(Comparable key) {
 		return findKeyIntervalContaining(key) != null;
 	}
 
