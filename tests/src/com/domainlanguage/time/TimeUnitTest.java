@@ -47,4 +47,14 @@ public class TimeUnitTest extends TestCase {
 		assertEquals(Calendar.MONTH, TimeUnit.quarter.javaCalendarConstantForBaseType());
 		assertEquals(Calendar.MONTH, TimeUnit.year.javaCalendarConstantForBaseType());
 	}
+	
+	public void testIsConvertableTo() {
+		assertTrue(TimeUnit.hour.isConvertibleTo(TimeUnit.minute));
+		assertTrue(TimeUnit.minute.isConvertibleTo(TimeUnit.hour));		
+		assertTrue(TimeUnit.year.isConvertibleTo(TimeUnit.month));
+		assertTrue(TimeUnit.month.isConvertibleTo(TimeUnit.year));
+		assertFalse(TimeUnit.month.isConvertibleTo(TimeUnit.hour));		
+		assertFalse(TimeUnit.hour.isConvertibleTo(TimeUnit.month));	
+		
+	}
 }

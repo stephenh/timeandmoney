@@ -149,20 +149,15 @@ public class TimeIntervalTest extends TestCase {
 		assertFalse(afterDec20.includes(dec20_2003));
 	}
 
-/**
- * TODO String shouldn't be involved in this test, but toNormalizedString should be tested separately.
- */
 	public void testLength() {
 		TimeInterval interval = TimeInterval.open(dec20_2003, dec22_2003);
-		Duration expectedDuration = Duration.days(2);
-		assertEquals(expectedDuration, interval.length());
-		assertEquals("2 days", interval.length().toString());
+		assertEquals(Duration.days(2), interval.length());
 		
-		
-//		TimePoint first = TimePoint.from(2004, 1, 1, 1, 1, 1, 1);
-//		TimePoint second = TimePoint.from(2004, 1, 6, 5, 4, 3, 2);
-//		interval = TimeInterval.closed(first, second);
-//		assertEquals("5 days, 4 hours, 3 minutes, 2 seconds, 1 millisecond", interval.length().toNormalizedString());
+		TimePoint first = TimePoint.from(2004, 1, 1, 1, 1, 1, 1);
+		TimePoint second = TimePoint.from(2004, 1, 6, 5, 4, 3, 2);
+		interval = TimeInterval.closed(first, second);
+		Duration expectedLength = Duration.daysHoursMinutesSecondsMillis(5, 4, 3, 2, 1);
+		assertEquals(expectedLength, interval.length());
 	}
 
 

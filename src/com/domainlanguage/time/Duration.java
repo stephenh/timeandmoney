@@ -32,6 +32,18 @@ public class Duration {
 		return Duration.of(howMany, TimeUnit.day);
 	}
 	
+	/**
+	 * TODO must add all units together.
+	 */
+	public static Duration daysHoursMinutesSecondsMillis(int days, int hours, int minutes, int seconds, long milliseconds) {
+		Duration result = Duration.days(days);
+		if (! (hours == 0)) result = result.plus(Duration.hours(hours));
+		if (! (minutes == 0)) result = result.plus(Duration.minutes(minutes));
+		if (! (seconds == 0)) result = result.plus(Duration.seconds(seconds));
+		if (! (milliseconds == 0)) result = result.plus(Duration.milliseconds(milliseconds));
+		return result;
+	}
+	
 	public static Duration weeks(int howMany) {
 		return Duration.of(howMany, TimeUnit.week);
 	}
@@ -63,6 +75,15 @@ public class Duration {
 //	long in(TimeUnit newUnit) {
 //		return unit.factorFrom(unit);
 //	}
+	
+	/**
+	 * TODO What SHOULD this do if the guard fails?
+	 */
+	public Duration plus(Duration other) {
+		if (!other.unit.isConvertibleTo(this.unit)) return null;
+		long newQuantity = this.inBaseUnits() + other.inBaseUnits();
+		return new Duration(newQuantity, unit.baseUnit());
+	}
 	
 	public TimePoint addedTo(TimePoint point) {
 		Calendar calendar = point.asJavaCalendar();
@@ -100,6 +121,17 @@ public class Duration {
 		return CalendarDate._from(calendar);
 	}
 
+	public boolean equals(Object arg) {
+		if (!(arg instanceof Duration)) return false;
+		Duration other = (Duration) arg;
+		if (!this.unit.isConvertibleTo(other.unit)) return false;
+		return this.inBaseUnits() == other.inBaseUnits();
+	}
+	
+	public String toNormalizedString() {
+		return toString();
+	}
+
 	
 //	public String toNormalizedString() {
 //		StringBuffer buffer = new StringBuffer();
@@ -133,13 +165,6 @@ public class Duration {
 			return buffer.toString();
 	}
 
-	public boolean equals(Object other) {
-		return
-			(other instanceof Duration) &&
-			((Duration) other).quantity == this.quantity &&
-			((Duration) other).unit.equals(this.unit);
-	}
-	
 	public int hashCode() {
 		return (int) quantity;
 	}

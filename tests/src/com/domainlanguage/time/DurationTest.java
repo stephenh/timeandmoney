@@ -91,4 +91,23 @@ public class DurationTest extends TestCase {
 		Duration twoSeconds = Duration.seconds(2);
 		assertEquals(2000, twoSeconds.inBaseUnits());
 	}
+	
+	public void testEquals() {
+		assertEquals(Duration.days(2), Duration.hours(48));
+		assertEquals(Duration.years(1), Duration.quarters(4));
+	}
+	public void testAdd() {
+		assertEquals(Duration.days(2), Duration.hours(24).plus(Duration.days(1)));
+		assertEquals(Duration.months(4), Duration.months(1).plus(Duration.quarters(1)));
+	}
+	
+	/**
+	 * TODO Need more elaborate toNormalizedString like the commented one.
+	 */
+	public void testToNormalizedString() {
+			assertEquals("2 days", Duration.days(2).toNormalizedString());
+			Duration complicatedDuration = Duration.daysHoursMinutesSecondsMillis(5,4,3,2,1);
+			assertEquals("5 days, 4 hours, 3 minutes, 2 seconds, 1 millisecond", complicatedDuration.toNormalizedString());
+	}
+
 }

@@ -36,9 +36,18 @@ class TimeUnit implements Comparable {
 		this.baseType = baseType;
 		this.factor = factor;
 	}
+
+	TimeUnit baseUnit() {
+		if (baseType.equals(Type.millisecond)) return TimeUnit.millisecond;
+		else return TimeUnit.month;
+	}
 	
 	public boolean isConvertibleToMilliseconds() {
 		return baseType.equals(Type.millisecond);
+	}
+	
+	public boolean isConvertibleTo(TimeUnit other) {
+		return baseType.equals(other.baseType);
 	}
 	
 	public int compareTo(Object arg) {
