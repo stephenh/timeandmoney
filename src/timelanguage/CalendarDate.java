@@ -3,7 +3,7 @@ package timelanguage;
 import java.util.Calendar;
 import java.util.TimeZone;
 
-public class CalendarDate extends CalendarInterval {
+public class CalendarDate extends CalendarInterval implements Comparable {
 	int year;
 	int month; // January = 1, February = 2 ...
 	int day;
@@ -38,6 +38,10 @@ public class CalendarDate extends CalendarInterval {
 			(day == otherDate.day);
 	}
 
+	public int hashCode() {
+		return year * month * day;
+	}
+
 	public CalendarDate start() {
 		return this;
 	}
@@ -60,6 +64,13 @@ public class CalendarDate extends CalendarInterval {
 		calendar.set(Calendar.SECOND, 0);
 		calendar.set(Calendar.MILLISECOND, 0);
 		return TimePoint.from(calendar);
+	}
+
+	public int compareTo(Object other) {
+		CalendarDate otherDate = (CalendarDate)other;
+		if (this.isBefore(otherDate)) return -1;
+		if (this.isAfter(otherDate)) return 1;
+		return 0;
 	}
 	
 }

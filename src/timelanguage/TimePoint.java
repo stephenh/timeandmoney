@@ -5,7 +5,7 @@ import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-public class  TimePoint {
+public class  TimePoint implements Comparable {
 	static public final TimePoint FAR_PAST = from("1/1/0000", "MM/dd/yyyy");
 	static public final TimePoint FAR_FUTURE = from("12/31/9999", "MM/dd/yyyy");
 
@@ -134,11 +134,15 @@ public class  TimePoint {
 		return this.millisecondsFromEpoc > other.millisecondsFromEpoc;
 	}
 
+	public int compareTo(Object other) {
+		TimePoint otherPoint = (TimePoint)other;
+		if (this.isBefore(otherPoint)) return -1;
+		if (this.isAfter(otherPoint)) return 1;
+		return 0;
+	}
+
 	public TimePoint nextDay() {
 		return this.plus(Duration.days(1));
-//		Calendar current = asJavaCalendar();
-//		current.add(Calendar.DATE, 1);
-//		return from(current);
 	}
 	
 	public Date asJavaUtilDate() {

@@ -66,7 +66,7 @@ abstract public class Duration implements TimeConstants {
 		return months(howMany, TimeUnit.decade);
 	}
 	
-	public static Duration centurys(int howMany) {
+	public static Duration centuries(int howMany) {
 		return months(howMany, TimeUnit.century);
 	}
 	
@@ -129,8 +129,7 @@ abstract public class Duration implements TimeConstants {
 	public int hashCode() {
 		return (int) quantity;
 	}
-
-	
+		
 	private static class MillisecondDuration extends Duration {	
 		MillisecondDuration(long quantity, TimeUnit unit) {
 			super(quantity, unit);
