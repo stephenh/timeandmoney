@@ -31,7 +31,12 @@ public class  TimePoint {
 	}
 	
 	public static TimePoint from(int year, int month, int date, int hour, int minute, int second, int millisecond) {
-		Calendar calendar = Calendar.getInstance();
+		return from(year, month, date, hour, minute, second, millisecond, TimeZone.getTimeZone("GMT"));
+	}
+
+	
+	public static TimePoint from(int year, int month, int date, int hour, int minute, int second, int millisecond, TimeZone zone) {
+		Calendar calendar = Calendar.getInstance(zone);
 		calendar.set(Calendar.YEAR, year);
 		calendar.set(Calendar.MONTH, month - 1);
 		calendar.set(Calendar.DATE, date);
@@ -39,15 +44,16 @@ public class  TimePoint {
 		calendar.set(Calendar.MINUTE, minute);
 		calendar.set(Calendar.SECOND, second);
 		calendar.set(Calendar.MILLISECOND, millisecond);
-		return from(calendar);		
+		return from(calendar);
 	}
-	
+
 	public static TimePoint from(Calendar calendar) {
 		return from(calendar.getTime());
 	}
 
 	public static TimePoint from(String dateString, String pattern) {
 		DateFormat format = new SimpleDateFormat(pattern);
+		format.setTimeZone(TimeZone.getTimeZone("GMT"));
 		Date date = format.parse(dateString, new ParsePosition(0));
 		return from(date);
 	}
@@ -105,6 +111,7 @@ public class  TimePoint {
 
 	public String toString(String pattern) {
 		DateFormat format = new SimpleDateFormat(pattern);
+		format.setTimeZone(TimeZone.getTimeZone("GMT"));
 		return format.format(asJavaUtilDate());
 		
 //		return String.valueOf(millisecondsFromEpoc);
@@ -134,7 +141,7 @@ public class  TimePoint {
 	}
 
 	public Calendar asJavaCalendar() {
-		Calendar result = Calendar.getInstance();
+		Calendar result = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
 		result.setTime(asJavaUtilDate());
 		return result;
 	}

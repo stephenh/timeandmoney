@@ -85,15 +85,13 @@ abstract public class Duration implements TimeConstants {
 	abstract List group();
 	
 	public TimePoint addedTo(TimePoint point) {
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(point.asJavaUtilDate());
+		Calendar calendar = point.asJavaCalendar();
 		calendar.add(calendarTag(), (int) quantity);
 		return TimePoint.from(calendar);
 	}
 
 	public TimePoint subtractedFrom(TimePoint point) {
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(point.asJavaUtilDate());
+		Calendar calendar = point.asJavaCalendar();
 		calendar.add(calendarTag(), -1 * (int) quantity);
 		return TimePoint.from(calendar);
 	}

@@ -10,13 +10,26 @@ public class TimePointTest extends TestCase {
 
 	public void testCreation() {
 		TimePoint expected = TimePoint.from(2004, 1, 1, 0, 0, 0, 0);
-		assertEquals(expected, TimePoint.atMidnight(2004, 1, 1));
-		assertEquals(expected, TimePoint.from(2004, 1, 1, 0));
-		assertEquals(expected, TimePoint.from(2004, 1, 1, 12, AM));
-		assertEquals(expected, TimePoint.from("2004/1/1", "yyyy/MM/dd"));
-		assertEquals(TimePoint.from(2004, 1, 1, 12), TimePoint.from(2004, 1, 1, 12, PM));
+		assertEquals("at midnight", expected, TimePoint.atMidnight(2004, 1, 1));
+		assertEquals("hours in 24hr clock", expected, TimePoint.from(2004, 1, 1, 0));
+		assertEquals("hours in 12hr clock", expected, TimePoint.from(2004, 1, 1, 12, AM));
+		assertEquals("date from formatted String", expected, TimePoint.from("2004/1/1", "yyyy/MM/dd"));
+		assertEquals("pm hours in 12hr clock", TimePoint.from(2004, 1, 1, 12), TimePoint.from(2004, 1, 1, 12, PM));
 	}
 	
+	public void testCreationWithTimezone() {
+		//TimePoints are based on miliseconds from the Epoc. They do not have a "timezone".
+		//When that basic value needs to be converted to or from a date or hours and minutes,
+		//then a Timezone must be specified or assumed. The default is always GMT. So creation
+		//operations which don't pass any Timezone assume the date, hours and minutes are GMT.
+		//The TimeLibrary does not use the default TimeZone operation in Java, the selection of
+		//the appropriate Timezone is left to the application.
+		
+		TimePoint expected = TimePoint.from(2004, 3, 5, 10, 10, 0, 0);
+		TimeZone zone = TimeZone.getTimeZone("PST");
+		assertEquals(expected, TimePoint.from(2004, 3, 5, 2, 10, 0, 0, zone)); 
+		
+	}
 	public void testStringFormat() {
 		TimePoint point = TimePoint.from(2004, 3, 12, 5, 3, 14, 0);
 		//Try stupid date/time format, which couldn't work by accident.
@@ -26,7 +39,8 @@ public class TimePointTest extends TestCase {
 	}
 
 	private Date javaUtilDateDec20_2003() {
-		Calendar calendar = Calendar.getInstance();
+		TimeZone gmt = TimeZone.getTimeZone("GMT");
+		Calendar calendar = Calendar.getInstance(gmt);
 		calendar.clear(); // non-deterministic without this!!!
 		calendar.set(Calendar.YEAR, 2003);
 		calendar.set(Calendar.MONTH, Calendar.DECEMBER);
