@@ -188,6 +188,9 @@ public abstract class Interval implements Comparable, Serializable {
 		return 0;
 	}
 
+/*
+ * http://en.wikipedia.org/wiki/Set_theoretic_complement
+ */
 	public List complementRelativeTo(Interval other) {
 		List intervalSequence = new ArrayList();
 		if (!this.intersects(other)) {
