@@ -1,6 +1,6 @@
 /**
- * Copyright (c) 2004 Domain Language, Inc. (http://domainlanguage.com)
- * This free software is distributed under the "MIT" licence. See file licence.txt. 
+ * Copyright (c) 2004 Domain Language, Inc. (http://domainlanguage.com) This
+ * free software is distributed under the "MIT" licence. See file licence.txt.
  * For more information, see http://timeandmoney.sourceforge.net.
  */
 
@@ -15,7 +15,7 @@ public class CalendarDate extends CalendarInterval {
 	public static final CalendarDate FAR_PAST = from(0001,1,1);
 
 	final int year;
-	final int month; // 1 based:  January = 1, February = 2, ...
+	final int month; // 1 based: January = 1, February = 2, ...
 	final int day;
 	
 	public static CalendarDate from(int year, int month, int day) {
@@ -42,7 +42,8 @@ public class CalendarDate extends CalendarInterval {
 	static CalendarDate _from(Calendar calendar) {
 		//Use timezone already set in calendar.
 		int year = calendar.get(Calendar.YEAR);
-		int month = calendar.get(Calendar.MONTH) + 1; //T&M Lib counts January as 1
+		int month = calendar.get(Calendar.MONTH) + 1; //T&M Lib counts January
+                                                      // as 1
 		int date = calendar.get(Calendar.DATE);
 		return CalendarDate.from(year, month, date);
 	}

@@ -1,6 +1,6 @@
 /**
- * Copyright (c) 2004 Domain Language, Inc. (http://domainlanguage.com)
- * This free software is distributed under the "MIT" licence. See file licence.txt. 
+ * Copyright (c) 2004 Domain Language, Inc. (http://domainlanguage.com) This
+ * free software is distributed under the "MIT" licence. See file licence.txt.
  * For more information, see http://timeandmoney.sourceforge.net.
  */
 
@@ -22,10 +22,10 @@ public class Money implements Comparable, Serializable {
 	final Currency currency;
 	
 	/**
-	 * The constructor does not complex computations and requires simple, inputs
-	 * consistent with the class invariant.
-	 * Other creation methods are available for convenience.
-	 */
+     * The constructor does not complex computations and requires simple, inputs
+     * consistent with the class invariant. Other creation methods are available
+     * for convenience.
+     */
 	public Money(BigDecimal amount, Currency currency) {
 		if (amount.scale() != currency.getDefaultFractionDigits()) throw new IllegalArgumentException("Scale of amount does not match currency");
 		this.currency = currency;
@@ -33,75 +33,75 @@ public class Money implements Comparable, Serializable {
 	}
 
 	/**
-	 * This creation method is safe to use. It will adjust scale, but will not round off the amount.
-	 */
+     * This creation method is safe to use. It will adjust scale, but will not
+     * round off the amount.
+     */
 	public static Money valueOf (BigDecimal amount, Currency currency) {
 		return Money.valueOf (amount, currency, Rounding.UNNECESSARY);
 	}
 
 	/**
-	 * For convenience, an amount can be rounded to create a Money.
-	 */
+     * For convenience, an amount can be rounded to create a Money.
+     */
 	public static Money valueOf(BigDecimal rawAmount, Currency currency, int roundingMode) {
 		BigDecimal amount = rawAmount.setScale(currency.getDefaultFractionDigits(), roundingMode);
 		return new Money(amount, currency);
 	}
 
 	/**
-	 * WARNING: Because of the indefinite precision of double, 
-	 * this method must round off the value.
-	 */
+     * WARNING: Because of the indefinite precision of double, this method must
+     * round off the value.
+     */
 	public static Money valueOf(double dblAmount, Currency currency) {
 		return Money.valueOf(dblAmount, currency, DEFAULT_ROUNDING_MODE);
 	}
 
 	/**
-	 * Because of the indefinite precision of double, 
-	 * this method must round off the value. 
-	 * This method gives the client control of the rounding mode.
-	 */
+     * Because of the indefinite precision of double, this method must round off
+     * the value. This method gives the client control of the rounding mode.
+     */
 	public static Money valueOf(double dblAmount, Currency currency, int roundingMode) {
 		BigDecimal rawAmount = new BigDecimal(dblAmount);
 		return Money.valueOf(rawAmount, currency, roundingMode);
 	}
 
 	/**
-	 * WARNING: Because of the indefinite precision of double, 
-	 * thismethod must round off the value.
-	 */
+     * WARNING: Because of the indefinite precision of double, thismethod must
+     * round off the value.
+     */
 	public static Money dollars(double amount) {
 		return Money.valueOf(amount, USD);
 	}
 
 	/**
-	 * This creation method is safe to use. 
-	 * It will adjust scale, but will not round off the amount.
-	 */
+     * This creation method is safe to use. It will adjust scale, but will not
+     * round off the amount.
+     */
 	public static Money dollars (BigDecimal amount) {
 		return Money.valueOf(amount, USD);
 	}
 
 	/**
-	 * WARNING: Because of the indefinite precision of double, 
-	 * this method must round off the value.
-	 */
+     * WARNING: Because of the indefinite precision of double, this method must
+     * round off the value.
+     */
 	public static Money euros(double amount) {
 		return Money.valueOf(amount, EUR);
 	}
 
 	/**
-	 * This creation method is safe to use. 
-	 * It will adjust scale, but will not round off the amount.
-	 */
+     * This creation method is safe to use. It will adjust scale, but will not
+     * round off the amount.
+     */
 	public static Money euros (BigDecimal amount) {
 		return Money.valueOf(amount, EUR);
 	}
 
 	/**
-	 * This probably should be Currency responsibility.
-	 * Even then, it may need to be customized for specialty apps because
-	 * there are other cases, where the smallest increment is not the smallest unit.
-	 */
+     * This probably should be Currency responsibility. Even then, it may need
+     * to be customized for specialty apps because there are other cases, where
+     * the smallest increment is not the smallest unit.
+     */
 	Money minimumIncrement() {
 		BigDecimal one = new BigDecimal(1);
 		BigDecimal increment = one.movePointLeft(currency.getDefaultFractionDigits());
@@ -173,20 +173,22 @@ public class Money implements Comparable, Serializable {
 	}
 	
 	/**
-	 * TODO: Many apps require carrying extra precision in intermediate calculations.
-	 * The use of Ratio is a beginning, but need a comprehensive solution.
-	 * Currently, an invariant of Money is that the scale is the currencies standard
-	 * scale, but this will probably have to be suspended or elaborated in intermediate 
-	 * calcs, or handled with defered calculations like Ratio.
-	 */
+     * TODO: Many apps require carrying extra precision in intermediate
+     * calculations. The use of Ratio is a beginning, but need a comprehensive
+     * solution. Currently, an invariant of Money is that the scale is the
+     * currencies standard scale, but this will probably have to be suspended or
+     * elaborated in intermediate calcs, or handled with defered calculations
+     * like Ratio.
+     */
 
 	public Money times(BigDecimal factor) {
 		return times(factor, DEFAULT_ROUNDING_MODE);
 	}
 	
 	/**
-	 * TODO: BigDecimal.multiply() scale is sum of scales of two multiplied numbers. So what is scale of times?
-	 */
+     * TODO: BigDecimal.multiply() scale is sum of scales of two multiplied
+     * numbers. So what is scale of times?
+     */
 	public Money times(BigDecimal factor, int roundingMode) {
 		return Money.valueOf(amount.multiply(factor), currency, roundingMode);
 	}
@@ -241,7 +243,8 @@ public class Money implements Comparable, Serializable {
 		return currency.toString() + " " + amount;
 	}
 	
-//	TODO: Provide some currency-dependent formatting. Java 1.4 Currency doesn't do it.	
+//	TODO: Provide some currency-dependent formatting. Java 1.4 Currency doesn't
+// do it.
 //	public String formatString() {
 //		return currency.formatString(amount());
 //	}

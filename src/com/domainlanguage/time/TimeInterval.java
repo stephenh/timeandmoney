@@ -1,6 +1,6 @@
 /**
- * Copyright (c) 2004 Domain Language, Inc. (http://domainlanguage.com)
- * This free software is distributed under the "MIT" licence. See file licence.txt. 
+ * Copyright (c) 2004 Domain Language, Inc. (http://domainlanguage.com) This
+ * free software is distributed under the "MIT" licence. See file licence.txt.
  * For more information, see http://timeandmoney.sourceforge.net.
  */
 
@@ -66,9 +66,11 @@ public class TimeInterval extends Interval {
 	} 
 
 	public TimeInterval(TimePoint start, boolean startIncluded, TimePoint end, boolean endIncluded) {
-//		assert start.compareTo(end) < 0;  //This should really be an Interval invariant.
-//	revisit: also, as with any java assert, an AssertionError will be thrown only if compiled with the -ea option (enableassertions)
-//	so maybe we want to throw an IllegalArgumentException instead?		
+//		assert start.compareTo(end) < 0; //This should really be an Interval
+// invariant.
+//	revisit: also, as with any java assert, an AssertionError will be thrown only
+// if compiled with the -ea option (enableassertions)
+//	so maybe we want to throw an IllegalArgumentException instead?
 		assert start.compareTo(end) <= 0;
 		lowerLimit = start;
 		includesLowerLimit = startIncluded;

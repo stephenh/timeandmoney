@@ -1,6 +1,6 @@
 /**
- * Copyright (c) 2004 Domain Language, Inc. (http://domainlanguage.com)
- * This free software is distributed under the "MIT" licence. See file licence.txt. 
+ * Copyright (c) 2004 Domain Language, Inc. (http://domainlanguage.com) This
+ * free software is distributed under the "MIT" licence. See file licence.txt.
  * For more information, see http://timeandmoney.sourceforge.net.
  */
 
@@ -97,7 +97,7 @@ public class TimePoint implements Comparable, Serializable {
 	}
 	
 	
-// BEHAVIORAL METHODS	
+// BEHAVIORAL METHODS
 	public boolean equals(Object other) {
 		return 
 		//revisit: maybe use: Reflection.equalsOverClassAndNull(this, other)
@@ -166,8 +166,9 @@ public class TimePoint implements Comparable, Serializable {
 	}
 
 	
-// CONVENIENCE METHODS 
-// (Responsibility lies elsewhere, but language is more fluid with a method here.)
+// CONVENIENCE METHODS
+// (Responsibility lies elsewhere, but language is more fluid with a method
+// here.)
 	
 	public boolean isBefore(TimeInterval interval) {
 		return interval.isAfter(this);

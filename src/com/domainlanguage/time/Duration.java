@@ -1,6 +1,6 @@
 /**
- * Copyright (c) 2004 Domain Language, Inc. (http://domainlanguage.com)
- * This free software is distributed under the "MIT" licence. See file licence.txt. 
+ * Copyright (c) 2004 Domain Language, Inc. (http://domainlanguage.com) This
+ * free software is distributed under the "MIT" licence. See file licence.txt.
  * For more information, see http://timeandmoney.sourceforge.net.
  */
 
@@ -104,7 +104,7 @@ public class Duration implements Comparable, Serializable {
 	}
 
 	public CalendarDate addedTo(CalendarDate day) {
-//		only valid for days and larger units		
+//		only valid for days and larger units
 		if (unit.compareTo(TimeUnit.day) < 0) return day;
 		Calendar calendar = day.asJavaCalendarUniversalZoneMidnight();
 		if (unit.equals(TimeUnit.day)) 

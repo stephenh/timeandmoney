@@ -2,7 +2,6 @@ package com.domainlanguage.common;
 
 import java.math.*;
 
-
 public interface Rounding {
     int CEILING = BigDecimal.ROUND_CEILING;
     int UP = BigDecimal.ROUND_UP;
