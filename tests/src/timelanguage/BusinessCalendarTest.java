@@ -13,7 +13,7 @@ import junit.framework.TestCase;
 public class BusinessCalendarTest extends TestCase {
 	private BusinessCalendar businessCalendar() {
 		BusinessCalendar cal = BusinessCalendar.defaultBusinessCalendar();
-		cal.addHolidays(HolidayDates.defaultHolidays());
+		cal.addHolidays(_HolidayDates.defaultHolidays());
 		return cal;
 	}
 	

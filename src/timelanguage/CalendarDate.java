@@ -130,11 +130,11 @@ public class CalendarDate extends CalendarInterval {
 		return CalendarInterval.inclusive(this, otherDate);
 	}
 
-	public Comparable getLowerBound() {
+	public Comparable upperLimit() {
 		return this;
 	}
 
-	public Comparable getUpperBound() {
+	public Comparable lowerLimit() {
 		return this;
 	}
 	

@@ -24,10 +24,10 @@ public class ConcreteComparableInterval extends ComparableInterval {
 	}
 	
 
-	public Comparable getLowerBound() {
+	public Comparable upperLimit() {
 		return lowerLimit;
 	}
-	public Comparable getUpperBound() {
+	public Comparable lowerLimit() {
 		return upperLimit;
 	}
 	public boolean includesLowerLimit() {

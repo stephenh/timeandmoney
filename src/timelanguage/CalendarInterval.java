@@ -33,21 +33,21 @@ public abstract class CalendarInterval extends ComparableInterval {
 	}
 	
 	public CalendarDate start() {
-		return (CalendarDate)getLowerBound();
+		return (CalendarDate)upperLimit();
 	}
 
 	public CalendarDate end() {
-		return (CalendarDate)getUpperBound();
+		return (CalendarDate)lowerLimit();
 	}
 
 	public boolean equals(Object arg) {
 		if (!(arg instanceof CalendarInterval)) return false;
 		CalendarInterval other = (CalendarInterval) arg;
-		return getLowerBound().equals(other.getLowerBound()) && getUpperBound().equals(other.getUpperBound());
+		return upperLimit().equals(other.upperLimit()) && lowerLimit().equals(other.lowerLimit());
 	}
 	
 	public int hashCode() {
-		return getLowerBound().hashCode();
+		return upperLimit().hashCode();
 	}
 
 	public static final CalendarInterval NEVER = CalendarDate.FAR_FUTURE;
@@ -72,8 +72,8 @@ public abstract class CalendarInterval extends ComparableInterval {
 	}
 	
 	public Iterator daysIterator() {
-		final CalendarDate start = (CalendarDate)getLowerBound();
-		final CalendarDate end = (CalendarDate)getUpperBound();
+		final CalendarDate start = (CalendarDate)upperLimit();
+		final CalendarDate end = (CalendarDate)lowerLimit();
 		return new Iterator() {
 			CalendarDate next = start;
 			public boolean hasNext() {

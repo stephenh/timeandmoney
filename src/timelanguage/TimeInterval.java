@@ -62,10 +62,10 @@ public class TimeInterval extends ComparableInterval {
 		upperLimit = upper;
 		includesUpperLimit = upperIncluded;
 	}
-	public Comparable getLowerBound() {
+	public Comparable upperLimit() {
 		return lowerLimit;
 	}
-	public Comparable getUpperBound() {
+	public Comparable lowerLimit() {
 		return upperLimit;
 	}
 	public boolean includesLowerLimit() {
@@ -104,16 +104,16 @@ public class TimeInterval extends ComparableInterval {
 	}
 
 	public TimePoint start() {
-		return (TimePoint) getLowerBound();
+		return (TimePoint) upperLimit();
 	}
 	public TimePoint end() {
-		return (TimePoint) getUpperBound();
+		return (TimePoint) lowerLimit();
 	}
 	
 	public TimeInterval intersect(TimeInterval other) {
 		ComparableInterval intersection = intersect((ComparableInterval) other);
-		TimePoint start = (TimePoint)intersection.getLowerBound();
-		TimePoint end = (TimePoint)intersection.getUpperBound();
+		TimePoint start = (TimePoint)intersection.upperLimit();
+		TimePoint end = (TimePoint)intersection.lowerLimit();
 		return new TimeInterval(start, intersection.includesLowerLimit(), end, intersection.includesUpperLimit());
 	}
 	

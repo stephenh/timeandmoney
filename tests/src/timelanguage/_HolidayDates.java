@@ -9,7 +9,7 @@ import java.util.*;
 	on Sunday) or Friday (if the holiday falls on Saturday).
 	a holiday falls on a nonworkday will be referred to as a "deferred" holiday.
 */
-class HolidayDates {
+class _HolidayDates {
 
 	static String[] COMMON_US_HOLIDAYS = new String[] {
 		                    

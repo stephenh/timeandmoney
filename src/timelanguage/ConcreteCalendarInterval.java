@@ -22,11 +22,11 @@ class ConcreteCalendarInterval extends CalendarInterval {
 		return TimeInterval.over(startPoint, endPoint);
 	}
 
-	public Comparable getLowerBound() {
+	public Comparable upperLimit() {
 		return start;
 	}
 
-	public Comparable getUpperBound() {
+	public Comparable lowerLimit() {
 		return end;
 	}
 

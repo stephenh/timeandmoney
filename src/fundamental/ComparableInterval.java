@@ -30,11 +30,11 @@ public abstract class ComparableInterval implements Comparable {
 	}
 
 	
-	public abstract Comparable getLowerBound();
+	public abstract Comparable upperLimit();
 		//Warning: This method should generally be used for display
 		//purposes and interactions with closely coupled classes.
 		//Look for (or add) other methods to do computations.
-	public abstract Comparable getUpperBound();
+	public abstract Comparable lowerLimit();
 		//Warning: This method should generally be used for display
 		//purposes and interactions with closely coupled classes.
 		//Look for (or add) other methods to do computations.
@@ -55,26 +55,26 @@ public abstract class ComparableInterval implements Comparable {
 	}
 	
 	public Comparable greaterOfLowerLimits(ComparableInterval other) {
-		int lowerComparison = getLowerBound().compareTo(other.getLowerBound());
-		if (lowerComparison >= 0) return this.getLowerBound();
-		return other.getLowerBound();
+		int lowerComparison = upperLimit().compareTo(other.upperLimit());
+		if (lowerComparison >= 0) return this.upperLimit();
+		return other.upperLimit();
 	}
 
 	public boolean greaterOfLowerIncluded(ComparableInterval other) {
-		int lowerComparison = getLowerBound().compareTo(other.getLowerBound());
+		int lowerComparison = upperLimit().compareTo(other.upperLimit());
 		if (lowerComparison > 0) return this.includesLowerLimit();
 		if (lowerComparison < 0) return other.includesLowerLimit();
 		return this.includesLowerLimit() && other.includesLowerLimit();
 	}
 
 	public Comparable lesserOfUpperLimits(ComparableInterval other) {
-		int upperComparison = getUpperBound().compareTo(other.getUpperBound());
-		if (upperComparison <= 0) return this.getUpperBound();
-		return other.getUpperBound();
+		int upperComparison = lowerLimit().compareTo(other.lowerLimit());
+		if (upperComparison <= 0) return this.lowerLimit();
+		return other.lowerLimit();
 	}
 
 	public boolean lesserOfUpperIncluded(ComparableInterval other) {
-		int upperComparison = getUpperBound().compareTo(other.getUpperBound());
+		int upperComparison = lowerLimit().compareTo(other.lowerLimit());
 		if (upperComparison < 0) return this.includesUpperLimit();
 		if (upperComparison > 0) return other.includesUpperLimit();
 		return this.includesUpperLimit() && other.includesUpperLimit();
@@ -86,27 +86,41 @@ public abstract class ComparableInterval implements Comparable {
 	}
 
 	public boolean includes(ComparableInterval other) {
-		int lowerComparison = getLowerBound().compareTo(other.getLowerBound());
-			boolean lowerPass = this.includes(other.getLowerBound()) ||
+		int lowerComparison = upperLimit().compareTo(other.upperLimit());
+			boolean lowerPass = this.includes(other.upperLimit()) ||
 				(lowerComparison == 0 && !other.includesLowerLimit());
 
-		int upperComparison = getUpperBound().compareTo(other.getUpperBound());
-			boolean upperPass = this.includes(other.getUpperBound()) ||
+		int upperComparison = lowerLimit().compareTo(other.lowerLimit());
+			boolean upperPass = this.includes(other.lowerLimit()) ||
 				(upperComparison == 0 && !other.includesUpperLimit());
 			
 		return lowerPass && upperPass;
 	
 	}
 	
+	public boolean isOpen() {
+		return !includesLowerLimit() && !includesUpperLimit();
+	}
 
+	public boolean isClosed() {
+		return includesLowerLimit() && includesUpperLimit();
+	}
+	
+	public boolean isEmpty() {
+		//Really a 'degenerate' interval, but the behavior 
+		//of the interval will be like an empty set.
+		return isOpen() && upperLimit().equals(lowerLimit());
+		
+	}
+	
 	public boolean isBelow(Comparable value) {
-		int comparison = getUpperBound().compareTo(value);
+		int comparison = lowerLimit().compareTo(value);
 		return comparison < 0 ||
 			(comparison == 0 && !includesUpperLimit());
 	}
 
 	public boolean isAbove(Comparable value) {
-		int comparison = getLowerBound().compareTo(value);
+		int comparison = upperLimit().compareTo(value);
 		return comparison > 0 ||
 			(comparison == 0 && !includesLowerLimit());
 	}
@@ -114,19 +128,19 @@ public abstract class ComparableInterval implements Comparable {
 	public String toString() {
 		StringBuffer buffer = new StringBuffer();
 		buffer.append(includesLowerLimit() ? "[" : "(");
-		buffer.append(getLowerBound().toString());
+		buffer.append(upperLimit().toString());
 		buffer.append(", ");
-		buffer.append(getUpperBound().toString());
+		buffer.append(lowerLimit().toString());
 		buffer.append(includesUpperLimit() ? "]" : ")");
 		return buffer.toString();
 	}
 
 	public int compareTo(Object arg) {
 		ComparableInterval other = (ComparableInterval) arg;
-		if (!getLowerBound().equals(other.getLowerBound())) return getLowerBound().compareTo(other.getLowerBound());
+		if (!upperLimit().equals(other.upperLimit())) return upperLimit().compareTo(other.upperLimit());
 		if (includesLowerLimit() && !other.includesLowerLimit()) return -1;
 		if (!includesLowerLimit() && other.includesLowerLimit()) return 1;
-		return getUpperBound().compareTo(other.getUpperBound());
+		return lowerLimit().compareTo(other.lowerLimit());
 	}
 
 
