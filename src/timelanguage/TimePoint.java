@@ -14,6 +14,11 @@ public class  TimePoint {
 	public static TimePoint atMidnight(int year, int month, int date) {
 		return from(year, month, date, 0, 0, 0, 0);
 	}
+
+	public static TimePoint atMidnight(int year, int month, int date, TimeZone zone) {
+		return from(year, month, date, 0, 0, 0, 0, zone);
+	}
+	
 	
 	public static TimePoint from(int year, int month, int date, int hour, String am_pm) {
 		return from(year, month, date, convertTo24hourCycle(hour, am_pm));

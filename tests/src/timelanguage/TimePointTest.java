@@ -7,7 +7,12 @@ import junit.framework.*;
 public class TimePointTest extends TestCase {
 	private static final String AM = "AM";
 	private static final String PM = "PM";
+	private static final TimeZone pst = TimeZone.getTimeZone("PST");
+	TimeZone gmt = TimeZone.getTimeZone("Universal");
+	TimeZone pt = TimeZone.getTimeZone("America/Los_Angeles");
+	TimeZone ct = TimeZone.getTimeZone("America/Chicago");
 
+	
 	public void testCreation() {
 		TimePoint expected = TimePoint.from(2004, 1, 1, 0, 0, 0, 0);
 		assertEquals("at midnight", expected, TimePoint.atMidnight(2004, 1, 1));
@@ -25,9 +30,19 @@ public class TimePointTest extends TestCase {
 		//The TimeLibrary does not use the default TimeZone operation in Java, the selection of
 		//the appropriate Timezone is left to the application.
 		
-		TimePoint expected = TimePoint.from(2004, 3, 5, 10, 10, 0, 0);
-		TimeZone zone = TimeZone.getTimeZone("PST");
-		assertEquals(expected, TimePoint.from(2004, 3, 5, 2, 10, 0, 0, zone)); 
+		TimePoint gmt10Hour = TimePoint.from(2004, 3, 5, 10, 10, 0, 0, gmt);
+		TimePoint default10Hour = TimePoint.from(2004, 3, 5, 10, 10, 0, 0);
+		TimePoint pt2Hour = TimePoint.from(2004, 3, 5, 2, 10, 0, 0, pt);
+		
+		assertEquals(gmt10Hour, default10Hour);
+		assertEquals(gmt10Hour, pt2Hour);
+		
+		TimePoint gmt6Hour = TimePoint.from(2004, 3, 5, 6, 0, 0, 0, gmt);
+		TimePoint ct0Hour = TimePoint.from(2004, 3, 5, 0, 0, 0, 0, ct);
+		TimePoint ctMidnight = TimePoint.atMidnight(2004, 3, 5, ct);
+
+		assertEquals(gmt6Hour, ct0Hour);
+		assertEquals(gmt6Hour, ctMidnight);
 		
 	}
 	public void testStringFormat() {
