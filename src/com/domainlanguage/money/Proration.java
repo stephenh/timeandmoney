@@ -8,7 +8,14 @@ package com.domainlanguage.money;
 
 import java.math.BigDecimal;
 
+import com.domainlanguage.basic.Ratio;
+
 public class Proration {
+
+	private static int defaultScaleForIntermediateCalculations(Money total) {
+		return total.currency().getDefaultFractionDigits() + 1;
+	}
+
 	public Money[] dividedEvenlyInto(Money total, int n) {
 		Money lowResult = total.dividedBy(BigDecimal.valueOf(n), BigDecimal.ROUND_DOWN);
 		Money[] lowResults = new Money[n];
@@ -27,18 +34,18 @@ public class Proration {
 	
 	public Money[] proratedOver(Money total, BigDecimal[] proportions) {
 		Money[] simpleResult = new Money[proportions.length];
-
-		BigDecimal proportionsTotal = sum(proportions);
-		for (int i = 0; i < proportions.length; i++) {
-			simpleResult[i] = total.times(proportions[i]).dividedBy(proportionsTotal, BigDecimal.ROUND_DOWN);
+		int scale = defaultScaleForIntermediateCalculations(total);
+		Ratio[] ratios = ratios(proportions);
+		for (int i = 0; i < ratios.length; i++) {
+			BigDecimal multiplier = ratios[i].value(scale, BigDecimal.ROUND_DOWN);
+			simpleResult[i] = total.times(multiplier, BigDecimal.ROUND_DOWN);
 		}
-		
 		Money remainder = total.minus(sum(simpleResult));
 		return distributeRemainderOver(simpleResult, remainder);
 	}
 	
 	static Money[] distributeRemainderOver(Money[] amounts, Money remainder) {
-		int increments = remainder.dividedBy(remainder.minimumIncrement(), 0).intValue();
+		int increments = remainder.dividedBy(remainder.minimumIncrement()).value(0, BigDecimal.ROUND_UNNECESSARY).intValue();
 		assert increments <= amounts.length; 
 
 		Money[] results = new Money[amounts.length];
@@ -67,12 +74,24 @@ public class Proration {
 		}
 		return sum;
 	}
+	
+	static Ratio[] ratios(BigDecimal[] proportions) {
+		BigDecimal total = sum(proportions);
+		Ratio[] ratios = new Ratio[proportions.length];
+		for (int i = 0; i < ratios.length; i++) {
+			ratios[i] = Ratio.of(proportions[i], total);
+		}
+		return ratios;
+	}
 
 	public Money partOfWhole(Money total, long portion, long whole) {
-		//This method will round down, because extra pennies go to early portions.
-		// TODO Let Proration object be configured either way on this.
-		long[] proportions = {whole - portion, portion};
-		return proratedOver(total, proportions)[1];
+		return toRatio(total, Ratio.of(portion, whole));
+	}
+
+	public Money toRatio(Money total, Ratio ratio) {
+		int scale = defaultScaleForIntermediateCalculations(total);
+		BigDecimal multiplier = ratio.value(scale, BigDecimal.ROUND_DOWN);
+		return total.times(multiplier, BigDecimal.ROUND_DOWN);
 	}
 	
 }

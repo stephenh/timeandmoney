@@ -7,7 +7,6 @@
 package com.domainlanguage.money;
 
 import junit.framework.TestCase;
-import java.math.*;
 
 public class ProrationTest extends TestCase {
 	Proration proration = new Proration();

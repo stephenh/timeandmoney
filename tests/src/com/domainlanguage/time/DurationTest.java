@@ -6,6 +6,8 @@
 
 package com.domainlanguage.time;
 
+import java.math.BigDecimal;
+
 import com.domainlanguage.testutil.SerializationTest;
 
 import junit.framework.*;
@@ -97,6 +99,9 @@ public class DurationTest extends TestCase {
 		assertEquals(Duration.months(2), Duration.quarters(1).minus(Duration.months(1)));
 	}
 	
+	public void testDivide() {
+		assertEquals(new BigDecimal(1.5), Duration.days(3).dividedBy(Duration.days(2), BigDecimal.ROUND_DOWN, 1));
+	}
 	
 	public void testToNormalizedString() {
 			assertEquals("2 days", Duration.days(2).toNormalizedString());

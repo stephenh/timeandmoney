@@ -32,6 +32,11 @@ public class CalculateRate extends TestCase {
 		Proration proration = new Proration();
 		Money firstPayment = proration.partOfWhole(monthlyPremium, remainderOfMonth.lengthInDaysInt(), entireMonth.lengthInDaysInt());
 		assertEquals(Money.dollars(120.00), firstPayment);
+
+		//Alternative, equivalent calculation
+		firstPayment = proration.toRatio(monthlyPremium, remainderOfMonth.length().dividedBy(entireMonth.length()));
+		assertEquals(Money.dollars(120.00), firstPayment);
+
 	}
 /*
  * 

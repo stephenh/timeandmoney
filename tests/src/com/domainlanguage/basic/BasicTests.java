@@ -11,10 +11,9 @@ import junit.framework.*;
 public class BasicTests {
 	public static Test suite() {
 		TestSuite suite = new TestSuite();
-
 		suite.addTest(new TestSuite(IntervalTest.class));
 		suite.addTest(new TestSuite(IntervalMapTest.class));
-
+		suite.addTest(new TestSuite(RatioTest.class));
 		return suite;
 	}
 }

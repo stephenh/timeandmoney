@@ -7,7 +7,11 @@
 package com.domainlanguage.time;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.*;
+
+import com.domainlanguage.basic.Ratio;
+import com.domainlanguage.money.Money;
 
 public class Duration implements Comparable, Serializable {
 	public static final Duration NONE = milliseconds(0);
@@ -130,6 +134,15 @@ public class Duration implements Comparable, Serializable {
 		return CalendarDate._from(calendar);
 	}
 
+	public Ratio dividedBy (Duration divisor) {
+		assert unit.isConvertibleTo(divisor.unit);
+		return Ratio.of(inBaseUnits(), divisor.inBaseUnits());
+	}
+
+	public BigDecimal dividedBy(Duration divisor, int roundingRule, int precision) {
+		return this.dividedBy(divisor).value(precision, roundingRule);
+	}
+
 	public boolean equals(Object arg) {
 		if (!(arg instanceof Duration)) return false;
 		Duration other = (Duration) arg;
@@ -194,5 +207,6 @@ public class Duration implements Comparable, Serializable {
 	public TimeInterval startingFrom(TimePoint start) {
 		return TimeInterval.from(start, this);
 	}
+
 			
 }

@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.util.Currency;
 import java.io.Serializable;
 
+import com.domainlanguage.basic.Ratio;
+
 public class Money implements Comparable, Serializable {
 
 	private BigDecimal amount;
@@ -122,10 +124,6 @@ public class Money implements Comparable, Serializable {
 		return this.plus(other.negated());
 	}
 
-	public Money dividedBy (BigDecimal divisor) {
-		return dividedBy(divisor, DEFAULT_ROUNDING_MODE);
-	}
-	
 	public Money dividedBy (BigDecimal divisor, int roundingMode) {
 		BigDecimal newAmount = amount.divide(divisor, roundingMode);
 		return Money.valueOf(newAmount,currency);
@@ -135,26 +133,28 @@ public class Money implements Comparable, Serializable {
 		return dividedBy(divisor, DEFAULT_ROUNDING_MODE);
 	}
 
+	public Money dividedBy (double divisor, int roundingMode) {
+		return dividedBy(new BigDecimal(divisor), roundingMode);
+	}
+	
+	public Ratio dividedBy (Money divisor) {
+		assert currency.equals(divisor.currency);
+		return Ratio.of(amount(), divisor.amount());
+	}
+
 	/**
 	 * TODO Many apps require carrying extra precision in intermediate calculations.
 	 * This will require some variation on dividedBy that accepts a scale and returns...?
 	 * Currently, the invariant of Money is that the scale is the currencies standard
 	 * scale, but this will probably have to be suspended or elaborated in intermediate calcs.
 	 */
-	public Money dividedBy (double divisor, int roundingMode) {
-		return dividedBy(new BigDecimal(divisor), roundingMode);
-	}
-	
-	public BigDecimal dividedBy (Money other, int scale) {
-		return amount.divide(other.amount, scale, BigDecimal.ROUND_UNNECESSARY);
-	}
 
 	public Money times(BigDecimal factor) {
 		return times(factor, DEFAULT_ROUNDING_MODE);
 	}
 	
 	/**
-	 * TODO BigDecimal.multiply() has scale of "this", so what is roundingMode of that operations?
+	 * TODO BigDecimal.multiply() scale is sum of scales of two multiplied numbers. So what is scale of times?
 	 */
 	public Money times(BigDecimal factor, int roundingMode) {
 		return Money.valueOf(amount.multiply(factor), currency, roundingMode);
