@@ -21,8 +21,8 @@ public class AllTests extends TestSuite {
 //			???.suite(),  //note: add a suite name to exclude it  
 		};
 		FilteredTestCaseCollector collector = new FilteredTestCaseCollector();
-		collector.exludedPackages(excludedPackages);
-		collector.exludedSuites(excludedSuites);	
+		collector.excludedPackages(excludedPackages);
+		collector.excludedSuites(excludedSuites);	
 		Enumeration enumeration = collector.collectTests();
 		while (enumeration.hasMoreElements())
 			try {
