@@ -21,6 +21,6 @@ public class NetworkTimeSource {
 			String nistTime = new String(buffer, 0, length);
 			String nistGist = nistTime.substring(7, 24);
 			String pattern = "y-M-d HH:mm:ss";
-			return TimePoint.from(nistGist, pattern);
+			return TimePoint.parseGMTFrom(nistGist, pattern);
 	}
 }

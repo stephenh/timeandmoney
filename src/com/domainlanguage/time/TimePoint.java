@@ -12,41 +12,49 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class  TimePoint implements Comparable {
-	static public final TimePoint FAR_PAST = from("1/1/0000", "MM/dd/yyyy");
-	static public final TimePoint FAR_FUTURE = from("12/31/9999", "MM/dd/yyyy");
+	private static final TimeZone gmt = TimeZone.getTimeZone("Universal");
+	public static final TimePoint FAR_PAST = atMidnightGMT(0001, 1, 1);
+	public static final TimePoint FAR_FUTURE = atMidnightGMT(9999, 12, 31);
 
 	final long millisecondsFromEpoc;
 	
 	public static TimePoint atMidnightGMT(int year, int month, int date) {
-		return from(year, month, date, 0, 0, 0, 0);
+		return atMidnight(year, month, date, gmt);
 	}
 
 	public static TimePoint atMidnight(int year, int month, int date, TimeZone zone) {
-		return from(year, month, date, 0, 0, 0, 0, zone);
+		return at(year, month, date, 0, 0, 0, 0, zone);
+	}
+
+	public static TimePoint atGMT(int year, int month, int date, int hour, int minute) {
+		return atGMT(year, month, date, hour, 0, 0, 0);
 	}
 	
-	
-	public static TimePoint from(int year, int month, int date, int hour, String am_pm) {
-		return from(year, month, date, convertTo24hourCycle(hour, am_pm));
+	public static TimePoint atGMT(int year, int month, int date, int hour, int minute, int second) {
+		return atGMT(year, month, date, hour, second, 0, 0);
+	}
+
+	public static TimePoint at(int year, int month, int date, int hour, int minute, int second, TimeZone zone) {
+		return at(year, month, date, hour, second, 0, 0, zone);
+	}
+
+	public static TimePoint atGMT(int year, int month, int date, int hour, int minute, int second, int millisecond) {
+		return at(year, month, date, hour, minute, second, millisecond, gmt);
 	}
 	
-	private static int convertTo24hourCycle(int hour, String am_pm) {
+	public static TimePoint at12hr(int year, int month, int date, int hour, String am_pm, int minute, int second, int millisecond, TimeZone zone) {
+		return at(year, month, date, convertedTo24hour(hour, am_pm), minute, second, millisecond, zone);
+	}
+
+	private static int convertedTo24hour(int hour, String am_pm) {
 //		assert(am_pm.equalsIgnoreCase("AM") || am_pm.equalsIgnoreCase("PM"));		
 		int translatedAmPm = (am_pm.equalsIgnoreCase("AM") ? 0 : 12);
 		translatedAmPm -= (hour == 12) ? 12 : 0;
 		return hour + translatedAmPm;
 	}
 
-	public static TimePoint from(int year, int month, int date, int hour) {
-		return from(year, month, date, hour, 0, 0, 0);
-	}
 	
-	public static TimePoint from(int year, int month, int date, int hour, int minute, int second, int millisecond) {
-		return from(year, month, date, hour, minute, second, millisecond, TimeZone.getTimeZone("GMT"));
-	}
-
-	
-	public static TimePoint from(int year, int month, int date, int hour, int minute, int second, int millisecond, TimeZone zone) {
+	public static TimePoint at(int year, int month, int date, int hour, int minute, int second, int millisecond, TimeZone zone) {
 		Calendar calendar = Calendar.getInstance(zone);
 		calendar.set(Calendar.YEAR, year);
 		calendar.set(Calendar.MONTH, month - 1);
@@ -58,31 +66,29 @@ public class  TimePoint implements Comparable {
 		return from(calendar);
 	}
 
-	public static TimePoint from(Calendar calendar) {
-		return from(calendar.getTime());
-	}
-
-	public static TimePoint from(String dateString, String pattern) {
-		return from(dateString, pattern, TimeZone.getTimeZone("Universal"));
+	public static TimePoint parseGMTFrom(String dateString, String pattern) {
+		return parseFrom(dateString, pattern, gmt);
 	}
 	
-	public static TimePoint from(String dateString, String pattern, TimeZone zone) {
+	public static TimePoint parseFrom(String dateString, String pattern, TimeZone zone) {
 		DateFormat format = new SimpleDateFormat(pattern);
 		format.setTimeZone(zone);
 		Date date = format.parse(dateString, new ParsePosition(0));
 		return from(date);
 	}
 	
-	public static TimePoint from(Date javaDate) {
-		return from(javaDate.getTime());
-	}
-
 	public static TimePoint now() {
 		return from(new Date());
 	}
 
-	
-	
+	public static TimePoint from(Date javaDate) {
+		return from(javaDate.getTime());
+	}
+
+	public static TimePoint from(Calendar calendar) {
+		return from(calendar.getTime());
+	}
+
 	public static TimePoint from(long milliseconds) {
 		return new TimePoint(milliseconds);
 	}
@@ -90,6 +96,8 @@ public class  TimePoint implements Comparable {
 	private TimePoint(long milliseconds) {
 		this.millisecondsFromEpoc = milliseconds;
 	}
+	
+	
 	
 	public boolean equals(Object otherPoint) {
 		return 
@@ -106,13 +114,10 @@ public class  TimePoint implements Comparable {
 		return date.asTimeInterval(zone).start();
 	}
 	
-	public boolean isSameCalendarDayAs(TimePoint other) {
-		Calendar thisDate = this.asJavaCalendar();		
-		Calendar otherDate = other.asJavaCalendar();
-		return
-			thisDate.get(Calendar.YEAR) == otherDate.get(Calendar.YEAR) &&
-			thisDate.get(Calendar.MONTH) == otherDate.get(Calendar.MONTH) &&
-			thisDate.get(Calendar.DAY_OF_MONTH) == otherDate.get(Calendar.DAY_OF_MONTH);
+	public boolean isSameCalendarDayAs(TimePoint other, TimeZone zone) {
+		CalendarDate thisDate = CalendarDate.from(this, zone);
+		CalendarDate otherDate = CalendarDate.from(other, zone);
+		return thisDate.equals(otherDate);
 	}
 
 	public String toString() {
@@ -127,10 +132,6 @@ public class  TimePoint implements Comparable {
 	}
 
 //	Comparisons
-
-	public boolean isBetween(TimePoint fromPoint, TimePoint toPoint) {
-		return TimeInterval.over(fromPoint, toPoint).includes(this);
-	}
 
 	public boolean isBefore(TimePoint other) {
 		return this.millisecondsFromEpoc < other.millisecondsFromEpoc;

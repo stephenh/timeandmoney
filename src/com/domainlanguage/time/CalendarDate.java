@@ -28,7 +28,7 @@ public class CalendarDate extends CalendarInterval {
 
 	public static CalendarDate from(String dateString, String pattern) {
 		TimeZone zone = TimeZone.getTimeZone("Universal");
-		TimePoint point = TimePoint.from(dateString, pattern, zone);
+		TimePoint point = TimePoint.parseFrom(dateString, pattern, zone);
 		return CalendarDate.from(point, zone);
 	}
 	

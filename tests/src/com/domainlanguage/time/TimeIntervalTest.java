@@ -137,8 +137,8 @@ public class TimeIntervalTest extends TestCase {
 		TimeInterval interval = TimeInterval.open(dec20_2003, dec22_2003);
 		assertEquals(Duration.days(2), interval.length());
 		
-		TimePoint first = TimePoint.from(2004, 1, 1, 1, 1, 1, 1);
-		TimePoint second = TimePoint.from(2004, 1, 6, 5, 4, 3, 2);
+		TimePoint first = TimePoint.atGMT(2004, 1, 1, 1, 1, 1, 1);
+		TimePoint second = TimePoint.atGMT(2004, 1, 6, 5, 4, 3, 2);
 		interval = TimeInterval.closed(first, second);
 		Duration expectedLength = Duration.daysHoursMinutesSecondsMillis(5, 4, 3, 2, 1);
 		assertEquals(expectedLength, interval.length());
@@ -146,16 +146,16 @@ public class TimeIntervalTest extends TestCase {
 
 
 	public void testDaysIterator() {
-		TimePoint start = TimePoint.from(2004, 2, 5, 10);
-		TimePoint end = TimePoint.from(2004, 2, 8, 2);
+		TimePoint start = TimePoint.atGMT(2004, 2, 5, 10, 0);
+		TimePoint end = TimePoint.atGMT(2004, 2, 8, 2, 0);
 		TimeInterval interval = TimeInterval.over(start, end);
 		Iterator it = interval.daysIterator();
 		assertTrue(it.hasNext());
 		assertEquals(start, it.next());
 		assertTrue(it.hasNext());
-		assertEquals(TimePoint.from(2004, 2, 6, 10), it.next());
+		assertEquals(TimePoint.atGMT(2004, 2, 6, 10, 0), it.next());
 		assertTrue(it.hasNext());
-		assertEquals(TimePoint.from(2004, 2, 7, 10), it.next());
+		assertEquals(TimePoint.atGMT(2004, 2, 7, 10, 0), it.next());
 		assertFalse(it.hasNext());
 	}
 	

@@ -18,12 +18,12 @@ public class AppointmentCalendarTest extends TestCase {
 	public void testEventsForDate() {
 		TimeZone pt = TimeZone.getTimeZone("America/Los_Angeles");
 
-		TimePoint jun7at10 = TimePoint.from(2004, 6, 7, 10, 0, 0, 0, pt);
+		TimePoint jun7at10 = TimePoint.at(2004, 6, 7, 10, 0, 0, 0, pt);
 		CalendarEvent shortEvent = new CalendarEvent();
 		TimeInterval shortTime = TimeInterval.from(jun7at10, Duration.hours(3));
 		shortEvent.setTimeInterval(shortTime);
 		
-		TimePoint jun9at13 = TimePoint.from(2004, 6, 9, 13, 0, 0, 0, pt);
+		TimePoint jun9at13 = TimePoint.at(2004, 6, 9, 13, 0, 0, 0, pt);
 		CalendarEvent longEvent = new CalendarEvent();
 		TimeInterval longTime = TimeInterval.over(jun7at10, jun9at13);
 		longEvent.setTimeInterval(longTime);
