@@ -7,6 +7,7 @@
 package com.domainlanguage.time;
 
 import java.util.Iterator;
+import java.util.List;
 import java.util.TimeZone;
 
 import com.domainlanguage.testutil.SerializationTest;
@@ -78,5 +79,17 @@ public class CalendarIntervalTest extends TestCase {
  		
  	}
 
- 	
+    public void testComplements() {
+        CalendarDate today = CalendarDate.date(2004, 12, 1);
+        CalendarDate tomorrow = today.plusDays(1);
+        CalendarInterval todayOn = CalendarInterval.inclusive(today, CalendarDate.FAR_FUTURE);
+        CalendarInterval tomorrowOn = CalendarInterval.inclusive(tomorrow, CalendarDate.FAR_FUTURE);
+
+        List complementList = tomorrowOn.complementRelativeTo(todayOn);
+        assertEquals(1, complementList.size());
+        CalendarInterval complement = (CalendarInterval) complementList.iterator().next();
+        assertTrue(complement.isClosed());
+        assertEquals(today, complement);
+    }
+
 }

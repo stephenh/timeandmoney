@@ -27,8 +27,9 @@ public abstract class CalendarInterval extends Interval {
 	}
 	
 	public Interval newOfSameType(Comparable lower, boolean isLowerClosed, Comparable upper, boolean isUpperClosed) {
-		assert isLowerClosed && isUpperClosed;
-		return inclusive((CalendarDate)lower, (CalendarDate)upper);
+		CalendarDate includedLower = isLowerClosed ? (CalendarDate)lower : ((CalendarDate)lower).plusDays(1); 
+		CalendarDate includedUpper = isUpperClosed ? (CalendarDate)upper : ((CalendarDate)upper).plusDays(-1); 
+		return inclusive(includedLower, includedUpper);
 	}
 
 
