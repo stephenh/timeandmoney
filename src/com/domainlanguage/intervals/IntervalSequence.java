@@ -17,6 +17,7 @@ public class IntervalSequence {
 
 	public void add(Interval interval) {
 		intervals.add(interval);
+		Collections.sort(intervals); //revisit: can we find a SortedCollection like?
 	}
 	
 	public boolean isEmpty() {

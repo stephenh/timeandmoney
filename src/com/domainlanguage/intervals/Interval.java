@@ -193,9 +193,7 @@ public abstract class Interval implements Comparable, Serializable {
 	}
 	
 	public int hashCode() {
-		//revisit: weired choice. would definately impare IntervalMap
-		//why not sepend it on lowerLimit & upperLimit ?
-		return 0;
+		return lowerLimit().hashCode() ^ upperLimit().hashCode();
 	}
 	
 	public boolean intersects(Interval other) {

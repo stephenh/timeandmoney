@@ -163,6 +163,10 @@ public class Money implements Comparable, Serializable {
 		return Ratio.of(amount, divisor.amount);
 	}
 
+	public Money applying (Ratio ratio, int roundingRule) {
+	    return applying(ratio, currency.getDefaultFractionDigits(), roundingRule);
+	}
+
 	public Money applying (Ratio ratio, int scale, int roundingRule) {
 		BigDecimal newAmount = ratio.times(amount).decimalValue(scale, roundingRule);
 		return Money.valueOf(newAmount, currency);

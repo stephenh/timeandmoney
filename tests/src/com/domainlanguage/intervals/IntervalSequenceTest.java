@@ -18,7 +18,6 @@ public class IntervalSequenceTest extends TestCase {
 	private Interval c20_25c = Interval.closed(new Integer(20), new Integer(25));
 	private Interval o25_30c = Interval.over(new Integer(25), false, new Integer(30), true);
 	private Interval o30_35o = Interval.open(new Integer(30), new Integer(35));
-	private Interval c5_25c = Interval.closed(new Integer(5), new Integer(25));
 	
 	public void testIterate() {
 		IntervalSequence intervalSequence = new IntervalSequence();
@@ -38,7 +37,7 @@ public class IntervalSequenceTest extends TestCase {
 		} catch (NoSuchElementException e) {}
 	}
 	
-	public void xtestInsertedOutOfOrder() {
+	public void testInsertedOutOfOrder() {
 		IntervalSequence intervalSequence = new IntervalSequence();
 		intervalSequence.add(o10_12c);
 		intervalSequence.add(c5_10c);
@@ -73,6 +72,6 @@ public class IntervalSequenceTest extends TestCase {
 		intervalSequence.add(c5_10c);
 		intervalSequence.add(o10_12c);
 		intervalSequence.add(c20_25c);
-		assertEquals(c5_25c = Interval.closed(new Integer(5), new Integer(25)), intervalSequence.extent());
+		assertEquals(Interval.closed(new Integer(5), new Integer(25)), intervalSequence.extent());
 	}
 } 
