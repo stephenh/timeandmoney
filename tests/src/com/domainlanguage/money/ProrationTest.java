@@ -7,6 +7,7 @@
 package com.domainlanguage.money;
 
 import junit.framework.TestCase;
+import java.math.*;
 
 public class ProrationTest extends TestCase {
 	Proration proration = new Proration();
@@ -83,6 +84,13 @@ public class ProrationTest extends TestCase {
 		startingValues[2] = Money.dollars(3.00);
 		startingValues[3] = Money.dollars(4.00);
 		assertEquals(Money.dollars(10.00), Proration.sum(startingValues));
+	}
+	
+	public void testPartOfWhole() {
+		Money total = Money.dollars(10.00);
+		long portion = 3l;
+		long whole = 9l;
+		assertEquals(Money.dollars(3.33), proration.partOfWhole(total, portion, whole));
 	}
 
 }

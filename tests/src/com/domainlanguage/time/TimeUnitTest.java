@@ -8,12 +8,18 @@ package com.domainlanguage.time;
 
 import java.util.Calendar;
 
+import com.domainlanguage.testutil.SerializationTest;
 import com.domainlanguage.time.TimeUnit;
 
 import junit.framework.TestCase;
 
 
 public class TimeUnitTest extends TestCase {
+
+//	TODO Why does this test hang?
+//	public void testSerialization() {
+//    	SerializationTest.assertSerializationWorks(TimeUnit.month);
+//    }
 
 	public void testToString() {
 		assertEquals("month", TimeUnit.month.toString());

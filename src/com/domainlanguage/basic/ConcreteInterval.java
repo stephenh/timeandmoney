@@ -14,7 +14,7 @@ public class ConcreteInterval extends Interval {
 	private boolean includesUpperLimit;
 
 	public ConcreteInterval(Comparable lower, boolean lowerIncluded, Comparable upper, boolean upperIncluded) {
-//		assert lower.compareTo(upper) < 0;
+		assert lower.compareTo(upper) <= 0;
 		lowerLimit = lower;
 		includesLowerLimit = lowerIncluded;
 		upperLimit = upper;

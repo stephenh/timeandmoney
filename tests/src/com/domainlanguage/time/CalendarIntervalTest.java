@@ -9,6 +9,8 @@ package com.domainlanguage.time;
 import java.util.Iterator;
 import java.util.TimeZone;
 
+import com.domainlanguage.testutil.SerializationTest;
+
 import junit.framework.TestCase;
 
 public class CalendarIntervalTest extends TestCase {
@@ -25,6 +27,10 @@ public class CalendarIntervalTest extends TestCase {
 	TimeZone pt = TimeZone.getTimeZone("America/Los_Angeles");
 	TimeZone ct = TimeZone.getTimeZone("America/Chicago");
 
+    public void testSerialization() {
+    	SerializationTest.assertSerializationWorks(may);
+    }
+	
 	public void testTranslationToTimeInterval() {
 		TimeInterval day = may20.asTimeInterval(ct);
 		assertEquals("May20Ct", TimePoint.atMidnight(2004, 5, 20, ct), day.start());

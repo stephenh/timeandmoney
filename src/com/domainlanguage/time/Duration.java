@@ -6,9 +6,10 @@
 
 package com.domainlanguage.time;
 
+import java.io.Serializable;
 import java.util.*;
 
-public class Duration implements Comparable {
+public class Duration implements Comparable, Serializable {
 	public static final Duration NONE = milliseconds(0);
 
 	final long quantity;

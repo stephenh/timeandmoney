@@ -7,8 +7,7 @@
 package com.domainlanguage.basic;
 
 import java.math.BigDecimal;
-
-import com.domainlanguage.basic.Interval;
+import com.domainlanguage.testutil.SerializationTest;
 
 import junit.framework.TestCase;
 
@@ -27,13 +26,17 @@ public class IntervalTest extends TestCase {
 //		//Redundant, maybe, but with all the compiler default
 //		//confusion at the moment, I decided to throw this in.
 //		try {
-//			ComparableInterval.closed(new BigDecimal(2.0), new BigDecimal(1.0));
+//			Interval.closed(new BigDecimal(2.0), new BigDecimal(1.0));
 //			fail("Lower bound mustn't be above upper bound.");
 //		} catch (AssertionError e) {
 //			//Correct. Do nothing.
 //		}
 //	}
 
+    public void testSerialization() {
+    	SerializationTest.assertSerializationWorks(r5_10);
+    }
+    
 	public void testIsBelow() {
 	  	Interval range = Interval.closed(new BigDecimal(-5.5), new BigDecimal(6.6));
 	    assertFalse (range.isBelow(new BigDecimal(5.0)));

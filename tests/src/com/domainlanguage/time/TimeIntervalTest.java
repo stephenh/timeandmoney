@@ -8,6 +8,8 @@ package com.domainlanguage.time;
 
 import java.util.*;
 
+import com.domainlanguage.testutil.SerializationTest;
+
 import junit.framework.*;
 
 public class TimeIntervalTest extends TestCase {
@@ -17,6 +19,11 @@ public class TimeIntervalTest extends TestCase {
 	private TimePoint dec22_2003 = TimePoint.atMidnightGMT(2003, 12, 22);
 	private TimePoint dec23_2003 = TimePoint.atMidnightGMT(2003, 12, 23);
 
+    public void testSerialization() {
+		TimeInterval interval = TimeInterval.closed(dec20_2003, dec22_2003);
+    	SerializationTest.assertSerializationWorks(interval);
+    }
+	
 	public void testBeforeClosed() {
 			TimeInterval interval = TimeInterval.closed(dec20_2003, dec22_2003);
 		// Only the upper end should matter for this test.

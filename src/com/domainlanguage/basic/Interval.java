@@ -147,4 +147,12 @@ public abstract class Interval implements Comparable, Serializable {
 		return this.includesUpperLimit() && other.includesUpperLimit();
 	}
 
+	public boolean equals(Object other) {
+		if (!(other instanceof Interval)) return false;
+		return compareTo(other) == 0;
+	}
+	
+	public int hashCode() {
+		return 0;
+	}
 }

@@ -67,5 +67,12 @@ public class Proration {
 		}
 		return sum;
 	}
+
+	public Money partOfWhole(Money total, long portion, long whole) {
+		//This method will round down, because extra pennies go to early portions.
+		// TODO Let Proration object be configured either way on this.
+		long[] proportions = {whole - portion, portion};
+		return proratedOver(total, proportions)[1];
+	}
 	
 }

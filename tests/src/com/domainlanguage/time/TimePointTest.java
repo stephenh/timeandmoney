@@ -8,6 +8,8 @@ package com.domainlanguage.time;
 
 import java.util.*;
 
+import com.domainlanguage.testutil.SerializationTest;
+
 import junit.framework.*;
 
 public class TimePointTest extends TestCase {
@@ -22,6 +24,10 @@ public class TimePointTest extends TestCase {
 	TimePoint dec21_2003 = TimePoint.atMidnightGMT(2003, 12, 21);
 	TimePoint dec22_2003 = TimePoint.atMidnightGMT(2003, 12, 22);
 
+	
+    public void testSerialization() {
+    	SerializationTest.assertSerializationWorks(dec19_2003);
+    }
 	
 	public void testCreationWithDefaultTimeZone() {
 		TimePoint expected = TimePoint.atGMT(2004, 1, 1, 0, 0, 0, 0);

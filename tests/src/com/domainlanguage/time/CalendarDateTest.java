@@ -8,6 +8,8 @@ package com.domainlanguage.time;
 
 import java.util.TimeZone;
 
+import com.domainlanguage.testutil.SerializationTest;
+
 import junit.framework.TestCase;
 
 public class CalendarDateTest extends TestCase {
@@ -17,6 +19,10 @@ public class CalendarDateTest extends TestCase {
 	TimeZone gmt = TimeZone.getTimeZone("Universal");
 	TimeZone ct = TimeZone.getTimeZone("America/Chicago");
 
+    public void testSerialization() {
+    	SerializationTest.assertSerializationWorks(feb17);
+    }
+	
 	public void testComparison() {
 		assertTrue(feb17.isBefore(mar13));
 		assertFalse(mar13.isBefore(feb17));

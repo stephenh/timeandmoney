@@ -5,6 +5,8 @@ import junit.framework.*;
 import java.math.*;
 import java.util.Currency;
 
+import com.domainlanguage.testutil.SerializationTest;
+
 
 public class MoneyTest extends TestCase {
 	private Money d15;
@@ -25,6 +27,10 @@ public class MoneyTest extends TestCase {
 		d100 = Money.valueOf(new BigDecimal("100.0"), USD);
 	}
 
+    public void testSerialization() {
+    	SerializationTest.assertSerializationWorks(d15);
+    }
+	
 	public void testCreationFromDouble() {
 		assertEquals(d15, Money.valueOf (15.0, USD));
 		assertEquals(d2_51, Money.valueOf (2.51, USD));

@@ -6,12 +6,13 @@
 
 package com.domainlanguage.time;
 
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-public class  TimePoint implements Comparable {
+public class  TimePoint implements Comparable, Serializable {
 	private static final TimeZone gmt = TimeZone.getTimeZone("Universal");
 	public static final TimePoint FAR_PAST = atMidnightGMT(0001, 1, 1);
 	public static final TimePoint FAR_FUTURE = atMidnightGMT(9999, 12, 31);

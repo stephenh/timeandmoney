@@ -6,8 +6,10 @@
 
 package com.domainlanguage.time;
 
+import java.io.Serializable;
 
-class TimeUnit implements Comparable {
+
+class TimeUnit implements Comparable, Serializable {
 
 	//Unit conversion factors
 	static final int millisecondsPerSecond = 1000;
