@@ -98,6 +98,23 @@ public class Money implements Comparable, Serializable {
 	}
 
 	/**
+	 * How best to handle access to the internals? It is needed for
+	 * database mapping, UI presentation, and perhaps a few other
+	 * uses. Yet giving public access invites people to do the
+	 * real work of the Money object elsewhere.
+	 * Here is an experimental approach, giving access with a 
+	 * warning label of sorts. Let us know how you like it.
+	 */
+	public BigDecimal breachEncapsulationAmount() {
+		return amount;
+	}
+
+	public Currency breachEncapsulationCurrency() {
+		return currency;
+	}
+	
+	
+	/**
      * This probably should be Currency responsibility. Even then, it may need
      * to be customized for specialty apps because there are other cases, where
      * the smallest increment is not the smallest unit.
