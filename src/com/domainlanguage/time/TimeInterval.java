@@ -63,12 +63,17 @@ public class TimeInterval extends Interval {
 	private boolean includesUpperLimit;
 
 	public TimeInterval(TimePoint lower, boolean lowerIncluded, TimePoint upper, boolean upperIncluded) {
-//		assert lower.compareTo(upper) < 0;
+//		assert lower.compareTo(upper) < 0;  //This should really be an Interval invariant.
 		lowerLimit = lower;
 		includesLowerLimit = lowerIncluded;
 		upperLimit = upper;
 		includesUpperLimit = upperIncluded;
 	}
+
+	public Interval newOfSameType(Comparable lower, boolean isLowerClosed, Comparable upper, boolean isUpperClosed) {
+		return new TimeInterval((TimePoint)lower, isLowerClosed, (TimePoint)upper, isUpperClosed);
+	}
+	
 	public Comparable upperLimit() {
 		return upperLimit;
 	}
@@ -134,5 +139,6 @@ public class TimeInterval extends Interval {
 
 		return Interval.over(intersectLowerBound, greaterOfLowerIncluded(other), intersectUpperBound, lesserOfUpperIncluded(other));
 	}
+
 
 }

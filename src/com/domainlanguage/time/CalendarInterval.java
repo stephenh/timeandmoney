@@ -16,6 +16,7 @@ import com.domainlanguage.basic.Interval;
 public abstract class CalendarInterval extends Interval {
 
 	public static CalendarInterval inclusive(CalendarDate start, CalendarDate end) {
+		if (start.equals(end)) return start;
 		return ConcreteCalendarInterval.from(start, end);
 	}
 
@@ -24,6 +25,12 @@ public abstract class CalendarInterval extends Interval {
 		CalendarDate endDate = CalendarDate.from(endYear, endMonth, endDay);
 		return ConcreteCalendarInterval.from(startDate, endDate);
 	}
+	
+	public Interval newOfSameType(Comparable lower, boolean isLowerClosed, Comparable upper, boolean isUpperClosed) {
+		assert isLowerClosed && isUpperClosed;
+		return inclusive((CalendarDate)lower, (CalendarDate)upper);
+	}
+
 
 	public static CalendarDate date(int year, int month, int day) {
 		return CalendarDate.from(year, month, day);

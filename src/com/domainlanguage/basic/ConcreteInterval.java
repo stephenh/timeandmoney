@@ -21,7 +21,10 @@ public class ConcreteInterval extends Interval {
 		includesUpperLimit = upperIncluded;
 	}
 	
-
+	public Interval newOfSameType(Comparable lower, boolean isLowerClosed, Comparable upper, boolean isUpperClosed) {
+		return new ConcreteInterval(lower, isLowerClosed, upper, isUpperClosed);
+	}
+	
 	public Comparable upperLimit() {
 		return upperLimit;
 	}
@@ -33,14 +36,6 @@ public class ConcreteInterval extends Interval {
 	}
 	public boolean includesUpperLimit() {
 		return includesUpperLimit;
-	}
-
-	public Interval intersect(Interval other) {
-		Comparable intersectLowerBound = greaterOfLowerLimits(other);
-		Comparable intersectUpperBound = lesserOfUpperLimits(other);
-		if (intersectLowerBound.compareTo(intersectUpperBound) > 0) return open(intersectLowerBound, intersectLowerBound);
-
-		return Interval.over(intersectLowerBound, greaterOfLowerIncluded(other), intersectUpperBound, lesserOfUpperIncluded(other));
 	}
 
 }

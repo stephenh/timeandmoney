@@ -7,6 +7,8 @@
 package com.domainlanguage.basic;
 
 import java.math.BigDecimal;
+import java.util.List;
+
 import com.domainlanguage.testutil.SerializationTest;
 
 import junit.framework.TestCase;
@@ -35,6 +37,14 @@ public class IntervalTest extends TestCase {
 
     public void testSerialization() {
     	SerializationTest.assertSerializationWorks(r5_10);
+    }
+    
+    public void testAbstractCreation() {
+    	Interval concrete = new ConcreteInterval(new Integer(1), true, new Integer(3), true);
+    	Interval newInterval = concrete.newOfSameType(new Integer(1), false, new Integer(4), false);
+    	assertTrue(newInterval instanceof ConcreteInterval);
+    	Interval expected = new ConcreteInterval(new Integer(1), false, new Integer(4), false); 
+    	assertEquals(expected, newInterval);
     }
     
 	public void testIsBelow() {
@@ -88,7 +98,7 @@ public class IntervalTest extends TestCase {
 //	    assertTrue(range.includes(Double.POSITIVE_INFINITY));
 //	    assertTrue(range.includes(5.5001));
 //	  }
-		public void testIntersection() {
+		public void testIntersects() {
 		    assertTrue ("r5_10.intersects(r1_10)",r5_10.intersects(r1_10));
 		    assertTrue ("r1_10.intersects(r5_10)",r1_10.intersects(r5_10));
 		    assertTrue ("r4_6.intersects(r1_10)",r4_6.intersects(r1_10));
@@ -101,8 +111,10 @@ public class IntervalTest extends TestCase {
 		    assertTrue ("r5_10.intersects(r5_10)",r5_10.intersects(r5_10));
 		    assertFalse ("r1_10.intersects(x10_12)",r1_10.intersects(x10_12));
 		    assertFalse ("x10_12.intersects(r1_10)",x10_12.intersects(r1_10));
-	 	}
-
+	 	}		
+		
+		
+		
 		public void testGreaterOfLowerLimits() {
 		    assertEquals(new BigDecimal(5), r5_10.greaterOfLowerLimits(r1_10));
 		    assertEquals(new BigDecimal(5), r1_10.greaterOfLowerLimits(r5_10));
@@ -132,4 +144,104 @@ public class IntervalTest extends TestCase {
 
 	 	}
 
+		public void testRelativeComplementDisjoint() {
+			Interval c1_3c = Interval.closed(new Integer(1),new Integer(3));
+			Interval c5_7c = Interval.closed(new Integer(5), new Integer(7));
+			List complement = c1_3c.complementRelativeTo(c5_7c);
+		    assertEquals(1, complement.size());
+		    assertEquals(c5_7c,complement.get(0));
+		}
+
+		public void testRelativeComplementDisjointAdjacentOpen() {
+			Interval c1_3o = Interval.over(new Integer(1), true, new Integer(3), false);
+			Interval c3_7c = Interval.closed(new Integer(3), new Integer(7));
+			List complement = c1_3o.complementRelativeTo(c3_7c);
+		    assertEquals(1, complement.size());
+		    assertEquals(c3_7c,complement.get(0));
+		}
+		
+		
+		public void testRelativeComplementOverlapLeft() {
+			Interval c1_5c = Interval.closed(new Integer(1), new Integer(5));
+			Interval c3_7c = Interval.closed(new Integer(3), new Integer(7));
+			List complement = c3_7c.complementRelativeTo(c1_5c);
+		    Interval c1_3o = Interval.over(new Integer(1), true, new Integer(3), false);
+		    assertEquals(1, complement.size());
+		    assertEquals(c1_3o,complement.get(0));
+		}
+
+		public void testRelativeComplementOverlapRight() {
+			Interval c1_5c = Interval.closed(new Integer(1), new Integer(5));
+			Interval c3_7c = Interval.closed(new Integer(3), new Integer(7));
+			List complement = c1_5c.complementRelativeTo(c3_7c);
+		    Interval o5_7c = Interval.over(new Integer(5), false, new Integer(7), true);
+		    assertEquals(1, complement.size());
+		    assertEquals(o5_7c,complement.get(0));
+		}
+
+		public void testRelativeComplementAdjacentClosed() {
+			Interval c1_3c = Interval.closed(new Integer(1),new Integer(3));
+			Interval c5_7c = Interval.closed(new Integer(5), new Integer(7));
+			List complement = c1_3c.complementRelativeTo(c5_7c);
+		    assertEquals(1, complement.size());
+		    assertEquals(c5_7c,complement.get(0));
+		}
+
+		public void testRelativeComplementEnclosing() {
+			Interval c3_5c = Interval.closed(new Integer(3),new Integer(5));
+			Interval c1_7c = Interval.closed(new Integer(1), new Integer(7));
+			List complement = c1_7c.complementRelativeTo(c3_5c);
+		    assertEquals(0, complement.size());
+		}
+
+		public void testRelativeComplementEqual() {
+			Interval c1_7c = Interval.closed(new Integer(1), new Integer(7));
+			List complement = c1_7c.complementRelativeTo(c1_7c);
+		    assertEquals(0, complement.size());
+		}
+		
+		public void testRelativeComplementEnclosed() {
+			Interval c3_5c = Interval.closed(new Integer(3),new Integer(5));
+			Interval c1_7c = Interval.closed(new Integer(1), new Integer(7));
+			Interval c1_3o = Interval.over(new Integer(1), true, new Integer(3), false);
+			Interval o5_7c = Interval.over(new Integer(5), false, new Integer(7), true);
+			List complement = c3_5c.complementRelativeTo(c1_7c);
+		    assertEquals(2, complement.size());
+		    assertEquals(c1_3o,complement.get(0));
+		    assertEquals(o5_7c,complement.get(1));
+		}
+
+		public void testRelativeComplementEnclosedEndPoint() {
+			Interval o3_5o = Interval.open(new Integer(3),new Integer(5));
+			Interval c3_5c = Interval.closed(new Integer(3),new Integer(5));
+			List complement = o3_5o.complementRelativeTo(c3_5c);
+		    assertEquals(2, complement.size());
+		    assertTrue(((Interval)complement.get(0)).includes(new Integer(3)));
+		}
+
+//		TODO: The following test seems logical to me, based on the sets, but need to look up the definitions.
+//		public void testEqualsForOnePointIntervals() {
+//			Interval o1_1c = Interval.over(new Integer(1), false, new Integer(1), true);
+//			Interval c1_1o = Interval.over(new Integer(1), true, new Integer(1), false);
+//			Interval c1_1c = Interval.over(new Integer(1), true, new Integer(1), true);
+//			Interval o1_1o = Interval.over(new Integer(1), false, new Integer(1), false);
+//			assertEquals(o1_1c, c1_1o);
+//			assertEquals(o1_1c, c1_1c);
+//			assertEquals(c1_1o, c1_1c);
+//			assertFalse(o1_1c.equals(o1_1o));
+//		}
+		
+		public void testRelativeComplementEnclosedOpen() {
+			Interval o3_5o = Interval.open(new Integer(3),new Integer(5));
+			Interval c1_7c = Interval.closed(new Integer(1), new Integer(7));
+			Interval c1_3c = Interval.closed(new Integer(1), new Integer(3));
+			Interval c5_7c = Interval.closed(new Integer(5), new Integer(7));
+			List complement = o3_5o.complementRelativeTo(c1_7c);
+		    assertEquals(2, complement.size());
+		    assertEquals(c1_3c,complement.get(0));
+		    assertEquals(c5_7c,complement.get(1));
+		}
+
+
+		
 }

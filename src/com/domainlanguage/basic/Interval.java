@@ -7,6 +7,8 @@
 package com.domainlanguage.basic;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The rules of this class are consistent with the common mathematical 
@@ -121,6 +123,12 @@ public abstract class Interval implements Comparable, Serializable {
 	 * They are public only for use by extentions (subclasses).
 	 */
 	
+	public Comparable lesserOfLowerLimits(Interval other) {
+		int lowerComparison = lowerLimit().compareTo(other.lowerLimit());
+		if (lowerComparison <= 0) return this.lowerLimit();
+		return other.lowerLimit();
+	}
+
 	public Comparable greaterOfLowerLimits(Interval other) {
 		int lowerComparison = lowerLimit().compareTo(other.lowerLimit());
 		if (lowerComparison >= 0) return this.lowerLimit();
@@ -147,6 +155,12 @@ public abstract class Interval implements Comparable, Serializable {
 		return this.includesUpperLimit() && other.includesUpperLimit();
 	}
 
+	public Comparable greaterOfUpperLimits(Interval other) {
+		int upperComparison = upperLimit().compareTo(other.upperLimit());
+		if (upperComparison >= 0) return this.upperLimit();
+		return other.upperLimit();
+	}
+
 	public boolean equals(Object other) {
 		if (!(other instanceof Interval)) return false;
 		return compareTo(other) == 0;
@@ -155,4 +169,46 @@ public abstract class Interval implements Comparable, Serializable {
 	public int hashCode() {
 		return 0;
 	}
+
+	public List complementRelativeTo(Interval other) {
+		List intervalSequence = new ArrayList();
+		if (!this.intersects(other)) {
+			intervalSequence.add(other);
+			return intervalSequence;
+		}
+		Interval left = leftComplementRelativeTo(other);
+		if (left != null) intervalSequence.add(left);
+		Interval right = rightComplementRelativeTo(other);
+		if (right != null) intervalSequence.add(right);
+		
+		return intervalSequence;
+		
+	}
+	
+	private Interval leftComplementRelativeTo(Interval other) {
+		if (this.includes(lesserOfLowerLimits(other))) return null;
+		if (lowerLimit().equals(other.lowerLimit()) && !other.includesLowerLimit()) return null;
+		return newOfSameType(other.lowerLimit(), other.includesLowerLimit(), this.lowerLimit(), !this.includesLowerLimit());
+	}
+
+	private Interval rightComplementRelativeTo(Interval other) {
+		if (this.includes(greaterOfUpperLimits(other))) return null;
+		if (upperLimit().equals(other.upperLimit()) && !other.includesUpperLimit()) return null;
+		return newOfSameType(this.upperLimit(), !this.includesUpperLimit(), other.upperLimit(), other.includesUpperLimit());
+	}
+
+	public abstract Interval newOfSameType(Comparable lower, boolean isLowerClosed, Comparable upper, boolean isUpperClosed);
+
+	public Interval intersect(Interval other) {
+		Comparable intersectLowerBound = greaterOfLowerLimits(other);
+		Comparable intersectUpperBound = lesserOfUpperLimits(other);
+		if (intersectLowerBound.compareTo(intersectUpperBound) > 0) return emptyOfSameType();
+	
+		return newOfSameType(intersectLowerBound, greaterOfLowerIncluded(other), intersectUpperBound, lesserOfUpperIncluded(other));
+	}
+	
+	public Interval emptyOfSameType() {
+		return newOfSameType(lowerLimit(), false, lowerLimit(), false);
+	}
 }
+;
