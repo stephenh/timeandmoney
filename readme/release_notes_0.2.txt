@@ -17,10 +17,10 @@ this way.
 
 Java Version Requirements
 -------------------------
-v 1.5  The money package depends on the java.util.Currency class. This dependency
+v 1.5:  The money package depends on the java.util.Currency class. This dependency
 could be eliminated by adding a Currency class to the library. For now, it seems
 simpler to use what the Sun provided.
 
-assertions Many methods state preconditions using Java assert statement, which was
+assertions: Many methods state preconditions using Java assert statement, which was
 added in v 1.4(?) and is by default ignored. This can be made backward compatible by
 commenting out the assert statements.
