@@ -6,16 +6,16 @@
 
 package com.domainlanguage.time;
 
-import java.math.BigDecimal;
-
-import com.domainlanguage.testutil.SerializationTest;
+import java.math.*;
 
 import junit.framework.*;
+
+import com.domainlanguage.tests.*;
 
 public class DurationTest extends TestCase {
 
     public void testSerialization() {
-    	SerializationTest.assertSerializationWorks(Duration.days(1));
+    	SerializationTester.assertSerializationWorks(Duration.days(1));
     }
 	
 	public void testAddMillisecondsToPoint() {
@@ -120,7 +120,7 @@ public class DurationTest extends TestCase {
 	}
 	
 	/**
-	 * TODO More edge cases and exceptions (like nonconvertable units).
+	 * TODO: More edge cases and exceptions (like nonconvertable units).
 	 */
 	public void testCompare() {
 		Duration oneHour = Duration.hours(1);

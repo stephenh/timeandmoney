@@ -1,19 +1,16 @@
 /**
  * Created on Nov 5, 2004
  */
-package com.domainlanguage.testutil;
+package com.domainlanguage.tests;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
+import java.io.*;
 
-import junit.framework.AssertionFailedError;
+import junit.framework.*;
 
-public class SerializationTest {
+/**
+ * @author Vladimir Gitlevich
+ */
+public class SerializationTester {
 	private static final String TEST_FILE = "test.txt";
 
 	public static void assertSerializationWorks(Object toSerialize) throws AssertionFailedError {

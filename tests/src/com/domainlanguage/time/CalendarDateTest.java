@@ -6,11 +6,11 @@
 
 package com.domainlanguage.time;
 
-import java.util.TimeZone;
-import java.util.Calendar;
-import com.domainlanguage.testutil.SerializationTest;
+import java.util.*;
 
-import junit.framework.TestCase;
+import junit.framework.*;
+
+import com.domainlanguage.tests.*;
 
 public class CalendarDateTest extends TestCase {
 	
@@ -20,7 +20,7 @@ public class CalendarDateTest extends TestCase {
 	TimeZone ct = TimeZone.getTimeZone("America/Chicago");
 
     public void testSerialization() {
-    	SerializationTest.assertSerializationWorks(feb17);
+    	SerializationTester.assertSerializationWorks(feb17);
     }
 	
 	public void testComparison() {

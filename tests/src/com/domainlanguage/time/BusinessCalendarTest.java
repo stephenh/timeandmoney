@@ -6,9 +6,9 @@
 
 package com.domainlanguage.time;
 
-import java.util.Iterator;
+import java.util.*;
 
-import junit.framework.TestCase;
+import junit.framework.*;
 
 public class BusinessCalendarTest extends TestCase {
 	private BusinessCalendar businessCalendar() {

@@ -6,12 +6,11 @@
 
 package example.insuranceRates;
 
-import com.domainlanguage.basic.*;
-import com.domainlanguage.time.*;
-import com.domainlanguage.money.Money;
-import com.domainlanguage.money.Proration;
+import junit.framework.*;
 
-import junit.framework.TestCase;
+import com.domainlanguage.basic.*;
+import com.domainlanguage.money.*;
+import com.domainlanguage.time.*;
 
 public class CalculateRate extends TestCase {
 	

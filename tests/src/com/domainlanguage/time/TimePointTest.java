@@ -8,9 +8,9 @@ package com.domainlanguage.time;
 
 import java.util.*;
 
-import com.domainlanguage.testutil.SerializationTest;
-
 import junit.framework.*;
+
+import com.domainlanguage.tests.*;
 
 public class TimePointTest extends TestCase {
 	private static final String AM = "AM";
@@ -26,7 +26,7 @@ public class TimePointTest extends TestCase {
 
 	
     public void testSerialization() {
-    	SerializationTest.assertSerializationWorks(dec19_2003);
+    	SerializationTester.assertSerializationWorks(dec19_2003);
     }
 	
 	public void testCreationWithDefaultTimeZone() {

@@ -8,9 +8,9 @@ package com.domainlanguage.time;
 
 import java.util.*;
 
-import com.domainlanguage.testutil.SerializationTest;
-
 import junit.framework.*;
+
+import com.domainlanguage.tests.*;
 
 public class TimeIntervalTest extends TestCase {
 	private TimePoint dec19_2003 = TimePoint.atMidnightGMT(2003, 12, 19);
@@ -21,7 +21,7 @@ public class TimeIntervalTest extends TestCase {
 
     public void testSerialization() {
 		TimeInterval interval = TimeInterval.closed(dec20_2003, dec22_2003);
-    	SerializationTest.assertSerializationWorks(interval);
+    	SerializationTester.assertSerializationWorks(interval);
     }
 	
 	public void testBeforeClosed() {

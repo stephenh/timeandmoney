@@ -6,10 +6,9 @@
 
 package com.domainlanguage.time;
 
-import java.util.Calendar;
-import java.util.Iterator;
+import java.util.*;
 
-import junit.framework.TestCase;
+import junit.framework.*;
 
 public class DateSpecificationTest extends TestCase {
 

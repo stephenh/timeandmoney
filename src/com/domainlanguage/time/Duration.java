@@ -168,7 +168,7 @@ public class Duration implements Comparable, Serializable {
 		return (int) quantity;
 	}
 	
-	//TODO What should happen if units are not convertible?
+	//TODO: What should happen if units are not convertible?
 	public int compareTo(Object arg) {
 		Duration other = (Duration) arg;
 		assert this.unit.isConvertibleTo(other.unit);

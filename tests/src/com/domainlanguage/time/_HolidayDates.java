@@ -2,8 +2,6 @@ package com.domainlanguage.time;
 
 import java.util.*;
 
-import com.domainlanguage.time.CalendarDate;
-
 
 /** dates are taken from: http://www.opm.gov/fedhol/index.htm
 	note: when a holiday falls on a non-workday -- Saturday or Sunday --

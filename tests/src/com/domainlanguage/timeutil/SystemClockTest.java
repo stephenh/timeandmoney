@@ -6,11 +6,11 @@
 
 package com.domainlanguage.timeutil;
 
-import java.util.Date;
+import java.util.*;
 
-import com.domainlanguage.time.TimePoint;
+import junit.framework.*;
 
-import junit.framework.TestCase;
+import com.domainlanguage.time.*;
 
 public class SystemClockTest extends TestCase {
 

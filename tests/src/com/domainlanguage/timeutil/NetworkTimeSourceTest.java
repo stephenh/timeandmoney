@@ -6,9 +6,7 @@
 
 package com.domainlanguage.timeutil;
 
-import com.domainlanguage.timeutil.NetworkTimeSource;
-
-import junit.framework.TestCase;
+import junit.framework.*;
 
 public class NetworkTimeSourceTest extends TestCase {
 

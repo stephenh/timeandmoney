@@ -6,18 +6,17 @@
 
 package com.domainlanguage.time;
 
-import java.util.Calendar;
+import java.util.*;
 
-import com.domainlanguage.testutil.SerializationTest;
-import com.domainlanguage.time.TimeUnit;
+import junit.framework.*;
 
-import junit.framework.TestCase;
+import com.domainlanguage.tests.*;
 
 
 public class TimeUnitTest extends TestCase {
 
 	public void testSerialization() {
-    	SerializationTest.assertSerializationWorks(TimeUnit.month);
+    	SerializationTester.assertSerializationWorks(TimeUnit.month);
     }
 
 	public void testToString() {

@@ -163,7 +163,7 @@ public class Money implements Comparable, Serializable {
 	}
 
 	/**
-	 * TODO Many apps require carrying extra precision in intermediate calculations.
+	 * TODO: Many apps require carrying extra precision in intermediate calculations.
 	 * The use of Ratio is a beginning, but need a comprehensive solution.
 	 * Currently, an invariant of Money is that the scale is the currencies standard
 	 * scale, but this will probably have to be suspended or elaborated in intermediate 
@@ -175,7 +175,7 @@ public class Money implements Comparable, Serializable {
 	}
 	
 	/**
-	 * TODO BigDecimal.multiply() scale is sum of scales of two multiplied numbers. So what is scale of times?
+	 * TODO: BigDecimal.multiply() scale is sum of scales of two multiplied numbers. So what is scale of times?
 	 */
 	public Money times(BigDecimal factor, int roundingMode) {
 		return Money.valueOf(amount.multiply(factor), currency, roundingMode);
@@ -226,7 +226,7 @@ public class Money implements Comparable, Serializable {
 		return currency.toString() + " " + amount;
 	}
 	
-//	TODO Provide some currency-dependent formatting. Java 1.4 Currency doesn't do it.	
+//	TODO: Provide some currency-dependent formatting. Java 1.4 Currency doesn't do it.	
 //	public String formatString() {
 //		return currency.formatString(amount());
 //	}

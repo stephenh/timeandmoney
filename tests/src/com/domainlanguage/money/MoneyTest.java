@@ -1,24 +1,24 @@
 package com.domainlanguage.money;
 
+import java.math.*;
+import java.util.*;
+
 import junit.framework.*;
 
-import java.math.*;
-import java.util.Currency;
-
-import com.domainlanguage.testutil.SerializationTest;
+import com.domainlanguage.tests.*;
 
 
 public class MoneyTest extends TestCase {
+	private static Currency USD = Currency.getInstance("USD");
+	private static Currency JPY = Currency.getInstance("JPY");
+	private static Currency EUR = Currency.getInstance("EUR");
+
 	private Money d15;
 	private Money d2_51;
 	private Money y50;
 	private Money e2_51;
 	private Money d100;
 	
-	private static Currency USD = Currency.getInstance("USD");
-	private static Currency JPY = Currency.getInstance("JPY");
-	private static Currency EUR = Currency.getInstance("EUR");
-
 	public void setUp() {
 		d15 = Money.valueOf(new BigDecimal("15.0"), USD);
 		d2_51 = Money.valueOf(new BigDecimal("2.51"), USD);
@@ -28,7 +28,7 @@ public class MoneyTest extends TestCase {
 	}
 
     public void testSerialization() {
-    	SerializationTest.assertSerializationWorks(d15);
+    	SerializationTester.assertSerializationWorks(d15);
     }
 	
 	public void testCreationFromDouble() {
@@ -46,8 +46,6 @@ public class MoneyTest extends TestCase {
 		assertEquals("mult", y80, y50.times(1.6));
     }
 
-
-
 	public void testConstructor() throws Exception {
 		Money d69_99 = new Money (new BigDecimal ("69.99"), USD);
 		assertEquals(new BigDecimal("69.99"), d69_99.amount);
@@ -58,21 +56,22 @@ public class MoneyTest extends TestCase {
 		} catch (IllegalArgumentException correctResponse) {}
 	}
 
-
     public void testDivide() {
 		assertEquals(Money.dollars(33.33), d100.dividedBy(3));
 		assertEquals(Money.dollars(16.67), d100.dividedBy(6));
     }
+    
 	public void testMultiply() {
 		assertEquals(Money.dollars(150), d15.times(10));
 		assertEquals(Money.dollars(1.5), d15.times(0.1));
 		assertEquals(Money.dollars(70), d100.times(0.7));
 	}
+	
 	public void testMultiplyRounding() {
 		assertEquals(Money.dollars(66.67), d100.times(0.66666667));
 		assertEquals(Money.dollars(66.66), d100.times(0.66666667, BigDecimal.ROUND_DOWN));
-
 	}
+	
 	public void testMultiplicationWithExplicitRounding() {
 		assertEquals(Money.dollars(66.67), d100.times(new BigDecimal("0.666666"), BigDecimal.ROUND_HALF_EVEN));
 		assertEquals(Money.dollars(66.66), d100.times(new BigDecimal("0.666666"), BigDecimal.ROUND_DOWN));
@@ -106,7 +105,6 @@ public class MoneyTest extends TestCase {
 		} catch(ArithmeticException correctBehavior) {}
 	}
 	
-
 	public void testCloseNumbersNotEqual() {
 		Money d2_51a = Money.dollars(2.515);
 		Money d2_51b = Money.dollars(2.5149);
@@ -134,7 +132,7 @@ public class MoneyTest extends TestCase {
 		assertEquals(d2_51a, d2_51);
 	}
 
-//  TODO Need default formatted string, which Java Currency doesn't provide
+//  TODO: Need default formatted string, which Java Currency doesn't provide
 //	public void xtestFormatPrinting() {
 //		// *** TBD **
 //		assertEquals("$15.00", d15.formatString());
@@ -190,4 +188,5 @@ public class MoneyTest extends TestCase {
 		System.out.println(val == 1.00);
         // </codeFragment>
 	}
+	
 }
