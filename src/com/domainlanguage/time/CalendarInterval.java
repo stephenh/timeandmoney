@@ -86,17 +86,17 @@ public abstract class CalendarInterval extends Interval {
 
 	public int lengthInMonthsInt() {
 		Calendar calStart = start().asJavaCalendarUniversalZoneMidnight();
-		Calendar calEnd = end().asJavaCalendarUniversalZoneMidnight();
+		Calendar calEnd = end().plusDays(1).asJavaCalendarUniversalZoneMidnight();
 		int yearDiff = calEnd.get(Calendar.YEAR) - calStart.get(Calendar.YEAR);
 		int monthDiff = yearDiff * 12 + calEnd.get(Calendar.MONTH) - calStart.get(Calendar.MONTH);
 		return monthDiff;
 	}
 
 	public int lengthInDaysInt() {
-		int count = 0;
-		for (Iterator iterator = daysIterator(); iterator.hasNext(); iterator.next()) 
-			count += 1;
-		return count;
+		Calendar calStart = start().asJavaCalendarUniversalZoneMidnight();
+		Calendar calEnd = end().plusDays(1).asJavaCalendarUniversalZoneMidnight();
+		long diffMillis = calEnd.getTimeInMillis()-calStart.getTimeInMillis();
+		return (int)(diffMillis/TimeUnitConversionFactors.millisecondsPerDay);
 	}
 
 	public Iterator daysIterator() {

@@ -103,9 +103,20 @@ public class DurationTest extends TestCase {
 	}
 	
 	public void testToNormalizedString() {
-			assertEquals("2 days", Duration.days(2).toNormalizedString());
-			Duration complicatedDuration = Duration.daysHoursMinutesSecondsMilliseconds(5,4,3,2,1);
-			assertEquals("5 days, 4 hours, 3 minutes, 2 seconds, 1 millisecond", complicatedDuration.toNormalizedString());
+		assertEquals("2 days", Duration.days(2).toNormalizedString());
+		Duration complicatedDuration = Duration.daysHoursMinutesSecondsMilliseconds(5,4,3,2,1);
+		assertEquals("5 days, 4 hours, 3 minutes, 2 seconds, 1 millisecond", complicatedDuration.toNormalizedString());
+		assertEquals("52 weeks, 1 day", Duration.days(365).toNormalizedString());
+	}
+	
+	public void testToNormalizedStringMonthBased() {
+		assertEquals("2 months", Duration.months(2).toNormalizedString());
+		assertEquals("1 year, 1 quarter, 1 month", Duration.months(16).toNormalizedString());
+	}
+	
+	public void testToString() {
+		assertEquals("21 days", Duration.weeks(3).toString()); //Weeks are not conventional to read.
+		assertEquals("1 year, 4 months", Duration.months(16).toString()); //Quarters are not conventional to read.
 	}
 	
 	/**

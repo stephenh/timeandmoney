@@ -75,6 +75,8 @@ public class CalendarIntervalTest extends TestCase {
  	public void testLength() {
  		assertEquals(Duration.days(3), may1.through(may3).length());
  		CalendarInterval may2002_july2004 =CalendarInterval.inclusive(2002, 5, 1, 2004, 7, 1);
+ 		// (5/1/2002-4/30/2003) 365 days + (-4/30/2004) 366 + (5/1-7/31) 31+30+1 =  793 days
+ 		assertEquals(Duration.days(793), may2002_july2004.length());
  		assertEquals(Duration.months(26), may2002_july2004.lengthInMonths());
  		
  	}

@@ -13,9 +13,6 @@ import java.io.Serializable;
 
 import junit.framework.AssertionFailedError;
 
-/**
- * @author Vladimir Gitlevich
- */
 public class SerializationTest {
 	private static final String TEST_FILE = "test.txt";
 

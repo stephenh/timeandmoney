@@ -137,28 +137,31 @@ public class Duration implements Comparable, Serializable {
 		return this.inBaseUnits() == other.inBaseUnits();
 	}
 	
+	public String toString() {
+		return toNormalizedString(unit.descendingUnitsForDisplay());
+	}
+
 	public String toNormalizedString() {
+		return toNormalizedString(unit.descendingUnits());
+	}
+
+	private String toNormalizedString(TimeUnit[] units) {
 		StringBuffer buffer = new StringBuffer();
 		long remainder = inBaseUnits();
-		TimeUnit[] units = unit.descendingUnits();
 		boolean first = true;		
 		for (int i = 0; i < units.length; i++) {
-			TimeUnit each = units[i];
-			long portion = remainder / each.factor;			
+			TimeUnit aUnit = units[i];
+			long portion = remainder / aUnit.factor;			
 			if (portion > 0) {
 				if (!first)
 					buffer.append(", ");
 				else
 					first = false;
-				buffer.append(each.toString(portion));
+				buffer.append(aUnit.toString(portion));
 			}
-			remainder = remainder % each.factor;
+			remainder = remainder % aUnit.factor;
 		}
 		return buffer.toString();
-	}
-
-	public String toString() {
-		return toNormalizedString();
 	}
 	
 	public int hashCode() {

@@ -18,10 +18,12 @@ class TimeUnit implements Comparable, Serializable, TimeUnitConversionFactors {
 	static final TimeUnit day = new TimeUnit(Type.day, Type.millisecond, millisecondsPerDay);
 	static final TimeUnit week = new TimeUnit(Type.week, Type.millisecond, millisecondsPerWeek);
 	static final TimeUnit[] descendingMillisecondBased = {week, day, hour, minute, second, millisecond};	
+	static final TimeUnit[] descendingMillisecondBasedForDisplay = {day, hour, minute, second, millisecond};	
 	static final TimeUnit month = new TimeUnit(Type.month, Type.month, 1);
 	static final TimeUnit quarter = new TimeUnit(Type.quarter, Type.month, monthsPerQuarter);
 	static final TimeUnit year = new TimeUnit(Type.year, Type.month, monthsPerYear);
 	static final TimeUnit[] descendingMonthBased = {year, quarter, month};
+	static final TimeUnit[] descendingMonthBasedForDisplay = {year, month};
 	
 	final Type type;
 	final Type baseType;
@@ -75,6 +77,12 @@ class TimeUnit implements Comparable, Serializable, TimeUnitConversionFactors {
 		return isConvertibleToMilliseconds() ? 
 			descendingMillisecondBased :
 			descendingMonthBased;		
+	}
+
+	TimeUnit[] descendingUnitsForDisplay() {
+		return isConvertibleToMilliseconds() ? 
+			descendingMillisecondBasedForDisplay :
+			descendingMonthBasedForDisplay;		
 	}
 	
 	TimeUnit nextFinerUnit() {
