@@ -1,6 +1,6 @@
 1. Checking the installation
 1a. Be sure JUnit is installed.
-1b. Find, in the tests folder, the com.domainlanguage.timeandmoney.AllTests class.
+1b. Find, in the tests folder, the com.domainlanguage.tests.AllTests class.
 1c. Run it as a JUnit test.
 
 2. Sampling the library
