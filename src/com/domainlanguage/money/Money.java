@@ -105,11 +105,11 @@ public class Money implements Comparable, Serializable {
 	 * Here is an experimental approach, giving access with a 
 	 * warning label of sorts. Let us know how you like it.
 	 */
-	public BigDecimal breachEncapsulationAmount() {
+	public BigDecimal breachEncapsulationOfAmount() {
 		return amount;
 	}
 
-	public Currency breachEncapsulationCurrency() {
+	public Currency breachEncapsulationOfCurrency() {
 		return currency;
 	}
 	
