@@ -73,4 +73,10 @@ public class CalendarDate extends CalendarInterval implements Comparable {
 		return 0;
 	}
 	
+	public String toString(String pattern) {
+		TimeZone zone = TimeZone.getTimeZone("Universal");
+		TimePoint point = startAsTimePoint(zone);
+		return point.toString(pattern, zone);
+	}
+
 }

@@ -93,6 +93,12 @@ public class TimeInterval {
 		return !closedStart;
 	}
 
+	public int compareTo(Object arg) {
+		TimeInterval other = (TimeInterval) arg;
+		if (!start().equals(other.start())) return start().compareTo(other.start());
+		return end().compareTo(other.end());
+	}
+	
 	public Duration length() {
 		long difference = end.millisecondsFromEpoc - start.millisecondsFromEpoc;
 		return Duration.milliseconds(difference);

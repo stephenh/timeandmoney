@@ -7,13 +7,17 @@ import junit.framework.*;
 public class TimePointTest extends TestCase {
 	private static final String AM = "AM";
 	private static final String PM = "PM";
-	private static final TimeZone pst = TimeZone.getTimeZone("PST");
 	TimeZone gmt = TimeZone.getTimeZone("Universal");
 	TimeZone pt = TimeZone.getTimeZone("America/Los_Angeles");
 	TimeZone ct = TimeZone.getTimeZone("America/Chicago");
 
+	TimePoint dec19_2003 = TimePoint.atMidnight(2003, 12, 19);
+	TimePoint dec20_2003 = TimePoint.atMidnight(2003, 12, 20);
+	TimePoint dec21_2003 = TimePoint.atMidnight(2003, 12, 21);
+	TimePoint dec22_2003 = TimePoint.atMidnight(2003, 12, 22);
+
 	
-	public void testCreation() {
+	public void testCreationWithDefaultTimeZone() {
 		TimePoint expected = TimePoint.from(2004, 1, 1, 0, 0, 0, 0);
 		assertEquals("at midnight", expected, TimePoint.atMidnight(2004, 1, 1));
 		assertEquals("hours in 24hr clock", expected, TimePoint.from(2004, 1, 1, 0));
@@ -22,7 +26,7 @@ public class TimePointTest extends TestCase {
 		assertEquals("pm hours in 12hr clock", TimePoint.from(2004, 1, 1, 12), TimePoint.from(2004, 1, 1, 12, PM));
 	}
 	
-	public void testCreationWithTimezone() {
+	public void testCreationWithTimeZone() {
 		//TimePoints are based on miliseconds from the Epoc. They do not have a "timezone".
 		//When that basic value needs to be converted to or from a date or hours and minutes,
 		//then a Timezone must be specified or assumed. The default is always GMT. So creation
@@ -45,16 +49,15 @@ public class TimePointTest extends TestCase {
 		assertEquals(gmt6Hour, ctMidnight);
 		
 	}
+
 	public void testStringFormat() {
-		TimePoint point = TimePoint.from(2004, 3, 12, 5, 3, 14, 0);
-		//Try stupid date/time format, which couldn't work by accident.
-		assertEquals("3-04-12 3:5:14", point.toString("M-yy-d m:h:s"));
-		assertEquals("3-04-12", point.toString("M-yy-d"));
-		
+		TimePoint point = TimePoint.from(2004, 3, 12, 5, 3, 14, 0, pt);
+		//Try stupid date/time format, so that it couldn't work by accident.
+		assertEquals("3-04-12 3:5:14", point.toString("M-yy-d m:h:s", pt));
+		assertEquals("3-04-12", point.toString("M-yy-d", pt));
 	}
 
 	private Date javaUtilDateDec20_2003() {
-		TimeZone gmt = TimeZone.getTimeZone("GMT");
 		Calendar calendar = Calendar.getInstance(gmt);
 		calendar.clear(); // non-deterministic without this!!!
 		calendar.set(Calendar.YEAR, 2003);
@@ -128,26 +131,18 @@ public class TimePointTest extends TestCase {
 
 
 	public void testIncrementDuration() {
-		TimePoint dec20_2003 = TimePoint.atMidnight(2003, 12, 20);
-		TimePoint dec22_2003 = TimePoint.atMidnight(2003, 12, 22);
 		Duration twoDays = Duration.days(2);
 		assertEquals(dec22_2003, dec20_2003.plus(twoDays));
 	}
 
 	public void testDecrementDuration() {
-		TimePoint dec20_2003 = TimePoint.atMidnight(2003, 12, 20);
-		TimePoint dec18_2003 = TimePoint.atMidnight(2003, 12, 18);
 		Duration twoDays = Duration.days(2);
-		assertEquals(dec18_2003, dec20_2003.minus(twoDays));
+		assertEquals(dec19_2003, dec21_2003.minus(twoDays));
 	}
 
 	// This is only an integration test. 
 	// The primary responsibility is in TimePeriod
 	public void testBeforeAfterPeriod() {
-		TimePoint dec19_2003 = TimePoint.atMidnight(2003, 12, 19);
-		TimePoint dec20_2003 = TimePoint.atMidnight(2003, 12, 20);
-		TimePoint dec21_2003 = TimePoint.atMidnight(2003, 12, 21);
-		TimePoint dec22_2003 = TimePoint.atMidnight(2003, 12, 22);
 		TimeInterval period = TimeInterval.closed(dec20_2003, dec22_2003);
 		assertTrue(dec19_2003.isBefore(period));
 		assertFalse(dec19_2003.isAfter(period));
@@ -158,9 +153,14 @@ public class TimePointTest extends TestCase {
 	}
 	
 	public void testNextDay() {
-		TimePoint dec19_2003 = TimePoint.atMidnight(2003, 12, 19);
-		TimePoint dec20_2003 = TimePoint.atMidnight(2003, 12, 20);
 		assertEquals(dec20_2003, dec19_2003.nextDay());
 	}
+	
+ 	public void testCompare() {
+ 	    assertTrue(dec19_2003.compareTo(dec20_2003) < 0);
+ 	    assertTrue(dec20_2003.compareTo(dec19_2003) > 0);
+ 	    assertTrue(dec20_2003.compareTo(dec20_2003) == 0);
+ 	}
+
 
 }

@@ -114,12 +114,10 @@ public class  TimePoint implements Comparable {
 //		return String.valueOf(millisecondsFromEpoc);
 	}
 
-	public String toString(String pattern) {
+	public String toString(String pattern, TimeZone zone) {
 		DateFormat format = new SimpleDateFormat(pattern);
-		format.setTimeZone(TimeZone.getTimeZone("GMT"));
+		format.setTimeZone(zone);
 		return format.format(asJavaUtilDate());
-		
-//		return String.valueOf(millisecondsFromEpoc);
 	}
 	
 	public boolean isBetween(TimePoint fromPoint, TimePoint toPoint) {
