@@ -11,14 +11,19 @@ import java.util.*;
 import com.domainlanguage.util.*;
 
 public class CalendarDate extends CalendarInterval {
-	public static final CalendarDate FAR_FUTURE = from(9999, 9, 9);	
+	public static final CalendarDate FAR_FUTURE = from(9999, 9, 9);
+	public static final CalendarDate FAR_PAST = from(0001,1,1);
 
 	final int year;
 	final int month; // 1 based:  January = 1, February = 2, ...
 	final int day;
 	
 	public static CalendarDate from(int year, int month, int day) {
-		return new CalendarDate(year, month, day);
+		CalendarDate result =  new CalendarDate(year, month, day);
+		assert result.isBefore(FAR_FUTURE);
+		assert result.isAfter(FAR_PAST);
+		return result;
+
 	}
 	
 	public static CalendarDate from(String dateString, String pattern) {
