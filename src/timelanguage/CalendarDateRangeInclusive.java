@@ -27,7 +27,7 @@ class CalendarDateRangeInclusive extends CalendarInterval {
 	public TimeInterval asTimeInterval(TimeZone zone) {
 		TimePoint startPoint = start().asTimeInterval(zone).start();
 		TimePoint endPoint = end().asTimeInterval(zone).end();
-		return TimeInterval.from(startPoint, endPoint);
+		return TimeInterval.over(startPoint, endPoint);
 	}
 
 }

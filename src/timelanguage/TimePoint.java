@@ -6,8 +6,8 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class  TimePoint {
-	static public final TimePoint THE_BEGGINING = from("1/1/0000", "MM/dd/yyyy");
-	static public final TimePoint THE_END = from("12/31/9999", "MM/dd/yyyy");
+	static public final TimePoint FAR_PAST = from("1/1/0000", "MM/dd/yyyy");
+	static public final TimePoint FAR_FUTURE = from("12/31/9999", "MM/dd/yyyy");
 
 	final long millisecondsFromEpoc;
 	
@@ -123,7 +123,7 @@ public class  TimePoint {
 	}
 	
 	public boolean isBetween(TimePoint fromPoint, TimePoint toPoint) {
-		return TimeInterval.from(fromPoint, toPoint).includes(this);
+		return TimeInterval.over(fromPoint, toPoint).includes(this);
 	}
 
 	public boolean isBefore(TimePoint other) {

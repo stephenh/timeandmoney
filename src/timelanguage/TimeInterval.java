@@ -7,40 +7,55 @@ package timelanguage;
 import java.util.Iterator;
 
 public class TimeInterval {
-	public static final TimeInterval FOREVER = from(TimePoint.THE_BEGGINING, TimePoint.THE_END);
+	public static final TimeInterval ALWAYS = over(TimePoint.FAR_PAST, TimePoint.FAR_FUTURE);
+	public static final TimeInterval NEVER = over(TimePoint.FAR_FUTURE, TimePoint.FAR_FUTURE);
 
 	public final TimePoint start;
 	public final TimePoint end;
 	public final boolean closedStart;
 	public final boolean closedEnd;
 
-	public static TimeInterval from(TimePoint start, boolean startClosed, Duration length, boolean endClosed) {
-		TimePoint end = start.plus(length);
-		return from(start, startClosed, end, endClosed);
-	}
 	
-	public static TimeInterval from(TimePoint start, boolean closedStart, TimePoint end, boolean closedEnd) {
+	public static TimeInterval over(TimePoint start, boolean closedStart, TimePoint end, boolean closedEnd) {
 		return new TimeInterval(start, closedStart, end, closedEnd);
 	}
 
-	public static TimeInterval from(TimePoint start, TimePoint end) {
-		return closed(start, end);
-	} 
+	public static TimeInterval over(TimePoint start, TimePoint end) {
+		return over(start, true, end, false);
+	}
+
+	public static TimeInterval from(TimePoint start, boolean startClosed, Duration length, boolean endClosed) {
+		TimePoint end = start.plus(length);
+		return over(start, startClosed, end, endClosed);
+	}
+	
+	public static TimeInterval from(TimePoint start, Duration length) {
+		return from(start, true, length, false);
+	}
+
+	public static TimeInterval until(TimePoint end, boolean startClosed, Duration length, boolean endClosed) {
+		TimePoint start = end.minus(length);
+		return over(start, startClosed, end, endClosed);
+	}
+	
+	public static TimeInterval until(TimePoint end, Duration length) {
+		return until(end, true, length, false);
+	}
 
 	public static TimeInterval closed(TimePoint start, TimePoint end) {
-		return from(start, true, end, true);
+		return over(start, true, end, true);
 	}
 
 	public static TimeInterval open(TimePoint start, TimePoint end) {
-		return from(start, false, end, false);
+		return over(start, false, end, false);
 	}
 	
-	public static TimeInterval startsAt(TimePoint start) {
-		return from(start, TimePoint.THE_END);
+	public static TimeInterval everFrom(TimePoint start) {
+		return over(start, TimePoint.FAR_FUTURE);
 	} 
 
-	public static TimeInterval endsAt(TimePoint end) {
-		return from(TimePoint.THE_BEGGINING, end);
+	public static TimeInterval everUntil(TimePoint end) {
+		return over(TimePoint.FAR_PAST, end);
 	} 
 
 	private TimeInterval(TimePoint start, boolean closedStart, TimePoint end, boolean closedEnd) {
@@ -61,29 +76,19 @@ public class TimeInterval {
 	}
 
 	public boolean includes(TimePoint point) {
-		return isOnTheEdge(point) || isInTheMiddle(point);
-	}
-
-	public boolean isInTheMiddle(TimePoint point) {
-		return point.isAfter(start) && point.isBefore(end);
-	}
-
-	public boolean isOnTheEdge(TimePoint point) {
-		return 
-			(closedStart && start.equals(point)) || 
-			(closedEnd && end.equals(point));
+		return !this.isBefore(point) && !this.isAfter(point);
 	}
 
 	public boolean isBefore(TimePoint point) {
-		if (end.isBefore(point)) return true;
-		if (end.isAfter(point)) return false;
-		//must be equal to end, so period is before it if it isn't included
+		if (end().isBefore(point)) return true;
+		if (end().isAfter(point)) return false;
+		//Equal to end, so period is before it if it isn't included
 		return !closedEnd;
 	}
 
 	public boolean isAfter(TimePoint point) {
-		if (start.isAfter(point)) return true;
-		if (start.isBefore(point)) return false;
+		if (start().isAfter(point)) return true;
+		if (start().isBefore(point)) return false;
 		//must be equal to start, so period is after it if it isn't included
 		return !closedStart;
 	}

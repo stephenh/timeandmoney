@@ -61,12 +61,69 @@ public class TimeIntervalTest extends TestCase {
 	}
 
 	public void testIncludesHalfOpen() {
-		TimeInterval interval = TimeInterval.from(dec20_2003, true, dec22_2003, false);
+		TimeInterval interval = TimeInterval.over(dec20_2003, true, dec22_2003, false);
 		assertFalse(interval.includes(dec19_2003));
 		assertTrue(interval.includes(dec20_2003));
 		assertTrue(interval.includes(dec21_2003));
 		assertFalse(interval.includes(dec22_2003));
 		assertFalse(interval.includes(dec23_2003));
+	}
+
+	public void testCreateWithDurationFrom() {
+		Duration twoDays = Duration.days(2);
+		TimeInterval following = TimeInterval.from(dec20_2003, true, twoDays, true);
+		assertEquals("[ dec20", dec20_2003, following.start());
+		assertEquals("dec 22]", dec22_2003, following.end);
+		
+	}
+
+	public void testCreateWithDurationUntil() {
+		Duration twoDays = Duration.days(2);
+		TimeInterval preceding = TimeInterval.until(dec21_2003, true, twoDays, true);
+		assertEquals("[ dec19", dec19_2003, preceding.start());
+		assertEquals("dec21 )", dec21_2003, preceding.end());
+	}
+
+	public void testDefaultFromPoints() {
+		// Default is closed start, open end [start, end)
+		// which is the most common convention. For example,
+		// Days include 12:00am at their start, but do not
+		// include the 12:00am that end them.
+
+		TimeInterval interval = TimeInterval.over(dec20_2003, dec22_2003);
+		assertFalse(interval.includes(dec19_2003));
+		assertTrue(interval.includes(dec20_2003));
+		assertTrue(interval.includes(dec21_2003));
+		assertFalse(interval.includes(dec22_2003));
+		assertFalse(interval.includes(dec23_2003));
+	}
+
+	public void testDefaultFromDuration() {
+		// Default is closed start, open end [start, end)
+		// which is the most common convention. For example,
+		// Days include 12:00am at their start, but do not
+		// include the 12:00am that end them.
+
+		TimeInterval interval = TimeInterval.from(dec20_2003, Duration.hours(48));
+		assertFalse(interval.includes(dec19_2003));
+		assertTrue(interval.includes(dec20_2003));
+		assertTrue(interval.includes(dec21_2003));
+		assertFalse(interval.includes(dec22_2003));
+		assertFalse(interval.includes(dec23_2003));
+	}
+
+	public void testEverFrom() {
+		TimeInterval afterDec20 = TimeInterval.everFrom(dec20_2003);
+		assertTrue(afterDec20.includes(TimePoint.atMidnight(2062, 3, 5)));
+		assertFalse(afterDec20.includes(TimePoint.atMidnight(1776, 7, 4)));
+		assertTrue(afterDec20.includes(dec20_2003));
+	}
+
+	public void testEverUntil() {
+		TimeInterval afterDec20 = TimeInterval.everUntil(dec20_2003);
+		assertFalse(afterDec20.includes(TimePoint.atMidnight(2062, 3, 5)));
+		assertTrue(afterDec20.includes(TimePoint.atMidnight(1776, 7, 4)));
+		assertFalse(afterDec20.includes(dec20_2003));
 	}
 
 	public void testLength() {
@@ -82,16 +139,11 @@ public class TimeIntervalTest extends TestCase {
 		assertEquals("5 days, 4 hours, 3 minutes, 2 seconds, 1 millisecond", interval.length().toDetailedString());
 	}
 
-	public void testCreateFromDuration() {
-		Duration twoDays = Duration.days(2);
-		TimeInterval interval = TimeInterval.from(dec20_2003, true, twoDays, true);
-		assertEquals(dec22_2003, interval.end);
-	}
 
 	public void testDaysIterator() {
 		TimePoint start = TimePoint.from(2004, 2, 5, 10);
 		TimePoint end = TimePoint.from(2004, 2, 8, 2);
-		TimeInterval interval = TimeInterval.from(start, end);
+		TimeInterval interval = TimeInterval.over(start, end);
 		Iterator it = interval.daysIterator();
 		assertTrue(it.hasNext());
 		assertEquals(start, it.next());

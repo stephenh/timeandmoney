@@ -18,7 +18,7 @@ public class BusinessCalendarTest extends TestCase {
 	public void testBusinessWeek() throws Exception {
 		TimePoint march25 = TimePoint.atMidnight(2004, 3, 25);
 		TimePoint march27 = TimePoint.atMidnight(2004, 3, 27);
-		TimeInterval interval = TimeInterval.from(march25, march27);
+		TimeInterval interval = TimeInterval.over(march25, march27);
 		int days = businessCalendar().getElapsedBusinessDays(interval);
 		assertEquals(2, days);
 	}
@@ -80,7 +80,7 @@ public class BusinessCalendarTest extends TestCase {
 	public void testBusinessDaysIterator() {
 		TimePoint start = TimePoint.from(2004, 2, 5, 10);
 		TimePoint end = TimePoint.from(2004, 2, 8, 2);
-		TimeInterval interval = TimeInterval.from(start, end);
+		TimeInterval interval = TimeInterval.over(start, end);
 		Iterator it = businessCalendar().businessDaysIterator(interval);
 		assertTrue(it.hasNext());
 		assertEquals(start, it.next());
