@@ -8,10 +8,10 @@ package com.domainlanguage.time;
 
 
 class FixedDateSpecification extends AnnualDateSpecification {
-	int month;
-	int day;
+	private int month;
+	private int day;
 	
-	public FixedDateSpecification(int month, int day) {
+	FixedDateSpecification(int month, int day) {
 		this.month = month;
 		this.day = day;
 	}

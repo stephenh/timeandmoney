@@ -14,13 +14,9 @@ import com.domainlanguage.basic.Ratio;
 public class Duration implements Comparable, Serializable {
 	public static final Duration NONE = milliseconds(0);
 
-	private final long quantity;
-	private final TimeUnit unit;
+	private long quantity;
+	private TimeUnit unit;
 	
-	private static Duration of(long howMany, TimeUnit unit) {
-		return new Duration(howMany, unit);
-	}
-
 	public static Duration milliseconds(long howMany) {
 		return Duration.of(howMany, TimeUnit.millisecond);
 	}
@@ -41,12 +37,12 @@ public class Duration implements Comparable, Serializable {
 		return Duration.of(howMany, TimeUnit.day);
 	}
 	
-	public static Duration daysHoursMinutesSecondsMillis(int days, int hours, int minutes, int seconds, long milliseconds) {
+	public static Duration daysHoursMinutesSecondsMilliseconds(int days, int hours, int minutes, int seconds, long milliseconds) {
 		Duration result = Duration.days(days);
-		if (! (hours == 0)) result = result.plus(Duration.hours(hours));
-		if (! (minutes == 0)) result = result.plus(Duration.minutes(minutes));
-		if (! (seconds == 0)) result = result.plus(Duration.seconds(seconds));
-		if (! (milliseconds == 0)) result = result.plus(Duration.milliseconds(milliseconds));
+		if (hours != 0) result = result.plus(Duration.hours(hours));
+		if (minutes != 0) result = result.plus(Duration.minutes(minutes));
+		if (seconds != 0) result = result.plus(Duration.seconds(seconds));
+		if (milliseconds != 0) result = result.plus(Duration.milliseconds(milliseconds));
 		return result;
 	}
 	
@@ -66,9 +62,13 @@ public class Duration implements Comparable, Serializable {
 		return Duration.of(howMany, TimeUnit.year);
 	}
 	
-	Duration(long howMany, TimeUnit unit) {
-//		assert howMany >= 0;
-		this.quantity = howMany;
+	private static Duration of(long howMany, TimeUnit unit) {
+		return new Duration(howMany, unit);
+	}
+
+	Duration(long quantity, TimeUnit unit) {
+		assert quantity >= 0;
+		this.quantity = quantity;
 		this.unit = unit;
 	}
     
@@ -76,18 +76,14 @@ public class Duration implements Comparable, Serializable {
 		return quantity * unit.factor;
 	}
 	
-	/**
-	 * TODO What SHOULD happen if assertion fails?
-	 */
+	//TODO: What SHOULD happen if assertion fails?
 	public Duration plus(Duration other) {
 		assert other.unit.isConvertibleTo(this.unit);
 		long newQuantity = this.inBaseUnits() + other.inBaseUnits();
 		return new Duration(newQuantity, unit.baseUnit());
 	}
 
-	/**
-	 * TODO What SHOULD happen if assertion fails?
-	 */
+	//TODO: What SHOULD happen if assertion fails?
 	public Duration minus(Duration other) {
 		assert other.unit.isConvertibleTo(this.unit);
 		assert this.compareTo(other) >= 0;
@@ -110,24 +106,22 @@ public class Duration implements Comparable, Serializable {
 	public CalendarDate addedTo(CalendarDate day) {
 //		only valid for days and larger units		
 		if (unit.compareTo(TimeUnit.day) < 0) return day;
-		Calendar calendar = day._asJavaCalendarUniversalZoneMidnight();
-		if (unit.equals(TimeUnit.day)) {
-			calendar.add(Calendar.DATE, (int)quantity);
-		} else {
+		Calendar calendar = day.asJavaCalendarUniversalZoneMidnight();
+		if (unit.equals(TimeUnit.day)) 
+			calendar.add(Calendar.DATE, (int) quantity);
+		else 
 			calendar.add(unit.javaCalendarConstantForBaseType(), (int) inBaseUnits());
-		}
 		return CalendarDate._from(calendar);
 	}
 
 	public CalendarDate subtractedFrom(CalendarDate day) {
 //		only valid for days and larger units
 		if (unit.compareTo(TimeUnit.day) < 0) return day;
-		Calendar calendar = day._asJavaCalendarUniversalZoneMidnight();
-		if (unit.equals(TimeUnit.day)) {
+		Calendar calendar = day.asJavaCalendarUniversalZoneMidnight();
+		if (unit.equals(TimeUnit.day)) 
 			calendar.add(Calendar.DATE, -1 * (int)quantity);
-		} else {
+		else 
 			calendar.add(unit.javaCalendarConstantForBaseType(), -1 * (int) inBaseUnits());
-		}
 		return CalendarDate._from(calendar);
 	}
 
@@ -147,12 +141,10 @@ public class Duration implements Comparable, Serializable {
 		StringBuffer buffer = new StringBuffer();
 		long remainder = inBaseUnits();
 		TimeUnit[] units = unit.descendingUnits();
-		boolean first = true;
-		
+		boolean first = true;		
 		for (int i = 0; i < units.length; i++) {
 			TimeUnit each = units[i];
-			long portion = remainder / each.factor;
-			
+			long portion = remainder / each.factor;			
 			if (portion > 0) {
 				if (!first)
 					buffer.append(", ");
@@ -166,25 +158,14 @@ public class Duration implements Comparable, Serializable {
 	}
 
 	public String toString() {
-		//return toString(quantity, unit);
 		return toNormalizedString();
 	}
 	
-	private String toString(long quantity, TimeUnit unit) {
-			StringBuffer buffer = new StringBuffer();
-			buffer.append(quantity);
-			buffer.append(" ");
-			buffer.append(unit);
-			buffer.append(quantity == 1 ? "" : "s");
-			return buffer.toString();
-	}
-
 	public int hashCode() {
 		return (int) quantity;
 	}
-	/**
-	 * TODO What should happen if units are not convertible?
-	 */
+	
+	//TODO What should happen if units are not convertible?
 	public int compareTo(Object arg) {
 		Duration other = (Duration) arg;
 		assert this.unit.isConvertibleTo(other.unit);
@@ -194,9 +175,6 @@ public class Duration implements Comparable, Serializable {
 		return 0;
 	}
 	
-	/**
-	 * Convenience method
-	 */
 	public TimeInterval startingFrom(TimePoint start) {
 		return TimeInterval.startingFrom(start, this);
 	}

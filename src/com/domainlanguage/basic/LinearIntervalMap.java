@@ -27,12 +27,6 @@ public class LinearIntervalMap implements IntervalMap{
 		}
 	}
 	
-	private void removeIntervalSequence(List intervalSequence) {
-		for (Iterator iter = intervalSequence.iterator(); iter.hasNext();) {
-			remove((Interval) iter.next());
-		}
-	}
-	
 	private void directPut(List intervalSequence, Object value) {
 		for (Iterator iter = intervalSequence.iterator(); iter.hasNext();) {
 			Interval interval = (Interval) iter.next();

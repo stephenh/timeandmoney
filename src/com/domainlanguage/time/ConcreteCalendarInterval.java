@@ -9,7 +9,6 @@ package com.domainlanguage.time;
 import java.util.TimeZone;
 
 class ConcreteCalendarInterval extends CalendarInterval {
-	
 	private CalendarDate start;
 	private CalendarDate end;
 	
@@ -35,6 +34,5 @@ class ConcreteCalendarInterval extends CalendarInterval {
 	public Comparable lowerLimit() {
 		return start;
 	}
-
 
 }

@@ -240,4 +240,3 @@ public abstract class Interval implements Comparable, Serializable {
 		return newOfSameType(lowerLimit(), false, lowerLimit(), false);
 	}
 }
-;

@@ -1,6 +1,6 @@
 /**
- * Copyright (c) 2004 Domain Language, Inc. (http://domainlanguage.com)
- * This free software is distributed under the "MIT" licence. See file licence.txt. 
+ * Copyright (c) 2004 Domain Language, Inc. (http://domainlanguage.com) This
+ * free software is distributed under the "MIT" licence. See file licence.txt.
  * For more information, see http://timeandmoney.sourceforge.net.
  */
 
@@ -11,7 +11,6 @@ import java.util.Iterator;
 import java.util.TimeZone;
 
 import com.domainlanguage.basic.Interval;
-
 
 public abstract class CalendarInterval extends Interval {
 
@@ -25,13 +24,6 @@ public abstract class CalendarInterval extends Interval {
 		CalendarDate endDate = CalendarDate.from(endYear, endMonth, endDay);
 		return ConcreteCalendarInterval.from(startDate, endDate);
 	}
-	
-	public Interval newOfSameType(Comparable lower, boolean isLowerClosed, Comparable upper, boolean isUpperClosed) {
-		CalendarDate includedLower = isLowerClosed ? (CalendarDate)lower : ((CalendarDate)lower).plusDays(1); 
-		CalendarDate includedUpper = isUpperClosed ? (CalendarDate)upper : ((CalendarDate)upper).plusDays(-1); 
-		return inclusive(includedLower, includedUpper);
-	}
-
 
 	public static CalendarDate date(int year, int month, int day) {
 		return CalendarDate.from(year, month, day);
@@ -45,12 +37,18 @@ public abstract class CalendarInterval extends Interval {
 
 	public static CalendarInterval year(int year) {
 		CalendarDate startDate = date(year, 1, 1);
-		CalendarDate endDate = date(year+1, 1, 1).plusDays(-1);
+		CalendarDate endDate = date(year + 1, 1, 1).plusDays(-1);
 		return inclusive(startDate, endDate);
 	}
-	
+
 	public abstract TimeInterval asTimeInterval(TimeZone zone);
-	
+
+	public Interval newOfSameType(Comparable lower, boolean isLowerClosed, Comparable upper, boolean isUpperClosed) {
+		CalendarDate includedLower = isLowerClosed ? (CalendarDate) lower : ((CalendarDate) lower).plusDays(1);
+		CalendarDate includedUpper = isUpperClosed ? (CalendarDate) upper : ((CalendarDate) upper).plusDays(-1);
+		return inclusive(includedLower, includedUpper);
+	}
+
 	public boolean includesLowerLimit() {
 		return true;
 	}
@@ -58,21 +56,23 @@ public abstract class CalendarInterval extends Interval {
 	public boolean includesUpperLimit() {
 		return true;
 	}
-	
+
 	public CalendarDate start() {
-		return (CalendarDate)lowerLimit();
+		return (CalendarDate) lowerLimit();
 	}
 
 	public CalendarDate end() {
-		return (CalendarDate)upperLimit();
+		return (CalendarDate) upperLimit();
 	}
 
 	public boolean equals(Object arg) {
 		if (!(arg instanceof CalendarInterval)) return false;
 		CalendarInterval other = (CalendarInterval) arg;
-		return upperLimit().equals(other.upperLimit()) && lowerLimit().equals(other.lowerLimit());
+		return 
+			upperLimit().equals(other.upperLimit()) && 
+			lowerLimit().equals(other.lowerLimit());
 	}
-	
+
 	public int hashCode() {
 		return lowerLimit().hashCode();
 	}
@@ -84,40 +84,38 @@ public abstract class CalendarInterval extends Interval {
 	public Duration lengthInMonths() {
 		return Duration.months(lengthInMonthsInt());
 	}
-	
+
 	public int lengthInMonthsInt() {
-		Calendar calStart = start()._asJavaCalendarUniversalZoneMidnight();
-		Calendar calEnd = end()._asJavaCalendarUniversalZoneMidnight();
-		int yearDiff  = calEnd.get(Calendar.YEAR) - calStart.get(Calendar.YEAR); 
-        int monthDiff = yearDiff * 12 + calEnd.get(Calendar.MONTH) - calStart.get(Calendar.MONTH);
-        return monthDiff;
+		Calendar calStart = start().asJavaCalendarUniversalZoneMidnight();
+		Calendar calEnd = end().asJavaCalendarUniversalZoneMidnight();
+		int yearDiff = calEnd.get(Calendar.YEAR) - calStart.get(Calendar.YEAR);
+		int monthDiff = yearDiff * 12 + calEnd.get(Calendar.MONTH) - calStart.get(Calendar.MONTH);
+		return monthDiff;
 	}
-	
+
 	public int lengthInDaysInt() {
-		Iterator iter = daysIterator();
 		int count = 0;
-		while(iter.hasNext()) {
-			count++;
-			iter.next();
-		}
+		for (Iterator iterator = daysIterator(); iterator.hasNext(); iterator.next()) 
+			count += 1;
 		return count;
 	}
-	
+
 	public Iterator daysIterator() {
-		final CalendarDate start = (CalendarDate)lowerLimit();
-		final CalendarDate end = (CalendarDate)upperLimit();
+		final CalendarDate start = (CalendarDate) lowerLimit();
+		final CalendarDate end = (CalendarDate) upperLimit();
 		return new Iterator() {
 			CalendarDate next = start;
 			public boolean hasNext() {
 				return !next.isAfter(end);
-			}	
+			}
 			public Object next() {
 				Object current = next;
 				next = next.plusDays(1);
 				return current;
 			}
-			public void remove() {}
+			public void remove() {
+			}
 		};
 	}
-	
+
 }

@@ -147,7 +147,7 @@ public class TimeIntervalTest extends TestCase {
 		TimePoint first = TimePoint.atGMT(2004, 1, 1, 1, 1, 1, 1);
 		TimePoint second = TimePoint.atGMT(2004, 1, 6, 5, 4, 3, 2);
 		interval = TimeInterval.closed(first, second);
-		Duration expectedLength = Duration.daysHoursMinutesSecondsMillis(5, 4, 3, 2, 1);
+		Duration expectedLength = Duration.daysHoursMinutesSecondsMilliseconds(5, 4, 3, 2, 1);
 		assertEquals(expectedLength, interval.length());
 	}
 

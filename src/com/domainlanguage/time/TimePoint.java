@@ -12,8 +12,8 @@ import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-public class  TimePoint implements Comparable, Serializable {
-	private static final TimeZone gmt = TimeZone.getTimeZone("Universal");
+public class TimePoint implements Comparable, Serializable {
+	private static final TimeZone GMT = TimeZone.getTimeZone("Universal");
 	public static final TimePoint FAR_PAST = atMidnightGMT(0001, 1, 1);
 	public static final TimePoint FAR_FUTURE = atMidnightGMT(9999, 12, 31);
 
@@ -22,7 +22,7 @@ public class  TimePoint implements Comparable, Serializable {
 // CREATION METHODS
 	
 	public static TimePoint atMidnightGMT(int year, int month, int date) {
-		return atMidnight(year, month, date, gmt);
+		return atMidnight(year, month, date, GMT);
 	}
 
 	public static TimePoint atMidnight(int year, int month, int date, TimeZone zone) {
@@ -42,7 +42,7 @@ public class  TimePoint implements Comparable, Serializable {
 	}
 
 	public static TimePoint atGMT(int year, int month, int date, int hour, int minute, int second, int millisecond) {
-		return at(year, month, date, hour, minute, second, millisecond, gmt);
+		return at(year, month, date, hour, minute, second, millisecond, GMT);
 	}
 	
 	public static TimePoint at12hr(int year, int month, int date, int hour, String am_pm, int minute, int second, int millisecond, TimeZone zone) {
@@ -50,13 +50,11 @@ public class  TimePoint implements Comparable, Serializable {
 	}
 
 	private static int convertedTo24hour(int hour, String am_pm) {
-		//assert(am_pm.equalsIgnoreCase("AM") || am_pm.equalsIgnoreCase("PM"));		
-		int translatedAmPm = (am_pm.equalsIgnoreCase("AM") ? 0 : 12);
+		int translatedAmPm = am_pm.equalsIgnoreCase("AM") ? 0 : 12;
 		translatedAmPm -= (hour == 12) ? 12 : 0;
 		return hour + translatedAmPm;
 	}
 
-	
 	public static TimePoint at(int year, int month, int date, int hour, int minute, int second, int millisecond, TimeZone zone) {
 		Calendar calendar = Calendar.getInstance(zone);
 		calendar.set(Calendar.YEAR, year);
@@ -70,7 +68,7 @@ public class  TimePoint implements Comparable, Serializable {
 	}
 
 	public static TimePoint parseGMTFrom(String dateString, String pattern) {
-		return parseFrom(dateString, pattern, gmt);
+		return parseFrom(dateString, pattern, GMT);
 	}
 	
 	public static TimePoint parseFrom(String dateString, String pattern, TimeZone zone) {
@@ -161,29 +159,25 @@ public class  TimePoint implements Comparable, Serializable {
 	}
 
 	public Calendar asJavaCalendar() {
-		return asJavaCalendar(gmt);
+		return asJavaCalendar(GMT);
 	}
 
 	
-//CONVENIENCE METHODS (Responsibility lies elsewhere, but language
-// is more fluid with a method here.)
+// CONVENIENCE METHODS 
+// (Responsibility lies elsewhere, but language is more fluid with a method here.)
 	
-	/** a convenience method */
 	public boolean isBefore(TimeInterval interval) {
 		return interval.isAfter(this);
 	}
 
-	/** a convenience method */
 	public boolean isAfter(TimeInterval interval) {
 		return interval.isBefore(this);
 	}
 	
-	/** a convenience method */
 	public TimePoint plus(Duration duration) {
 		return duration.addedTo(this);
 	}
 
-	/** a convenience method */
 	public TimePoint minus(Duration duration) {
 		return duration.subtractedFrom(this);
 	}

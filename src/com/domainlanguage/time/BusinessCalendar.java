@@ -18,8 +18,8 @@ class BusinessCalendar {
 		return calendar;
 	}
 	
+	/** Should be rewritten for each particular organization */
 	static Set defaultHolidays() {
-		// Meant to be rewritten for particular organization.
 		return new HashSet();
 	}
 	
@@ -29,32 +29,28 @@ class BusinessCalendar {
 
 	public int getElapsedBusinessDays(CalendarInterval interval) {
 		int tally = 0;
-		Iterator it = interval.daysIterator();
-		while (it.hasNext()) {
-			if (isBusinessDay((CalendarDate)it.next())) tally++;
-		}
+		for (Iterator iterator = interval.daysIterator(); iterator.hasNext();)
+			if (isBusinessDay((CalendarDate) iterator.next())) 
+				tally += 1;
 		return tally;
 	}
 	
 	public CalendarDate nearestBusinessDay(CalendarDate day) {
 		CalendarDate current = day;
-		int guard = 0;
-		while (!isBusinessDay(current)) {
+		while (!isBusinessDay(current)) 
 			current = current.plusDays(1);
-		}
 		return current;
 	}
 	
-
 	public boolean isHoliday(CalendarDate day) {
 		return holidays.contains(day);
 	}
 
 	public boolean isWeekend(CalendarDate day) {
-		Calendar calday = day._asJavaCalendarUniversalZoneMidnight();
+		Calendar calday = day.asJavaCalendarUniversalZoneMidnight();
 		return 
-		(calday.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) ||
-		(calday.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY);
+			(calday.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) ||
+			(calday.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY);
 	}
 	
 	public boolean isBusinessDay(CalendarDate day) {
@@ -65,17 +61,16 @@ class BusinessCalendar {
 		final CalendarInterval interval = anInterval;
 		return new Iterator() {
 			CalendarDate next = interval.start();
-			
 			public boolean hasNext() {
 				return interval.includes(next);
 			}	
-
 			public Object next() {
 				Object current = next;
 				next = nearestBusinessDay(next.nextDay());
 				return current;
 			}
-			public void remove() {}
+			public void remove() {
+			}
 		};
 	}
 

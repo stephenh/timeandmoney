@@ -14,11 +14,11 @@ public abstract class DateSpecification {
 		return new FixedDateSpecification(month, day);
 	}
 	
-	public abstract boolean isSatisfiedBy(CalendarDate date);
-
 	public static DateSpecification nthOccuranceOfWeekdayInMonth(int month, int dayOfWeek, int n) {
 		return new FloatingDateSpecification(month, dayOfWeek, n);
 	}
+
+	public abstract boolean isSatisfiedBy(CalendarDate date);
 
 	public abstract CalendarDate firstOccurrenceIn(CalendarInterval interval);
 

@@ -104,7 +104,7 @@ public class DurationTest extends TestCase {
 	
 	public void testToNormalizedString() {
 			assertEquals("2 days", Duration.days(2).toNormalizedString());
-			Duration complicatedDuration = Duration.daysHoursMinutesSecondsMillis(5,4,3,2,1);
+			Duration complicatedDuration = Duration.daysHoursMinutesSecondsMilliseconds(5,4,3,2,1);
 			assertEquals("5 days, 4 hours, 3 minutes, 2 seconds, 1 millisecond", complicatedDuration.toNormalizedString());
 	}
 	

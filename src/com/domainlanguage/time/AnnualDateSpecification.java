@@ -9,6 +9,7 @@ package com.domainlanguage.time;
 import java.util.Iterator;
 
 public abstract class AnnualDateSpecification extends DateSpecification {
+	
 	public abstract CalendarDate ofYear(int year);
 
 	public CalendarDate firstOccurrenceIn(CalendarInterval interval) {
@@ -32,7 +33,8 @@ public abstract class AnnualDateSpecification extends DateSpecification {
 				if (!interval.includes(next)) next = null;
 				return current;
 			}
-			public void remove() {}
+			public void remove() {
+			}
 		};
 	}
 }

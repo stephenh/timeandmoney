@@ -10,22 +10,16 @@ import java.util.Calendar;
 import java.util.TimeZone;
 
 public class CalendarDate extends CalendarInterval {
-	int year;
-	int month; // January = 1, February = 2 ...
-	int day;
-	
 	public static final CalendarDate FAR_FUTURE = from(9999, 9, 9);	
 
+	final int year;
+	final int month; // 1 based:  January = 1, February = 2, ...
+	final int day;
+	
 	public static CalendarDate from(int year, int month, int day) {
 		return new CalendarDate(year, month, day);
 	}
 	
-	CalendarDate(int year, int month, int day) {
-		this.year = year;
-		this.month = month;
-		this.day = day;
-	}
-
 	public static CalendarDate from(String dateString, String pattern) {
 		TimeZone arbitraryZone = TimeZone.getTimeZone("Universal"); 
 		//Any timezone works, as long as the same one is used throughout.
@@ -45,6 +39,12 @@ public class CalendarDate extends CalendarInterval {
 		int month = calendar.get(Calendar.MONTH) + 1; //T&M Lib counts January as 1
 		int date = calendar.get(Calendar.DATE);
 		return CalendarDate.from(year, month, date);
+	}
+
+	CalendarDate(int year, int month, int day) {
+		this.year = year;
+		this.month = month;
+		this.day = day;
 	}
 
 	public String toString() {
@@ -119,10 +119,9 @@ public class CalendarDate extends CalendarInterval {
 	public CalendarInterval year() {
 		return CalendarInterval.year(year);
 	}
-
 	
 	public CalendarDate plusDays(int increment) {
-		Calendar calendar = _asJavaCalendarUniversalZoneMidnight();
+		Calendar calendar = asJavaCalendarUniversalZoneMidnight();
 		calendar.add(Calendar.DATE, increment);
 		int year = calendar.get(Calendar.YEAR);
 		int month = calendar.get(Calendar.MONTH) + 1;
@@ -131,7 +130,7 @@ public class CalendarDate extends CalendarInterval {
 	}
 
 	public CalendarDate plusMonths(int increment) {
-		Calendar calendar = _asJavaCalendarUniversalZoneMidnight();
+		Calendar calendar = asJavaCalendarUniversalZoneMidnight();
 		calendar.add(Calendar.MONTH, increment);
 		int year = calendar.get(Calendar.YEAR);
 		int month = calendar.get(Calendar.MONTH) + 1;
@@ -139,7 +138,7 @@ public class CalendarDate extends CalendarInterval {
 		return CalendarDate.from(year, month, day);
 	}
 	
-	Calendar _asJavaCalendarUniversalZoneMidnight() {
+	Calendar asJavaCalendarUniversalZoneMidnight() {
 		TimeZone zone = TimeZone.getTimeZone("Universal");
 		Calendar calendar = Calendar.getInstance(zone);
 		calendar.set(Calendar.YEAR, year);
@@ -181,7 +180,7 @@ public class CalendarDate extends CalendarInterval {
 	}
 
 	public int dayOfWeek() {
-		Calendar calendar = _asJavaCalendarUniversalZoneMidnight();
+		Calendar calendar = asJavaCalendarUniversalZoneMidnight();
 		return calendar.get(Calendar.DAY_OF_WEEK);
 	}
 	
