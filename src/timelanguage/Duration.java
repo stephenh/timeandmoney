@@ -2,172 +2,146 @@ package timelanguage;
 
 import java.util.*;
 
-abstract public class Duration implements TimeConstants {
+public class Duration {
 	public static final Duration NONE = milliseconds(0);
 
 	final long quantity;
 	final TimeUnit unit;
 	
-	private static Duration milliseconds(long howMany, TimeUnit unit) {
-		return new MillisecondDuration(howMany, unit);
+	private static Duration of(long howMany, TimeUnit unit) {
+		return new Duration(howMany, unit);
 	}
 
 	public static Duration milliseconds(long howMany) {
-		return milliseconds(howMany, TimeUnit.millisecond);
-	}
-
-	public static Duration millisecondsFrom(int days, int hours, int minutes, int seconds, int milliseconds) {
-		return milliseconds( 
-			days * millisecondsPerDay +
-			hours * millisecondsPerHour +
-			minutes * millisecondsPerMinute +
-			seconds * millisecondsPerSecond +
-			milliseconds
-		);
+		return Duration.of(howMany, TimeUnit.millisecond);
 	}
 
 	public static Duration seconds(int howMany) {
-		return milliseconds(howMany, TimeUnit.second);
+		return Duration.of(howMany, TimeUnit.second);
 	}
 	
 	public static Duration minutes(int howMany) {
-		return milliseconds(howMany, TimeUnit.minute);
+		return Duration.of(howMany, TimeUnit.minute);
 	}
 	
 	public static Duration hours(int howMany) {
-		return milliseconds(howMany, TimeUnit.hour);
+		return Duration.of(howMany, TimeUnit.hour);
 	}
 	
 	public static Duration days(int howMany) {
-		return milliseconds(howMany, TimeUnit.day);
+		return Duration.of(howMany, TimeUnit.day);
 	}
 	
 	public static Duration weeks(int howMany) {
-		return milliseconds(howMany, TimeUnit.week);
+		return Duration.of(howMany, TimeUnit.week);
 	}
 	
-	private static Duration months(long howMany, TimeUnit unit) {
-		return new MonthDuration(howMany, unit);
-	}
-
 	public static Duration months(int howMany) {
-		return months(howMany, TimeUnit.month);
+		return Duration.of(howMany, TimeUnit.month);
 	}
 	
 	public static Duration quarters(int howMany) {
-		return months(howMany, TimeUnit.quarter);
+		return Duration.of(howMany, TimeUnit.quarter);
 	}
 	
 	public static Duration years(int howMany) {
-		return months(howMany, TimeUnit.year);
-	}
-	
-	public static Duration decades(int howMany) {
-		return months(howMany, TimeUnit.decade);
-	}
-	
-	public static Duration centuries(int howMany) {
-		return months(howMany, TimeUnit.century);
-	}
-	
-	public static Duration millenium(int howMany) {
-		return months(howMany, TimeUnit.millenium);
+		return Duration.of(howMany, TimeUnit.year);
 	}
 	
 	private Duration(long howMany, TimeUnit unit) {
-//		assert(howMany >= 0);
-		this.quantity = howMany * unit.factor;
+//		assert howMany >= 0;
+		this.quantity = howMany;
 		this.unit = unit;
 	}
 		
-	abstract int calendarTag();
-	
-	abstract List group();
+	long inBaseUnits() {
+		return quantity * unit.factor;
+	}
+/**
+ * TODO
+ */	
+//	long in(TimeUnit newUnit) {
+//		return unit.factorFrom(unit);
+//	}
 	
 	public TimePoint addedTo(TimePoint point) {
 		Calendar calendar = point.asJavaCalendar();
-		calendar.add(calendarTag(), (int) quantity);
+		calendar.add(unit.javaCalendarConstantForBaseType(), (int) inBaseUnits());
 		return TimePoint.from(calendar);
 	}
 
 	public TimePoint subtractedFrom(TimePoint point) {
 		Calendar calendar = point.asJavaCalendar();
-		calendar.add(calendarTag(), -1 * (int) quantity);
+		calendar.add(unit.javaCalendarConstantForBaseType(), -1 * (int) inBaseUnits());
 		return TimePoint.from(calendar);
 	}
-	
-	public String toDetailedString() {
-		StringBuffer buffer = new StringBuffer();
-		long remainder = quantity;
-		boolean first = true;
-		for (Iterator iterator = group().iterator(); iterator.hasNext();) {
-			TimeUnit each = (TimeUnit) iterator.next();
-			long portion = remainder / each.factor;
-			if (portion > 0) {
-				if (!first)
-					buffer.append(", ");
-				else
-					first = false;
-				buffer.append(each.toString(portion));
-			}
-			remainder = remainder % each.factor;
+
+	public CalendarDate addedTo(CalendarDate day) {
+//		only valid for days and larger units		
+		if (unit.compareTo(TimeUnit.day) < 0) return day;
+		Calendar calendar = day._asJavaCalendarUniversalZoneMidnight();
+		if (unit.equals(TimeUnit.day)) {
+			calendar.add(Calendar.DATE, (int)quantity);
+		} else {
+			calendar.add(unit.javaCalendarConstantForBaseType(), (int) inBaseUnits());
 		}
-		return buffer.toString();
+		return CalendarDate._from(calendar);
 	}
+
+	public CalendarDate subtractedFrom(CalendarDate day) {
+//		only valid for days and larger units
+		if (unit.compareTo(TimeUnit.day) < 0) return day;
+		Calendar calendar = day._asJavaCalendarUniversalZoneMidnight();
+		if (unit.equals(TimeUnit.day)) {
+			calendar.add(Calendar.DATE, -1 * (int)quantity);
+		} else {
+			calendar.add(unit.javaCalendarConstantForBaseType(), -1 * (int) inBaseUnits());
+		}
+		return CalendarDate._from(calendar);
+	}
+
+	
+//	public String toNormalizedString() {
+//		StringBuffer buffer = new StringBuffer();
+//		long remainder = quantity;
+//		boolean first = true;
+//		for (Iterator iterator = group().iterator(); iterator.hasNext();) {
+//			TimeUnit each = (TimeUnit) iterator.next();
+//			long portion = remainder / each.factor;
+//			if (portion > 0) {
+//				if (!first)
+//					buffer.append(", ");
+//				else
+//					first = false;
+//				buffer.append(each.toString(portion));
+//			}
+//			remainder = remainder % each.factor;
+//		}
+//		return buffer.toString();
+//	}
 	
 	public String toString() {
-		return unit.toString(quantity);
+		return toString(quantity, unit);
+	}
+	
+	private String toString(long quantity, TimeUnit unit) {
+			StringBuffer buffer = new StringBuffer();
+			buffer.append(quantity);
+			buffer.append(" ");
+			buffer.append(unit);
+			buffer.append(quantity == 1 ? "" : "s");
+			return buffer.toString();
 	}
 
 	public boolean equals(Object other) {
 		return
 			(other instanceof Duration) &&
 			((Duration) other).quantity == this.quantity &&
-			((Duration) other).unit.baseType == this.unit.baseType;
+			((Duration) other).unit.equals(this.unit);
 	}
 	
 	public int hashCode() {
 		return (int) quantity;
 	}
-		
-	private static class MillisecondDuration extends Duration {	
-		MillisecondDuration(long quantity, TimeUnit unit) {
-			super(quantity, unit);
-		}	
-		int calendarTag() {
-			return Calendar.MILLISECOND;
-		}
-		List group() {
-			TimeUnit[] group =  new TimeUnit[] {
-				TimeUnit.week,
-				TimeUnit.day, 
-				TimeUnit.hour, 
-				TimeUnit.minute, 
-				TimeUnit.second, 
-				TimeUnit.millisecond, 
-			};			
-			return Arrays.asList(group);
-		}
-	}
-	
-	private static class MonthDuration extends Duration {		
-		MonthDuration(long quantity, TimeUnit unit) {
-			super(quantity, unit);
-		}
-		int calendarTag() {
-			return Calendar.MONTH;
-		}	
-		List group() {
-			TimeUnit[] group =  new TimeUnit[] {
-				TimeUnit.millenium,
-				TimeUnit.century, 
-				TimeUnit.decade, 
-				TimeUnit.year, 
-				TimeUnit.quarter, 
-				TimeUnit.month, 
-			};
-			return Arrays.asList(group);
-		}
-	}
-	
+			
 }

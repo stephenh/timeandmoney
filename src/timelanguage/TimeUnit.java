@@ -1,8 +1,20 @@
 package timelanguage;
 
 
-class TimeUnit implements TimeConstants {
+class TimeUnit implements Comparable {
+
+	//Unit conversion factors
+	static final int millisecondsPerSecond = 1000;
+	static final int millisecondsPerMinute = 60 * millisecondsPerSecond;
+	static final int millisecondsPerHour = 60 * millisecondsPerMinute;
+	static final int millisecondsPerDay = 24 * millisecondsPerHour;
+	static final int millisecondsPerWeek = 7 * millisecondsPerDay;
+
+	static final int monthsPerQuarter = 3;
+	static final int monthsPerYear = 12;
+
 	
+	//Defining the units
 	static final TimeUnit millisecond = new TimeUnit(Type.millisecond, Type.millisecond, 1);
 	static final TimeUnit second = new TimeUnit(Type.second, Type.millisecond, millisecondsPerSecond);
 	static final TimeUnit minute = new TimeUnit(Type.minute, Type.millisecond, millisecondsPerMinute);
@@ -13,10 +25,8 @@ class TimeUnit implements TimeConstants {
 	static final TimeUnit month = new TimeUnit(Type.month, Type.month, 1);
 	static final TimeUnit quarter = new TimeUnit(Type.quarter, Type.month, monthsPerQuarter);
 	static final TimeUnit year = new TimeUnit(Type.year, Type.month, monthsPerYear);
-	static final TimeUnit decade = new TimeUnit(Type.decade, Type.month, monthsPerDecade);
-	static final TimeUnit century = new TimeUnit(Type.century, Type.month, monthsPerCentury);
-	static final TimeUnit millenium = new TimeUnit(Type.millenium, Type.month, monthsPerMillenium);	
 
+	
 	final Type type;
 	final Type baseType;
 	final int factor;
@@ -25,6 +35,23 @@ class TimeUnit implements TimeConstants {
 		this.type = type;
 		this.baseType = baseType;
 		this.factor = factor;
+	}
+	
+	public boolean isConvertibleToMilliseconds() {
+		return baseType.equals(Type.millisecond);
+	}
+	
+	public int compareTo(Object arg) {
+		TimeUnit other = (TimeUnit) arg;
+		if (other.baseType.equals(baseType)) return factor - other.factor;
+		if (baseType.equals(Type.month)) return 1;
+		return -1;
+	}
+	
+	int javaCalendarConstantForBaseType() {
+		if (baseType.equals(Type.millisecond)) return java.util.Calendar.MILLISECOND;
+		if (baseType.equals(Type.month)) return java.util.Calendar.MONTH;
+		return 0;
 	}
 	
 	public String toString() {

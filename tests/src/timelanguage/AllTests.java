@@ -6,6 +6,8 @@ public class AllTests {
 	public static Test suite() {
 		TestSuite suite = new TestSuite();
 
+		suite.addTest(new TestSuite(TimeUnitTest.class));
+		
 		suite.addTest(new TestSuite(TimePointTest.class));
 		suite.addTest(new TestSuite(DurationTest.class));
 		suite.addTest(new TestSuite(TimeIntervalTest.class));

@@ -7,7 +7,7 @@ public class CalendarDate extends CalendarInterval {
 	int year;
 	int month; // January = 1, February = 2 ...
 	int day;
-
+	
 	public static final CalendarDate FAR_FUTURE = from(9999, 9, 9);	
 
 	static CalendarDate from(int year, int month, int day) {
@@ -29,6 +29,11 @@ public class CalendarDate extends CalendarInterval {
 	public static CalendarDate from(TimePoint timePoint, TimeZone zone) {
 		Calendar calendar = timePoint.asJavaCalendar();
 		calendar.setTimeZone(zone);
+		return CalendarDate._from(calendar);
+	}
+
+	static CalendarDate _from(Calendar calendar) {
+		//Use timezone already set in calendar.
 		int year = calendar.get(Calendar.YEAR);
 		int month = calendar.get(Calendar.MONTH) + 1; //T&M Lib counts January as 1
 		int date = calendar.get(Calendar.DATE);
