@@ -17,6 +17,8 @@ public class  TimePoint implements Comparable {
 	public static final TimePoint FAR_FUTURE = atMidnightGMT(9999, 12, 31);
 
 	final long millisecondsFromEpoc;
+
+// CREATION METHODS
 	
 	public static TimePoint atMidnightGMT(int year, int month, int date) {
 		return atMidnight(year, month, date, gmt);
@@ -47,7 +49,7 @@ public class  TimePoint implements Comparable {
 	}
 
 	private static int convertedTo24hour(int hour, String am_pm) {
-//		assert(am_pm.equalsIgnoreCase("AM") || am_pm.equalsIgnoreCase("PM"));		
+		//assert(am_pm.equalsIgnoreCase("AM") || am_pm.equalsIgnoreCase("PM"));		
 		int translatedAmPm = (am_pm.equalsIgnoreCase("AM") ? 0 : 12);
 		translatedAmPm -= (hour == 12) ? 12 : 0;
 		return hour + translatedAmPm;
@@ -98,7 +100,7 @@ public class  TimePoint implements Comparable {
 	}
 	
 	
-	
+// BEHAVIORAL METHODS	
 	public boolean equals(Object otherPoint) {
 		return 
 			(otherPoint instanceof TimePoint) &&
@@ -122,7 +124,7 @@ public class  TimePoint implements Comparable {
 
 	public String toString() {
 		return asJavaUtilDate().toString(); //for better readability
-//		return String.valueOf(millisecondsFromEpoc);
+		//return String.valueOf(millisecondsFromEpoc);
 	}
 
 	public String toString(String pattern, TimeZone zone) {
@@ -163,7 +165,9 @@ public class  TimePoint implements Comparable {
 	}
 
 	
-
+//CONVENIENCE METHODS (Responsibility lies elsewhere, but language
+// is more fluid with a method here.)
+	
 	/** a convenience method */
 	public boolean isBefore(TimeInterval interval) {
 		return interval.isAfter(this);
