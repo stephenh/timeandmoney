@@ -153,7 +153,7 @@ public class CalendarDate extends CalendarInterval {
 	}
 	
 	public TimeInterval asTimeInterval(TimeZone zone) {
-		return TimeInterval.from(startAsTimePoint(zone), true, Duration.days(1), false);
+		return TimeInterval.startingFrom(startAsTimePoint(zone), true, Duration.days(1), false);
 	}
 	
 	public TimePoint startAsTimePoint(TimeZone zone) {

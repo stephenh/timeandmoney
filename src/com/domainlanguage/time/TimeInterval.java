@@ -24,14 +24,14 @@ public class TimeInterval extends ConcreteInterval {
 		return over(start, true, end, false);
 	}
 
-	public static TimeInterval from(TimePoint start, boolean startClosed, Duration length, boolean endClosed) {
+	public static TimeInterval startingFrom(TimePoint start, boolean startClosed, Duration length, boolean endClosed) {
 		TimePoint end = start.plus(length);
 		return over(start, startClosed, end, endClosed);
 	}
 	
-	public static TimeInterval from(TimePoint start, Duration length) {
+	public static TimeInterval startingFrom(TimePoint start, Duration length) {
 		//Uses the common default for time intervals, [start, end).
-		return from(start, true, length, false);
+		return startingFrom(start, true, length, false);
 	}
 
 	public static TimeInterval preceding(TimePoint end, boolean startClosed, Duration length, boolean endClosed) {
@@ -93,6 +93,24 @@ public class TimeInterval extends ConcreteInterval {
 			public Object next() {
 				Object current = next;
 				next = next.nextDay();
+				return current;
+			}
+			public void remove() {}
+		};
+	}
+
+	public Iterator iterator(Duration subintervalLength) {
+		final Duration segmentLength = subintervalLength;
+		final Interval totalInterval = this;
+		return new Iterator() {
+			TimeInterval next = segmentLength.startingFrom(start());
+			public boolean hasNext() {
+				return totalInterval.includes(next);
+			}	
+			public Object next() {
+				if (!hasNext()) return null;
+				Object current = next;
+				next = segmentLength.startingFrom(next.end());
 				return current;
 			}
 			public void remove() {}

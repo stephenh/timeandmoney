@@ -30,11 +30,11 @@ public class  TimePoint implements Comparable, Serializable {
 	}
 
 	public static TimePoint atGMT(int year, int month, int date, int hour, int minute) {
-		return atGMT(year, month, date, hour, 0, 0, 0);
+		return atGMT(year, month, date, hour, minute, 0, 0);
 	}
 	
 	public static TimePoint atGMT(int year, int month, int date, int hour, int minute, int second) {
-		return atGMT(year, month, date, hour, second, 0, 0);
+		return atGMT(year, month, date, hour, minute, second, 0);
 	}
 
 	public static TimePoint at(int year, int month, int date, int hour, int minute, int second, TimeZone zone) {
@@ -188,5 +188,8 @@ public class  TimePoint implements Comparable, Serializable {
 		return duration.subtractedFrom(this);
 	}
 
+	public TimeInterval until(TimePoint end) {
+		return TimeInterval.over(this, end);
+	}
 	
 }

@@ -198,8 +198,11 @@ public class Duration implements Comparable, Serializable {
 	 * Convenience method
 	 */
 	public TimeInterval startingFrom(TimePoint start) {
-		return TimeInterval.from(start, this);
+		return TimeInterval.startingFrom(start, this);
 	}
 
+	public TimeInterval preceding(TimePoint end) {
+		return TimeInterval.preceding(end, this);
+	}
 			
 }

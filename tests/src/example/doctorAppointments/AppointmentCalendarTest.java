@@ -20,7 +20,7 @@ public class AppointmentCalendarTest extends TestCase {
 
 		TimePoint jun7at10 = TimePoint.at(2004, 6, 7, 10, 0, 0, 0, pt);
 		CalendarEvent shortEvent = new CalendarEvent();
-		TimeInterval shortTime = TimeInterval.from(jun7at10, Duration.hours(3));
+		TimeInterval shortTime = TimeInterval.startingFrom(jun7at10, Duration.hours(3));
 		shortEvent.setTimeInterval(shortTime);
 		
 		TimePoint jun9at13 = TimePoint.at(2004, 6, 9, 13, 0, 0, 0, pt);

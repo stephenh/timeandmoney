@@ -85,7 +85,7 @@ public class TimeIntervalTest extends TestCase {
 
 	public void testCreateWithDurationFrom() {
 		Duration twoDays = Duration.days(2);
-		TimeInterval following = TimeInterval.from(dec20_2003, true, twoDays, true);
+		TimeInterval following = TimeInterval.startingFrom(dec20_2003, true, twoDays, true);
 		assertEquals("[ dec20", dec20_2003, following.start());
 		assertEquals("dec 22]", dec22_2003, following.end());
 		
@@ -118,7 +118,7 @@ public class TimeIntervalTest extends TestCase {
 		// Days include 12:00am at their start, but do not
 		// include the 12:00am that end them.
 
-		TimeInterval interval = TimeInterval.from(dec20_2003, Duration.hours(48));
+		TimeInterval interval = TimeInterval.startingFrom(dec20_2003, Duration.hours(48));
 		assertFalse(interval.includes(dec19_2003));
 		assertTrue(interval.includes(dec20_2003));
 		assertTrue(interval.includes(dec21_2003));
@@ -151,7 +151,6 @@ public class TimeIntervalTest extends TestCase {
 		assertEquals(expectedLength, interval.length());
 	}
 
-
 	public void testDaysIterator() {
 		TimePoint start = TimePoint.atGMT(2004, 2, 5, 10, 0);
 		TimePoint end = TimePoint.atGMT(2004, 2, 8, 2, 0);
@@ -164,6 +163,48 @@ public class TimeIntervalTest extends TestCase {
 		assertTrue(it.hasNext());
 		assertEquals(TimePoint.atGMT(2004, 2, 7, 10, 0), it.next());
 		assertFalse(it.hasNext());
+	}
+	
+	public void testSubintervalIterator() {
+		TimePoint d4_h10 = TimePoint.atGMT(2004, 2, 4, 10, 0);
+		TimePoint d5_h10 = TimePoint.atGMT(2004, 2, 5, 10, 0);
+		TimePoint d6_h10 = TimePoint.atGMT(2004, 2, 6, 10, 0);
+		TimePoint d7_h10 = TimePoint.atGMT(2004, 2, 7, 10, 0);
+		TimePoint d8_h10 = TimePoint.atGMT(2004, 2, 8, 10, 0);
+		TimePoint d9_h10 = TimePoint.atGMT(2004, 2, 9, 10, 0);
+		TimePoint d9_h2 = TimePoint.atGMT(2004, 2, 9, 2, 0);
+
+		TimeInterval interval = TimeInterval.over(d4_h10, d9_h2);
+		Iterator it = interval.iterator(Duration.days(2));
+		assertTrue(it.hasNext());
+		assertEquals(TimeInterval.over(d4_h10, d6_h10), it.next());
+		assertTrue(it.hasNext());
+		assertEquals(TimeInterval.over(d6_h10, d8_h10), it.next());
+		assertFalse(it.hasNext());
+		assertNull(it.next());
+
+		it = interval.iterator(Duration.weeks(1));
+		assertFalse(it.hasNext());
+		
+		TimePoint h2 = d9_h2;
+		TimePoint h3_m30 = TimePoint.atGMT(2004, 2, 9, 3, 30);
+		TimePoint h5 = TimePoint.atGMT(2004, 2, 9, 5, 0);
+		TimePoint h6_m30 = TimePoint.atGMT(2004, 2, 9, 6, 30);
+		TimePoint h8 = TimePoint.atGMT(2004, 2, 9, 8, 0);
+		
+		TimeInterval interval2 = TimeInterval.over(h2, h8);
+		it = interval2.iterator(Duration.minutes(90));
+		assertTrue(it.hasNext());
+		assertEquals(TimeInterval.over(h2, h3_m30), it.next());
+		assertTrue(it.hasNext());
+		assertEquals(TimeInterval.over(h3_m30, h5), it.next());
+		assertTrue(it.hasNext());
+		assertEquals(TimeInterval.over(h5, h6_m30), it.next());
+		assertTrue(it.hasNext());
+		assertEquals(TimeInterval.over(h6_m30, h8), it.next());
+		assertFalse(it.hasNext());
+		assertNull(it.next());
+	
 	}
 	
 	public void testIntersection() {
