@@ -138,10 +138,6 @@ public class Duration implements Comparable, Serializable {
 		return Ratio.of(inBaseUnits(), divisor.inBaseUnits());
 	}
 
-	public BigDecimal dividedBy(Duration divisor, int roundingRule, int precision) {
-		return this.dividedBy(divisor).value(precision, roundingRule);
-	}
-
 	public boolean equals(Object arg) {
 		if (!(arg instanceof Duration)) return false;
 		Duration other = (Duration) arg;

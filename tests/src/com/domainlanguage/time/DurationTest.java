@@ -99,7 +99,7 @@ public class DurationTest extends TestCase {
 	}
 	
 	public void testDivide() {
-		assertEquals(new BigDecimal(1.5), Duration.days(3).dividedBy(Duration.days(2), BigDecimal.ROUND_DOWN, 1));
+		assertEquals(new BigDecimal(1.5), Duration.days(3).dividedBy(Duration.days(2)).value(1, BigDecimal.ROUND_DOWN));
 	}
 	
 	public void testToNormalizedString() {
