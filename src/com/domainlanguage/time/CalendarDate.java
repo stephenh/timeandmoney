@@ -16,7 +16,7 @@ public class CalendarDate extends CalendarInterval {
 	
 	public static final CalendarDate FAR_FUTURE = from(9999, 9, 9);	
 
-	static CalendarDate from(int year, int month, int day) {
+	public static CalendarDate from(int year, int month, int day) {
 		return new CalendarDate(year, month, day);
 	}
 	

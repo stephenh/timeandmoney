@@ -186,5 +186,12 @@ public class Duration implements Comparable {
 		if (difference < 0) return -1;
 		return 0;
 	}
+	
+	/**
+	 * Convenience method
+	 */
+	public TimeInterval startingFrom(TimePoint start) {
+		return TimeInterval.from(start, this);
+	}
 			
 }
