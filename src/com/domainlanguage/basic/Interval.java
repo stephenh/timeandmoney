@@ -17,10 +17,10 @@ import java.util.List;
  * 
  * Interval (and its "ConcreteInterval" subclass) can be used for any
  * objects that have a natural ordering reflected by implementing the 
- * Comparable interface. For example, Money implements Comparable, so
- * if you want to check Price ranges, make an interval for each Money 
- * range. Any class of yours which implements Comparable can have 
- * logical intervals defined this way.
+ * Comparable interface. For example, Integer implements Comparable, so
+ * if you want to check if an Integer is within a range, make an Interval. 
+ * Any class of yours which implements Comparable can have intervals 
+ * defined this way.
  * 
  */
 
@@ -111,6 +111,14 @@ public abstract class Interval implements Comparable, Serializable {
 			(comparison == 0 && !includesLowerLimit());
 	}
 
+	public int compareTo(Object arg) {
+		Interval other = (Interval) arg;
+		if (!upperLimit().equals(other.upperLimit())) return upperLimit().compareTo(other.upperLimit());
+		if (includesLowerLimit() && !other.includesLowerLimit()) return -1;
+		if (!includesLowerLimit() && other.includesLowerLimit()) return 1;
+		return lowerLimit().compareTo(other.lowerLimit());
+	}
+
 	public String toString() {
 		if (isEmpty()) return "{}";
 		
@@ -127,26 +135,18 @@ public abstract class Interval implements Comparable, Serializable {
 		return buffer.toString();
 	}
 
-	public int compareTo(Object arg) {
-		Interval other = (Interval) arg;
-		if (!upperLimit().equals(other.upperLimit())) return upperLimit().compareTo(other.upperLimit());
-		if (includesLowerLimit() && !other.includesLowerLimit()) return -1;
-		if (!includesLowerLimit() && other.includesLowerLimit()) return 1;
-		return lowerLimit().compareTo(other.lowerLimit());
-	}
-
-	/**
-	 * The remaining methods are not meant for use by clients.
-	 * They are public only for use by extentions (subclasses).
-	 */
 	
-	public Comparable lesserOfLowerLimits(Interval other) {
+	private Comparable lesserOfLowerLimits(Interval other) {
 		int lowerComparison = lowerLimit().compareTo(other.lowerLimit());
 		if (lowerComparison <= 0) return this.lowerLimit();
 		return other.lowerLimit();
 	}
 
-	public Comparable greaterOfLowerLimits(Interval other) {
+	/**
+	 * This methods is not meant for use by clients.
+	 * It is exposed only for testing.
+	 */
+	Comparable greaterOfLowerLimits(Interval other) {
 		int lowerComparison = lowerLimit().compareTo(other.lowerLimit());
 		if (lowerComparison >= 0) return this.lowerLimit();
 		return other.lowerLimit();
@@ -158,18 +158,18 @@ public abstract class Interval implements Comparable, Serializable {
 		return other.upperLimit();
 	}
 
-	public Comparable greaterOfUpperLimits(Interval other) {
+	private Comparable greaterOfUpperLimits(Interval other) {
 		int upperComparison = upperLimit().compareTo(other.upperLimit());
 		if (upperComparison >= 0) return this.upperLimit();
 		return other.upperLimit();
 	}
 
-	public boolean greaterOfLowerIncluded(Interval other) {
+	private boolean greaterOfLowerIncluded(Interval other) {
 		Comparable limit = greaterOfLowerLimits(other);
 		return this.includes(limit) && other.includes(limit);
 	}
 
-	public boolean lesserOfUpperIncluded(Interval other) {
+	private boolean lesserOfUpperIncluded(Interval other) {
 		Comparable limit = lesserOfUpperLimits(other);
 		return this.includes(limit) && other.includes(limit);
 	}
