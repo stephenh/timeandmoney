@@ -1,34 +1,38 @@
-Release 0.3 begins to provide control over money calculations. The Ratio class,
-Proration class, and some of the Money methods take arguments for the number
-of decimal places of precision for intermediate calculations and the rounding
-rule for the calculation. If we find an alpha user who has an immediate need
-for carefully controlled money calculations, that will accellerate the development
-of this module.
-
-DateSpecification is introduced, in a preliminary form, allowing declaration of 
-holidays and other recurring date rules.
-
-Release 0.3 also provides a few simple usage examples (see example.insuranceRates.*),
-the first of many.
-
-Note: This version of this code is intended for use on projects who are interested
-in helping the development of the library and are prepared to deal with the
-immaturity of the code and design. Not only will defects in the code be fixed 
+Target Users for Release 0.3
+----------------------------
+Release 0.3 of this code is intended for use on projects by developers who are 
+interested in helping the development of the library and are prepared to deal with 
+the immaturity of the code and design. Not only will defects in the code be fixed 
 in later versions, there will be radical changes to the design, based on the
 feedback of these early users. These design changes will not all be backward
 compatible.
-
 With that caveat, the library in its current state should provide value.
-Some useful, and perhaps not obvious, features of the current library include:
-- ComparableInterval (and its "concrete" subclass) which can be used for any
-objects that have a natural ordering reflected by implementing the Comparable
-interface. For example, Money implements Comparable, so
-if you want to check Price ranges, make an interval for each Money range. Any
-class of yours which implements Comparable can have logical intervals defined
-this way.
-Another class in the library that works with Interval is IntervalKeyedMap. This
-allows applications to find objects with a key by looking up the key within
-a series of Intervals.
+In release 0.3, the time package is becoming fairly usable. Money is rougher, but
+the basic data structure of the Money object is unlikely to change much.
+
+Usage Examples
+--------------
+This release provides a few simple usage examples (see example.insuranceRates.*).
+These are the first of many. They will become an important way of explaining use of the 
+library, as well as a means of capturing motivating scenarios for new development.
+
+Controlling Money Calculations
+------------------------------
+Release 0.3 begins to provide control over money calculations. The Ratio class,
+Proration class, and some of the Money methods take arguments for the number
+of decimal places of precision for intermediate calculations and the rounding
+rule for the calculation. If you have an immediate need for carefully controlled 
+money calculations, please contact eric@domainlanguage.com.
+
+More Interval Functionality
+---------------------------
+Interval (renamed from ComparableInterval) now supports intersections, and relative complements.
+The new IntervalKeyedMap allows lookup of values that apply to ranges rather than individual keys.
+
+DateSpecification
+-----------------
+Release 0.3 introduces DateSpecification, in a preliminary form, allowing declaration of 
+holidays and other recurring dates or constraints on dates.
 
 Java Version Requirement: 1.4
 -----------------------------

@@ -14,6 +14,14 @@ import java.util.List;
  * The rules of this class are consistent with the common mathematical 
  * definition of "interval". For a simple explanation, see 
  * http://en.wikipedia.org/wiki/Interval_(mathematics)
+ * 
+ * Interval (and its "ConcreteInterval" subclass) can be used for any
+ * objects that have a natural ordering reflected by implementing the 
+ * Comparable interface. For example, Money implements Comparable, so
+ * if you want to check Price ranges, make an interval for each Money 
+ * range. Any class of yours which implements Comparable can have 
+ * logical intervals defined this way.
+ * 
  */
 
 public abstract class Interval implements Comparable, Serializable {
