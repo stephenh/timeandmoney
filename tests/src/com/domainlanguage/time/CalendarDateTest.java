@@ -80,6 +80,25 @@ public class CalendarDateTest extends TestCase {
 	  	assertEquals(Calendar.MONDAY, date.dayOfWeek());
 	  }
 	  
+	  public void testMonth() {
+	  	CalendarDate nov6_2004 = CalendarDate.date(2004, 11, 6);
+	  	CalendarInterval nov2004 = CalendarInterval.inclusive(2004, 11, 1, 2004, 11, 30);
+	  	assertEquals(nov2004, nov6_2004.month());
+
+	  	CalendarDate dec6_2004 = CalendarDate.date(2004, 12, 6);
+	  	CalendarInterval dec2004 = CalendarInterval.inclusive(2004, 12, 1, 2004, 12, 31);
+	  	assertEquals(nov2004, nov6_2004.month());
+
+	  	CalendarDate feb9_2004 = CalendarDate.date(2004, 2, 9);
+	  	CalendarInterval feb2004 = CalendarInterval.inclusive(2004, 2, 1, 2004, 2, 29);
+	  	assertEquals(feb2004, feb9_2004.month());
+
+	  	CalendarDate feb9_2003 = CalendarDate.date(2003, 2, 9);
+	  	CalendarInterval feb2003 = CalendarInterval.inclusive(2003, 2, 1, 2003, 2, 28);
+	  	assertEquals(feb2003, feb9_2003.month());
+
+	  }
+	  
 	  public void testToString() {
 	  	CalendarDate date = CalendarInterval.date(2004, 5, 28);
 	  	assertEquals("2004-5-28", date.toString());

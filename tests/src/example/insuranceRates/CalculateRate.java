@@ -9,6 +9,7 @@ package example.insuranceRates;
 import com.domainlanguage.basic.*;
 import com.domainlanguage.time.*;
 import com.domainlanguage.money.Money;
+import com.domainlanguage.money.Proration;
 
 import junit.framework.TestCase;
 
@@ -21,7 +22,19 @@ public class CalculateRate extends TestCase {
 		Money monthlyPremium = (Money)insuranceSchedule().get(ageOnEffectiveDate);
 		assertEquals(Money.dollars(150.00), monthlyPremium);
 	}
+	
+	public void testProrateFirstMonth() {
+		Money monthlyPremium = Money.dollars(150.00);
+		CalendarDate effectiveDateOfPolicy = CalendarDate.date(2004, 11, 7);
+		CalendarInterval entireMonth = effectiveDateOfPolicy.month();
+		CalendarInterval remainderOfMonth = effectiveDateOfPolicy.through(entireMonth.end());
+		
+		Proration proration = new Proration();
+		Money firstPayment = proration.partOfWhole(monthlyPremium, remainderOfMonth.lengthInDaysInt(), entireMonth.lengthInDaysInt());
+		assertEquals(Money.dollars(120.00), firstPayment);
+	}
 /*
+ * 
  	public void testLookUpMoreComplicated() {
 		BusinessCalendar paymentCalendar = null;
 		CalendarInterval paymentQuarter = paymentCalendar.currentQuarter();

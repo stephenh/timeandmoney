@@ -102,7 +102,20 @@ public class CalendarDate extends CalendarInterval {
 	public CalendarDate nextMonth() {
 		return this.plusMonths(1);
 	}
+	
+	public CalendarDate firstOfMonth() {
+		return CalendarDate.from(year, month, 1);
+	}
+	
+	public CalendarDate lastOfMonth() {
+		return this.plusMonths(1).firstOfMonth().plusDays(-1);
+	}
 
+	public CalendarInterval month() {
+		return CalendarInterval.inclusive(firstOfMonth(), lastOfMonth());
+	}
+
+	
 	public CalendarDate plusDays(int increment) {
 		Calendar calendar = _asJavaCalendarUniversalZoneMidnight();
 		calendar.add(Calendar.DATE, increment);
@@ -166,5 +179,6 @@ public class CalendarDate extends CalendarInterval {
 		Calendar calendar = _asJavaCalendarUniversalZoneMidnight();
 		return calendar.get(Calendar.DAY_OF_WEEK);
 	}
+
 	
 }
