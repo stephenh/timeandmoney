@@ -6,11 +6,11 @@
 
 package com.domainlanguage.money;
 
-import java.math.BigDecimal;
-import java.util.Currency;
-import java.io.Serializable;
+import java.io.*;
+import java.math.*;
+import java.util.*;
 
-import com.domainlanguage.basic.Ratio;
+import com.domainlanguage.basic.*;
 
 public class Money implements Comparable, Serializable {
 	private static final Currency USD = Currency.getInstance("USD");

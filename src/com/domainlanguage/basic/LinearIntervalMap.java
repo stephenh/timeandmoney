@@ -28,10 +28,8 @@ public class LinearIntervalMap implements IntervalMap{
 	}
 	
 	private void directPut(List intervalSequence, Object value) {
-		for (Iterator iter = intervalSequence.iterator(); iter.hasNext();) {
-			Interval interval = (Interval) iter.next();
-			keyValues.put(interval, value);
-		}
+		for (Iterator iter = intervalSequence.iterator(); iter.hasNext();) 
+			keyValues.put(iter.next(), value);
 	}
 
 	public Object get(Comparable key) {

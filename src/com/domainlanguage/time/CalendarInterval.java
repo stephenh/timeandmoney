@@ -7,10 +7,9 @@
 package com.domainlanguage.time;
 
 import java.util.*;
-import java.util.Iterator;
-import java.util.TimeZone;
 
-import com.domainlanguage.basic.Interval;
+import com.domainlanguage.basic.*;
+import com.domainlanguage.util.*;
 
 public abstract class CalendarInterval extends Interval {
 
@@ -103,7 +102,7 @@ public abstract class CalendarInterval extends Interval {
 	public Iterator daysIterator() {
 		final CalendarDate start = (CalendarDate) lowerLimit();
 		final CalendarDate end = (CalendarDate) upperLimit();
-		return new Iterator() {
+		return new ImmutableIterator() {
 			CalendarDate next = start;
 			public boolean hasNext() {
 				return !next.isAfter(end);
@@ -112,8 +111,6 @@ public abstract class CalendarInterval extends Interval {
 				Object current = next;
 				next = next.plusDays(1);
 				return current;
-			}
-			public void remove() {
 			}
 		};
 	}

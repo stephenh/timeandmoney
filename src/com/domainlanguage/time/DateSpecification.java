@@ -6,7 +6,7 @@
 
 package com.domainlanguage.time;
 
-import java.util.Iterator;
+import java.util.*;
 
 public abstract class DateSpecification {
 

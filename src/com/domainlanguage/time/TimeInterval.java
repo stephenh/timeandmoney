@@ -6,9 +6,10 @@
 
 package com.domainlanguage.time;
 
-import java.util.Iterator;
+import java.util.*;
 
 import com.domainlanguage.basic.*;
+import com.domainlanguage.util.*;
 
 
 public class TimeInterval extends ConcreteInterval {
@@ -82,7 +83,7 @@ public class TimeInterval extends ConcreteInterval {
 	}
 	
 	public Iterator daysIterator() {
-		return new Iterator() {
+		return new ImmutableIterator() {
 			TimePoint next = start();
 			public boolean hasNext() {
 				return end().isAfter(next);
@@ -92,15 +93,13 @@ public class TimeInterval extends ConcreteInterval {
 				next = next.nextDay();
 				return current;
 			}
-			public void remove() {
-			}
 		};
 	}
 
 	public Iterator iterator(Duration subintervalLength) {
 		final Duration segmentLength = subintervalLength;
 		final Interval totalInterval = this;
-		return new Iterator() {
+		return new ImmutableIterator() {
 			TimeInterval next = segmentLength.startingFrom(start());
 			public boolean hasNext() {
 				return totalInterval.includes(next);
@@ -110,8 +109,6 @@ public class TimeInterval extends ConcreteInterval {
 				Object current = next;
 				next = segmentLength.startingFrom(next.end());
 				return current;
-			}
-			public void remove() {
 			}
 		};
 	}

@@ -6,9 +6,8 @@
 
 package com.domainlanguage.basic;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.*;
+import java.util.*;
 
 /**
  * The rules of this class are consistent with the common mathematical 

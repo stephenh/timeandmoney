@@ -6,7 +6,9 @@
 
 package com.domainlanguage.time;
 
-import java.util.Iterator;
+import java.util.*;
+
+import com.domainlanguage.util.*;
 
 public abstract class AnnualDateSpecification extends DateSpecification {
 	
@@ -21,7 +23,7 @@ public abstract class AnnualDateSpecification extends DateSpecification {
 	}
 
 	public Iterator iterateOver(final CalendarInterval interval) {
-		return new Iterator() {
+		return new ImmutableIterator() {
 			CalendarDate next = firstOccurrenceIn(interval);
 			public boolean hasNext() {
 				return next != null;
@@ -32,8 +34,6 @@ public abstract class AnnualDateSpecification extends DateSpecification {
 				next = next.plusMonths(12);
 				if (!interval.includes(next)) next = null;
 				return current;
-			}
-			public void remove() {
 			}
 		};
 	}

@@ -6,9 +6,9 @@
 
 package com.domainlanguage.money;
 
-import java.math.BigDecimal;
+import java.math.*;
 
-import com.domainlanguage.basic.Ratio;
+import com.domainlanguage.basic.*;
 
 public class Proration {
 

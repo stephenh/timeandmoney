@@ -6,10 +6,10 @@
 
 package com.domainlanguage.timeutil;
 
-import java.io.IOException;
-import java.net.Socket;
+import java.io.*;
+import java.net.*;
 
-import com.domainlanguage.time.TimePoint;
+import com.domainlanguage.time.*;
 
 
 public class NetworkTimeSource {

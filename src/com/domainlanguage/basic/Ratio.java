@@ -18,7 +18,7 @@
 
 package com.domainlanguage.basic;
 
-import java.math.BigDecimal;
+import java.math.*;
 
 public class Ratio {
 	private BigDecimal numerator;

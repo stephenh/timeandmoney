@@ -6,7 +6,7 @@
 
 package com.domainlanguage.time;
 
-import java.util.TimeZone;
+import java.util.*;
 
 class ConcreteCalendarInterval extends CalendarInterval {
 	private CalendarDate start;

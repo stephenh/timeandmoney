@@ -4,16 +4,15 @@
  * For more information, see http://timeandmoney.sourceforge.net.
  */
 
-package com.domainlanguage.timeutil;
+package com.domainlanguage.util;
 
 import java.util.*;
 
-import com.domainlanguage.time.*;
 
-public class SystemClock {
-
-	public static TimePoint now() {
-		return TimePoint.from(new Date());
+abstract public class ImmutableIterator implements Iterator {
+	
+	public void remove() {
+		throw new UnsupportedOperationException("sorry, no can do :-(");
 	}
 
 }

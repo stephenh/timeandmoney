@@ -6,7 +6,7 @@
 
 package com.domainlanguage.timeutil;
 
-import java.util.TimeZone;
+import java.util.*;
 
 import com.domainlanguage.time.*;
 

@@ -8,6 +8,8 @@ package com.domainlanguage.time;
 
 import java.util.*;
 
+import com.domainlanguage.util.*;
+
 
 class BusinessCalendar {
 	private Set holidays = new HashSet();
@@ -59,7 +61,7 @@ class BusinessCalendar {
 
 	public Iterator businessDaysIterator(CalendarInterval anInterval) {
 		final CalendarInterval interval = anInterval;
-		return new Iterator() {
+		return new ImmutableIterator() {
 			CalendarDate next = interval.start();
 			public boolean hasNext() {
 				return interval.includes(next);
@@ -68,8 +70,6 @@ class BusinessCalendar {
 				Object current = next;
 				next = nearestBusinessDay(next.nextDay());
 				return current;
-			}
-			public void remove() {
 			}
 		};
 	}
