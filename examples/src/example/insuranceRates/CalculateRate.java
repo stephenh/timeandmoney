@@ -8,7 +8,7 @@ package example.insuranceRates;
 
 import junit.framework.*;
 
-import com.domainlanguage.basic.*;
+import com.domainlanguage.intervals.*;
 import com.domainlanguage.money.*;
 import com.domainlanguage.time.*;
 

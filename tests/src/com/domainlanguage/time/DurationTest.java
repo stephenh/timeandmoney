@@ -10,6 +10,7 @@ import java.math.*;
 
 import junit.framework.*;
 
+import com.domainlanguage.common.*;
 import com.domainlanguage.tests.*;
 
 public class DurationTest extends TestCase {
@@ -99,7 +100,7 @@ public class DurationTest extends TestCase {
 	}
 	
 	public void testDivide() {
-		assertEquals(new BigDecimal(1.5), Duration.days(3).dividedBy(Duration.days(2)).decimalValue(1, BigDecimal.ROUND_DOWN));
+		assertEquals(new BigDecimal(1.5), Duration.days(3).dividedBy(Duration.days(2)).decimalValue(1, Rounding.DOWN));
 	}
 	
 	public void testToNormalizedString() {

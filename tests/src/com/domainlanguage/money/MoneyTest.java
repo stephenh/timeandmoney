@@ -5,7 +5,7 @@ import java.util.*;
 
 import junit.framework.*;
 
-import com.domainlanguage.basic.Ratio;
+import com.domainlanguage.common.*;
 import com.domainlanguage.tests.*;
 
 
@@ -70,13 +70,13 @@ public class MoneyTest extends TestCase {
 	
 	public void testMultiplyRounding() {
 		assertEquals(Money.dollars(66.67), d100.times(0.66666667));
-		assertEquals(Money.dollars(66.66), d100.times(0.66666667, BigDecimal.ROUND_DOWN));
+		assertEquals(Money.dollars(66.66), d100.times(0.66666667, Rounding.DOWN));
 	}
 	
 	public void testMultiplicationWithExplicitRounding() {
-		assertEquals(Money.dollars(66.67), d100.times(new BigDecimal("0.666666"), BigDecimal.ROUND_HALF_EVEN));
-		assertEquals(Money.dollars(66.66), d100.times(new BigDecimal("0.666666"), BigDecimal.ROUND_DOWN));
-		assertEquals(Money.dollars(-66.66), d100.negated().times(new BigDecimal("0.666666"), BigDecimal.ROUND_DOWN));
+		assertEquals(Money.dollars(66.67), d100.times(new BigDecimal("0.666666"), Rounding.HALF_EVEN));
+		assertEquals(Money.dollars(66.66), d100.times(new BigDecimal("0.666666"), Rounding.DOWN));
+		assertEquals(Money.dollars(-66.66), d100.negated().times(new BigDecimal("0.666666"), Rounding.DOWN));
 	}
 
 	public void testMinimumIncrement() {
@@ -93,15 +93,15 @@ public class MoneyTest extends TestCase {
 	}
 	
 	public void testDivisionByMoney() {
-		assertEquals(new BigDecimal(2.50), Money.dollars(5.00).dividedBy(Money.dollars(2.00)).decimalValue(1, BigDecimal.ROUND_UNNECESSARY));
-		assertEquals(new BigDecimal(1.25), Money.dollars(5.00).dividedBy(Money.dollars(4.00)).decimalValue(2, BigDecimal.ROUND_UNNECESSARY));
-		assertEquals(new BigDecimal(5), Money.dollars(5.00).dividedBy(Money.dollars(1.00)).decimalValue(0, BigDecimal.ROUND_UNNECESSARY));
+		assertEquals(new BigDecimal(2.50), Money.dollars(5.00).dividedBy(Money.dollars(2.00)).decimalValue(1, Rounding.UNNECESSARY));
+		assertEquals(new BigDecimal(1.25), Money.dollars(5.00).dividedBy(Money.dollars(4.00)).decimalValue(2, Rounding.UNNECESSARY));
+		assertEquals(new BigDecimal(5), Money.dollars(5.00).dividedBy(Money.dollars(1.00)).decimalValue(0, Rounding.UNNECESSARY));
 		try {
-			Money.dollars(5.00).dividedBy(Money.dollars(2.00)).decimalValue(0, BigDecimal.ROUND_UNNECESSARY);
+			Money.dollars(5.00).dividedBy(Money.dollars(2.00)).decimalValue(0, Rounding.UNNECESSARY);
 			fail("dividedBy(Money) does not allow rounding.");
 		} catch(ArithmeticException correctBehavior) {}
 		try {
-			Money.dollars(10.00).dividedBy(Money.dollars(3.00)).decimalValue(5, BigDecimal.ROUND_UNNECESSARY);
+			Money.dollars(10.00).dividedBy(Money.dollars(3.00)).decimalValue(5, Rounding.UNNECESSARY);
 			fail("dividedBy(Money) does not allow rounding.");
 		} catch(ArithmeticException correctBehavior) {}
 	}
@@ -179,7 +179,7 @@ public class MoneyTest extends TestCase {
 	
 	public void testApplyRatio() {
 		Ratio oneThird = Ratio.of(1, 3);
-		Money result = Money.dollars(100).applying(oneThird, 1, BigDecimal.ROUND_UP);
+		Money result = Money.dollars(100).applying(oneThird, 1, Rounding.UP);
 		assertEquals(Money.dollars(33.40), result);
 	}
 	

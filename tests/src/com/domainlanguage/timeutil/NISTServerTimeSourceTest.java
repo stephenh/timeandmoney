@@ -6,13 +6,11 @@
 
 package com.domainlanguage.timeutil;
 
-import java.io.IOException;
+import java.io.*;
 
-import junit.framework.TestCase;
+import junit.framework.*;
 
-import com.domainlanguage.time.Duration;
-import com.domainlanguage.time.TimePoint;
-import com.domainlanguage.time.TimeSource;
+import com.domainlanguage.time.*;
 
 public class NISTServerTimeSourceTest extends TestCase {
 

@@ -16,11 +16,11 @@
  *  
  */
 
-package com.domainlanguage.basic;
+package com.domainlanguage.common;
 
 import java.math.*;
 
-import com.domainlanguage.util.TypeCheck;
+import com.domainlanguage.util.*;
 
 public class Ratio {
 	private BigDecimal numerator;

@@ -8,7 +8,7 @@ package com.domainlanguage.time;
 
 import java.util.*;
 
-import com.domainlanguage.basic.*;
+import com.domainlanguage.intervals.*;
 import com.domainlanguage.util.*;
 
 

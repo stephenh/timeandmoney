@@ -9,7 +9,7 @@ package com.domainlanguage.time;
 import java.io.*;
 import java.util.*;
 
-import com.domainlanguage.basic.*;
+import com.domainlanguage.common.*;
 
 public class Duration implements Comparable, Serializable {
 	public static final Duration NONE = milliseconds(0);

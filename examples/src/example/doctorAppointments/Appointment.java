@@ -10,8 +10,6 @@ import com.domainlanguage.time.*;
 
 class Appointment {
 	private TimeInterval timeInterval;
-	private String description;
-	
 	public void setTimeInterval(TimeInterval anInterval) {
 		timeInterval = anInterval;
 	}

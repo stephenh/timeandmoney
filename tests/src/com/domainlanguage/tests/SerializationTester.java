@@ -8,9 +8,9 @@ package com.domainlanguage.tests;
 
 import java.io.*;
 
-import com.domainlanguage.util.*;
-
 import junit.framework.*;
+
+import com.domainlanguage.util.*;
 
 public class SerializationTester {
 	private static final String SERIAL_FILENAME = "test.ser";

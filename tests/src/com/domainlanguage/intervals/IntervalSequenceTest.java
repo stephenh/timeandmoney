@@ -4,12 +4,11 @@
  * For more information, see http://timeandmoney.sourceforge.net.
  */
 
-package com.domainlanguage.basic;
+package com.domainlanguage.intervals;
 
-import java.util.Iterator;
-import java.util.NoSuchElementException;
+import java.util.*;
 
-import junit.framework.TestCase;
+import junit.framework.*;
 
 
 public class IntervalSequenceTest extends TestCase {

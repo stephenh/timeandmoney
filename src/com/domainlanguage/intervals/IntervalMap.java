@@ -4,7 +4,7 @@
  * For more information, see http://timeandmoney.sourceforge.net.
  */
 
-package com.domainlanguage.basic;
+package com.domainlanguage.intervals;
 
 public interface IntervalMap {
 	void put(Interval keyInterval, Object value);

@@ -6,9 +6,9 @@
 
 package example.doctorAppointments;
 
-import java.util.TimeZone;
+import java.util.*;
 
-import junit.framework.TestCase;
+import junit.framework.*;
 
 
 public class FindAppointmentTime extends TestCase {

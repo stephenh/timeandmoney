@@ -10,13 +10,13 @@ import java.io.*;
 import java.math.*;
 import java.util.*;
 
-import com.domainlanguage.basic.*;
+import com.domainlanguage.common.*;
 import com.domainlanguage.util.*;
 
 public class Money implements Comparable, Serializable {
 	private static final Currency USD = Currency.getInstance("USD");
 	private static final Currency EUR = Currency.getInstance("EUR");
-	private static final int DEFAULT_ROUNDING_MODE = BigDecimal.ROUND_HALF_EVEN;
+	private static final int DEFAULT_ROUNDING_MODE = Rounding.HALF_EVEN;
 	
 	final BigDecimal amount;
 	final Currency currency;
@@ -36,7 +36,7 @@ public class Money implements Comparable, Serializable {
 	 * This creation method is safe to use. It will adjust scale, but will not round off the amount.
 	 */
 	public static Money valueOf (BigDecimal amount, Currency currency) {
-		return Money.valueOf (amount, currency, BigDecimal.ROUND_UNNECESSARY);
+		return Money.valueOf (amount, currency, Rounding.UNNECESSARY);
 	}
 
 	/**

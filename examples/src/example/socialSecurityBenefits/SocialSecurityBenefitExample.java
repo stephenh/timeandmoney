@@ -6,13 +6,11 @@
 
 package example.socialSecurityBenefits;
 
-import java.math.BigDecimal;
+import junit.framework.*;
 
-import com.domainlanguage.basic.Ratio;
+import com.domainlanguage.common.*;
 import com.domainlanguage.money.*;
 import com.domainlanguage.time.*;
-
-import junit.framework.TestCase;
 
 
 public class SocialSecurityBenefitExample extends TestCase {
@@ -26,7 +24,7 @@ public class SocialSecurityBenefitExample extends TestCase {
 	 * example calculations.
 	 * (see http://www.ssa.gov/OP_Home/cfr20/404/404-0430.htm)
 	 * 
-	 * The examples are 25 years old, but the regs are current. 
+	 * The examples are 25 years old, but the regulations are current. 
 	 */
 	 	
 	public void xtestExcessEarnings() {
@@ -70,40 +68,26 @@ public class SocialSecurityBenefitExample extends TestCase {
 //		assertEquals(Money.dollars(750), excessEarnings);
 	}
 	
-	/*
-	 * 404.439 Partial monthly benefits; excess earnings of the 
-	 * individual charged against his benefits and the benefits of 
-	 * persons entitled (or deemed entitled) to benefits on his earnings 
-	 * record.
-	 * (see http://www.ssa.gov/OP_Home/cfr20/404/404-0439.htm)
-	 */
 	
-	public void testDeductionsFromFamilyBenefits() {
-		/**
-		 * Example: A is entitled to an old-age insurance benefit of 
-		 * $165 and his wife is entitled to $82.50 before rounding, 
-		 * making a total of $247.50. After A's excess earnings have 
-		 * been charged to the appropriate months, there remains a 
-		 * partial benefit of $200 payable for October, which is 
-		 * apportioned as follows After deductions for excess earnings 
-		 * and after rounding per §404.304(f).:
-		 * 
-		 *    Original benefit   Fraction   Benefit
-		 * A      $165               2/3       $133
-		 * Spouse   82.50            1/3         66
-		 * Total   247.50                       199
-		 * 
-		 */
-		Proration proration = new Proration();
-		Money totalBenefit = Money.dollars(247.50);
+	/* Example: (Simplified exerpt from http://www.ssa.gov/OP_Home/cfr20/404/404-0439.htm)
+	 Worker is entitled to an old-age insurance benefit of $200 payable for October, which is 
+	 apportioned as follows after rounding each share down to the nearest dollar. 
+	 See regulation §404.304(f).
+	 
+	          Fraction   Benefit
+	 Worker         2/3       $133
+	 Spouse         1/3         66
+	 Total                     199
+	 */
+	public void testArbitraryRoundingRuleInDeductionsFromFamilyBenefits() {
 		Money benefit = Money.dollars(200);
 		Ratio workerShare = Ratio.of(2, 3);
 		Ratio spouseShare = Ratio.of(1, 3);
-		Money workerBenefit = benefit.applying(workerShare, 0, BigDecimal.ROUND_DOWN);
-		Money spouseBenefit = benefit.applying(spouseShare, 0, BigDecimal.ROUND_DOWN);
-
+		int roundingScale = 0;
+		Money workerBenefit = benefit.applying(workerShare, roundingScale, Rounding.DOWN);
+		Money spouseBenefit = benefit.applying(spouseShare, roundingScale, Rounding.DOWN);
 		assertEquals(Money.dollars(133), workerBenefit);
 		assertEquals(Money.dollars(66), spouseBenefit);
-		
 	}
+	
 }
