@@ -4,7 +4,7 @@
  * For more information, see http://timeandmoney.sourceforge.net.
  */
 
-package com.domainlanguage.common;
+package com.domainlanguage.base;
 
 import java.math.*;
 

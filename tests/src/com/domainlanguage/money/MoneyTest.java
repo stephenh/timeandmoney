@@ -5,7 +5,7 @@ import java.util.*;
 
 import junit.framework.*;
 
-import com.domainlanguage.common.*;
+import com.domainlanguage.base.*;
 import com.domainlanguage.tests.*;
 
 public class MoneyTest extends TestCase {

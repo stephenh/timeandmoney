@@ -1,4 +1,4 @@
-package com.domainlanguage.common;
+package com.domainlanguage.base;
 
 import java.math.*;
 

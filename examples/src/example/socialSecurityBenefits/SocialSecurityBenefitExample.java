@@ -8,7 +8,7 @@ package example.socialSecurityBenefits;
 
 import junit.framework.*;
 
-import com.domainlanguage.common.*;
+import com.domainlanguage.base.*;
 import com.domainlanguage.money.*;
 import com.domainlanguage.time.*;
 

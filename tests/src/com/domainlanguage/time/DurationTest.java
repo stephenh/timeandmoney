@@ -10,7 +10,7 @@ import java.math.*;
 
 import junit.framework.*;
 
-import com.domainlanguage.common.*;
+import com.domainlanguage.base.*;
 import com.domainlanguage.tests.*;
 
 public class DurationTest extends TestCase {

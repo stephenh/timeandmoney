@@ -8,7 +8,7 @@ package com.domainlanguage.money;
 
 import java.math.*;
 
-import com.domainlanguage.common.*;
+import com.domainlanguage.base.*;
 
 public class Proration {
 

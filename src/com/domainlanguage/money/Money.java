@@ -10,7 +10,7 @@ import java.io.*;
 import java.math.*;
 import java.util.*;
 
-import com.domainlanguage.common.*;
+import com.domainlanguage.base.*;
 import com.domainlanguage.util.*;
 
 public class Money implements Comparable, Serializable {
