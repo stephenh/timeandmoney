@@ -135,23 +135,11 @@ public class MoneyTest extends TestCase {
         assertEquals(d2_51a, d2_51);
     }
 
-    //  TODO: Need default formatted string, which Java Currency doesn't provide
-    //	public void xtestFormatPrinting() {
-    //		// *** TBD **
-    //		assertEquals("$15.00", d15.formatString());
-    //		assertEquals("DM 2.51", y2_51.formatString());
-    //	}
-
     public void testHash() {
         Money d2_51a = Money.dollars(2.51);
         assertEquals(d2_51a.hashCode(), d2_51.hashCode());
     }
 
-    // TODO: Formatted printing of Money
-    //	public void testLocalPrinting() {
-    //		assertEquals("$15.00", d15.localString());
-    //		assertEquals("2,51 DM", m2_51.localString());
-    //	}
 
     public void testNegation() {
         assertEquals(Money.dollars(-15), d15.negated());
@@ -170,6 +158,11 @@ public class MoneyTest extends TestCase {
         assertEquals("$ 15.00", d15.toString(Locale.US));
         assertEquals("USD 15.00", d15.toString(Locale.UK));
     }
+    // TODO: Formatted printing of Money
+    //	public void testLocalPrinting() {
+    //		assertEquals("$15.00", d15.localString());
+    //		assertEquals("2,51 DM", m2_51.localString());
+    //	}
 
     public void testRound() {
         Money dRounded = Money.dollars(1.2350);
