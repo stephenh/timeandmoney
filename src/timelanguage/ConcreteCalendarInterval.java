@@ -2,16 +2,16 @@ package timelanguage;
 
 import java.util.TimeZone;
 
-class CalendarDateRangeInclusive extends CalendarInterval {
+class ConcreteCalendarInterval extends CalendarInterval {
 	
 	private CalendarDate start;
 	private CalendarDate end;
 	
-	static CalendarDateRangeInclusive from(CalendarDate start, CalendarDate end) {
-		return new CalendarDateRangeInclusive(start, end);
+	static ConcreteCalendarInterval from(CalendarDate start, CalendarDate end) {
+		return new ConcreteCalendarInterval(start, end);
 	}
 	
-	CalendarDateRangeInclusive(CalendarDate start, CalendarDate end) {
+	ConcreteCalendarInterval(CalendarDate start, CalendarDate end) {
 		this.start = start;
 		this.end = end;
 	}

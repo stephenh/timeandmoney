@@ -6,8 +6,6 @@ import fundamental.ComparableInterval;
 
 public abstract class CalendarInterval extends ComparableInterval {
 
-	public static final CalendarInterval NEVER = CalendarDate.FAR_FUTURE;
-	
 	public static CalendarDate date(int year, int month, int day) {
 		return CalendarDate.from(year, month, day);
 	}
@@ -15,11 +13,11 @@ public abstract class CalendarInterval extends ComparableInterval {
 	public static CalendarInterval inclusive(int startYear, int startMonth, int startDay, int endYear, int endMonth, int endDay) {
 		CalendarDate startDate = CalendarDate.from(startYear, startMonth, startDay);
 		CalendarDate endDate = CalendarDate.from(endYear, endMonth, endDay);
-		return CalendarDateRangeInclusive.from(startDate, endDate);
+		return ConcreteCalendarInterval.from(startDate, endDate);
 	}
 
 	public static CalendarInterval inclusive(CalendarDate start, CalendarDate end) {
-		return CalendarDateRangeInclusive.from(start, end);
+		return ConcreteCalendarInterval.from(start, end);
 	}
 
 	
@@ -33,15 +31,6 @@ public abstract class CalendarInterval extends ComparableInterval {
 		return true;
 	}
 
-	public CalendarInterval intersect(CalendarInterval other) {
-		if (!intersects(other)) return NEVER;
-
-		CalendarDate intersectLowerBound = (CalendarDate) greaterOfLowerLimits(other);
-		CalendarDate intersectUpperBound = (CalendarDate) lesserOfUpperLimits(other);
-
-		return inclusive(intersectLowerBound, intersectUpperBound);
-	}
-	
 	public boolean equals(Object arg) {
 		if (!(arg instanceof CalendarInterval)) return false;
 		CalendarInterval other = (CalendarInterval) arg;
@@ -51,5 +40,17 @@ public abstract class CalendarInterval extends ComparableInterval {
 	public int hashCode() {
 		return getLowerBound().hashCode();
 	}
+
+	public static final CalendarInterval NEVER = CalendarDate.FAR_FUTURE;
+
+	public CalendarInterval intersect(CalendarInterval other) {
+		if (!intersects(other)) return NEVER;
+	
+		CalendarDate intersectLowerBound = (CalendarDate) greaterOfLowerLimits(other);
+		CalendarDate intersectUpperBound = (CalendarDate) lesserOfUpperLimits(other);
+	
+		return inclusive(intersectLowerBound, intersectUpperBound);
+	}
+
 
 }
