@@ -98,21 +98,21 @@ public class CalendarDate extends CalendarInterval {
 	public CalendarDate nextDay() {
 		return this.plusDays(1);
 	}
-
-	public CalendarDate nextMonth() {
-		return this.plusMonths(1);
-	}
 	
 	public CalendarDate firstOfMonth() {
-		return CalendarDate.from(year, month, 1);
+		return month().start();
 	}
 	
 	public CalendarDate lastOfMonth() {
-		return this.plusMonths(1).firstOfMonth().plusDays(-1);
+		return month().end();
 	}
 
 	public CalendarInterval month() {
-		return CalendarInterval.inclusive(firstOfMonth(), lastOfMonth());
+		return CalendarInterval.month(year, month);
+	}
+	
+	public CalendarInterval year() {
+		return CalendarInterval.year(year);
 	}
 
 	

@@ -48,7 +48,7 @@ public class ProrationTest extends TestCase {
 
 	
 	public void testProrateTotalIndivisibleBy3() {
-		Money[] actual = proration.dividedEvenlyInto(Money.dollars(100), 3);
+		Money[] actual = proration.dividedEvenlyIntoParts(Money.dollars(100), 3);
 		Money[] expected = {Money.dollars(33.34), Money.dollars(33.33), Money.dollars(33.33)};
 		for (int i = 0; i < expected.length; i++) {
 			assertEquals(expected[i], actual[i]);
@@ -56,7 +56,7 @@ public class ProrationTest extends TestCase {
 	}
 
 	public void testProrateOnlyOneShortOfEven() {
-		Money[] prorated = proration.dividedEvenlyInto(Money.dollars(1.09), 10);
+		Money[] prorated = proration.dividedEvenlyIntoParts(Money.dollars(1.09), 10);
 		for (int i = 0; i < 9; i++) {
 			assertEquals(Money.dollars(0.11), prorated[i]);
 		}
@@ -69,7 +69,7 @@ public class ProrationTest extends TestCase {
 		startingValues[1] = Money.dollars(2.00);
 		startingValues[2] = Money.dollars(3.00);
 		startingValues[3] = Money.dollars(4.00);
-		Money[] result = Proration.distributeRemainderOver(startingValues, Money.dollars(0.02));
+		Money[] result = proration.distributeRemainderOver(startingValues, Money.dollars(0.02));
 		assertEquals(Money.dollars(1.01), result[0]);
 		assertEquals(Money.dollars(2.01), result[1]);
 		assertEquals(Money.dollars(3.00), result[2]);

@@ -12,6 +12,7 @@ public class Money implements Comparable, Serializable {
 	private Currency currency;
 	
 	private static final Currency USD = Currency.getInstance("USD");
+	private static final Currency EUR = Currency.getInstance("EUR");
 	private static final int DEFAULT_ROUNDING_MODE = BigDecimal.ROUND_HALF_EVEN;
 	
 	/**
@@ -72,6 +73,23 @@ public class Money implements Comparable, Serializable {
 		return Money.valueOf(amount, USD);
 	}
 
+	/**
+	 * WARNING: Because of the indefinite precision of double, this
+	 * method must round off the value.
+	 */
+	public static Money euros(double amount) {
+		return Money.valueOf(amount, EUR);
+	}
+
+	/**
+	 * This creation method is safe to use. It will adjust scale, but will not round off the amount.
+	 */
+	public static Money euros (BigDecimal amount) {
+		return Money.valueOf(amount, EUR);
+	}
+
+
+	
 	
 	public BigDecimal amount() {
 		return amount;

@@ -14,32 +14,43 @@ import junit.framework.TestCase;
 public class DateSpecificationTest extends TestCase {
 
 	public void testFixedDate() {
+		CalendarInterval y2004 = CalendarInterval.year(2004);
 		DateSpecification independenceDay = DateSpecification.fixed(7, 4);
-		assertEquals(CalendarDate.date(2004, 7, 4), independenceDay.ofYear(2004));
+
+		assertEquals(CalendarDate.date(2004, 7, 4), ((AnnualDateSpecification)independenceDay).ofYear(2004));
+
+		assertEquals(CalendarDate.date(2004, 7, 4), independenceDay.firstOccurrenceIn(y2004));
 		assertTrue(independenceDay.isSatisfiedBy(CalendarDate.date(2004, 7, 4)));
 		assertFalse(independenceDay.isSatisfiedBy(CalendarDate.date(2004, 7, 3)));
 		assertTrue(independenceDay.isSatisfiedBy(CalendarDate.date(1970, 7, 4)));
+
 	}
 	
 	public void testNthWeekdayInMonth() {
 		DateSpecification thanksgiving = DateSpecification.nthOccuranceOfWeekdayInMonth(11, Calendar.THURSDAY, 4);
-		assertEquals(CalendarDate.date(2004, 11, 25), thanksgiving.ofYear(2004));
+		
+		assertEquals(CalendarDate.date(2004, 11, 25), ((AnnualDateSpecification)thanksgiving).ofYear(2004));
+
+		CalendarInterval y2004 = CalendarInterval.year(2004);
+		assertEquals(CalendarDate.date(2004, 11, 25), thanksgiving.firstOccurrenceIn(y2004));
 		assertTrue(thanksgiving.isSatisfiedBy(CalendarDate.date(2004, 11, 25)));
 		assertFalse(thanksgiving.isSatisfiedBy(CalendarDate.date(2002, 11, 25)));		
-		assertEquals(CalendarDate.date(2002, 11, 28), thanksgiving.ofYear(2002));
+		CalendarInterval y2002 = CalendarInterval.year(2002);
+		assertEquals(CalendarDate.date(2002, 11, 28), thanksgiving.firstOccurrenceIn(y2002));
 		assertTrue(thanksgiving.isSatisfiedBy(CalendarDate.date(2002, 11, 28)));		
 	}
 	
 	public void testSelectFirstFromInterval() {
-		DateSpecification independenceDay = DateSpecification.fixed(7, 4);
 		CalendarInterval y2002_2004 = CalendarInterval.inclusive(2002, 1, 1, 2004, 12, 31);
-		assertEquals(CalendarDate.date(2002, 7, 4), independenceDay.firstIn(y2002_2004));
 		CalendarInterval ylate2002_2004 = CalendarInterval.inclusive(2002, 8, 1, 2004, 12, 31);
-		assertEquals(CalendarDate.date(2003, 7, 4), independenceDay.firstIn(ylate2002_2004));
 		CalendarInterval ylate2002 = CalendarInterval.inclusive(2002, 8, 1, 2002, 12, 31);
-		assertNull(independenceDay.firstIn(ylate2002));
 		CalendarInterval ylate2002_early2003 = CalendarInterval.inclusive(2002, 8, 1, 2003, 6, 30);
-		assertNull(independenceDay.firstIn(ylate2002_early2003));
+
+		DateSpecification independenceDay = DateSpecification.fixed(7, 4);
+		assertEquals(CalendarDate.date(2002, 7, 4), independenceDay.firstOccurrenceIn(y2002_2004));
+		assertEquals(CalendarDate.date(2003, 7, 4), independenceDay.firstOccurrenceIn(ylate2002_2004));
+		assertNull(independenceDay.firstOccurrenceIn(ylate2002));
+		assertNull(independenceDay.firstOccurrenceIn(ylate2002_early2003));
 	}
 	
 	public void testIterateThroughInterval() {

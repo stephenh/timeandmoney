@@ -93,15 +93,15 @@ public class MoneyTest extends TestCase {
 	}
 	
 	public void testDivisionByMoney() {
-		assertEquals(new BigDecimal(2.50), Money.dollars(5.00).dividedBy(Money.dollars(2.00)).value(1, BigDecimal.ROUND_UNNECESSARY));
-		assertEquals(new BigDecimal(1.25), Money.dollars(5.00).dividedBy(Money.dollars(4.00)).value(2, BigDecimal.ROUND_UNNECESSARY));
-		assertEquals(new BigDecimal(5), Money.dollars(5.00).dividedBy(Money.dollars(1.00)).value(0, BigDecimal.ROUND_UNNECESSARY));
+		assertEquals(new BigDecimal(2.50), Money.dollars(5.00).dividedBy(Money.dollars(2.00)).decimalValue(1, BigDecimal.ROUND_UNNECESSARY));
+		assertEquals(new BigDecimal(1.25), Money.dollars(5.00).dividedBy(Money.dollars(4.00)).decimalValue(2, BigDecimal.ROUND_UNNECESSARY));
+		assertEquals(new BigDecimal(5), Money.dollars(5.00).dividedBy(Money.dollars(1.00)).decimalValue(0, BigDecimal.ROUND_UNNECESSARY));
 		try {
-			Money.dollars(5.00).dividedBy(Money.dollars(2.00)).value(0, BigDecimal.ROUND_UNNECESSARY);
+			Money.dollars(5.00).dividedBy(Money.dollars(2.00)).decimalValue(0, BigDecimal.ROUND_UNNECESSARY);
 			fail("dividedBy(Money) does not allow rounding.");
 		} catch(ArithmeticException correctBehavior) {}
 		try {
-			Money.dollars(10.00).dividedBy(Money.dollars(3.00)).value(5, BigDecimal.ROUND_UNNECESSARY);
+			Money.dollars(10.00).dividedBy(Money.dollars(3.00)).decimalValue(5, BigDecimal.ROUND_UNNECESSARY);
 			fail("dividedBy(Money) does not allow rounding.");
 		} catch(ArithmeticException correctBehavior) {}
 	}

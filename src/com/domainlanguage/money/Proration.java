@@ -16,7 +16,7 @@ public class Proration {
 		return total.currency().getDefaultFractionDigits() + 1;
 	}
 
-	public Money[] dividedEvenlyInto(Money total, int n) {
+	public Money[] dividedEvenlyIntoParts(Money total, int n) {
 		Money lowResult = total.dividedBy(BigDecimal.valueOf(n), BigDecimal.ROUND_DOWN);
 		Money[] lowResults = new Money[n];
 		for (int i = 0; i < n; i++) lowResults[i] = lowResult;
@@ -37,15 +37,25 @@ public class Proration {
 		int scale = defaultScaleForIntermediateCalculations(total);
 		Ratio[] ratios = ratios(proportions);
 		for (int i = 0; i < ratios.length; i++) {
-			BigDecimal multiplier = ratios[i].value(scale, BigDecimal.ROUND_DOWN);
+			BigDecimal multiplier = ratios[i].decimalValue(scale, BigDecimal.ROUND_DOWN);
 			simpleResult[i] = total.times(multiplier, BigDecimal.ROUND_DOWN);
 		}
 		Money remainder = total.minus(sum(simpleResult));
 		return distributeRemainderOver(simpleResult, remainder);
 	}
+
+	public Money partOfWhole(Money total, long portion, long whole) {
+		return partOfWhole(total, Ratio.of(portion, whole));
+	}
+
+	public Money partOfWhole(Money total, Ratio ratio) {
+		int scale = defaultScaleForIntermediateCalculations(total);
+		BigDecimal multiplier = ratio.decimalValue(scale, BigDecimal.ROUND_DOWN);
+		return total.times(multiplier, BigDecimal.ROUND_DOWN);
+	}
 	
-	static Money[] distributeRemainderOver(Money[] amounts, Money remainder) {
-		int increments = remainder.dividedBy(remainder.minimumIncrement()).value(0, BigDecimal.ROUND_UNNECESSARY).intValue();
+	Money[] distributeRemainderOver(Money[] amounts, Money remainder) {
+		int increments = remainder.dividedBy(remainder.minimumIncrement()).decimalValue(0, BigDecimal.ROUND_UNNECESSARY).intValue();
 		assert increments <= amounts.length; 
 
 		Money[] results = new Money[amounts.length];
@@ -84,14 +94,5 @@ public class Proration {
 		return ratios;
 	}
 
-	public Money partOfWhole(Money total, long portion, long whole) {
-		return toRatio(total, Ratio.of(portion, whole));
-	}
-
-	public Money toRatio(Money total, Ratio ratio) {
-		int scale = defaultScaleForIntermediateCalculations(total);
-		BigDecimal multiplier = ratio.value(scale, BigDecimal.ROUND_DOWN);
-		return total.times(multiplier, BigDecimal.ROUND_DOWN);
-	}
 	
 }

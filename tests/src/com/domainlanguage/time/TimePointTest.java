@@ -86,7 +86,7 @@ public class TimePointTest extends TestCase {
 	public void testNow() {
 		TimePoint now = TimePoint.now();
 		Date approxNow = new Date();
-		assertEquals("if the clock does not ticks during test ...", approxNow, now.asJavaUtilDate());
+		assertEquals("if the clock does not tick during test ...", approxNow, now.asJavaUtilDate());
 	}
 	
 	public void testBackToMidnight() {

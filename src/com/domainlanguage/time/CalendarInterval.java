@@ -15,20 +15,31 @@ import com.domainlanguage.basic.Interval;
 
 public abstract class CalendarInterval extends Interval {
 
-	public static CalendarDate date(int year, int month, int day) {
-		return CalendarDate.from(year, month, day);
+	public static CalendarInterval inclusive(CalendarDate start, CalendarDate end) {
+		return ConcreteCalendarInterval.from(start, end);
 	}
-	
+
 	public static CalendarInterval inclusive(int startYear, int startMonth, int startDay, int endYear, int endMonth, int endDay) {
 		CalendarDate startDate = CalendarDate.from(startYear, startMonth, startDay);
 		CalendarDate endDate = CalendarDate.from(endYear, endMonth, endDay);
 		return ConcreteCalendarInterval.from(startDate, endDate);
 	}
 
-	public static CalendarInterval inclusive(CalendarDate start, CalendarDate end) {
-		return ConcreteCalendarInterval.from(start, end);
+	public static CalendarDate date(int year, int month, int day) {
+		return CalendarDate.from(year, month, day);
 	}
 
+	public static CalendarInterval month(int year, int month) {
+		CalendarDate startDate = date(year, month, 1);
+		CalendarDate endDate = startDate.plusMonths(1).plusDays(-1);
+		return inclusive(startDate, endDate);
+	}
+
+	public static CalendarInterval year(int year) {
+		CalendarDate startDate = date(year, 1, 1);
+		CalendarDate endDate = date(year+1, 1, 1).plusDays(-1);
+		return inclusive(startDate, endDate);
+	}
 	
 	public abstract TimeInterval asTimeInterval(TimeZone zone);
 	
