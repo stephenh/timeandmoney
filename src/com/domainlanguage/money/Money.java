@@ -1,3 +1,9 @@
+/**
+ * Copyright (c) 2004 Domain Language, Inc. (http://domainlanguage.com)
+ * This free software is distributed under the "MIT" licence. See file licence.txt. 
+ * For more information, see http://timeandmoney.sourceforge.net.
+ */
+
 package com.domainlanguage.money;
 
 import java.math.BigDecimal;
@@ -7,13 +13,12 @@ import java.io.Serializable;
 import com.domainlanguage.basic.Ratio;
 
 public class Money implements Comparable, Serializable {
-
-	private BigDecimal amount;
-	private Currency currency;
-	
 	private static final Currency USD = Currency.getInstance("USD");
 	private static final Currency EUR = Currency.getInstance("EUR");
 	private static final int DEFAULT_ROUNDING_MODE = BigDecimal.ROUND_HALF_EVEN;
+	
+	final BigDecimal amount;
+	final Currency currency;
 	
 	/**
 	 * The constructor does not complex computations and requires simple, inputs
@@ -42,15 +47,16 @@ public class Money implements Comparable, Serializable {
 	}
 
 	/**
-	 * WARNING: Because of the indefinite precision of double, this
-	 * method must round off the value.
+	 * WARNING: Because of the indefinite precision of double, 
+	 * this method must round off the value.
 	 */
 	public static Money valueOf(double dblAmount, Currency currency) {
 		return Money.valueOf(dblAmount, currency, DEFAULT_ROUNDING_MODE);
 	}
 
 	/**
-	 * Because of the indefinite precision of double, this method must round off the value. 
+	 * Because of the indefinite precision of double, 
+	 * this method must round off the value. 
 	 * This method gives the client control of the rounding mode.
 	 */
 	public static Money valueOf(double dblAmount, Currency currency, int roundingMode) {
@@ -59,77 +65,72 @@ public class Money implements Comparable, Serializable {
 	}
 
 	/**
-	 * WARNING: Because of the indefinite precision of double, this
-	 * method must round off the value.
+	 * WARNING: Because of the indefinite precision of double, 
+	 * thismethod must round off the value.
 	 */
 	public static Money dollars(double amount) {
 		return Money.valueOf(amount, USD);
 	}
 
 	/**
-	 * This creation method is safe to use. It will adjust scale, but will not round off the amount.
+	 * This creation method is safe to use. 
+	 * It will adjust scale, but will not round off the amount.
 	 */
 	public static Money dollars (BigDecimal amount) {
 		return Money.valueOf(amount, USD);
 	}
 
 	/**
-	 * WARNING: Because of the indefinite precision of double, this
-	 * method must round off the value.
+	 * WARNING: Because of the indefinite precision of double, 
+	 * this method must round off the value.
 	 */
 	public static Money euros(double amount) {
 		return Money.valueOf(amount, EUR);
 	}
 
 	/**
-	 * This creation method is safe to use. It will adjust scale, but will not round off the amount.
+	 * This creation method is safe to use. 
+	 * It will adjust scale, but will not round off the amount.
 	 */
 	public static Money euros (BigDecimal amount) {
 		return Money.valueOf(amount, EUR);
 	}
 
-
-	
-	
-	public BigDecimal amount() {
-		return amount;
-	}
-
-	public Currency currency() {
-		return currency;
-	}
-
-	boolean isSameCurrencyAs(Money arg) {
-		return currency.equals(arg.currency);
-	}
-
 	/**
 	 * This probably should be Currency responsibility.
 	 * Even then, it may need to be customized for specialty apps because
-	 * TODO there are other cases, where the smallest increment is not the smallest unit.
+	 * there are other cases, where the smallest increment is not the smallest unit.
 	 */
 	Money minimumIncrement() {
 		BigDecimal one = new BigDecimal(1);
 		BigDecimal increment = one.movePointLeft(currency.getDefaultFractionDigits());
 		return Money.valueOf(increment, currency);
 	}
+	
 	Money incremented() {
 		return this.plus(minimumIncrement());
 	}
-	
+
+	boolean isSameCurrencyAs(Money arg) {
+		return currency.equals(arg.currency);
+	}
 
 	public Money negated() {
 		return Money.valueOf(amount.negate(), currency);
 	}
+	
 	public Money abs() {
 		return Money.valueOf(amount.abs(), currency);
 	}
+	
 	public boolean isNegative() {
 		return amount.compareTo(new BigDecimal(0)) < 0;
 	}
+	
 	public boolean isPositive() {
 		return amount.compareTo(new BigDecimal(0)) > 0;
 	}
+	
 	public boolean isZero() {
 		return this.equals(Money.valueOf(0.0, currency));
 	}
@@ -138,6 +139,7 @@ public class Money implements Comparable, Serializable {
 		if (!isSameCurrencyAs(other)) throw new IllegalArgumentException("Addition is not defined between different currencies");
 		return Money.valueOf(amount.add(other.amount), currency);
 	}
+	
 	public Money minus(Money other) {
 		return this.plus(other.negated());
 	}
@@ -157,7 +159,7 @@ public class Money implements Comparable, Serializable {
 	
 	public Ratio dividedBy (Money divisor) {
 		assert currency.equals(divisor.currency);
-		return Ratio.of(amount(), divisor.amount());
+		return Ratio.of(amount, divisor.amount);
 	}
 
 	/**
@@ -191,35 +193,37 @@ public class Money implements Comparable, Serializable {
 		return times(new BigDecimal(i));
 	}
 
-
 	public int compareTo(Object other) {
 		return compareTo((Money)other);
 	}
+	
 	public int compareTo(Money other) {
 		if (!isSameCurrencyAs(other)) throw new IllegalArgumentException("Compare is not defined between different currencies");
 		return amount.compareTo(other.amount);
 	}
+	
 	public boolean isGreaterThan(Money other) {
 		return (compareTo(other) > 0);
 	}
+	
 	public boolean isLessThan(Money other) {
 		return (compareTo(other) < 0);
 	}
-
 	
 	public boolean equals(Object other) {
 		return (other instanceof Money) && equals((Money)other);
 	}
+	
 	public boolean equals(Money other) {
 		return currency.equals(other.currency) && (amount.equals(other.amount));
 	}
+	
 	public int hashCode() {
 		return amount.hashCode();
 	}
 	
-	
 	public String toString() {
-		return currency.toString() + " " + amount();
+		return currency.toString() + " " + amount;
 	}
 	
 //	TODO Provide some currency-dependent formatting. Java 1.4 Currency doesn't do it.	

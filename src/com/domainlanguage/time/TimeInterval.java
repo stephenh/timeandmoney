@@ -14,7 +14,6 @@ import com.domainlanguage.basic.*;
 public class TimeInterval extends ConcreteInterval {
 	public static final TimeInterval ALWAYS = over(TimePoint.FAR_PAST, TimePoint.FAR_FUTURE);
 
-	
 	public static TimeInterval over(TimePoint start, boolean closedStart, TimePoint end, boolean closedEnd) {
 		return new TimeInterval(start, closedStart, end, closedEnd);
 	}
@@ -60,16 +59,14 @@ public class TimeInterval extends ConcreteInterval {
 		return over(TimePoint.FAR_PAST, end);
 	} 
 
-	public TimeInterval(TimePoint lower, boolean lowerIncluded, TimePoint upper, boolean upperIncluded) {
-//		assert lower.compareTo(upper) < 0;  //This should really be an Interval invariant.
-		super(lower, lowerIncluded, upper, upperIncluded);
+	public TimeInterval(TimePoint start, boolean startIncluded, TimePoint end, boolean endIncluded) {
+//		assert start.compareTo(end) < 0;  //This should really be an Interval invariant.
+		super(start, startIncluded, end, endIncluded);
 	}
 
-	public Interval newOfSameType(Comparable lower, boolean isLowerClosed, Comparable upper, boolean isUpperClosed) {
-		return new TimeInterval((TimePoint)lower, isLowerClosed, (TimePoint)upper, isUpperClosed);
+	public Interval newOfSameType(Comparable start, boolean isStartClosed, Comparable end, boolean isEndClosed) {
+		return new TimeInterval((TimePoint) start, isStartClosed, (TimePoint) end, isEndClosed);
 	}
-	
-	
 	
 	public boolean isBefore(TimePoint point) {
 		return isBelow(point);
@@ -95,7 +92,8 @@ public class TimeInterval extends ConcreteInterval {
 				next = next.nextDay();
 				return current;
 			}
-			public void remove() {}
+			public void remove() {
+			}
 		};
 	}
 
@@ -113,13 +111,15 @@ public class TimeInterval extends ConcreteInterval {
 				next = segmentLength.startingFrom(next.end());
 				return current;
 			}
-			public void remove() {}
+			public void remove() {
+			}
 		};
 	}
 
 	public TimePoint start() {
 		return (TimePoint) lowerLimit();
 	}
+	
 	public TimePoint end() {
 		return (TimePoint) upperLimit();
 	}
@@ -127,5 +127,6 @@ public class TimeInterval extends ConcreteInterval {
 	public TimeInterval intersect(TimeInterval interval) {
 		return (TimeInterval)intersect((Interval)interval);
 	}
+	
 }
  

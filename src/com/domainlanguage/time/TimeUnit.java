@@ -6,36 +6,22 @@
 
 package com.domainlanguage.time;
 
-import java.io.Serializable;
+import java.io.*;
+import java.util.*;
 
 
-class TimeUnit implements Comparable, Serializable {
-
-	//Unit conversion factors
-	static final int millisecondsPerSecond = 1000;
-	static final int millisecondsPerMinute = 60 * millisecondsPerSecond;
-	static final int millisecondsPerHour = 60 * millisecondsPerMinute;
-	static final int millisecondsPerDay = 24 * millisecondsPerHour;
-	static final int millisecondsPerWeek = 7 * millisecondsPerDay;
-
-	static final int monthsPerQuarter = 3;
-	static final int monthsPerYear = 12;
-
-	
-	//Defining the units
+class TimeUnit implements Comparable, Serializable, TimeUnitConversionFactors {
 	static final TimeUnit millisecond = new TimeUnit(Type.millisecond, Type.millisecond, 1);
 	static final TimeUnit second = new TimeUnit(Type.second, Type.millisecond, millisecondsPerSecond);
 	static final TimeUnit minute = new TimeUnit(Type.minute, Type.millisecond, millisecondsPerMinute);
 	static final TimeUnit hour = new TimeUnit(Type.hour, Type.millisecond, millisecondsPerHour);
 	static final TimeUnit day = new TimeUnit(Type.day, Type.millisecond, millisecondsPerDay);
 	static final TimeUnit week = new TimeUnit(Type.week, Type.millisecond, millisecondsPerWeek);
-	static final TimeUnit[] descendingMillisecondBased = {week, day, hour, minute, second, millisecond};
-	
+	static final TimeUnit[] descendingMillisecondBased = {week, day, hour, minute, second, millisecond};	
 	static final TimeUnit month = new TimeUnit(Type.month, Type.month, 1);
 	static final TimeUnit quarter = new TimeUnit(Type.quarter, Type.month, monthsPerQuarter);
 	static final TimeUnit year = new TimeUnit(Type.year, Type.month, monthsPerYear);
 	static final TimeUnit[] descendingMonthBased = {year, quarter, month};
-
 	
 	final Type type;
 	final Type baseType;
@@ -48,8 +34,7 @@ class TimeUnit implements Comparable, Serializable {
 	}
     
 	TimeUnit baseUnit() {
-		if (baseType.equals(Type.millisecond)) return TimeUnit.millisecond;
-		else return TimeUnit.month;
+		return baseType.equals(Type.millisecond) ? millisecond : month;
 	}
 	
 	public boolean isConvertibleToMilliseconds() {
@@ -60,16 +45,16 @@ class TimeUnit implements Comparable, Serializable {
 		return baseType.equals(other.baseType);
 	}
 	
-	public int compareTo(Object arg) {
-		TimeUnit other = (TimeUnit) arg;
+	public int compareTo(Object object) {
+		TimeUnit other = (TimeUnit) object;
 		if (other.baseType.equals(baseType)) return factor - other.factor;
 		if (baseType.equals(Type.month)) return 1;
 		return -1;
 	}
 	
 	int javaCalendarConstantForBaseType() {
-		if (baseType.equals(Type.millisecond)) return java.util.Calendar.MILLISECOND;
-		if (baseType.equals(Type.month)) return java.util.Calendar.MONTH;
+		if (baseType.equals(Type.millisecond)) return Calendar.MILLISECOND;
+		if (baseType.equals(Type.month)) return Calendar.MONTH;
 		return 0;
 	}
 	
@@ -87,41 +72,35 @@ class TimeUnit implements Comparable, Serializable {
 	}
 	
 	TimeUnit[] descendingUnits() {
-		if (isConvertibleToMilliseconds()) return descendingMillisecondBased;
-			else return descendingMonthBased;		
+		return isConvertibleToMilliseconds() ? 
+			descendingMillisecondBased :
+			descendingMonthBased;		
 	}
 	
 	TimeUnit nextFinerUnit() {
 		TimeUnit[] descending = descendingUnits();
 		int index = -1;
-		for (int i = 0; i < descending.length; i++) {
-			if (descending[i].equals(this)) index = i;
-		}
+		for (int i = 0; i < descending.length; i++) 
+			if (descending[i].equals(this)) 
+				index = i;
 		if (index == descending.length - 1) return null;
 		return descending[index + 1];
 	}
 	
-    public boolean equals(Object o) {
-        if( o == null || !(o instanceof TimeUnit) ) {
-            return false;
-        }
-        
-        TimeUnit other = (TimeUnit)o;
-        if( this.baseType.equals(other.baseType) 
-                && this.factor == factor
-                && this.type.equals(other.type) ) {
-            return true;
-        }
-        
-        return false;
-    }
+    public boolean equals(Object object) {
+		if (object == null || !(object instanceof TimeUnit)) return false;
+		TimeUnit other = (TimeUnit) object;
+		return 
+			this.baseType.equals(other.baseType) && 
+			this.factor == other.factor && 
+			this.type.equals(other.type);
+	}
     
     public int hashCode() {
-        return this.factor 
-            + this.baseType.hashCode() 
-            + this.type.hashCode();
-    }
+		return factor + baseType.hashCode() + type.hashCode();
+	}
 
+    
 	static private class Type implements Serializable {
 		static final Type millisecond = new Type("millisecond");
 		static final Type second = new Type("second");
@@ -129,7 +108,6 @@ class TimeUnit implements Comparable, Serializable {
 		static final Type hour = new Type("hour");
 		static final Type day = new Type("day");
 		static final Type week = new Type("week");
-
 		static final Type month = new Type("month");
 		static final Type quarter = new Type("quarter");
 		static final Type year = new Type("year");
@@ -140,27 +118,16 @@ class TimeUnit implements Comparable, Serializable {
 			this.name = name;
 		}
         
-        public boolean equals(Object o) {
-            if( o == null || !(o instanceof Type) ) {
-                return false;
-            }
-            
-            Type other = (Type)o;
-            if( this.name != null 
-                    && other.name != null 
-                    && this.name.equals(other.name)) {
-                return true;
-            }
-            
-            return false;
-        }
+        public boolean equals(Object object) {
+			if (object == null || !(object instanceof Type)) return false;
+			Type other = (Type) object;
+			return this.name.equals(other.name);
+		}
         
         public int hashCode() {
-            if( this.name != null ) {
-                return this.name.hashCode();
-            }
-            
-            return 0;
-        }
+			return name.hashCode();
+		}
+        
 	}
+	
 }

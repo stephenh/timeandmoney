@@ -12,8 +12,30 @@ import com.domainlanguage.basic.Ratio;
 
 public class Proration {
 
+	static Money sum(Money[] elements) {
+		Money sum = Money.valueOf(0, elements[0].currency);
+		for (int i = 0; i < elements.length; i++) 
+			sum = sum.plus(elements[i]);
+		return sum;
+	}
+
+	static BigDecimal sum(BigDecimal[] elements) {
+		BigDecimal sum = new BigDecimal(0);
+		for (int i = 0; i < elements.length; i++) 
+			sum = sum.add(elements[i]);
+		return sum;
+	}
+	
+	static Ratio[] ratios(BigDecimal[] proportions) {
+		BigDecimal total = sum(proportions);
+		Ratio[] ratios = new Ratio[proportions.length];
+		for (int i = 0; i < ratios.length; i++) 
+			ratios[i] = Ratio.of(proportions[i], total);
+		return ratios;
+	}
+
 	private static int defaultScaleForIntermediateCalculations(Money total) {
-		return total.currency().getDefaultFractionDigits() + 1;
+		return total.currency.getDefaultFractionDigits() + 1;
 	}
 
 	public Money[] dividedEvenlyIntoParts(Money total, int n) {
@@ -59,40 +81,11 @@ public class Proration {
 		assert increments <= amounts.length; 
 
 		Money[] results = new Money[amounts.length];
-		for (int i = 0; i < increments; i++) {
+		for (int i = 0; i < increments; i++) 
 			results[i] = amounts[i].incremented();
-		}
-		for (int i = increments; i < amounts.length; i++) {
+		for (int i = increments; i < amounts.length; i++) 
 			results[i] = amounts[i];
-		}
-		
 		return results; 
 	}
-	
-	static Money sum(Money[] elements) {
-		Money sum = Money.valueOf(0, elements[0].currency());
-		for (int i = 0; i < elements.length; i++) {
-			sum = sum.plus(elements[i]);
-		}
-		return sum;
-	}
-
-	static BigDecimal sum(BigDecimal[] elements) {
-		BigDecimal sum = new BigDecimal(0);
-		for (int i = 0; i < elements.length; i++) {
-			sum = sum.add(elements[i]);
-		}
-		return sum;
-	}
-	
-	static Ratio[] ratios(BigDecimal[] proportions) {
-		BigDecimal total = sum(proportions);
-		Ratio[] ratios = new Ratio[proportions.length];
-		for (int i = 0; i < ratios.length; i++) {
-			ratios[i] = Ratio.of(proportions[i], total);
-		}
-		return ratios;
-	}
-
 	
 }

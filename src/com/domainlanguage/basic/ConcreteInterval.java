@@ -28,12 +28,15 @@ public class ConcreteInterval extends Interval {
 	public Comparable upperLimit() {
 		return upperLimit;
 	}
+	
 	public Comparable lowerLimit() {
 		return lowerLimit;
 	}
+	
 	public boolean includesLowerLimit() {
 		return includesLowerLimit;
 	}
+	
 	public boolean includesUpperLimit() {
 		return includesUpperLimit;
 	}

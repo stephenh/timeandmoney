@@ -70,15 +70,14 @@ public abstract class Interval implements Comparable, Serializable {
 
 	public boolean includes(Interval other) {
 		int lowerComparison = lowerLimit().compareTo(other.lowerLimit());
-			boolean lowerPass = this.includes(other.lowerLimit()) ||
-				(lowerComparison == 0 && !other.includesLowerLimit());
-
+		boolean lowerPass = 
+			this.includes(other.lowerLimit()) ||
+			(lowerComparison == 0 && !other.includesLowerLimit());
 		int upperComparison = upperLimit().compareTo(other.upperLimit());
-			boolean upperPass = this.includes(other.upperLimit()) ||
-				(upperComparison == 0 && !other.includesUpperLimit());
-			
+		boolean upperPass = 
+			this.includes(other.upperLimit()) ||
+			(upperComparison == 0 && !other.includesUpperLimit());
 		return lowerPass && upperPass;
-	
 	}
 	
 	public boolean isOpen() {
@@ -121,11 +120,7 @@ public abstract class Interval implements Comparable, Serializable {
 
 	public String toString() {
 		if (isEmpty()) return "{}";
-		
-		if (isSingleElement()) {
-			return "{" + lowerLimit().toString() + "}";
-		}
-		
+		if (isSingleElement()) return "{" + lowerLimit().toString() + "}";
 		StringBuffer buffer = new StringBuffer();
 		buffer.append(includesLowerLimit() ? "[" : "(");
 		buffer.append(lowerLimit().toString());
@@ -134,7 +129,6 @@ public abstract class Interval implements Comparable, Serializable {
 		buffer.append(includesUpperLimit() ? "]" : ")");
 		return buffer.toString();
 	}
-
 	
 	private Comparable lesserOfLowerLimits(Interval other) {
 		int lowerComparison = lowerLimit().compareTo(other.lowerLimit());
@@ -174,11 +168,10 @@ public abstract class Interval implements Comparable, Serializable {
 		return this.includes(limit) && other.includes(limit);
 	}
 
-
 	public boolean equals(Object other) {
 		if (!(other instanceof Interval)) return false;
+		
 		Interval otherInterval = ((Interval)other);
-
 		boolean thisEmpty = this.isEmpty();
 		boolean otherEmpty = otherInterval.isEmpty();
 		if (thisEmpty & otherEmpty) return true;
@@ -196,9 +189,7 @@ public abstract class Interval implements Comparable, Serializable {
 		return 0;
 	}
 
-/*
- * http://en.wikipedia.org/wiki/Set_theoretic_complement
- */
+	/** http://en.wikipedia.org/wiki/Set_theoretic_complement */
 	public List complementRelativeTo(Interval other) {
 		List intervalSequence = new ArrayList();
 		if (!this.intersects(other)) {
@@ -208,10 +199,8 @@ public abstract class Interval implements Comparable, Serializable {
 		Interval left = leftComplementRelativeTo(other);
 		if (left != null) intervalSequence.add(left);
 		Interval right = rightComplementRelativeTo(other);
-		if (right != null) intervalSequence.add(right);
-		
+		if (right != null) intervalSequence.add(right);	
 		return intervalSequence;
-		
 	}
 	
 	private Interval leftComplementRelativeTo(Interval other) {
@@ -232,11 +221,11 @@ public abstract class Interval implements Comparable, Serializable {
 		Comparable intersectLowerBound = greaterOfLowerLimits(other);
 		Comparable intersectUpperBound = lesserOfUpperLimits(other);
 		if (intersectLowerBound.compareTo(intersectUpperBound) > 0) return emptyOfSameType();
-	
 		return newOfSameType(intersectLowerBound, greaterOfLowerIncluded(other), intersectUpperBound, lesserOfUpperIncluded(other));
 	}
 	
 	public Interval emptyOfSameType() {
 		return newOfSameType(lowerLimit(), false, lowerLimit(), false);
 	}
+	
 }

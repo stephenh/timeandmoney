@@ -50,8 +50,8 @@ public class MoneyTest extends TestCase {
 
 	public void testConstructor() throws Exception {
 		Money d69_99 = new Money (new BigDecimal ("69.99"), USD);
-		assertEquals(new BigDecimal("69.99"), d69_99.amount());
-		assertEquals(USD, d69_99.currency());
+		assertEquals(new BigDecimal("69.99"), d69_99.amount);
+		assertEquals(USD, d69_99.currency);
 		try {
 			new Money (new BigDecimal("69.999"), USD);
 			fail("Money constructor shall never round, and shall not accept a value whose scale doesn't fit the Currency.");
