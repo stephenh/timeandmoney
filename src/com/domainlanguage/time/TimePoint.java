@@ -80,10 +80,6 @@ public class  TimePoint implements Comparable, Serializable {
 		return from(date);
 	}
 	
-	public static TimePoint now() {
-		return from(new Date());
-	}
-
 	public static TimePoint from(Date javaDate) {
 		return from(javaDate.getTime());
 	}
@@ -113,14 +109,15 @@ public class  TimePoint implements Comparable, Serializable {
 	}
 
 	public TimePoint backToMidnight(TimeZone zone) {
-		CalendarDate date = CalendarDate.from(this, zone);
-		return date.asTimeInterval(zone).start();
+		return calendarDate(zone).asTimeInterval(zone).start();
 	}
 	
-	public boolean isSameCalendarDayAs(TimePoint other, TimeZone zone) {
-		CalendarDate thisDate = CalendarDate.from(this, zone);
-		CalendarDate otherDate = CalendarDate.from(other, zone);
-		return thisDate.equals(otherDate);
+	public CalendarDate calendarDate(TimeZone zone) {
+		return CalendarDate.from(this, zone);
+	}
+	
+	public boolean isSameDayAs(TimePoint other, TimeZone zone) {
+		return this.calendarDate(zone).equals(other.calendarDate(zone));
 	}
 
 	public String toString() {
@@ -133,8 +130,6 @@ public class  TimePoint implements Comparable, Serializable {
 		format.setTimeZone(zone);
 		return format.format(asJavaUtilDate());
 	}
-
-//	Comparisons
 
 	public boolean isBefore(TimePoint other) {
 		return this.millisecondsFromEpoc < other.millisecondsFromEpoc;
@@ -159,10 +154,14 @@ public class  TimePoint implements Comparable, Serializable {
 		return new Date(millisecondsFromEpoc);
 	}
 
-	public Calendar asJavaCalendar() {
-		Calendar result = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+	public Calendar asJavaCalendar(TimeZone zone) {
+		Calendar result = Calendar.getInstance(zone);
 		result.setTime(asJavaUtilDate());
 		return result;
+	}
+
+	public Calendar asJavaCalendar() {
+		return asJavaCalendar(gmt);
 	}
 
 	

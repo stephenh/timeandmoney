@@ -10,7 +10,7 @@ import java.util.TimeZone;
 
 import com.domainlanguage.time.*;
 
-
+//TODO No tests for this class! (And this class really needed?)
 public class SQLConversion {
 	public static final String SQL_DATE_PATTERN = "#M/d/yyyy#";
 	

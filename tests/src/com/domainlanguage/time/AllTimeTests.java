@@ -8,7 +8,7 @@ package com.domainlanguage.time;
 
 import junit.framework.*;
 
-public class AllTests {
+public class AllTimeTests {
 	public static Test suite() {
 		TestSuite suite = new TestSuite();
 

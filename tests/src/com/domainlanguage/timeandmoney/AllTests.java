@@ -14,8 +14,11 @@ public class AllTests extends TestCase {
 
 		//Unit Tests
 		suite.addTest(com.domainlanguage.basic.BasicTests.suite());
-		suite.addTest(com.domainlanguage.time.AllTests.suite());
+		suite.addTest(com.domainlanguage.time.AllTimeTests.suite());
 		suite.addTest(com.domainlanguage.money.AllTests.suite());
+		// The following suite isn't run by default because it calls
+		// out to the network and my not complete in some situations
+		//suite.addTest(com.domainlanguage.timeutil.AllTimeUtilTests.suite());
 
 		//Usage Examples
 		suite.addTest(new TestSuite(example.insuranceRates.CalculateRate.class));

@@ -83,12 +83,6 @@ public class TimePointTest extends TestCase {
 		assertEquals(javaUtilDateDec20_2003(), dec20_2003.asJavaUtilDate());
 	}
 
-	public void testNow() {
-		TimePoint now = TimePoint.now();
-		Date approxNow = new Date();
-		assertEquals("if the clock does not tick during test ...", approxNow, now.asJavaUtilDate());
-	}
-	
 	public void testBackToMidnight() {
 		TimePoint threeOClock = TimePoint.atGMT(2004, 11, 22, 3, 0);
 		assertEquals(TimePoint.atMidnightGMT(2004, 11, 22), threeOClock.backToMidnight(gmt));
@@ -96,7 +90,6 @@ public class TimePointTest extends TestCase {
 		assertEquals(TimePoint.atMidnightGMT(2004, 11, 22), thirteenOClock.backToMidnight(gmt));
 
 	}
-
 	
 	public void testFromString() {
 		TimePoint expected = TimePoint.atGMT(2004, 3, 29, 22, 44, 58, 0);
@@ -117,17 +110,17 @@ public class TimePointTest extends TestCase {
 	public void testEqualsOverYearMonthDay() {
 		TimePoint thePoint = TimePoint.atGMT(2000, 1, 1, 8, 0);
 		TimeZone gmt = TimeZone.getTimeZone("Universal");
-		assertTrue("exactly the same", TimePoint.atGMT(2000, 1, 1, 8, 0).isSameCalendarDayAs(thePoint, gmt));
-		assertTrue("same second", TimePoint.atGMT(2000, 1, 1, 8, 0, 0, 500).isSameCalendarDayAs(thePoint, gmt));
-		assertTrue("same minute", TimePoint.atGMT(2000, 1, 1, 8, 0, 30, 0).isSameCalendarDayAs(thePoint, gmt));
-		assertTrue("same hour", TimePoint.atGMT(2000, 1, 1, 8, 30, 0, 0).isSameCalendarDayAs(thePoint, gmt));
-		assertTrue("same day", TimePoint.atGMT(2000, 1, 1, 20, 0).isSameCalendarDayAs(thePoint, gmt));
-		assertTrue("midnight (in the moring), start of same day", TimePoint.atMidnightGMT(2000, 1, 1).isSameCalendarDayAs(thePoint, gmt));
+		assertTrue("exactly the same", TimePoint.atGMT(2000, 1, 1, 8, 0).isSameDayAs(thePoint, gmt));
+		assertTrue("same second", TimePoint.atGMT(2000, 1, 1, 8, 0, 0, 500).isSameDayAs(thePoint, gmt));
+		assertTrue("same minute", TimePoint.atGMT(2000, 1, 1, 8, 0, 30, 0).isSameDayAs(thePoint, gmt));
+		assertTrue("same hour", TimePoint.atGMT(2000, 1, 1, 8, 30, 0, 0).isSameDayAs(thePoint, gmt));
+		assertTrue("same day", TimePoint.atGMT(2000, 1, 1, 20, 0).isSameDayAs(thePoint, gmt));
+		assertTrue("midnight (in the moring), start of same day", TimePoint.atMidnightGMT(2000, 1, 1).isSameDayAs(thePoint, gmt));
 
-		assertFalse("midnight (night), start of next day", TimePoint.atMidnightGMT(2000, 1, 2).isSameCalendarDayAs(thePoint, gmt));
-		assertFalse("next day", TimePoint.atGMT(2000, 1, 2, 8, 0).isSameCalendarDayAs(thePoint, gmt));
-		assertFalse("next month", TimePoint.atGMT(2000, 2, 1, 8, 0).isSameCalendarDayAs(thePoint, gmt));
-		assertFalse("next year", TimePoint.atGMT(2001, 1, 1, 8, 0).isSameCalendarDayAs(thePoint, gmt));
+		assertFalse("midnight (night), start of next day", TimePoint.atMidnightGMT(2000, 1, 2).isSameDayAs(thePoint, gmt));
+		assertFalse("next day", TimePoint.atGMT(2000, 1, 2, 8, 0).isSameDayAs(thePoint, gmt));
+		assertFalse("next month", TimePoint.atGMT(2000, 2, 1, 8, 0).isSameDayAs(thePoint, gmt));
+		assertFalse("next year", TimePoint.atGMT(2001, 1, 1, 8, 0).isSameDayAs(thePoint, gmt));
 	}
 
 	public void testBeforeAfter() {
