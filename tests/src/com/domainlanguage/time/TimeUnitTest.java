@@ -1,9 +1,7 @@
 /**
- *
- * This code is provided under the following licence: 
- * MIT Licence
- * timeandmoney.sourceforge.net
- * Copyright 2004, Domain Language, Inc.
+ * Copyright (c) 2004 Domain Language, Inc. (http://domainlanguage.com)
+ * This free software is distributed under the "MIT" licence. See file licence.txt. 
+ * For more information, see http://timeandmoney.sourceforge.net.
  */
 
 package com.domainlanguage.time;

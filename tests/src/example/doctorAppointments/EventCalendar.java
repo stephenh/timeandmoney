@@ -1,10 +1,12 @@
+/**
+ * Copyright (c) 2004 Domain Language, Inc. (http://domainlanguage.com)
+ * This free software is distributed under the "MIT" licence. See file licence.txt. 
+ * For more information, see http://timeandmoney.sourceforge.net.
+ */
+
 package example.doctorAppointments;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
-import java.util.TimeZone;
+import java.util.*;
 
 import com.domainlanguage.time.*;
 

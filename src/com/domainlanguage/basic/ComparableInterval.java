@@ -1,19 +1,16 @@
 /**
- *
- * This code is provided under the MIT licence. 
- * See enclosed file, licence.txt.
- * timeandmoney.sourceforge.net
- * Copyright 2004, Domain Language, Inc.
- */
-
-/**
- * Definition consistent with mathematical "interval"
- * see http://en.wikipedia.org/wiki/Interval_(mathematics)
- * 
+ * Copyright (c) 2004 Domain Language, Inc. (http://domainlanguage.com)
+ * This free software is distributed under the "MIT" licence. See file licence.txt. 
+ * For more information, see http://timeandmoney.sourceforge.net.
  */
 
 package com.domainlanguage.basic;
 
+/**
+ * The rules of this class are consistent with the common mathematical 
+ * definition of "interval". For a simple explanation, see 
+ * http://en.wikipedia.org/wiki/Interval_(mathematics)
+ */
 
 public abstract class ComparableInterval implements Comparable {
 	
