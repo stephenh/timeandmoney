@@ -12,6 +12,7 @@ import java.util.*;
 import junit.framework.*;
 
 import com.domainlanguage.tests.*;
+import com.domainlanguage.util.*;
 
 public class IntervalTest extends TestCase {
 	private Interval empty = Interval.open(new BigDecimal(1), new BigDecimal(1));
@@ -26,7 +27,7 @@ public class IntervalTest extends TestCase {
 	private Interval c1_1c = Interval.over(new BigDecimal(1), true, new BigDecimal(1), true);
 	private Interval o1_1o = Interval.over(new BigDecimal(1), false, new BigDecimal(1), false);
 
-//TODO: either fix those tests, or delete them
+//TODO: either fix those tests, or delete them (Benny)
 //	public void testAssertions() {
 //		//Redundant, maybe, but with all the compiler default
 //		//confusion at the moment, I decided to throw this in.
@@ -58,13 +59,14 @@ public class IntervalTest extends TestCase {
 	public void testAbstractCreation() {
 		Interval concrete = new ConcreteInterval(new Integer(1), true, new Integer(3), true);
 		Interval newInterval = concrete.newOfSameType(new Integer(1), false, new Integer(4), false);
-		assertTrue(newInterval instanceof ConcreteInterval);
+		assertTrue(Reflection.is(newInterval, ConcreteInterval.class));
+		
 		Interval expected = new ConcreteInterval(new Integer(1), false, new Integer(4), false);
 		assertEquals(expected, newInterval);
 	}
 
 	public void testSerialization() {
-		SerializationTester.assertSerializationWorks(c5_10c);
+		SerializationTester.assertCanBeSerialized(c5_10c);
 	}
 
 	public void testToString() {

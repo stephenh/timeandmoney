@@ -27,7 +27,7 @@ public class CalendarIntervalTest extends TestCase {
 	TimeZone ct = TimeZone.getTimeZone("America/Chicago");
 
     public void testSerialization() {
-    	SerializationTester.assertSerializationWorks(may);
+    	SerializationTester.assertCanBeSerialized(may);
     }
 	
 	public void testTranslationToTimeInterval() {

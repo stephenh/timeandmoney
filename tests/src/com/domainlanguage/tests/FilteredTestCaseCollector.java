@@ -19,37 +19,37 @@ import com.domainlanguage.util.*;
  */
 public class FilteredTestCaseCollector extends ClassPathTestCollector {
 	private TestCaseClassLoader loader = new TestCaseClassLoader();
-	private String[] excludedPackages = new String[0];
-	private Set excludedClasses = new HashSet();
-	private Class[] excludedTypes = new Class[0];
+	private String[] exludedPackages = new String[0];
+	private Set exludedClasses = new HashSet();
+	private Class[] exludedTypes = new Class[0];
 
-	public final void excludedPackages(String[] excludedPackages) {
-		this.excludedPackages = excludedPackages;
+	public final void exludedPackages(String[] exludedPackages) {
+		this.exludedPackages = exludedPackages;
 	}
 	
-	public final void excludedSuites(TestSuite[] excludedSuites) {
-		Collection testCases = Tests.allTestCaseNames(excludedSuites);
-		excludedClasses.addAll(testCases);
+	public final void exludedSuites(TestSuite[] exludedSuites) {
+		Collection testCases = Tests.allTestCaseNames(exludedSuites);
+		exludedClasses.addAll(testCases);
 	}
 	
-	public final void excludedClasses(Class[] excludedClasses) {
-		for (int i = 0; i < excludedClasses.length; i++) 
-			this.excludedClasses.add(excludedClasses[i].getName());
+	public final void exludedClasses(Class[] exludedClasses) {
+		for (int i = 0; i < exludedClasses.length; i++) 
+			this.exludedClasses.add(exludedClasses[i].getName());
 	}
 	
-	public final void excludedTypes(Class[] excludedTypes) {
-		this.excludedTypes = excludedTypes;
+	public final void exludedTypes(Class[] exludedTypes) {
+		this.exludedTypes = exludedTypes;
 		reloadExcludedTypes();		
 	}
 	
 	/**
-	 *  due to class loaders discrepancy, we need to "normalize" classes 
+	 *  due to class loaders discepency, we need to "normalize" classes 
 	 * through one class loader. we choose our loader.
 	 */
 	private void reloadExcludedTypes() {
 		try {
-			for (int i = 0; i < excludedTypes.length; i++)
-				excludedTypes[i] = loader.loadClass(excludedTypes[i].getName(), false);
+			for (int i = 0; i < exludedTypes.length; i++)
+				exludedTypes[i] = loader.loadClass(exludedTypes[i].getName(), false);
 		} catch (ClassNotFoundException ignore) {
 		}
 	}
@@ -59,28 +59,28 @@ public class FilteredTestCaseCollector extends ClassPathTestCollector {
 			return false;
 		
 		String className = classNameFromFile(filename);
-		if (loader.isExcluded(className) || isExcluded(className)) 
+		if (loader.isExcluded(className) || isExluded(className)) 
 			return false;
 		
 		try {
 			Class testClass = loader.loadClass(className, false);
-			return isTestClass(testClass) && !isExcludedByType(testClass);
+			return isTestClass(testClass) && !isExludedByType(testClass);
 		} catch (ClassNotFoundException ignore) {
 		} catch (NoClassDefFoundError ignore) {
 		}
 		return false;
 	}
 
-	private boolean isExcluded(String className) {
-		for (int i = 0; i < excludedPackages.length; i++) 
-			if (className.startsWith(excludedPackages[i])) 
+	private boolean isExluded(String className) {
+		for (int i = 0; i < exludedPackages.length; i++) 
+			if (className.startsWith(exludedPackages[i])) 
 				return true;
-		return excludedClasses.contains(className);
+		return exludedClasses.contains(className);
 	}
 
-	private boolean isExcludedByType(Class testClass) {
-		for (int i = 0; i < excludedTypes.length; i++) 
-			if (Reflection.is(testClass, excludedTypes[i])) 
+	private boolean isExludedByType(Class testClass) {
+		for (int i = 0; i < exludedTypes.length; i++) 
+			if (Reflection.is(testClass, exludedTypes[i])) 
 				return true;
 		return false;
 	}

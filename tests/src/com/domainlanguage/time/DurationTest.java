@@ -15,7 +15,7 @@ import com.domainlanguage.tests.*;
 public class DurationTest extends TestCase {
 
     public void testSerialization() {
-    	SerializationTester.assertSerializationWorks(Duration.days(1));
+    	SerializationTester.assertCanBeSerialized(Duration.days(1));
     }
 	
 	public void testAddMillisecondsToPoint() {

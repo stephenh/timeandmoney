@@ -11,6 +11,7 @@ import java.math.*;
 import java.util.*;
 
 import com.domainlanguage.basic.*;
+import com.domainlanguage.util.*;
 
 public class Money implements Comparable, Serializable {
 	private static final Currency USD = Currency.getInstance("USD");
@@ -211,11 +212,16 @@ public class Money implements Comparable, Serializable {
 	}
 	
 	public boolean equals(Object other) {
-		return (other instanceof Money) && equals((Money)other);
+		//revisit: maybe use: Reflection.equalsOverClassAndNull(this, other)
+		return 
+			Reflection.is(other, Money.class) && 
+			this.equals((Money) other);
 	}
 	
 	public boolean equals(Money other) {
-		return currency.equals(other.currency) && (amount.equals(other.amount));
+		return 
+			currency.equals(other.currency) && 
+			amount.equals(other.amount);
 	}
 	
 	public int hashCode() {

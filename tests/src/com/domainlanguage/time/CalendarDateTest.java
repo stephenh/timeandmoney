@@ -20,7 +20,7 @@ public class CalendarDateTest extends TestCase {
 	TimeZone ct = TimeZone.getTimeZone("America/Chicago");
 
     public void testSerialization() {
-    	SerializationTester.assertSerializationWorks(feb17);
+    	SerializationTester.assertCanBeSerialized(feb17);
     }
 	
 	public void testComparison() {

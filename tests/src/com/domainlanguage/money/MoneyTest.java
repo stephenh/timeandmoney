@@ -28,7 +28,7 @@ public class MoneyTest extends TestCase {
 	}
 
     public void testSerialization() {
-    	SerializationTester.assertSerializationWorks(d15);
+    	SerializationTester.assertCanBeSerialized(d15);
     }
 	
 	public void testCreationFromDouble() {

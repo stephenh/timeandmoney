@@ -14,7 +14,7 @@ import com.domainlanguage.time.*;
 
 public class SystemClockTest extends TestCase {
 
-	// This isn't much of a test, since the implementation is
+	// TODO: This isn't much of a test, since the implementation is
 	// so similar to the "expected" value. Maybe someone else
 	// will have a better idea.
 	public void testNow() {

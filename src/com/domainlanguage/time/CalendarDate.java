@@ -8,6 +8,8 @@ package com.domainlanguage.time;
 
 import java.util.*;
 
+import com.domainlanguage.util.*;
+
 public class CalendarDate extends CalendarInterval {
 	public static final CalendarDate FAR_FUTURE = from(9999, 9, 9);	
 
@@ -66,12 +68,12 @@ public class CalendarDate extends CalendarInterval {
 	}
 
 	public boolean isAfter(CalendarDate other) {
-		return !(isBefore(other) || equals(other));
+		return !isBefore(other) && !this.equals(other);
 	}
 
 	public int compareTo(Object other) {
-		if (other instanceof CalendarDate) {
-			CalendarDate otherDate = (CalendarDate)other;
+		if (Reflection.is(other, CalendarDate.class)) {
+			CalendarDate otherDate = (CalendarDate) other;
 			if (this.isBefore(otherDate)) return -1;
 			if (this.isAfter(otherDate)) return 1;
 			return 0;
@@ -80,11 +82,13 @@ public class CalendarDate extends CalendarInterval {
 	}
 
 	public boolean equals(Object other) {
+		//revisit: maybe use: Reflection.equalsOverClassAndNull(this, other)
 		if (!(other instanceof CalendarDate)) return false;
-		CalendarDate otherDate = ((CalendarDate)other);
-		return (year == otherDate.year) &&
-			(month == otherDate.month) &&
-			(day == otherDate.day);
+		CalendarDate otherDate = (CalendarDate) other;
+		return 
+			this.year == otherDate.year &&
+			this.month == otherDate.month &&
+			this.day == otherDate.day;
 	}
 
 	public int hashCode() {

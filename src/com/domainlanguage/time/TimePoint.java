@@ -96,6 +96,7 @@ public class TimePoint implements Comparable, Serializable {
 // BEHAVIORAL METHODS	
 	public boolean equals(Object otherPoint) {
 		return 
+		//revisit: maybe use: Reflection.equalsOverClassAndNull(this, other)
 			(otherPoint instanceof TimePoint) &&
 			((TimePoint) otherPoint).millisecondsFromEpoc == this.millisecondsFromEpoc;
 	}

@@ -131,6 +131,7 @@ public class Duration implements Comparable, Serializable {
 	}
 
 	public boolean equals(Object arg) {
+		//revisit: maybe use: Reflection.equalsOverClassAndNull(this, other)
 		if (!(arg instanceof Duration)) return false;
 		Duration other = (Duration) arg;
 		if (!this.unit.isConvertibleTo(other.unit)) return false;

@@ -26,7 +26,7 @@ public class TimePointTest extends TestCase {
 
 	
     public void testSerialization() {
-    	SerializationTester.assertSerializationWorks(dec19_2003);
+    	SerializationTester.assertCanBeSerialized(dec19_2003);
     }
 	
 	public void testCreationWithDefaultTimeZone() {

@@ -16,7 +16,7 @@ import com.domainlanguage.tests.*;
 public class TimeUnitTest extends TestCase {
 
 	public void testSerialization() {
-    	SerializationTester.assertSerializationWorks(TimeUnit.month);
+    	SerializationTester.assertCanBeSerialized(TimeUnit.month);
     }
 
 	public void testToString() {

@@ -19,4 +19,14 @@ public abstract class Reflection {
 		return type.isAssignableFrom(subtype);
 	}
 
+    static public boolean equalsOverClassAndNull(Object first, Object second) {
+		if ((first == null) || (second == null))
+			return (first == second);
+
+		if (first == second)
+			return true;
+
+		return is(first, second.getClass());
+	}
+
 }

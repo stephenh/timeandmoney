@@ -9,6 +9,8 @@ package com.domainlanguage.time;
 import java.io.*;
 import java.util.*;
 
+import com.domainlanguage.util.*;
+
 
 class TimeUnit implements Comparable, Serializable, TimeUnitConversionFactors {
 	static final TimeUnit millisecond = new TimeUnit(Type.millisecond, Type.millisecond, 1);
@@ -96,6 +98,7 @@ class TimeUnit implements Comparable, Serializable, TimeUnitConversionFactors {
 	}
 	
     public boolean equals(Object object) {
+		//revisit: maybe use: Reflection.equalsOverClassAndNull(this, other)
 		if (object == null || !(object instanceof TimeUnit)) return false;
 		TimeUnit other = (TimeUnit) object;
 		return 
@@ -126,10 +129,10 @@ class TimeUnit implements Comparable, Serializable, TimeUnitConversionFactors {
 			this.name = name;
 		}
         
-        public boolean equals(Object object) {
-			if (object == null || !(object instanceof Type)) return false;
-			Type other = (Type) object;
-			return this.name.equals(other.name);
+        public boolean equals(Object other) {
+        	return
+				Reflection.equalsOverClassAndNull(this, other) &&
+				this.name.equals(((Type) other).name);
 		}
         
         public int hashCode() {

@@ -1,43 +1,45 @@
 /**
- * Created on Nov 5, 2004
+ * Copyright (c) 2004 Domain Language, Inc. (http://domainlanguage.com)
+ * This free software is distributed under the "MIT" licence. See file licence.txt. 
+ * For more information, see http://timeandmoney.sourceforge.net.
  */
+
 package com.domainlanguage.tests;
 
 import java.io.*;
 
+import com.domainlanguage.util.*;
+
 import junit.framework.*;
 
-
 public class SerializationTester {
-	private static final String TEST_FILE = "test.txt";
+	private static final String SERIAL_FILENAME = "test.ser";
 
-	public static void assertSerializationWorks(Object toSerialize) throws AssertionFailedError {
-		if (!(toSerialize instanceof Serializable)) 
+	public static void assertCanBeSerialized(Object serializble) throws AssertionFailedError {
+		if (!Reflection.is(serializble, Serializable.class)) 
 			throw new AssertionFailedError("Object doesn't implement java.io.Serializable interface"); 
 
 		ObjectOutputStream out = null;
 		ObjectInputStream in = null;
-		File serFile = null;
+		File serialFile = null;
 		try {
-			serFile = new File(TEST_FILE);
-			out = new ObjectOutputStream(new FileOutputStream(serFile));
-			out.writeObject(toSerialize);
+			serialFile = new File(SERIAL_FILENAME);
+			out = new ObjectOutputStream(new FileOutputStream(serialFile));
+			out.writeObject(serializble);
 			out.flush();
-			in = new ObjectInputStream(new FileInputStream(serFile));
+			in = new ObjectInputStream(new FileInputStream(serialFile));
 			Object deserialized = in.readObject();
-			if (!toSerialize.equals(deserialized)) 
+			if (!serializble.equals(deserialized)) 
 				throw new AssertionFailedError("Reconstituted object is expected to be equal to serialized"); 
 		} catch (AssertionFailedError e) {
 			throw e;
 		} catch (Exception e) {
-			throw new AssertionFailedError("Exception while serializing: " + e);
+			Assert.fail("Exception while serializing: " + e);
 		} finally {
 			try {
-				if (out != null) 
-					out.close();
-				if (in != null) 
-					in.close();
-				serFile.delete();
+				out.close();
+				in.close();
+				serialFile.delete();
 			} catch (IOException ignore) {
 			}
 		}

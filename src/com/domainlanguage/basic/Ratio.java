@@ -24,20 +24,21 @@ public class Ratio {
 	private BigDecimal numerator;
 	private BigDecimal denominator;
 
+	public static Ratio of(BigDecimal numerator, BigDecimal denominator) {
+		return new Ratio(numerator, denominator);
+	}
+
+	public static Ratio of(long numerator, long denominator) {
+		return new Ratio(BigDecimal.valueOf(numerator), BigDecimal.valueOf(denominator));
+	}
+	
 	public Ratio(BigDecimal numerator, BigDecimal denominator) {
 		this.numerator = numerator;
 		this.denominator = denominator;
-	}
-
-	public static Ratio of(BigDecimal numerator, BigDecimal denominator) {
-		return new Ratio(numerator, denominator);
 	}
 
 	public BigDecimal decimalValue(int scale, int roundingRule) {
 		return numerator.divide(denominator, scale, roundingRule);
 	}
 
-	public static Ratio of(long numerator, long denominator) {
-		return new Ratio(BigDecimal.valueOf(numerator), BigDecimal.valueOf(denominator));
-	}
 }

@@ -21,7 +21,7 @@ public class TimeIntervalTest extends TestCase {
 
     public void testSerialization() {
 		TimeInterval interval = TimeInterval.closed(dec20_2003, dec22_2003);
-    	SerializationTester.assertSerializationWorks(interval);
+    	SerializationTester.assertCanBeSerialized(interval);
     }
 	
 	public void testBeforeClosed() {

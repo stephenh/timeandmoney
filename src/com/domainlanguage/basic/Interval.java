@@ -20,11 +20,10 @@ import java.util.*;
  * if you want to check if an Integer is within a range, make an Interval. 
  * Any class of yours which implements Comparable can have intervals 
  * defined this way.
- * 
  */
-
 public abstract class Interval implements Comparable, Serializable {
 	
+	//revisit: maybe return an Interval? (Benny)
 	public static ConcreteInterval closed(Comparable lower, Comparable upper) {
 		return new ConcreteInterval(lower, true, upper, true);
 	}
@@ -37,24 +36,27 @@ public abstract class Interval implements Comparable, Serializable {
 		return new ConcreteInterval(lower, lowerIncluded, upper, upperIncluded);
 	}
 
-	
 	public abstract Comparable upperLimit();
 		//Warning: This method should generally be used for display
 		//purposes and interactions with closely coupled classes.
 		//Look for (or add) other methods to do computations.
+	
 	public abstract Comparable lowerLimit();
 		//Warning: This method should generally be used for display
 		//purposes and interactions with closely coupled classes.
 		//Look for (or add) other methods to do computations.
+	
 	public abstract boolean includesLowerLimit();
 		//Warning: This method should generally be used for display
 		//purposes and interactions with closely coupled classes.
 		//Look for (or add) other methods to do computations.
+	
 	public abstract boolean includesUpperLimit();
 		//Warning: This method should generally be used for display
 		//purposes and interactions with closely coupled classes.
 		//Look for (or add) other methods to do computations.
-	
+
+	public abstract Interval newOfSameType(Comparable lower, boolean isLowerClosed, Comparable upper, boolean isUpperClosed);
 
 	public boolean intersects(Interval other) {
 		int comparison = greaterOfLowerLimits(other).compareTo(lesserOfUpperLimits(other));
@@ -99,13 +101,15 @@ public abstract class Interval implements Comparable, Serializable {
 	
 	public boolean isBelow(Comparable value) {
 		int comparison = upperLimit().compareTo(value);
-		return comparison < 0 ||
+		return 
+			comparison < 0 ||
 			(comparison == 0 && !includesUpperLimit());
 	}
 
 	public boolean isAbove(Comparable value) {
 		int comparison = lowerLimit().compareTo(value);
-		return comparison > 0 ||
+		return 
+			comparison > 0 ||
 			(comparison == 0 && !includesLowerLimit());
 	}
 
@@ -135,10 +139,6 @@ public abstract class Interval implements Comparable, Serializable {
 		return other.lowerLimit();
 	}
 
-	/**
-	 * This methods is not meant for use by clients.
-	 * It is exposed only for testing.
-	 */
 	Comparable greaterOfLowerLimits(Interval other) {
 		int lowerComparison = lowerLimit().compareTo(other.lowerLimit());
 		if (lowerComparison >= 0) return this.lowerLimit();
@@ -168,6 +168,7 @@ public abstract class Interval implements Comparable, Serializable {
 	}
 
 	public boolean equals(Object other) {
+		//revisit: maybe use: Reflection.equalsOverClassAndNull(this, other)
 		if (!(other instanceof Interval)) return false;
 		
 		Interval otherInterval = ((Interval)other);
@@ -188,7 +189,7 @@ public abstract class Interval implements Comparable, Serializable {
 		return 0;
 	}
 
-	/** http://en.wikipedia.org/wiki/Set_theoretic_complement */
+	/** see: http://en.wikipedia.org/wiki/Set_theoretic_complement */
 	public List complementRelativeTo(Interval other) {
 		List intervalSequence = new ArrayList();
 		if (!this.intersects(other)) {
@@ -213,8 +214,6 @@ public abstract class Interval implements Comparable, Serializable {
 		if (upperLimit().equals(other.upperLimit()) && !other.includesUpperLimit()) return null;
 		return newOfSameType(this.upperLimit(), !this.includesUpperLimit(), other.upperLimit(), other.includesUpperLimit());
 	}
-
-	public abstract Interval newOfSameType(Comparable lower, boolean isLowerClosed, Comparable upper, boolean isUpperClosed);
 
 	public Interval intersect(Interval other) {
 		Comparable intersectLowerBound = greaterOfLowerLimits(other);
