@@ -242,6 +242,10 @@ public class Money implements Comparable, Serializable {
 	public String toString() {
 		return currency.getSymbol() + " " + amount;
 	}
+
+	public String toString(Locale locale) {
+		return currency.getSymbol(locale) + " " + amount;
+	}
 	
 //	TODO: Provide some currency-dependent formatting. Java 1.4 Currency doesn't
 // do it.
