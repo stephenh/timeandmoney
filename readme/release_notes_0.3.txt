@@ -37,5 +37,6 @@ could be eliminated by adding a Currency class to the library. For now, it seems
 simpler to use what the Sun provided.
 
 assert: Many methods state preconditions using Java assert statement, which is ignored,
-by default, in 1.4, but will not compile in earlier Java versions. This can be made 
-backward compatible by commenting out the assert statements.
+by default, in 1.4, but will not compile in earlier Java versions. To build without errors,
+set all the jdk compliance levels to 1.4. To compile for earlier versions, comment
+out the assert statements. The code will still behave correctly.
