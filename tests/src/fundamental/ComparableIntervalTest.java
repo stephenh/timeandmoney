@@ -13,9 +13,21 @@ import java.math.BigDecimal;
 import junit.framework.TestCase;
 
 
-public class IntervalTest extends TestCase {
-	  public void testBasic() {
-	  	Interval range = Interval.closed(new BigDecimal(-5.5), new BigDecimal(6.6));
+public class ComparableIntervalTest extends TestCase {
+
+//	public void testAssertions() {
+//		//Redundant, maybe, but with all the compiler default
+//		//confusion at the moment, I decided to throw this in.
+//		try {
+//			ComparableInterval.closed(new BigDecimal(2.0), new BigDecimal(1.0));
+//			fail("Lower bound mustn't be above upper bound.");
+//		} catch (AssertionError e) {
+//			//Correct. Do nothing.
+//		}
+//	}
+	
+	public void testIncludes() {
+	  	ComparableInterval range = ComparableInterval.closed(new BigDecimal(-5.5), new BigDecimal(6.6));
 	    assertTrue (range.includes(new BigDecimal(5.0)));
 	    assertTrue (range.includes(new BigDecimal(-5.5)));
 	    assertTrue (range.includes(new BigDecimal(-5.4999)));
@@ -24,8 +36,8 @@ public class IntervalTest extends TestCase {
 	    assertFalse (range.includes(new BigDecimal(-5.501)));
 	  }
 
-	  public void testExclusives() {
-	  	Interval exRange = new Interval(new BigDecimal(-5.5), false, new BigDecimal(6.6), true);
+	  public void testOpenInterval() {
+	  	ComparableInterval exRange = new ComparableInterval(new BigDecimal(-5.5), false, new BigDecimal(6.6), true);
 	    assertTrue (exRange.includes(new BigDecimal(5.0)));
 	    assertFalse (exRange.includes(new BigDecimal(-5.5)));
 	    assertTrue (exRange.includes(new BigDecimal(-5.4999)));
@@ -56,12 +68,12 @@ public class IntervalTest extends TestCase {
 //	    assertTrue(range.includes(5.5001));
 //	  }
 		public void testIntersection() {
-	   	Interval r5_10 = Interval.closed(new BigDecimal(5),new BigDecimal(10));
-	    Interval r1_10 = Interval.closed(new BigDecimal(1),new BigDecimal(10));
-	    Interval r4_6 = Interval.closed(new BigDecimal(4),new BigDecimal(6));
-	    Interval r5_15 = Interval.closed(new BigDecimal(5),new BigDecimal(15));
-	    Interval r12_16 = Interval.closed(new BigDecimal(12),new BigDecimal(16));
-	    Interval x10_12 = new Interval(new BigDecimal(10), false, new BigDecimal(12), true);
+	   	ComparableInterval r5_10 = ComparableInterval.closed(new BigDecimal(5),new BigDecimal(10));
+	    ComparableInterval r1_10 = ComparableInterval.closed(new BigDecimal(1),new BigDecimal(10));
+	    ComparableInterval r4_6 = ComparableInterval.closed(new BigDecimal(4),new BigDecimal(6));
+	    ComparableInterval r5_15 = ComparableInterval.closed(new BigDecimal(5),new BigDecimal(15));
+	    ComparableInterval r12_16 = ComparableInterval.closed(new BigDecimal(12),new BigDecimal(16));
+	    ComparableInterval x10_12 = new ComparableInterval(new BigDecimal(10), false, new BigDecimal(12), true);
 	    assertTrue ("r5_10.intersects(r1_10)",r5_10.intersects(r1_10));
 	    assertTrue ("r1_10.intersects(r5_10)",r1_10.intersects(r5_10));
 	    assertTrue ("r4_6.intersects(r1_10)",r4_6.intersects(r1_10));
@@ -76,15 +88,15 @@ public class IntervalTest extends TestCase {
 	    assertFalse ("x10_12.intersects(r1_10)",x10_12.intersects(r1_10));
 	 	}
 		public void testIncludesRange() {
-	   	Interval r5_10 = Interval.closed(new BigDecimal(5),new BigDecimal(10));
-	    Interval r1_10 = Interval.closed(new BigDecimal(1),new BigDecimal(10));
-	    Interval r4_6 = Interval.closed(new BigDecimal(4),new BigDecimal(6));
+	   	ComparableInterval r5_10 = ComparableInterval.closed(new BigDecimal(5),new BigDecimal(10));
+	    ComparableInterval r1_10 = ComparableInterval.closed(new BigDecimal(1),new BigDecimal(10));
+	    ComparableInterval r4_6 = ComparableInterval.closed(new BigDecimal(4),new BigDecimal(6));
 	    assertFalse (r5_10.includes(r1_10));
 	    assertTrue (r1_10.includes(r5_10));
 	    assertFalse (r4_6.includes(r1_10));
 	    assertTrue (r1_10.includes(r4_6));
 	    assertTrue (r5_10.includes(r5_10));
-	    Interval halfOpen5_10 = new Interval(new BigDecimal(5), false, new BigDecimal(10), true);
+	    ComparableInterval halfOpen5_10 = new ComparableInterval(new BigDecimal(5), false, new BigDecimal(10), true);
 	    assertTrue("closed incl left-open", r5_10.includes(halfOpen5_10));
 	    assertTrue("left-open incl left-open", halfOpen5_10.includes(halfOpen5_10));
 	    assertFalse("left-open doesn't include closed", halfOpen5_10.includes(r5_10));

@@ -9,22 +9,22 @@
 package fundamental;
 
 
-public class Interval {
+public class ComparableInterval {
 	private Comparable lowerBound;
 	private boolean lowerBoundIncluded;
 	private Comparable upperBound;
 	private boolean upperBoundIncluded;
 	
-	Interval(Comparable lower, boolean lowerIncluded, Comparable upper, boolean upperIncluded) {
-//		assert (lower.le(upper));
+	ComparableInterval(Comparable lower, boolean lowerIncluded, Comparable upper, boolean upperIncluded) {
+		assert lower.compareTo(upper) < 0;
 		lowerBound = lower;
 		lowerBoundIncluded = lowerIncluded;
 		upperBound = upper;
 		upperBoundIncluded = upperIncluded;
 	}
 	
-	public static Interval closed(Comparable lower, Comparable upper) {
-		return new Interval(lower, true, upper, true);
+	public static ComparableInterval closed(Comparable lower, Comparable upper) {
+		return new ComparableInterval(lower, true, upper, true);
 	}
 	
 	public Comparable getLowerBound() {
@@ -40,33 +40,33 @@ public class Interval {
 		return upperBound;
 	}
 	
-	public boolean intersects(Interval other) {
+	public boolean intersects(ComparableInterval other) {
 		int comparison = greaterOfLowerBounds(other).compareTo(lesserOfUpperBounds(other));
 		if (comparison < 0) return true;
 		if (comparison > 0) return false;
 		return greaterOfLowerIncluded(other) && lesserOfUpperIncluded(other);
 	}
 	
-	private Comparable greaterOfLowerBounds(Interval other) {
+	private Comparable greaterOfLowerBounds(ComparableInterval other) {
 		int lowerComparison = lowerBound.compareTo(other.lowerBound);
 		if (lowerComparison >= 0) return this.lowerBound;
 		return other.lowerBound;
 	}
 
-	private boolean greaterOfLowerIncluded(Interval other) {
+	private boolean greaterOfLowerIncluded(ComparableInterval other) {
 		int lowerComparison = lowerBound.compareTo(other.lowerBound);
 		if (lowerComparison > 0) return this.lowerBoundIncluded;
 		if (lowerComparison < 0) return other.lowerBoundIncluded;
 		return this.lowerBoundIncluded && other.lowerBoundIncluded;
 	}
 
-	private Comparable lesserOfUpperBounds(Interval other) {
+	private Comparable lesserOfUpperBounds(ComparableInterval other) {
 		int upperComparison = upperBound.compareTo(other.upperBound);
 		if (upperComparison <= 0) return this.upperBound;
 		return other.upperBound;
 	}
 
-	private boolean lesserOfUpperIncluded(Interval other) {
+	private boolean lesserOfUpperIncluded(ComparableInterval other) {
 		int upperComparison = upperBound.compareTo(other.upperBound);
 		if (upperComparison < 0) return this.upperBoundIncluded;
 		if (upperComparison > 0) return other.upperBoundIncluded;
@@ -78,7 +78,7 @@ public class Interval {
 		return !this.isBefore(value) && !this.isAfter(value);
 	}
 
-	public boolean includes(Interval other) {
+	public boolean includes(ComparableInterval other) {
 		int lowerComparison = lowerBound.compareTo(other.lowerBound);
 			boolean lowerPass = this.includes(other.lowerBound) ||
 				(lowerComparison == 0 && !other.lowerBoundIncluded);
