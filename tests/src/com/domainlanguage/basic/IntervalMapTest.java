@@ -15,7 +15,6 @@ public class IntervalMapTest extends TestCase {
 	
 	public void testLookup() {
 		Map regularOldMap = new HashMap();
-		regularOldMap.get(null);
 		
 		IntervalMap map = new LinearIntervalMap();
 		map.put(ComparableInterval.closed(new Integer(1), new Integer(3)), "one-three");
