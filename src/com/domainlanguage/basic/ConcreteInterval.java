@@ -8,7 +8,7 @@ package com.domainlanguage.basic;
 
 
 //refactor: since Interval is creating those, why expose this class?
-//refactor: having TimeInterval as a sublass of this is a bad practice:
+// and having TimeInterval as a sublass of this is a bad practice:
 // in general, do not make concrete classes subclass from a concrete class
 // (google for what issues arise from such practice)  (Benny)
 public class ConcreteInterval extends Interval {

@@ -16,7 +16,7 @@ public class SerializationTester {
 	private static final String SERIAL_FILENAME = "test.ser";
 
 	public static void assertCanBeSerialized(Object serializble) throws AssertionFailedError {
-		if (!Reflection.is(serializble, Serializable.class)) 
+		if (!TypeCheck.is(serializble, Serializable.class)) 
 			throw new AssertionFailedError("Object doesn't implement java.io.Serializable interface"); 
 
 		ObjectOutputStream out = null;

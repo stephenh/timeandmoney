@@ -20,6 +20,8 @@ package com.domainlanguage.basic;
 
 import java.math.*;
 
+import com.domainlanguage.util.TypeCheck;
+
 public class Ratio {
 	private BigDecimal numerator;
 	private BigDecimal denominator;
@@ -39,6 +41,28 @@ public class Ratio {
 
 	public BigDecimal decimalValue(int scale, int roundingRule) {
 		return numerator.divide(denominator, scale, roundingRule);
+	}
+	
+	public boolean equals(Object anObject) {
+		if (!TypeCheck.is(anObject, Ratio.class)) return false;
+		Ratio other = (Ratio)anObject;
+		return this.numerator.equals(other.numerator) && this.denominator.equals(other.denominator);
+	}
+	
+	public int hashCode() {
+		return numerator.hashCode();
+	}
+	
+	public Ratio times(BigDecimal multiplier) {
+		return Ratio.of(numerator.multiply(multiplier), denominator);
+	}
+
+	public Ratio times(Ratio multiplier) {
+		return Ratio.of(numerator.multiply(multiplier.numerator), denominator.multiply(multiplier.denominator));
+	}
+	
+	public String toString() {
+		return numerator.toString() + "/" + denominator;
 	}
 
 }

@@ -21,10 +21,10 @@ abstract public class Tests {
 			TestSuite suite = (TestSuite) suiteQueue.removeFirst();
 			for (Enumeration enumeration = suite.tests(); enumeration.hasMoreElements(); ) {
 				Test each = (Test) enumeration.nextElement();
-				if (Reflection.is(each, TestSuite.class))
+				if (TypeCheck.is(each, TestSuite.class))
 					suiteQueue.addLast(each);
 				else 
-					if (Reflection.is(each, TestCase.class))
+					if (TypeCheck.is(each, TestCase.class))
 						testCases.add(each);							
 				else
 					throw new RuntimeException("not a testcase nor a suite: " + each);

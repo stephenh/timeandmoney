@@ -72,7 +72,7 @@ public class CalendarDate extends CalendarInterval {
 	}
 
 	public int compareTo(Object other) {
-		if (Reflection.is(other, CalendarDate.class)) {
+		if (TypeCheck.is(other, CalendarDate.class)) {
 			CalendarDate otherDate = (CalendarDate) other;
 			if (this.isBefore(otherDate)) return -1;
 			if (this.isAfter(otherDate)) return 1;
@@ -105,6 +105,10 @@ public class CalendarDate extends CalendarInterval {
 
 	public CalendarDate nextDay() {
 		return this.plusDays(1);
+	}
+	
+	public CalendarDate previousDay() {
+		return this.plusDays(-1);
 	}
 	
 	public CalendarDate firstOfMonth() {

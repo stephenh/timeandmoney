@@ -131,7 +131,7 @@ class TimeUnit implements Comparable, Serializable, TimeUnitConversionFactors {
         
         public boolean equals(Object other) {
         	return
-				Reflection.equalsOverClassAndNull(this, other) &&
+				TypeCheck.sameClassOrBothNull(this, other) &&
 				this.name.equals(((Type) other).name);
 		}
         

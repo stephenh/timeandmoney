@@ -36,7 +36,20 @@ public class DateSpecificationTest extends TestCase {
 		assertFalse(thanksgiving.isSatisfiedBy(CalendarDate.date(2002, 11, 25)));		
 		CalendarInterval y2002 = CalendarInterval.year(2002);
 		assertEquals(CalendarDate.date(2002, 11, 28), thanksgiving.firstOccurrenceIn(y2002));
-		assertTrue(thanksgiving.isSatisfiedBy(CalendarDate.date(2002, 11, 28)));		
+		assertTrue(thanksgiving.isSatisfiedBy(CalendarDate.date(2002, 11, 28)));
+		
+		// Calculate all the Thanksgivings over a three year interval.
+		CalendarInterval y2002_2004 = CalendarInterval.inclusive(2002, 1, 1, 2004, 12, 31);
+		assertEquals(CalendarDate.date(2002, 11, 28), thanksgiving.firstOccurrenceIn(y2002_2004));
+		Iterator iterator = thanksgiving.iterateOver(y2002_2004);
+		assertTrue(iterator.hasNext());
+		assertEquals(CalendarDate.date(2002, 11, 28), iterator.next());
+		assertTrue(iterator.hasNext());
+		assertEquals(CalendarDate.date(2003, 11, 27), iterator.next());
+		assertTrue(iterator.hasNext());
+		assertEquals(CalendarDate.date(2004, 11, 25), iterator.next());
+		assertFalse(iterator.hasNext());
+
 	}
 	
 	public void testSelectFirstFromInterval() {

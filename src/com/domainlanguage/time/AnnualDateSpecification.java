@@ -23,15 +23,18 @@ public abstract class AnnualDateSpecification extends DateSpecification {
 	}
 
 	public Iterator iterateOver(final CalendarInterval interval) {
+		final AnnualDateSpecification spec = this;
 		return new ImmutableIterator() {
 			CalendarDate next = firstOccurrenceIn(interval);
+			int year = next.year;
 			public boolean hasNext() {
 				return next != null;
 			}	
-			public Object next() {
+			public Object next() {				
 				if (next == null) return null;
 				Object current = next;
-				next = next.plusMonths(12);
+				year += 1;
+				next = spec.ofYear(year);
 				if (!interval.includes(next)) next = null;
 				return current;
 			}

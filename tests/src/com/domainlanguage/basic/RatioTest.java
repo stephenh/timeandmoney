@@ -28,6 +28,11 @@ public class RatioTest extends TestCase {
 		result = rManyDigits.decimalValue(6, BigDecimal.ROUND_UP);
 		assertEquals(new BigDecimal("3.000334"), result);
 
+		result = rManyDigits.decimalValue(7, BigDecimal.ROUND_UP);
+		assertEquals(new BigDecimal("3.0003334"), result);
+
+		result = rManyDigits.decimalValue(7, BigDecimal.ROUND_HALF_UP);
+		assertEquals(new BigDecimal("3.0003333"), result);
 	}
 
 	public void testLongRatio() {
@@ -35,5 +40,24 @@ public class RatioTest extends TestCase {
 		BigDecimal result = rManyDigits.decimalValue(6, BigDecimal.ROUND_UP);
 		assertEquals(new BigDecimal("3.000334"), result);
 	}
+	
+	public void testEquals() {
+		assertTrue(Ratio.of(100, 200).equals(Ratio.of(100, 200)));
+		assertEquals(Ratio.of(100, 200), Ratio.of(100, 200));
+		assertEquals(Ratio.of(100, 200), Ratio.of(new BigDecimal("100"), new BigDecimal("200")));
+	}
 
+		
+	public void testMultiplyNumerator() {
+		Ratio rManyDigits = Ratio.of(9001, 3000);
+		Ratio product = rManyDigits.times(new BigDecimal("1.1"));
+		assertEquals(Ratio.of(new BigDecimal("9901.1"), new BigDecimal(3000)), product);
+	}
+	
+	public void testMultiplyByRatio() {
+		Ratio r1 = Ratio.of(9001, 3000);
+		Ratio r2 = Ratio.of(3, 2);
+		Ratio expectedProduct = Ratio.of(27003, 6000);
+		assertEquals(expectedProduct, r1.times(r2));
+	}
 }

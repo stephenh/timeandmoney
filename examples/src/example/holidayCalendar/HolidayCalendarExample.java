@@ -31,7 +31,27 @@ public class HolidayCalendarExample extends TestCase {
 		assertEquals(CalendarDate.from(1930, 1, 15), mlkBirthdays.next());
 		// etc.
 		// By the way, to calculate how long MLK lived,
-		assertEquals("14325 days", mlkLifetime.length().toString());
+		assertEquals(Duration.days(14325), mlkLifetime.length());
+	}
+	
+	public void testDeriveThanksgiving() {
+		//Calculate Thanksgiving, the 4th Thursday in November, for the
+		// year 2005
+		DateSpecification thanksgiving = DateSpecification.nthOccuranceOfWeekdayInMonth(11, Calendar.THURSDAY, 4);
+		// With the specification, you can do checks like
+		assertTrue(thanksgiving.isSatisfiedBy(CalendarDate.date(2005, 11, 24)));
+		assertFalse(thanksgiving.isSatisfiedBy(CalendarDate.date(2005, 11, 25)));
+		// Derive the date(s) for an interval
+		assertEquals(CalendarDate.date(2005, 11, 24), thanksgiving.firstOccurrenceIn(CalendarInterval.year(2005)));
+
+		// Calculate all the Thanksgivings over a three year interval.
+		CalendarInterval y2002_2004 = CalendarInterval.inclusive(2002, 1, 1, 2004, 12, 31);
+		assertEquals(CalendarDate.date(2002, 11, 28), thanksgiving.firstOccurrenceIn(y2002_2004));
+		Iterator iterator = thanksgiving.iterateOver(y2002_2004);
+		assertEquals(CalendarDate.date(2002, 11, 28), iterator.next());
+		assertEquals(CalendarDate.date(2003, 11, 27), iterator.next());
+		assertEquals(CalendarDate.date(2004, 11, 25), iterator.next());
+		assertFalse(iterator.hasNext());
 	}
 
 }

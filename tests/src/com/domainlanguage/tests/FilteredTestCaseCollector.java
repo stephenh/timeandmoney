@@ -80,7 +80,7 @@ public class FilteredTestCaseCollector extends ClassPathTestCollector {
 
 	private boolean isExludedByType(Class testClass) {
 		for (int i = 0; i < exludedTypes.length; i++) 
-			if (Reflection.is(testClass, exludedTypes[i])) 
+			if (TypeCheck.is(testClass, exludedTypes[i])) 
 				return true;
 		return false;
 	}
@@ -89,7 +89,7 @@ public class FilteredTestCaseCollector extends ClassPathTestCollector {
 		return 
 			!Modifier.isAbstract(testClass.getModifiers()) &&
 			Modifier.isPublic(testClass.getModifiers()) && 
-			Reflection.is(testClass, TestCase.class);
+			TypeCheck.is(testClass, TestCase.class);
 	}
 
 }

@@ -5,6 +5,7 @@ import java.util.*;
 
 import junit.framework.*;
 
+import com.domainlanguage.basic.Ratio;
 import com.domainlanguage.tests.*;
 
 
@@ -176,17 +177,16 @@ public class MoneyTest extends TestCase {
 		assertEquals(Money.dollars(12.49), d15.minus(d2_51));
 	}
 	
+	public void testApplyRatio() {
+		Ratio oneThird = Ratio.of(1, 3);
+		Money result = Money.dollars(100).applying(oneThird, 1, BigDecimal.ROUND_UP);
+		assertEquals(Money.dollars(33.40), result);
+	}
+	
 	public void testIncremented() {
 		assertEquals(Money.dollars(2.52), d2_51.incremented());
 		assertEquals(Money.valueOf(51, JPY), y50.incremented());
 	}
 	
-	public void xtestSimpleFloatProblem() {
-		//<codeFragment name = "floatProblem">
-		double val = 0.00;
-		for (int i = 0; i < 10; i++) val += 0.10;
-		System.out.println(val == 1.00);
-        // </codeFragment>
-	}
 	
 }

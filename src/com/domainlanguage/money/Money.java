@@ -163,6 +163,11 @@ public class Money implements Comparable, Serializable {
 		return Ratio.of(amount, divisor.amount);
 	}
 
+	public Money applying (Ratio ratio, int scale, int roundingRule) {
+		BigDecimal newAmount = ratio.times(amount).decimalValue(scale, roundingRule);
+		return Money.valueOf(newAmount, currency);
+	}
+	
 	/**
 	 * TODO: Many apps require carrying extra precision in intermediate calculations.
 	 * The use of Ratio is a beginning, but need a comprehensive solution.
@@ -214,7 +219,7 @@ public class Money implements Comparable, Serializable {
 	public boolean equals(Object other) {
 		//revisit: maybe use: Reflection.equalsOverClassAndNull(this, other)
 		return 
-			Reflection.is(other, Money.class) && 
+			TypeCheck.is(other, Money.class) && 
 			this.equals((Money) other);
 	}
 	

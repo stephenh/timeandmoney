@@ -7,7 +7,7 @@
 package com.domainlanguage.util;
 
 
-public abstract class Reflection {
+public abstract class TypeCheck {
 
     static public boolean is(Object instance, Class type) {
         return 
@@ -19,7 +19,7 @@ public abstract class Reflection {
 		return type.isAssignableFrom(subtype);
 	}
 
-    static public boolean equalsOverClassAndNull(Object first, Object second) {
+    static public boolean sameClassOrBothNull(Object first, Object second) {
 		if ((first == null) || (second == null))
 			return (first == second);
 
