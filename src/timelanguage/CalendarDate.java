@@ -79,4 +79,8 @@ public class CalendarDate extends CalendarInterval implements Comparable {
 		return point.toString(pattern, zone);
 	}
 
+	public CalendarInterval through(CalendarDate otherDate) {
+		return CalendarInterval.inclusive(this, otherDate);
+	}
+	
 }

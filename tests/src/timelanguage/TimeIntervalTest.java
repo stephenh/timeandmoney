@@ -154,4 +154,18 @@ public class TimeIntervalTest extends TestCase {
 		assertFalse(it.hasNext());
 	}
 	
+	public void testIntersection() {
+		TimeInterval i19_22 = TimeInterval.over(dec19_2003, dec22_2003);
+		TimeInterval i20_23 = TimeInterval.over(dec20_2003, dec23_2003);
+		TimeInterval intersection = i19_22.intersect(i20_23);
+		assertEquals(dec20_2003, intersection.start());
+		assertEquals(dec22_2003, intersection.end());
+		assertTrue("intersects true", i19_22.intersects(i20_23));
+
+		TimeInterval i19_21 = TimeInterval.over(dec19_2003, dec21_2003);
+		TimeInterval i22_23 = TimeInterval.over(dec22_2003, dec23_2003);
+		assertFalse("intersects false",i19_21.intersects(i22_23));
+	}
+	
+	
 }

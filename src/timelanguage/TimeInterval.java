@@ -126,4 +126,26 @@ public class TimeInterval {
 		return end;
 	}
 	
+
+	public TimeInterval intersect(TimeInterval other) {
+		TimePoint intersectStart = start();
+		TimePoint intersectEnd = end();
+		if (start().isBefore(other.start())) {
+			intersectStart = other.start();
+		} else if (start().isAfter(other.start())) {
+			intersectStart = start();
+		}
+		if (end().isAfter(other.end())) {
+			intersectEnd = other.end();
+		} else if (end().isBefore(other.end())) {
+			intersectEnd = end();
+		}
+		if (intersectEnd.isBefore(intersectStart)) return NEVER;
+		return TimeInterval.over(intersectStart, intersectEnd);
+	}
+	
+	public boolean intersects(TimeInterval other) {
+		TimeInterval intersection = this.intersect(other);
+		return !(intersection.start().equals(NEVER.start()) && intersection.end().equals(NEVER.end()));
+	}
 }

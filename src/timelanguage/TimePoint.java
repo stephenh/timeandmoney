@@ -5,7 +5,9 @@ import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-public class  TimePoint implements Comparable {
+import fundamental.Magnitude;
+
+public class  TimePoint implements Comparable, Magnitude {
 	static public final TimePoint FAR_PAST = from("1/1/0000", "MM/dd/yyyy");
 	static public final TimePoint FAR_FUTURE = from("12/31/9999", "MM/dd/yyyy");
 
@@ -119,7 +121,9 @@ public class  TimePoint implements Comparable {
 		format.setTimeZone(zone);
 		return format.format(asJavaUtilDate());
 	}
-	
+
+//	Comparisons
+
 	public boolean isBetween(TimePoint fromPoint, TimePoint toPoint) {
 		return TimeInterval.over(fromPoint, toPoint).includes(this);
 	}
@@ -137,6 +141,22 @@ public class  TimePoint implements Comparable {
 		if (this.isBefore(otherPoint)) return -1;
 		if (this.isAfter(otherPoint)) return 1;
 		return 0;
+	}
+	
+	public boolean lt(Magnitude other) {
+		return this.isBefore((TimePoint)other);
+	}
+
+	public boolean gt(Magnitude other) {
+		return this.isAfter((TimePoint)other);
+	}
+
+	public boolean le(Magnitude other) {
+		return this.lt(other) || this.equals(other);
+	}
+
+	public boolean ge(Magnitude other) {
+		return this.gt(other) || this.equals(other);
 	}
 
 	public TimePoint nextDay() {
@@ -174,5 +194,6 @@ public class  TimePoint implements Comparable {
 	public TimePoint minus(Duration duration) {
 		return duration.subtractedFrom(this);
 	}
+
 	
 }
