@@ -8,7 +8,7 @@ package com.domainlanguage.time;
 
 import java.util.*;
 
-public class Duration {
+public class Duration implements Comparable {
 	public static final Duration NONE = milliseconds(0);
 
 	final long quantity;
@@ -72,12 +72,6 @@ public class Duration {
 	long inBaseUnits() {
 		return quantity * unit.factor;
 	}
-/**
- * TODO
- */	
-//	long in(TimeUnit newUnit) {
-//		return unit.factorFrom(unit);
-//	}
 	
 	/**
 	 * TODO What SHOULD this do if the guard fails?
@@ -85,6 +79,17 @@ public class Duration {
 	public Duration plus(Duration other) {
 		if (!other.unit.isConvertibleTo(this.unit)) return null;
 		long newQuantity = this.inBaseUnits() + other.inBaseUnits();
+		return new Duration(newQuantity, unit.baseUnit());
+	}
+
+	/**
+	 * TODO What SHOULD this do if the guard fails?
+	 * TODO What SHOULD happen if assertion fails?
+	 */
+	public Duration minus(Duration other) {
+		if (!other.unit.isConvertibleTo(this.unit)) return null;
+		assert this.compareTo(other) >= 0;
+		long newQuantity = this.inBaseUnits() - other.inBaseUnits();
 		return new Duration(newQuantity, unit.baseUnit());
 	}
 	
@@ -154,7 +159,8 @@ public class Duration {
 	}
 
 	public String toString() {
-		return toString(quantity, unit);
+		//return toString(quantity, unit);
+		return toNormalizedString();
 	}
 	
 	private String toString(long quantity, TimeUnit unit) {
@@ -168,6 +174,17 @@ public class Duration {
 
 	public int hashCode() {
 		return (int) quantity;
+	}
+	/**
+	 * TODO What should happen if units are not convertible?
+	 */
+	public int compareTo(Object arg) {
+		Duration other = (Duration) arg;
+		assert this.unit.isConvertibleTo(other.unit);
+		long difference = this.inBaseUnits() - other.inBaseUnits();
+		if (difference > 0) return 1;
+		if (difference < 0) return -1;
+		return 0;
 	}
 			
 }

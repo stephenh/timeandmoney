@@ -85,13 +85,28 @@ public class DurationTest extends TestCase {
 		assertEquals(Duration.months(4), Duration.months(1).plus(Duration.quarters(1)));
 	}
 	
-	/**
-	 * TODO Need more elaborate toNormalizedString like the commented one.
-	 */
+	public void testSubtract() {
+		assertEquals(Duration.days(2), Duration.days(3).minus(Duration.hours(24)));
+		assertEquals(Duration.months(2), Duration.quarters(1).minus(Duration.months(1)));
+	}
+	
+	
 	public void testToNormalizedString() {
 			assertEquals("2 days", Duration.days(2).toNormalizedString());
 			Duration complicatedDuration = Duration.daysHoursMinutesSecondsMillis(5,4,3,2,1);
 			assertEquals("5 days, 4 hours, 3 minutes, 2 seconds, 1 millisecond", complicatedDuration.toNormalizedString());
+	}
+	
+	/**
+	 * TODO More edge cases and exceptions (like nonconvertable units).
+	 */
+	public void testCompare() {
+		Duration oneHour = Duration.hours(1);
+		Duration twoHours = Duration.hours(2);
+		Duration sixtyMinutes = Duration.minutes(60); 
+		assertTrue(oneHour.compareTo(twoHours) < 0);
+		assertTrue(oneHour.compareTo(sixtyMinutes) == 0);
+		assertTrue(twoHours.compareTo(oneHour) > 0);
 	}
 
 }
