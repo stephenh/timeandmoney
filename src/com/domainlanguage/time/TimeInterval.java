@@ -62,6 +62,8 @@ public class TimeInterval extends ConcreteInterval {
 
 	public TimeInterval(TimePoint start, boolean startIncluded, TimePoint end, boolean endIncluded) {
 //		assert start.compareTo(end) < 0;  //This should really be an Interval invariant.
+//	revisit: also, as with any java assert, an AssertionError will be thrown only if compiled with the -ea option (enableassertions)
+//	so maybe we want to throw an IllegalArgumentException instead?		
 		super(start, startIncluded, end, endIncluded);
 	}
 
