@@ -14,10 +14,9 @@ import junit.framework.*;
 
 public class DurationTest extends TestCase {
 
-//	TODO Why does this test hang?
-//    public void testSerialization() {
-//    	SerializationTest.assertSerializationWorks(Duration.days(1));
-//    }
+    public void testSerialization() {
+    	SerializationTest.assertSerializationWorks(Duration.days(1));
+    }
 	
 	public void testAddMillisecondsToPoint() {
 		TimePoint dec20At1 = TimePoint.atGMT(2003, 12, 20, 01, 0, 0, 0);

@@ -46,7 +46,7 @@ class TimeUnit implements Comparable, Serializable {
 		this.baseType = baseType;
 		this.factor = factor;
 	}
-
+    
 	TimeUnit baseUnit() {
 		if (baseType.equals(Type.millisecond)) return TimeUnit.millisecond;
 		else return TimeUnit.month;
@@ -101,7 +101,28 @@ class TimeUnit implements Comparable, Serializable {
 		return descending[index + 1];
 	}
 	
-	static private class Type {
+    public boolean equals(Object o) {
+        if( o == null || !(o instanceof TimeUnit) ) {
+            return false;
+        }
+        
+        TimeUnit other = (TimeUnit)o;
+        if( this.baseType.equals(other.baseType) 
+                && this.factor == factor
+                && this.type.equals(other.type) ) {
+            return true;
+        }
+        
+        return false;
+    }
+    
+    public int hashCode() {
+        return this.factor 
+            + this.baseType.hashCode() 
+            + this.type.hashCode();
+    }
+
+	static private class Type implements Serializable {
 		static final Type millisecond = new Type("millisecond");
 		static final Type second = new Type("second");
 		static final Type minute = new Type("minute");
@@ -118,6 +139,28 @@ class TimeUnit implements Comparable, Serializable {
 		Type(String name) {
 			this.name = name;
 		}
+        
+        public boolean equals(Object o) {
+            if( o == null || !(o instanceof Type) ) {
+                return false;
+            }
+            
+            Type other = (Type)o;
+            if( this.name != null 
+                    && other.name != null 
+                    && this.name.equals(other.name)) {
+                return true;
+            }
+            
+            return false;
+        }
+        
+        public int hashCode() {
+            if( this.name != null ) {
+                return this.name.hashCode();
+            }
+            
+            return 0;
+        }
 	}
-
 }

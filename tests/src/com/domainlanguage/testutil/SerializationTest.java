@@ -27,19 +27,17 @@ private static final String TEST_FILE = "test.txt";
             throw new AssertionFailedError("Object doesn't implement java.io.Serializable interface");
         }
         
-        FileOutputStream fout = null;
-        FileInputStream fin = null;
+        ObjectOutputStream out = null;
+        ObjectInputStream in = null;
         File serFile = null;
         try {
             serFile = new File(TEST_FILE);
-            fout = new FileOutputStream(serFile);
-            fin = new FileInputStream(serFile);
             
-            ObjectOutputStream out = new ObjectOutputStream(fout);
+            out = new ObjectOutputStream(new FileOutputStream(serFile));
             out.writeObject(toSerialize);
             out.flush();
             
-            ObjectInputStream in = new ObjectInputStream(fin);
+            in = new ObjectInputStream(new FileInputStream(serFile));
             Object deserialized = in.readObject();
             
             if( !(toSerialize.equals(deserialized))) {
@@ -54,11 +52,11 @@ private static final String TEST_FILE = "test.txt";
         }
         finally {
             try {
-                if( fout != null ) {
-                    fout.close();
+                if( out != null ) {
+                    out.close();
                 }
-                if( fin != null ) {
-                    fin.close();
+                if( in != null ) {
+                    in.close();
                 }
                 serFile.delete();
             }

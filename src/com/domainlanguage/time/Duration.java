@@ -8,16 +8,15 @@ package com.domainlanguage.time;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.Calendar;
 
 import com.domainlanguage.basic.Ratio;
-import com.domainlanguage.money.Money;
 
 public class Duration implements Comparable, Serializable {
 	public static final Duration NONE = milliseconds(0);
 
-	final long quantity;
-	final TimeUnit unit;
+	private final long quantity;
+	private final TimeUnit unit;
 	
 	private static Duration of(long howMany, TimeUnit unit) {
 		return new Duration(howMany, unit);
@@ -73,7 +72,7 @@ public class Duration implements Comparable, Serializable {
 		this.quantity = howMany;
 		this.unit = unit;
 	}
-		
+    
 	long inBaseUnits() {
 		return quantity * unit.factor;
 	}

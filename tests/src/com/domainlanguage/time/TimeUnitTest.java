@@ -17,9 +17,9 @@ import junit.framework.TestCase;
 public class TimeUnitTest extends TestCase {
 
 //	TODO Why does this test hang?
-//	public void testSerialization() {
-//    	SerializationTest.assertSerializationWorks(TimeUnit.month);
-//    }
+	public void testSerialization() {
+    	SerializationTest.assertSerializationWorks(TimeUnit.month);
+    }
 
 	public void testToString() {
 		assertEquals("month", TimeUnit.month.toString());
