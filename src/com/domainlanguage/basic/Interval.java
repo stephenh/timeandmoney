@@ -82,10 +82,13 @@ public abstract class Interval implements Comparable, Serializable {
 	}
 	
 	public boolean isEmpty() {
-		//Really a 'degenerate' interval, but the behavior 
-		//of the interval will be like an empty set.
-		return isOpen() && upperLimit().equals(lowerLimit());
-		
+		//A 'degenerate' interval is an empty set, {}. 
+		return isOpen() && upperLimit().equals(lowerLimit());		
+	}
+	
+	public boolean isSingleElement() {
+		//An interval containing a single element, {a}.
+		return upperLimit().equals(lowerLimit()) && !isEmpty();
 	}
 	
 	public boolean isBelow(Comparable value) {
@@ -101,6 +104,12 @@ public abstract class Interval implements Comparable, Serializable {
 	}
 
 	public String toString() {
+		if (isEmpty()) return "{}";
+		
+		if (isSingleElement()) {
+			return "{" + lowerLimit().toString() + "}";
+		}
+		
 		StringBuffer buffer = new StringBuffer();
 		buffer.append(includesLowerLimit() ? "[" : "(");
 		buffer.append(lowerLimit().toString());
@@ -135,24 +144,10 @@ public abstract class Interval implements Comparable, Serializable {
 		return other.lowerLimit();
 	}
 
-	public boolean greaterOfLowerIncluded(Interval other) {
-		int lowerComparison = lowerLimit().compareTo(other.lowerLimit());
-		if (lowerComparison > 0) return this.includesLowerLimit();
-		if (lowerComparison < 0) return other.includesLowerLimit();
-		return this.includesLowerLimit() && other.includesLowerLimit();
-	}
-
 	public Comparable lesserOfUpperLimits(Interval other) {
 		int upperComparison = upperLimit().compareTo(other.upperLimit());
 		if (upperComparison <= 0) return this.upperLimit();
 		return other.upperLimit();
-	}
-
-	public boolean lesserOfUpperIncluded(Interval other) {
-		int upperComparison = upperLimit().compareTo(other.upperLimit());
-		if (upperComparison < 0) return this.includesUpperLimit();
-		if (upperComparison > 0) return other.includesUpperLimit();
-		return this.includesUpperLimit() && other.includesUpperLimit();
 	}
 
 	public Comparable greaterOfUpperLimits(Interval other) {
@@ -161,8 +156,31 @@ public abstract class Interval implements Comparable, Serializable {
 		return other.upperLimit();
 	}
 
+	public boolean greaterOfLowerIncluded(Interval other) {
+		Comparable limit = greaterOfLowerLimits(other);
+		return this.includes(limit) && other.includes(limit);
+	}
+
+	public boolean lesserOfUpperIncluded(Interval other) {
+		Comparable limit = lesserOfUpperLimits(other);
+		return this.includes(limit) && other.includes(limit);
+	}
+
+
 	public boolean equals(Object other) {
 		if (!(other instanceof Interval)) return false;
+		Interval otherInterval = ((Interval)other);
+
+		boolean thisEmpty = this.isEmpty();
+		boolean otherEmpty = otherInterval.isEmpty();
+		if (thisEmpty & otherEmpty) return true;
+		if (thisEmpty ^ otherEmpty) return false;
+
+		boolean thisSingle = this.isSingleElement();
+		boolean otherSingle = otherInterval.isSingleElement();
+		if (thisSingle & otherSingle) return this.lowerLimit().equals(otherInterval.lowerLimit());
+		if (thisSingle ^ otherSingle) return false;
+		
 		return compareTo(other) == 0;
 	}
 	
