@@ -32,9 +32,6 @@ public class Duration {
 		return Duration.of(howMany, TimeUnit.day);
 	}
 	
-	/**
-	 * TODO must add all units together.
-	 */
 	public static Duration daysHoursMinutesSecondsMillis(int days, int hours, int minutes, int seconds, long milliseconds) {
 		Duration result = Duration.days(days);
 		if (! (hours == 0)) result = result.plus(Duration.hours(hours));
@@ -60,7 +57,7 @@ public class Duration {
 		return Duration.of(howMany, TimeUnit.year);
 	}
 	
-	private Duration(long howMany, TimeUnit unit) {
+	Duration(long howMany, TimeUnit unit) {
 //		assert howMany >= 0;
 		this.quantity = howMany;
 		this.unit = unit;
@@ -129,29 +126,27 @@ public class Duration {
 	}
 	
 	public String toNormalizedString() {
-		return toString();
+		StringBuffer buffer = new StringBuffer();
+		long remainder = inBaseUnits();
+		TimeUnit[] units = unit.descendingUnits();
+		boolean first = true;
+		
+		for (int i = 0; i < units.length; i++) {
+			TimeUnit each = units[i];
+			long portion = remainder / each.factor;
+			
+			if (portion > 0) {
+				if (!first)
+					buffer.append(", ");
+				else
+					first = false;
+				buffer.append(each.toString(portion));
+			}
+			remainder = remainder % each.factor;
+		}
+		return buffer.toString();
 	}
 
-	
-//	public String toNormalizedString() {
-//		StringBuffer buffer = new StringBuffer();
-//		long remainder = quantity;
-//		boolean first = true;
-//		for (Iterator iterator = group().iterator(); iterator.hasNext();) {
-//			TimeUnit each = (TimeUnit) iterator.next();
-//			long portion = remainder / each.factor;
-//			if (portion > 0) {
-//				if (!first)
-//					buffer.append(", ");
-//				else
-//					first = false;
-//				buffer.append(each.toString(portion));
-//			}
-//			remainder = remainder % each.factor;
-//		}
-//		return buffer.toString();
-//	}
-	
 	public String toString() {
 		return toString(quantity, unit);
 	}

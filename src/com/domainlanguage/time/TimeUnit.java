@@ -21,10 +21,12 @@ class TimeUnit implements Comparable {
 	static final TimeUnit hour = new TimeUnit(Type.hour, Type.millisecond, millisecondsPerHour);
 	static final TimeUnit day = new TimeUnit(Type.day, Type.millisecond, millisecondsPerDay);
 	static final TimeUnit week = new TimeUnit(Type.week, Type.millisecond, millisecondsPerWeek);
-
+	static final TimeUnit[] descendingMillisecondBased = {week, day, hour, minute, second, millisecond};
+	
 	static final TimeUnit month = new TimeUnit(Type.month, Type.month, 1);
 	static final TimeUnit quarter = new TimeUnit(Type.quarter, Type.month, monthsPerQuarter);
 	static final TimeUnit year = new TimeUnit(Type.year, Type.month, monthsPerYear);
+	static final TimeUnit[] descendingMonthBased = {year, quarter, month};
 
 	
 	final Type type;
@@ -76,6 +78,20 @@ class TimeUnit implements Comparable {
 		return buffer.toString();
 	}
 	
+	TimeUnit[] descendingUnits() {
+		if (isConvertibleToMilliseconds()) return descendingMillisecondBased;
+			else return descendingMonthBased;		
+	}
+	
+	TimeUnit nextFinerUnit() {
+		TimeUnit[] descending = descendingUnits();
+		int index = -1;
+		for (int i = 0; i < descending.length; i++) {
+			if (descending[i].equals(this)) index = i;
+		}
+		if (index == descending.length - 1) return null;
+		return descending[index + 1];
+	}
 	
 	static private class Type {
 		static final Type millisecond = new Type("millisecond");
@@ -88,9 +104,6 @@ class TimeUnit implements Comparable {
 		static final Type month = new Type("month");
 		static final Type quarter = new Type("quarter");
 		static final Type year = new Type("year");
-		static final Type decade = new Type("decade");
-		static final Type century = new Type("century");
-		static final Type millenium = new Type("millenium");	
 
 		final String name;	
 		

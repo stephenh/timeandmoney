@@ -57,4 +57,9 @@ public class TimeUnitTest extends TestCase {
 		assertFalse(TimeUnit.hour.isConvertibleTo(TimeUnit.month));	
 		
 	}
+	
+	public void testNextFinerUnit() {
+		assertEquals(TimeUnit.minute, TimeUnit.hour.nextFinerUnit());
+		assertEquals(TimeUnit.month, TimeUnit.quarter.nextFinerUnit());
+	}
 }
