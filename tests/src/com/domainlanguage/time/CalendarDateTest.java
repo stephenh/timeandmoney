@@ -7,7 +7,7 @@
 package com.domainlanguage.time;
 
 import java.util.TimeZone;
-
+import java.util.Calendar;
 import com.domainlanguage.testutil.SerializationTest;
 
 import junit.framework.TestCase;
@@ -71,6 +71,13 @@ public class CalendarDateTest extends TestCase {
 	  public void testIncludes(){
 	    assertTrue(feb17.includes(feb17));
 	    assertFalse(feb17.includes(mar13));
+	  }
+	  
+	  public void testDayOfWeek() {
+	  	CalendarDate date = CalendarDate.date(2004, 11, 6);
+	  	assertEquals(Calendar.SATURDAY, date.dayOfWeek());
+	  	date = CalendarDate.date(2007, 1, 1);
+	  	assertEquals(Calendar.MONDAY, date.dayOfWeek());
 	  }
 	  
 	  public void testToString() {

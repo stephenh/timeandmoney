@@ -161,5 +161,10 @@ public class CalendarDate extends CalendarInterval {
 	public Comparable lowerLimit() {
 		return this;
 	}
+
+	public int dayOfWeek() {
+		Calendar calendar = _asJavaCalendarUniversalZoneMidnight();
+		return calendar.get(Calendar.DAY_OF_WEEK);
+	}
 	
 }

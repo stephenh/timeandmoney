@@ -20,6 +20,7 @@ public class AllTests {
 
 		suite.addTest(new TestSuite(CalendarIntervalTest.class));
 		suite.addTest(new TestSuite(CalendarDateTest.class));
+		suite.addTest(new TestSuite(DateSpecificationTest.class));
 
 		suite.addTest(new TestSuite(BusinessCalendarTest.class));
 
