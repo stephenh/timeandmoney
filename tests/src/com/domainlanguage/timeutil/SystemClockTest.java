@@ -17,10 +17,17 @@ public class SystemClockTest extends TestCase {
 	// TODO: This isn't much of a test, since the implementation is
 	// so similar to the "expected" value. Maybe someone else
 	// will have a better idea.
-	public void testNow() {
+	public void testSystemClockTimeSource() {
 		TimePoint now = SystemClock.now();
-		Date approxNow = new Date();
-		assertEquals("if the clock does not tick during test ...", approxNow, now.asJavaUtilDate());
+		TimePoint approxNow = TimePoint.from(new Date());
+		assertEquals("This occasionally fails if the clock ticks during the test.", approxNow, now);
+
+		//The following calls allow polymorphic substitution of TimeSources
+		//either in applications or, more often, in testing.
+		TimeSource source = SystemClock.timeSource();
+		now = source.now();
+		approxNow = TimePoint.from(new Date());
+		assertTrue(now.until(approxNow).length().compareTo(Duration.milliseconds(5)) < 0);
 	}
 
 }

@@ -11,9 +11,26 @@ import java.net.*;
 
 import com.domainlanguage.time.*;
 
+/**
+ * National Institute of Standards and Technology
+ * provides an Internet time server.
+ */
 
-public class NetworkTimeSource {
-	public static TimePoint nowNIST() throws IOException {
+public class NISTServer {
+	
+	public static TimeSource timeSource() {
+		return new TimeSource() {
+			public TimePoint now() {
+				try {
+					return NISTServer.now();
+				} catch(IOException e) {
+					throw new RuntimeException("Problem obtaining network time: " + e.getMessage());
+				}
+			}
+		};
+	}
+	
+	public static TimePoint now() throws IOException {
 		String timeServer = System.getProperty("NIST.TIMESERVER", "time.nist.gov");
 		byte buffer[] = new byte[256];
 		Socket socket = new Socket(timeServer, 13);

@@ -12,6 +12,14 @@ import com.domainlanguage.time.*;
 
 public class SystemClock {
 
+	public static TimeSource timeSource() {
+		return new TimeSource() {
+			public TimePoint now() {
+				return SystemClock.now();
+			}
+		};
+	}
+	
 	public static TimePoint now() {
 		return TimePoint.from(new Date());
 	}
