@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project name="TimeLibrary" default="all">
+    <property name="build" value= "build"/>
+	<property name="lib" value="lib"/>
+
+	<path id="classpath">
+		<pathelement path="${build}"/>
+		<pathelement path="${lib}/junit.jar"/>
+	</path>
+
+    <target name = "clean">
+        <delete dir = "${build}"/>
+    </target>
+
+    <target name="compile" >
+        <mkdir dir="${build}"/>
+        <javac srcdir="src" destdir="${build}" source="1.4"/>
+        <javac srcdir="tests" destdir="${build}">
+    		<classpath refid="classpath"/>
+    	</javac>
+        <javac srcdir="examples" destdir="${build}">
+    		<classpath refid="classpath"/>
+    	</javac>
+    </target>
+	
+    <target name="test">
+        <java fork="yes" classname="junit.textui.TestRunner" 
+            taskname="junit" failonerror="true">
+            <arg value="com.domainlanguage.tests.AllTests"/>
+    		<classpath refid="classpath"/>
+        </java>
+    </target>
+
+    <target name="all" depends="clean, compile, test"/>
+
+    <target name="jar" depends="clean, compile">
+        <jar jarfile="${build}/timeandmoney.jar"
+             basedir="${build}" includes="com/**"/>
+    </target>
+</project>
