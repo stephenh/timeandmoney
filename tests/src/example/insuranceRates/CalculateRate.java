@@ -38,10 +38,10 @@ public class CalculateRate extends TestCase {
 */
 
 	private IntervalMap insuranceSchedule() {
-		ComparableInterval age25_35 = ComparableInterval.over(Duration.years(25), true, Duration.years(35), false);
-		ComparableInterval age35_45 = ComparableInterval.over(Duration.years(35), true, Duration.years(45), false);
-		ComparableInterval age45_55 = ComparableInterval.over(Duration.years(45), true, Duration.years(55), false);
-		ComparableInterval age55_65 = ComparableInterval.over(Duration.years(55), true, Duration.years(65), false);
+		Interval age25_35 = Interval.over(Duration.years(25), true, Duration.years(35), false);
+		Interval age35_45 = Interval.over(Duration.years(35), true, Duration.years(45), false);
+		Interval age45_55 = Interval.over(Duration.years(45), true, Duration.years(55), false);
+		Interval age55_65 = Interval.over(Duration.years(55), true, Duration.years(65), false);
 		
 		IntervalMap schedule = new LinearIntervalMap();
 		schedule.put(age25_35, Money.dollars(100.00));

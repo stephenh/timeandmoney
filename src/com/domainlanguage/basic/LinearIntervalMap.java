@@ -14,7 +14,7 @@ public class LinearIntervalMap implements IntervalMap{
 	/* (non-Javadoc)
 	 * @see com.domainlanguage.basic.IntervalMap#put(com.domainlanguage.basic.ComparableInterval, java.lang.Object)
 	 */
-	public void put(ComparableInterval keyInterval, Object value) {
+	public void put(Interval keyInterval, Object value) {
 		if (containsIntersectingKey(keyInterval)) throw new RuntimeException("IntervalMap keys can't intersect.");
 		keyValues.put(keyInterval, value);
 	}
@@ -23,7 +23,7 @@ public class LinearIntervalMap implements IntervalMap{
 	 * @see com.domainlanguage.basic.IntervalMap#get(java.lang.Object)
 	 */
 	public Object get(Comparable key) {
-		ComparableInterval keyInterval = findKeyIntervalContaining(key);
+		Interval keyInterval = findKeyIntervalContaining(key);
 //		if (keyInterval == null) return null;
 		return keyValues.get(keyInterval);
 	}
@@ -32,11 +32,11 @@ public class LinearIntervalMap implements IntervalMap{
 		return findKeyIntervalContaining(key) != null;
 	}
 
-	private ComparableInterval findKeyIntervalContaining(Comparable key) {
+	private Interval findKeyIntervalContaining(Comparable key) {
 		if (key == null) return null;
 		Iterator it = keyValues.keySet().iterator();
 		while (it.hasNext()) {
-			ComparableInterval interval = (ComparableInterval)it.next();
+			Interval interval = (Interval)it.next();
 			if (interval.includes(key)) return interval;
 		}
 		return null;
@@ -45,10 +45,10 @@ public class LinearIntervalMap implements IntervalMap{
 	/* (non-Javadoc)
 	 * @see com.domainlanguage.basic.IntervalMap#containsIntersectingKey(com.domainlanguage.basic.ComparableInterval)
 	 */
-	public boolean containsIntersectingKey(ComparableInterval otherInterval) {
+	public boolean containsIntersectingKey(Interval otherInterval) {
 		Iterator it = keyValues.keySet().iterator();
 		while (it.hasNext()) {
-			ComparableInterval keyInterval = (ComparableInterval)it.next();
+			Interval keyInterval = (Interval)it.next();
 			if (keyInterval.intersects(otherInterval)) return true;
 		}
 		return false;

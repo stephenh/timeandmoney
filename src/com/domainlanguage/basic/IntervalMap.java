@@ -7,8 +7,8 @@
 package com.domainlanguage.basic;
 
 public interface IntervalMap {
-	void put(ComparableInterval keyInterval, Object value);
+	void put(Interval keyInterval, Object value);
 	Object get(Comparable key);
 	boolean includesKey(Comparable key);
-	boolean containsIntersectingKey(ComparableInterval interval);
+	boolean containsIntersectingKey(Interval interval);
 }

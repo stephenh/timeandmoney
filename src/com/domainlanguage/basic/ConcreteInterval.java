@@ -7,13 +7,13 @@
 package com.domainlanguage.basic;
 
 
-public class ConcreteComparableInterval extends ComparableInterval {
+public class ConcreteInterval extends Interval {
 	private Comparable lowerLimit;
 	private boolean includesLowerLimit;
 	private Comparable upperLimit;
 	private boolean includesUpperLimit;
 
-	public ConcreteComparableInterval(Comparable lower, boolean lowerIncluded, Comparable upper, boolean upperIncluded) {
+	public ConcreteInterval(Comparable lower, boolean lowerIncluded, Comparable upper, boolean upperIncluded) {
 //		assert lower.compareTo(upper) < 0;
 		lowerLimit = lower;
 		includesLowerLimit = lowerIncluded;
@@ -35,12 +35,12 @@ public class ConcreteComparableInterval extends ComparableInterval {
 		return includesUpperLimit;
 	}
 
-	public ComparableInterval intersect(ComparableInterval other) {
+	public Interval intersect(Interval other) {
 		Comparable intersectLowerBound = greaterOfLowerLimits(other);
 		Comparable intersectUpperBound = lesserOfUpperLimits(other);
 		if (intersectLowerBound.compareTo(intersectUpperBound) > 0) return open(intersectLowerBound, intersectLowerBound);
 
-		return ComparableInterval.over(intersectLowerBound, greaterOfLowerIncluded(other), intersectUpperBound, lesserOfUpperIncluded(other));
+		return Interval.over(intersectLowerBound, greaterOfLowerIncluded(other), intersectUpperBound, lesserOfUpperIncluded(other));
 	}
 
 }

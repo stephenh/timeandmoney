@@ -14,18 +14,18 @@ import java.io.Serializable;
  * http://en.wikipedia.org/wiki/Interval_(mathematics)
  */
 
-public abstract class ComparableInterval implements Comparable, Serializable {
+public abstract class Interval implements Comparable, Serializable {
 	
-	public static ConcreteComparableInterval closed(Comparable lower, Comparable upper) {
-		return new ConcreteComparableInterval(lower, true, upper, true);
+	public static ConcreteInterval closed(Comparable lower, Comparable upper) {
+		return new ConcreteInterval(lower, true, upper, true);
 	}
 
-	public static ConcreteComparableInterval open(Comparable lower, Comparable upper) {
-		return new ConcreteComparableInterval(lower, false, upper, false);
+	public static ConcreteInterval open(Comparable lower, Comparable upper) {
+		return new ConcreteInterval(lower, false, upper, false);
 	}
 
-	public static ConcreteComparableInterval over(Comparable lower, boolean lowerIncluded, Comparable upper, boolean upperIncluded) {
-		return new ConcreteComparableInterval(lower, lowerIncluded, upper, upperIncluded);
+	public static ConcreteInterval over(Comparable lower, boolean lowerIncluded, Comparable upper, boolean upperIncluded) {
+		return new ConcreteInterval(lower, lowerIncluded, upper, upperIncluded);
 	}
 
 	
@@ -47,7 +47,7 @@ public abstract class ComparableInterval implements Comparable, Serializable {
 		//Look for (or add) other methods to do computations.
 	
 
-	public boolean intersects(ComparableInterval other) {
+	public boolean intersects(Interval other) {
 		int comparison = greaterOfLowerLimits(other).compareTo(lesserOfUpperLimits(other));
 		if (comparison < 0) return true;
 		if (comparison > 0) return false;
@@ -58,7 +58,7 @@ public abstract class ComparableInterval implements Comparable, Serializable {
 		return !this.isBelow(value) && !this.isAbove(value);
 	}
 
-	public boolean includes(ComparableInterval other) {
+	public boolean includes(Interval other) {
 		int lowerComparison = lowerLimit().compareTo(other.lowerLimit());
 			boolean lowerPass = this.includes(other.lowerLimit()) ||
 				(lowerComparison == 0 && !other.includesLowerLimit());
@@ -109,7 +109,7 @@ public abstract class ComparableInterval implements Comparable, Serializable {
 	}
 
 	public int compareTo(Object arg) {
-		ComparableInterval other = (ComparableInterval) arg;
+		Interval other = (Interval) arg;
 		if (!upperLimit().equals(other.upperLimit())) return upperLimit().compareTo(other.upperLimit());
 		if (includesLowerLimit() && !other.includesLowerLimit()) return -1;
 		if (!includesLowerLimit() && other.includesLowerLimit()) return 1;
@@ -121,26 +121,26 @@ public abstract class ComparableInterval implements Comparable, Serializable {
 	 * They are public only for use by extentions (subclasses).
 	 */
 	
-	public Comparable greaterOfLowerLimits(ComparableInterval other) {
+	public Comparable greaterOfLowerLimits(Interval other) {
 		int lowerComparison = lowerLimit().compareTo(other.lowerLimit());
 		if (lowerComparison >= 0) return this.lowerLimit();
 		return other.lowerLimit();
 	}
 
-	public boolean greaterOfLowerIncluded(ComparableInterval other) {
+	public boolean greaterOfLowerIncluded(Interval other) {
 		int lowerComparison = lowerLimit().compareTo(other.lowerLimit());
 		if (lowerComparison > 0) return this.includesLowerLimit();
 		if (lowerComparison < 0) return other.includesLowerLimit();
 		return this.includesLowerLimit() && other.includesLowerLimit();
 	}
 
-	public Comparable lesserOfUpperLimits(ComparableInterval other) {
+	public Comparable lesserOfUpperLimits(Interval other) {
 		int upperComparison = upperLimit().compareTo(other.upperLimit());
 		if (upperComparison <= 0) return this.upperLimit();
 		return other.upperLimit();
 	}
 
-	public boolean lesserOfUpperIncluded(ComparableInterval other) {
+	public boolean lesserOfUpperIncluded(Interval other) {
 		int upperComparison = upperLimit().compareTo(other.upperLimit());
 		if (upperComparison < 0) return this.includesUpperLimit();
 		if (upperComparison > 0) return other.includesUpperLimit();

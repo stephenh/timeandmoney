@@ -8,19 +8,19 @@ package com.domainlanguage.basic;
 
 import java.math.BigDecimal;
 
-import com.domainlanguage.basic.ComparableInterval;
+import com.domainlanguage.basic.Interval;
 
 import junit.framework.TestCase;
 
 
-public class ComparableIntervalTest extends TestCase {
+public class IntervalTest extends TestCase {
 
-   	ComparableInterval r5_10 = ComparableInterval.closed(new BigDecimal(5),new BigDecimal(10));
-    ComparableInterval r1_10 = ComparableInterval.closed(new BigDecimal(1),new BigDecimal(10));
-    ComparableInterval r4_6 = ComparableInterval.closed(new BigDecimal(4),new BigDecimal(6));
-    ComparableInterval r5_15 = ComparableInterval.closed(new BigDecimal(5),new BigDecimal(15));
-    ComparableInterval r12_16 = ComparableInterval.closed(new BigDecimal(12),new BigDecimal(16));
-    ComparableInterval x10_12 = ComparableInterval.over(new BigDecimal(10), false, new BigDecimal(12), true);
+   	Interval r5_10 = Interval.closed(new BigDecimal(5),new BigDecimal(10));
+    Interval r1_10 = Interval.closed(new BigDecimal(1),new BigDecimal(10));
+    Interval r4_6 = Interval.closed(new BigDecimal(4),new BigDecimal(6));
+    Interval r5_15 = Interval.closed(new BigDecimal(5),new BigDecimal(15));
+    Interval r12_16 = Interval.closed(new BigDecimal(12),new BigDecimal(16));
+    Interval x10_12 = Interval.over(new BigDecimal(10), false, new BigDecimal(12), true);
 
     
 //	public void testAssertions() {
@@ -35,7 +35,7 @@ public class ComparableIntervalTest extends TestCase {
 //	}
 
 	public void testIsBelow() {
-	  	ComparableInterval range = ComparableInterval.closed(new BigDecimal(-5.5), new BigDecimal(6.6));
+	  	Interval range = Interval.closed(new BigDecimal(-5.5), new BigDecimal(6.6));
 	    assertFalse (range.isBelow(new BigDecimal(5.0)));
 	    assertFalse (range.isBelow(new BigDecimal(-5.5)));
 	    assertFalse (range.isBelow(new BigDecimal(-5.4999)));
@@ -45,7 +45,7 @@ public class ComparableIntervalTest extends TestCase {
 	  }
 
 	public void testIncludes() {
-	  	ComparableInterval range = ComparableInterval.closed(new BigDecimal(-5.5), new BigDecimal(6.6));
+	  	Interval range = Interval.closed(new BigDecimal(-5.5), new BigDecimal(6.6));
 	    assertTrue (range.includes(new BigDecimal(5.0)));
 	    assertTrue (range.includes(new BigDecimal(-5.5)));
 	    assertTrue (range.includes(new BigDecimal(-5.4999)));
@@ -55,7 +55,7 @@ public class ComparableIntervalTest extends TestCase {
 	  }
 
 	  public void testOpenInterval() {
-	  	ComparableInterval exRange = ComparableInterval.over(new BigDecimal(-5.5), false, new BigDecimal(6.6), true);
+	  	Interval exRange = Interval.over(new BigDecimal(-5.5), false, new BigDecimal(6.6), true);
 	    assertTrue (exRange.includes(new BigDecimal(5.0)));
 	    assertFalse (exRange.includes(new BigDecimal(-5.5)));
 	    assertTrue (exRange.includes(new BigDecimal(-5.4999)));
@@ -121,7 +121,7 @@ public class ComparableIntervalTest extends TestCase {
 	    assertFalse (r4_6.includes(r1_10));
 	    assertTrue (r1_10.includes(r4_6));
 	    assertTrue (r5_10.includes(r5_10));
-	    ComparableInterval halfOpen5_10 = ComparableInterval.over(new BigDecimal(5), false, new BigDecimal(10), true);
+	    Interval halfOpen5_10 = Interval.over(new BigDecimal(5), false, new BigDecimal(10), true);
 	    assertTrue("closed incl left-open", r5_10.includes(halfOpen5_10));
 	    assertTrue("left-open incl left-open", halfOpen5_10.includes(halfOpen5_10));
 	    assertFalse("left-open doesn't include closed", halfOpen5_10.includes(r5_10));

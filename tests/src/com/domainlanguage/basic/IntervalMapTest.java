@@ -17,9 +17,9 @@ public class IntervalMapTest extends TestCase {
 		Map regularOldMap = new HashMap();
 		
 		IntervalMap map = new LinearIntervalMap();
-		map.put(ComparableInterval.closed(new Integer(1), new Integer(3)), "one-three");
-		map.put(ComparableInterval.closed(new Integer(5), new Integer(9)), "five-nine");
-		map.put(ComparableInterval.open(new Integer(9), new Integer(12)), "ten-eleven");
+		map.put(Interval.closed(new Integer(1), new Integer(3)), "one-three");
+		map.put(Interval.closed(new Integer(5), new Integer(9)), "five-nine");
+		map.put(Interval.open(new Integer(9), new Integer(12)), "ten-eleven");
 		
 		assertFalse(map.includesKey(new Integer(0)));
 		assertTrue(map.includesKey(new Integer(1)));
@@ -50,10 +50,10 @@ public class IntervalMapTest extends TestCase {
 	
 	public void testConstruction() {
 		IntervalMap map = new LinearIntervalMap();
-		map.put(ComparableInterval.closed(new Integer(1), new Integer(3)), "one-three");
-		map.put(ComparableInterval.closed(new Integer(5), new Integer(9)), "five-nine");
-		map.put(ComparableInterval.open(new Integer(9), new Integer(12)), "ten-eleven");
-		ConcreteComparableInterval eleven_thirteen = ComparableInterval.closed(new Integer(11), new Integer(13));
+		map.put(Interval.closed(new Integer(1), new Integer(3)), "one-three");
+		map.put(Interval.closed(new Integer(5), new Integer(9)), "five-nine");
+		map.put(Interval.open(new Integer(9), new Integer(12)), "ten-eleven");
+		ConcreteInterval eleven_thirteen = Interval.closed(new Integer(11), new Integer(13));
 		assertTrue(map.containsIntersectingKey(eleven_thirteen));
 		try {
 			map.put(eleven_thirteen, "eleven-thirteen");

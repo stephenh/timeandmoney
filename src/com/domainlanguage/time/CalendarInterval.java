@@ -10,10 +10,10 @@ import java.util.*;
 import java.util.Iterator;
 import java.util.TimeZone;
 
-import com.domainlanguage.basic.ComparableInterval;
+import com.domainlanguage.basic.Interval;
 
 
-public abstract class CalendarInterval extends ComparableInterval {
+public abstract class CalendarInterval extends Interval {
 
 	public static CalendarDate date(int year, int month, int day) {
 		return CalendarDate.from(year, month, day);

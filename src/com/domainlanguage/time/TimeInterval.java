@@ -11,7 +11,7 @@ import java.util.Iterator;
 import com.domainlanguage.basic.*;
 
 
-public class TimeInterval extends ComparableInterval {
+public class TimeInterval extends Interval {
 	public static final TimeInterval ALWAYS = over(TimePoint.FAR_PAST, TimePoint.FAR_FUTURE);
 
 	
@@ -118,7 +118,7 @@ public class TimeInterval extends ComparableInterval {
 	}
 	
 	public TimeInterval intersect(TimeInterval other) {
-		ComparableInterval intersection = intersect((ComparableInterval) other);
+		Interval intersection = intersect((Interval) other);
 		TimePoint start = (TimePoint)intersection.lowerLimit();
 		TimePoint end = (TimePoint)intersection.upperLimit();
 		return new TimeInterval(start, intersection.includesLowerLimit(), end, intersection.includesUpperLimit());
@@ -127,12 +127,12 @@ public class TimeInterval extends ComparableInterval {
 	/**
 	 * @TODO This is duplicated across ConcreteComparableInterval
 	 */
-	public ComparableInterval intersect(ComparableInterval other) {
+	public Interval intersect(Interval other) {
 		Comparable intersectLowerBound = greaterOfLowerLimits(other);
 		Comparable intersectUpperBound = lesserOfUpperLimits(other);
 		if (intersectLowerBound.compareTo(intersectUpperBound) > 0) return open(intersectLowerBound, intersectLowerBound);
 
-		return ComparableInterval.over(intersectLowerBound, greaterOfLowerIncluded(other), intersectUpperBound, lesserOfUpperIncluded(other));
+		return Interval.over(intersectLowerBound, greaterOfLowerIncluded(other), intersectUpperBound, lesserOfUpperIncluded(other));
 	}
 
 }
