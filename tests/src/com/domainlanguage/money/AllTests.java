@@ -4,18 +4,17 @@
  * For more information, see http://timeandmoney.sourceforge.net.
  */
 
-package com.domainlanguage.timeandmoney;
+package com.domainlanguage.money;
 
-import com.domainlanguage.basic.ComparableIntervalTest;
 import junit.framework.*;
 
 public class AllTests extends TestCase {
+
 	public static Test suite() {
 		TestSuite suite = new TestSuite();
 
-		suite.addTest(new TestSuite(ComparableIntervalTest.class));
-		suite.addTest(com.domainlanguage.time.AllTests.suite());
-		suite.addTest(com.domainlanguage.money.AllTests.suite());
+		suite.addTest(new TestSuite(MoneyTest.class));
+		suite.addTest(new TestSuite(ProrationTest.class));
 
 		return suite;
 	}
