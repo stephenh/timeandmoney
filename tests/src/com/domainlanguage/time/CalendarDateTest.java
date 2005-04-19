@@ -116,5 +116,20 @@ public class CalendarDateTest extends TestCase {
         CalendarDate date = CalendarInterval.date(2004, 5, 28);
         assertEquals("2004-5-28", date.toString());
     }
+    
+    public void testConversionToJavaUtil() {
+    	Calendar expected = Calendar.getInstance(gmt);
+    	expected.set(Calendar.YEAR, 1969);
+    	expected.set(Calendar.MONTH, Calendar.JULY);
+    	expected.set(Calendar.DATE, 20);
+    	expected.set(Calendar.HOUR, 0);
+    	expected.set(Calendar.MINUTE, 0);
+    	expected.set(Calendar.SECOND, 0);
+    	expected.set(Calendar.MILLISECOND, 0);
+    	
+    	CalendarDate date = CalendarDate.from(1969, 7, 20);
+    	
+    	assertEquals(expected, date.asJavaCalendarUniversalZoneMidnight());
+    }
 
 }
