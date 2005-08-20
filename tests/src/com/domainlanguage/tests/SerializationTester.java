@@ -13,35 +13,29 @@ import junit.framework.*;
 import com.domainlanguage.util.*;
 
 public class SerializationTester {
-    private static final String SERIAL_FILENAME = "test.ser";
 
-    public static void assertCanBeSerialized(Object serializble) throws AssertionFailedError {
-        if (!TypeCheck.is(serializble, Serializable.class))
+    public static void assertCanBeSerialized(Object serializable) throws AssertionFailedError {
+        if (!TypeCheck.is(serializable, Serializable.class))
             throw new AssertionFailedError("Object doesn't implement java.io.Serializable interface");
 
         ObjectOutputStream out = null;
         ObjectInputStream in = null;
-        File serialFile = null;
+        ByteArrayOutputStream byteArrayOut = new ByteArrayOutputStream();
+        ByteArrayInputStream byteArrayIn = null;
         try {
-            serialFile = new File(SERIAL_FILENAME);
-            out = new ObjectOutputStream(new FileOutputStream(serialFile));
-            out.writeObject(serializble);
-            out.flush();
-            in = new ObjectInputStream(new FileInputStream(serialFile));
+            out = new ObjectOutputStream(byteArrayOut);
+            out.writeObject(serializable);
+            out.close(); //this shouldn't matter
+            byteArrayIn = new ByteArrayInputStream(byteArrayOut.toByteArray());
+            in = new ObjectInputStream(byteArrayIn);
             Object deserialized = in.readObject();
-            if (!serializble.equals(deserialized))
+            if (!serializable.equals(deserialized))
                 throw new AssertionFailedError("Reconstituted object is expected to be equal to serialized");
+            in.close(); //this shouldn't matter
         } catch (AssertionFailedError e) {
             throw e;
         } catch (Exception e) {
             Assert.fail("Exception while serializing: " + e);
-        } finally {
-            try {
-                out.close();
-                in.close();
-                serialFile.delete();
-            } catch (IOException ignore) {
-            }
         }
     }
 

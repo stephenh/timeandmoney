@@ -123,13 +123,17 @@ public class CalendarDateTest extends TestCase {
     	expected.set(Calendar.MONTH, Calendar.JULY);
     	expected.set(Calendar.DATE, 20);
     	expected.set(Calendar.HOUR, 0);
+        expected.set(Calendar.AM_PM, 0);
     	expected.set(Calendar.MINUTE, 0);
     	expected.set(Calendar.SECOND, 0);
     	expected.set(Calendar.MILLISECOND, 0);
     	
     	CalendarDate date = CalendarDate.from(1969, 7, 20);
-    	
-    	assertEquals(expected, date.asJavaCalendarUniversalZoneMidnight());
+    	Calendar actual = date.asJavaCalendarUniversalZoneMidnight();
+        assertEquals(expected.get(Calendar.HOUR), actual.get(Calendar.HOUR));
+        assertEquals(expected.get(Calendar.AM_PM), actual.get(Calendar.AM_PM));
+        assertEquals(expected.get(Calendar.HOUR_OF_DAY), actual.get(Calendar.HOUR_OF_DAY));
+        assertEquals(expected, actual);
     }
 
 }
