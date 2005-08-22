@@ -6,32 +6,62 @@
 
 package com.domainlanguage.timeutil;
 
-import java.io.*;
+import junit.framework.TestCase;
 
-import junit.framework.*;
-
-import com.domainlanguage.time.*;
+import com.domainlanguage.time.TimePoint;
+import com.domainlanguage.time.TimeSource;
 
 public class NISTServerTimeSourceTest extends TestCase {
+    private String previousServerName;
+    private String previousServerPort;
+    private NISTServerStandIn timeServer;
 
-    //TODO: I don't know how to test this, except to see if it
-    //runs to completion. Maybe someone else will have an idea.
-    public void testNISTTimeSource() {
+    public void testNISTTimeSource() throws Exception {
         TimePoint now = null;
-        try {
-            now = NISTServer.now();
-            assertNotNull(now);
-        } catch (IOException e) {
-            fail("Usually this means there is no Internet connection: " + e);
-        }
+        TimePoint expected = TimePoint.from(1124679473000l);
+        now = NISTServer.now();
+        assertEquals(expected, now);
 
-        //The following calls allow polymorphic substitution of TimeSources
-        //either in applications or, more often, in testing.
+        // The following calls allow polymorphic substitution of TimeSources
+        // either in applications or, more often, in testing.
         TimeSource source = NISTServer.timeSource();
-        TimePoint approxNow = source.now();
-        Duration delay = now.until(approxNow).length();
-        assertTrue("This occasionally fails if the network is slow during the test.", delay.compareTo(Duration.seconds(3)) < 0);
+        TimePoint nowAgain = source.now();
+        assertEquals(expected, nowAgain);
 
+    }
+
+    public void setUp() throws Exception {
+        super.setUp();
+
+        timeServer = new NISTServerStandIn();
+        timeServer.start();
+
+        previousServerName = System
+                .getProperty(NISTServer.NIST_TIMESERVER_HOST_PROPERTY_NAME);
+        previousServerPort = System
+                .getProperty(NISTServer.NIST_TIMESERVER_PORT_PROPERTY_NAME);
+
+        System.setProperty(NISTServer.NIST_TIMESERVER_HOST_PROPERTY_NAME,
+                timeServer.getHostName());
+        System.setProperty(NISTServer.NIST_TIMESERVER_PORT_PROPERTY_NAME,
+                timeServer.getPort());
+    }
+
+    public void tearDown() throws Exception {
+        super.tearDown();
+        timeServer.stop();
+        if (previousServerName == null) {
+            System.clearProperty(NISTServer.NIST_TIMESERVER_HOST_PROPERTY_NAME);
+        } else {
+            System.setProperty(NISTServer.NIST_TIMESERVER_HOST_PROPERTY_NAME,
+                    previousServerName);
+        }
+        if (previousServerPort == null) {
+            System.clearProperty(NISTServer.NIST_TIMESERVER_PORT_PROPERTY_NAME);
+        } else {
+            System.setProperty(NISTServer.NIST_TIMESERVER_PORT_PROPERTY_NAME,
+                    previousServerPort);
+        }
     }
 
 }
