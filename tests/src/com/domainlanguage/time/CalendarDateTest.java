@@ -123,7 +123,7 @@ public class CalendarDateTest extends TestCase {
     	expected.set(Calendar.MONTH, Calendar.JULY);
     	expected.set(Calendar.DATE, 20);
     	expected.set(Calendar.HOUR, 0);
-        expected.set(Calendar.AM_PM, 0);
+        expected.set(Calendar.AM_PM, Calendar.AM);
     	expected.set(Calendar.MINUTE, 0);
     	expected.set(Calendar.SECOND, 0);
     	expected.set(Calendar.MILLISECOND, 0);
