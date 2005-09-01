@@ -8,60 +8,36 @@ package com.domainlanguage.timeutil;
 
 import junit.framework.TestCase;
 
+import com.domainlanguage.tests.CannedResponseServer;
 import com.domainlanguage.time.TimePoint;
 import com.domainlanguage.time.TimeSource;
 
 public class NISTServerTimeSourceTest extends TestCase {
-    private String previousServerName;
-    private String previousServerPort;
-    private NISTServerStandIn timeServer;
+    private CannedResponseServer standInNISTServer;
 
+    private static final TimePoint EXPECTED_TIME_POINT = TimePoint.from(1124679473000l);
+    private static final String CANNED_RESPONSE = "\n53604 05-08-22 02:57:53 50 0 0 725.6 UTC(NIST) * \n";
+    
     public void testNISTTimeSource() throws Exception {
-        TimePoint now = null;
-        TimePoint expected = TimePoint.from(1124679473000l);
-        now = NISTServer.now();
-        assertEquals(expected, now);
-
-        // The following calls allow polymorphic substitution of TimeSources
-        // either in applications or, more often, in testing.
-        TimeSource source = NISTServer.timeSource();
-        TimePoint nowAgain = source.now();
-        assertEquals(expected, nowAgain);
-
+        //This would return a source that goes to the internet       
+        //TimeSource source = NISTClient.timeSource();
+        TimeSource source = NISTClient.timeSource(standInNISTServer.getHostName(), standInNISTServer.getPort());
+        assertEquals(EXPECTED_TIME_POINT, source.now());
+    }
+    public void testAsTimePoint() {
+        assertEquals(EXPECTED_TIME_POINT, NISTClient.asTimePoint(CANNED_RESPONSE));
     }
 
     public void setUp() throws Exception {
         super.setUp();
 
-        timeServer = new NISTServerStandIn();
-        timeServer.start();
-
-        previousServerName = System
-                .getProperty(NISTServer.NIST_TIMESERVER_HOST_PROPERTY_NAME);
-        previousServerPort = System
-                .getProperty(NISTServer.NIST_TIMESERVER_PORT_PROPERTY_NAME);
-
-        System.setProperty(NISTServer.NIST_TIMESERVER_HOST_PROPERTY_NAME,
-                timeServer.getHostName());
-        System.setProperty(NISTServer.NIST_TIMESERVER_PORT_PROPERTY_NAME,
-                timeServer.getPort());
+        standInNISTServer = new CannedResponseServer(CANNED_RESPONSE);
+        standInNISTServer.start();
     }
 
     public void tearDown() throws Exception {
         super.tearDown();
-        timeServer.stop();
-        if (previousServerName == null) {
-            System.clearProperty(NISTServer.NIST_TIMESERVER_HOST_PROPERTY_NAME);
-        } else {
-            System.setProperty(NISTServer.NIST_TIMESERVER_HOST_PROPERTY_NAME,
-                    previousServerName);
-        }
-        if (previousServerPort == null) {
-            System.clearProperty(NISTServer.NIST_TIMESERVER_PORT_PROPERTY_NAME);
-        } else {
-            System.setProperty(NISTServer.NIST_TIMESERVER_PORT_PROPERTY_NAME,
-                    previousServerPort);
-        }
+        standInNISTServer.stop();
     }
 
 }
