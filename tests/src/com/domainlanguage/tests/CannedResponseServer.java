@@ -14,7 +14,8 @@ import java.net.Socket;
 import java.net.SocketException;
 
 /**
- * This class is to mimic the behavior of a server that delivers a canned response.
+ * This class is to mimic the behavior of a server that delivers a canned
+ * response.
  */
 public class CannedResponseServer {
     private ServerSocket socket;
@@ -24,19 +25,17 @@ public class CannedResponseServer {
 
     public CannedResponseServer(String cannedResponse) throws IOException {
         super();
-        ServerSocket newSocket = new ServerSocket();
-        newSocket.bind(new InetSocketAddress(InetAddress.getLocalHost()
+        socket = new ServerSocket();
+        socket.bind(new InetSocketAddress(InetAddress.getLocalHost()
                 .getHostName(), 0));
-        socket=newSocket;
-        this.cannedResponse=cannedResponse;
+        this.cannedResponse = cannedResponse;
     }
 
     public void start() {
-        Thread newThread = new Thread(getServerConnectionProcessor(),
-                getClass().getSimpleName() + " processing thread");
-        processingThread=newThread;
+        processingThread = new Thread(getServerConnectionProcessor(),
+                getClass().getName() + " processing thread");
         setKeepProcessing(true);
-        newThread.start();
+        processingThread.start();
     }
 
     public void stop() throws IOException {
