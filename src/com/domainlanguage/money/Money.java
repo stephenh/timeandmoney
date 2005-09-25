@@ -11,6 +11,7 @@ import java.math.*;
 import java.util.*;
 
 import com.domainlanguage.base.*;
+import com.domainlanguage.time.*;
 import com.domainlanguage.util.*;
 
 public class Money implements Comparable, Serializable {
@@ -263,6 +264,10 @@ public class Money implements Comparable, Serializable {
 	public String toString(Locale locale) {
 		return currency.getSymbol(locale) + " " + amount;
 	}
+
+    public MoneyTimeRate per(Duration duration) {
+       return new MoneyTimeRate(this, duration);
+    }
 	
 //	TODO: Provide some currency-dependent formatting. Java 1.4 Currency doesn't
 // do it.

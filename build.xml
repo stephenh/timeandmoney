@@ -35,6 +35,8 @@
 
     <target name="jar" depends="clean, compile">
         <jar jarfile="${build}/timeandmoney.jar"
-             basedir="${build}" includes="com/**"/>
+            basedir="${build}" includes="com/**" excludes="**/tests/**, **/**Test.class"/>
+    	<jar jarfile="${build}/timeandmoney-tests.jar"
+    		basedir="${build}" includes="**/tests/**, example/**, **/**Test.class"/>
     </target>
 </project>

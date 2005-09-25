@@ -22,7 +22,6 @@ public class CalculateRate extends TestCase {
         Money monthlyPremium = (Money) insuranceSchedule().get(ageOnEffectiveDate);
         assertEquals(Money.dollars(150.00), monthlyPremium);
     }
-
     public void testProrateFirstMonth() {
         Money monthlyPremium = Money.dollars(150.00);
         CalendarInterval entireMonth = policyEffectiveDate.month();
@@ -35,6 +34,11 @@ public class CalculateRate extends TestCase {
         partOfPayment = remainderOfMonth.length().dividedBy(entireMonth.length());
         firstPayment = new Proration().partOfWhole(monthlyPremium, partOfPayment);
         assertEquals(Money.dollars(120.00), firstPayment);
+    }
+    public void testQuarterlyPremiumPayment() {
+        MoneyTimeRate premium = Money.dollars(150.00).per(Duration.months(1));
+        Money quarterlyPayment = premium.over(Duration.months(3));
+        assertEquals(Money.dollars(450.00), quarterlyPayment);
     }
 
     //revisit:
