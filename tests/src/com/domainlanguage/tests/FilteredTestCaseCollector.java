@@ -20,7 +20,7 @@ import com.domainlanguage.util.*;
  * I loads all TestCase subclasses on the class path, excluding specified
  * filters
  */
-public class FilteredTestCaseCollector {
+public class FilteredTestCaseCollector implements TestCollector {
     static final int SUFFIX_LENGTH= ".class".length();
     
     private TestCaseClassLoader loader = new TestCaseClassLoader();
