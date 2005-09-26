@@ -9,16 +9,17 @@ package com.domainlanguage.tests;
 import java.util.*;
 
 import junit.framework.*;
+import junit.textui.*;
 
 public class AllTests extends TestSuite {
 
-    static public TestSuite suite() {
+    public static TestSuite suite() {
         TestSuite suite = new TestSuite();
         String[] exludedPackages = new String[] {
-        //			"???.", //note: add a package name to exclude it
+        // "???.", //note: add a package name to exclude it
         };
         TestSuite[] exludedSuites = new TestSuite[] {
-        //			???.suite(), //note: add a suite name to exclude it
+        // ???.suite(), //note: add a suite name to exclude it
         };
         FilteredTestCaseCollector collector = new FilteredTestCaseCollector();
         collector.exludedPackages(exludedPackages);
@@ -32,5 +33,7 @@ public class AllTests extends TestSuite {
             }
         return suite;
     }
-
+    public static void main(String[] args) {
+        TestRunner.run(suite());
+    }
 }
