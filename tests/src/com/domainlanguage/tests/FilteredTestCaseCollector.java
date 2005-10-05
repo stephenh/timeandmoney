@@ -120,7 +120,7 @@ public class FilteredTestCaseCollector implements TestCollector {
         }
     }
 
-    private void gatherFilesInJar(File jarFile, Hashtable result) {
+    protected void gatherFilesInJar(File jarFile, Hashtable result) {
         try {
             JarFile jar = new JarFile(jarFile);
             try {
@@ -135,6 +135,7 @@ public class FilteredTestCaseCollector implements TestCollector {
                 jar.close();
             }
         } catch (IOException ex) {
+            //DO NOTHING
         }
     }
     //Copied from ClassPathTestCollector because we can't since they implemented private methods

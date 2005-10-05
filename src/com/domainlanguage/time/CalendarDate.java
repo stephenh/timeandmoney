@@ -20,8 +20,8 @@ public class CalendarDate extends CalendarInterval {
 	
 	public static CalendarDate from(int year, int month, int day) {
 		CalendarDate result =  new CalendarDate(year, month, day);
-		assert result.isBefore(FAR_FUTURE);
-		assert result.isAfter(FAR_PAST);
+        assert FAR_FUTURE == null || result.isBefore(FAR_FUTURE);
+		assert FAR_PAST == null || result.isAfter(FAR_PAST);
 		return result;
 
 	}

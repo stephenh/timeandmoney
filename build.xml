@@ -28,6 +28,9 @@
             taskname="junit" failonerror="true">
             <arg value="com.domainlanguage.tests.AllTests"/>
     		<classpath refid="classpath"/>
+        	<assertions>
+        		<enable/>
+        	</assertions>
         </java>
     </target>
 
