@@ -174,4 +174,24 @@ public class TimePointTest extends TestCase {
         assertTrue(dec20_2003.compareTo(dec20_2003) == 0);
     }
 
+/*  TODO:  test provided by Per Kåre Foss @ StatOil
+  	I believe I've tracked it down to the usage of Duration>>toBaseUnitsUsage()
+  	I'm illustrating the problem in DurationTest>>testProblemWithConversionToBaseUnitsUsage()
+    since we're relying on java.util.Calendar calculus, e.g.:
+		Calendar calendar = point.asJavaCalendar();
+		calendar.add(unit.javaCalendarConstantForBaseType(), (int) inBaseUnits());
+	we have a more serious problem, and we need to discuss it further before fixing it.
+	-- Benny
+	*/
+    public void testProblemDueToUsageOf_toBaseUnitsUsage() {
+        TimePoint start = TimePoint.atGMT(2005,10,1,0,0);
+        //This line gives correct answer:
+        TimePoint end1 = start.plus( Duration.days(24));
+        //But look at the result of this one: - which is wrong
+        TimePoint end2 = start.plus( Duration.days(25));
+ 
+        System.out.println( "Start= " + start + "\nEnd1= " + end1 + "\nEnd2= " + end2);
+        assertTrue("Start timepoint is before end1", start.isBefore( end1));
+        assertTrue("and should of course be before end2", start.isBefore( end2)); //This fails
+    }
 }

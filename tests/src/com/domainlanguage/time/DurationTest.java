@@ -86,6 +86,15 @@ public class DurationTest extends TestCase {
         assertEquals(2000, twoSeconds.inBaseUnits());
     }
 
+//    TODO: inBaseUnits returns a long. however, that result is consistently casted down to an int, 
+//    which leads to BAD problems (e.g. starting with a positive long and ending with a negative int)
+//    casting a number UP is ok. casting it DOWN is never ok.
+    public void testProblemWithConversionToBaseUnitsUsage() {
+    	Duration longEnoughDays = Duration.days(25);
+    	assertEquals(2160000000L, longEnoughDays.inBaseUnits());
+    	assertEquals(-2134967296, (int) longEnoughDays.inBaseUnits());
+    }
+    
     public void testEquals() {
         assertEquals(Duration.days(2), Duration.hours(48));
         assertEquals(Duration.years(1), Duration.quarters(4));
