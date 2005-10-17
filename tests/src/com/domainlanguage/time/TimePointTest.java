@@ -190,8 +190,8 @@ public class TimePointTest extends TestCase {
         //But look at the result of this one: - which is wrong
         TimePoint end2 = start.plus( Duration.days(25));
  
-        System.out.println( "Start= " + start + "\nEnd1= " + end1 + "\nEnd2= " + end2);
+        //System.out.println( "Start= " + start + "\nEnd1= " + end1 + "\nEnd2= " + end2);
         assertTrue("Start timepoint is before end1", start.isBefore( end1));
-//        assertTrue("and should of course be before end2", start.isBefore( end2)); //This fails
+        assertTrue("and should of course be before end2", start.isBefore( end2)); 
     }
 }

@@ -93,13 +93,13 @@ public class Duration implements Comparable, Serializable {
 	
 	public TimePoint addedTo(TimePoint point) {
 		Calendar calendar = point.asJavaCalendar();
-		calendar.add(unit.javaCalendarConstantForBaseType(), (int) inBaseUnits());
+        addAmountToCalendar(inBaseUnits(), calendar);
 		return TimePoint.from(calendar);
 	}
 
 	public TimePoint subtractedFrom(TimePoint point) {
 		Calendar calendar = point.asJavaCalendar();
-		calendar.add(unit.javaCalendarConstantForBaseType(), -1 * (int) inBaseUnits());
+        subtractAmountFromCalendar(inBaseUnits(), calendar);
 		return TimePoint.from(calendar);
 	}
 
@@ -110,7 +110,7 @@ public class Duration implements Comparable, Serializable {
 		if (unit.equals(TimeUnit.day)) 
 			calendar.add(Calendar.DATE, (int) quantity);
 		else 
-			calendar.add(unit.javaCalendarConstantForBaseType(), (int) inBaseUnits());
+            addAmountToCalendar(inBaseUnits(), calendar);
 		return CalendarDate._from(calendar);
 	}
 
@@ -121,7 +121,7 @@ public class Duration implements Comparable, Serializable {
 		if (unit.equals(TimeUnit.day)) 
 			calendar.add(Calendar.DATE, -1 * (int)quantity);
 		else 
-			calendar.add(unit.javaCalendarConstantForBaseType(), -1 * (int) inBaseUnits());
+            subtractAmountFromCalendar(inBaseUnits(), calendar);
 		return CalendarDate._from(calendar);
 	}
 
@@ -202,5 +202,14 @@ public class Duration implements Comparable, Serializable {
 	public TimeInterval preceding(TimePoint end) {
 		return TimeInterval.preceding(end, this);
 	}
-			
+    void addAmountToCalendar(long amount, Calendar calendar) {
+        if (unit.isConvertibleToMilliseconds()) {
+            calendar.setTimeInMillis(calendar.getTimeInMillis() + amount);
+        } else {
+            calendar.add(unit.javaCalendarConstantForBaseType(), (int) amount);
+        }
+    }
+    void subtractAmountFromCalendar(long amount, Calendar calendar) {
+        addAmountToCalendar(-1 * amount, calendar);
+    }
 }
