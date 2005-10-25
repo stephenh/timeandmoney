@@ -92,15 +92,11 @@ public class Duration implements Comparable, Serializable {
 	}
 	
 	public TimePoint addedTo(TimePoint point) {
-		Calendar calendar = point.asJavaCalendar();
-        addAmountToCalendar(inBaseUnits(), calendar);
-		return TimePoint.from(calendar);
+        return addAmountToTimePoint(inBaseUnits(), point);
 	}
-
+	
 	public TimePoint subtractedFrom(TimePoint point) {
-		Calendar calendar = point.asJavaCalendar();
-        subtractAmountFromCalendar(inBaseUnits(), calendar);
-		return TimePoint.from(calendar);
+		return addAmountToTimePoint(-1 * inBaseUnits(), point);
 	}
 
 	public CalendarDate addedTo(CalendarDate day) {
@@ -202,10 +198,20 @@ public class Duration implements Comparable, Serializable {
 	public TimeInterval preceding(TimePoint end) {
 		return TimeInterval.preceding(end, this);
 	}
+    TimePoint addAmountToTimePoint(long amount, TimePoint point) {
+        if (unit.isConvertibleToMilliseconds()) {
+            return TimePoint.from(amount + point.millisecondsFromEpoc);
+        } else {
+            Calendar calendar = point.asJavaCalendar();
+            addAmountToCalendar(amount, calendar);
+            return TimePoint.from(calendar);
+        }
+    }
     void addAmountToCalendar(long amount, Calendar calendar) {
         if (unit.isConvertibleToMilliseconds()) {
             calendar.setTimeInMillis(calendar.getTimeInMillis() + amount);
         } else {
+            assert (amount >= Integer.MIN_VALUE && amount <= Integer.MAX_VALUE);
             calendar.add(unit.javaCalendarConstantForBaseType(), (int) amount);
         }
     }

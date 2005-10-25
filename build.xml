@@ -34,12 +34,12 @@
         </java>
     </target>
 
-    <target name="all" depends="clean, compile, test"/>
-
-    <target name="jar" depends="clean, compile">
+    <target name="jar" depends="clean, compile, test">
         <jar jarfile="${build}/timeandmoney.jar"
             basedir="${build}" includes="com/**" excludes="**/tests/**, **/**Test.class"/>
     	<jar jarfile="${build}/timeandmoney-tests.jar"
     		basedir="${build}" includes="**/tests/**, example/**, **/**Test.class"/>
     </target>
+	
+	<target name="all" depends="jar"/>
 </project>
