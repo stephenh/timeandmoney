@@ -241,18 +241,15 @@ public class Money implements Comparable, Serializable {
 	}
 	
 	public boolean equals(Object other) {
-		//revisit: maybe use: Reflection.equalsOverClassAndNull(this, other)
-		return 
-			TypeCheck.is(other, Money.class) && 
-			this.equals((Money) other);
+		return TypeCheck.is(other, Money.class) && equalsMoney((Money)other);
 	}
-	
-	public boolean equals(Money other) {
-		return 
-			currency.equals(other.currency) && 
-			amount.equals(other.amount);
-	}
-	
+    
+    boolean equalsMoney(Money other) {
+        return 
+            currency.equals(other.currency) && 
+            amount.equals(other.amount);
+    }
+    
 	public int hashCode() {
 		return amount.hashCode();
 	}

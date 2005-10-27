@@ -134,6 +134,21 @@ public class MoneyTest extends TestCase {
         Money d2_51a = Money.dollars(2.51);
         assertEquals(d2_51a, d2_51);
     }
+    
+    public void testEqualsNull() {
+        Money d2_51a = Money.dollars(2.51);
+        Object objectNull = null;
+        assertFalse(d2_51a.equals(objectNull));
+        
+        //This next test seems just like the previous, but it's not
+        //The Java Compiler early binds message sends and
+        //it will bind the next call to equals(Money) and
+        //the previous will bind to equals(Object)
+        //I renamed the original equals(Money) to
+        //equalsMoney(Money) to prevent wrong binding.
+        Money moneyNull = null;
+        assertFalse(d2_51a.equals(moneyNull));
+    }
 
     public void testHash() {
         Money d2_51a = Money.dollars(2.51);
