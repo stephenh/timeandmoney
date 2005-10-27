@@ -9,6 +9,8 @@ package com.domainlanguage.intervals;
 import java.io.*;
 import java.util.*;
 
+import com.domainlanguage.util.*;
+
 /**
  * The rules of this class are consistent with the common mathematical
  * definition of "interval". For a simple explanation, see
@@ -179,10 +181,8 @@ public abstract class Interval implements Comparable, Serializable {
     }
 
     public boolean equals(Object object) {
-        //revisit: maybe use: Reflection.equalsOverClassAndNull(this, other)
-        if (!(object instanceof Interval))
+        if (!TypeCheck.is(object, Interval.class))
             return false;
-
         Interval other = ((Interval) object);
         boolean thisEmpty = this.isEmpty();
         boolean otherEmpty = other.isEmpty();

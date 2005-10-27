@@ -9,7 +9,7 @@ package com.domainlanguage.util;
 public abstract class TypeCheck {
 
     static public boolean is(Object instance, Class type) {
-        return (instance != null) && type.isAssignableFrom(instance.getClass());
+        return instance != null && is(instance.getClass(), type);
     }
 
     static public boolean is(Class subtype, Class type) {
