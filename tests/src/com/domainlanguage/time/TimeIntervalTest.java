@@ -99,11 +99,11 @@ public class TimeIntervalTest extends TestCase {
     }
 
     public void testDefaultFromPoints() {
-        // Default is closed start, open end [start, end)
-        // which is the most common convention. For example,
-        // Days include 12:00am at their start, but do not
-        // include the 12:00am that end them.
-
+/*       Default is closed start, open end [start, end)
+         which is the most common convention. For example,
+         Days include 12:00am at their start, but do not
+         include the 12:00am that end them.
+*/
         TimeInterval interval = TimeInterval.over(dec20_2003, dec22_2003);
         assertFalse(interval.includes(dec19_2003));
         assertTrue(interval.includes(dec20_2003));
@@ -113,11 +113,11 @@ public class TimeIntervalTest extends TestCase {
     }
 
     public void testDefaultFromDuration() {
-        // Default is closed start, open end [start, end)
-        // which is the most common convention. For example,
-        // Days include 12:00am at their start, but do not
-        // include the 12:00am that end them.
-
+/*       Default is closed start, open end [start, end)
+         which is the most common convention. For example,
+         Days include 12:00am at their start, but do not
+         include the 12:00am that end them.
+*/
         TimeInterval interval = TimeInterval.startingFrom(dec20_2003, Duration.hours(48));
         assertFalse(interval.includes(dec19_2003));
         assertTrue(interval.includes(dec20_2003));
@@ -172,16 +172,16 @@ public class TimeIntervalTest extends TestCase {
         TimePoint d9_h2 = TimePoint.atGMT(2004, 2, 9, 2, 0);
 
         TimeInterval interval = TimeInterval.over(d4_h10, d9_h2);
-        Iterator it = interval.subintervalIterator(Duration.days(2));
-        assertTrue(it.hasNext());
-        assertEquals(TimeInterval.over(d4_h10, d6_h10), it.next());
-        assertTrue(it.hasNext());
-        assertEquals(TimeInterval.over(d6_h10, d8_h10), it.next());
-        assertFalse(it.hasNext());
-        assertNull(it.next());
+        Iterator iterator = interval.subintervalIterator(Duration.days(2));
+        assertTrue(iterator.hasNext());
+        assertEquals(TimeInterval.over(d4_h10, d6_h10), iterator.next());
+        assertTrue(iterator.hasNext());
+        assertEquals(TimeInterval.over(d6_h10, d8_h10), iterator.next());
+        assertFalse(iterator.hasNext());
+        assertNull(iterator.next());
 
-        it = interval.subintervalIterator(Duration.weeks(1));
-        assertFalse(it.hasNext());
+        iterator = interval.subintervalIterator(Duration.weeks(1));
+        assertFalse(iterator.hasNext());
 
         TimePoint h2 = d9_h2;
         TimePoint h3_m30 = TimePoint.atGMT(2004, 2, 9, 3, 30);
@@ -190,18 +190,17 @@ public class TimeIntervalTest extends TestCase {
         TimePoint h8 = TimePoint.atGMT(2004, 2, 9, 8, 0);
 
         TimeInterval interval2 = TimeInterval.over(h2, h8);
-        it = interval2.subintervalIterator(Duration.minutes(90));
-        assertTrue(it.hasNext());
-        assertEquals(TimeInterval.over(h2, h3_m30), it.next());
-        assertTrue(it.hasNext());
-        assertEquals(TimeInterval.over(h3_m30, h5), it.next());
-        assertTrue(it.hasNext());
-        assertEquals(TimeInterval.over(h5, h6_m30), it.next());
-        assertTrue(it.hasNext());
-        assertEquals(TimeInterval.over(h6_m30, h8), it.next());
-        assertFalse(it.hasNext());
-        assertNull(it.next());
-
+        iterator = interval2.subintervalIterator(Duration.minutes(90));
+        assertTrue(iterator.hasNext());
+        assertEquals(TimeInterval.over(h2, h3_m30), iterator.next());
+        assertTrue(iterator.hasNext());
+        assertEquals(TimeInterval.over(h3_m30, h5), iterator.next());
+        assertTrue(iterator.hasNext());
+        assertEquals(TimeInterval.over(h5, h6_m30), iterator.next());
+        assertTrue(iterator.hasNext());
+        assertEquals(TimeInterval.over(h6_m30, h8), iterator.next());
+        assertFalse(iterator.hasNext());
+        assertNull(iterator.next());
     }
 
     public void testIntersection() {

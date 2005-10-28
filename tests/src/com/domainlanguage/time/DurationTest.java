@@ -86,15 +86,6 @@ public class DurationTest extends TestCase {
         assertEquals(2000, twoSeconds.inBaseUnits());
     }
 
-//    TODO: inBaseUnits returns a long. however, that result is consistently casted down to an int, 
-//    which leads to BAD problems (e.g. starting with a positive long and ending with a negative int)
-//    casting a number UP is ok. casting it DOWN is never ok.
-    public void testProblemWithConversionToBaseUnitsUsage() {
-    	Duration longEnoughDays = Duration.days(25);
-    	assertEquals(2160000000L, longEnoughDays.inBaseUnits());
-    	assertEquals(-2134967296, (int) longEnoughDays.inBaseUnits());
-    }
-    
     public void testEquals() {
         assertEquals(Duration.days(2), Duration.hours(48));
         assertEquals(Duration.years(1), Duration.quarters(4));
@@ -127,20 +118,11 @@ public class DurationTest extends TestCase {
     }
 
     public void testToString() {
-        assertEquals("21 days", Duration.weeks(3).toString()); //Weeks are not
-                                                               // conventional
-                                                               // to read.
-        assertEquals("1 year, 4 months", Duration.months(16).toString()); //Quarters
-                                                                          // are
-                                                                          // not
-                                                                          // conventional
-                                                                          // to
-                                                                          // read.
+        assertEquals("21 days", Duration.weeks(3).toString()); //Weeks are not conventional to read.
+        assertEquals("1 year, 4 months", Duration.months(16).toString()); //Quarters are not conventionalto read.
     }
 
-    /**
-     * TODO: More edge cases and exceptions (like nonconvertable units).
-     */
+    // TODO: More edge cases and exceptions (like nonconvertable units).
     public void testCompare() {
         Duration oneHour = Duration.hours(1);
         Duration twoHours = Duration.hours(2);
@@ -167,10 +149,8 @@ public class DurationTest extends TestCase {
     public void testNormalizedUnit() {
         assertEquals(TimeUnit.second, Duration.seconds(30).normalizedUnit());
         assertEquals(TimeUnit.minute, Duration.seconds(120).normalizedUnit());
-
         assertEquals(TimeUnit.day, Duration.hours(24).normalizedUnit());
         assertEquals(TimeUnit.hour, Duration.hours(25).normalizedUnit());
-
     }
 
 }

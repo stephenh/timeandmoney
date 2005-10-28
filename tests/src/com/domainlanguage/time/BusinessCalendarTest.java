@@ -11,6 +11,7 @@ import java.util.*;
 import junit.framework.*;
 
 public class BusinessCalendarTest extends TestCase {
+	
     private BusinessCalendar businessCalendar() {
         BusinessCalendar cal = BusinessCalendar.defaultBusinessCalendar();
         cal.addHolidays(_HolidayDates.defaultHolidays());
@@ -42,15 +43,12 @@ public class BusinessCalendarTest extends TestCase {
         assertTrue("finally, the weekend is here...", businessCalendar().isWeekend(day));
 
         CalendarDate newYearEve = CalendarDate.from(2004, 1, 1); // it's a
-                                                                 // Thursday
         assertFalse("a holiday is not necessarily a weekend day", businessCalendar().isWeekend(newYearEve));
     }
 
     public void testIsHoliday() {
         CalendarDate newYearEve = CalendarDate.from(2004, 1, 1); // it's a
-                                                                 // Thursday
         assertTrue("New Years Eve is a holiday.", businessCalendar().isHoliday(newYearEve));
-
         assertFalse("The day after New Years Eve is not a holiday.", businessCalendar().isHoliday(newYearEve.nextDay()));
     }
 
@@ -64,7 +62,6 @@ public class BusinessCalendarTest extends TestCase {
         assertFalse("... then sunday", businessCalendar().isBusinessDay(day.nextDay()));
 
         CalendarDate newYearEve = CalendarDate.from(2004, 1, 1); // it's a
-                                                                 // Thursday
         assertFalse("hey, it's a holiday", businessCalendar().isBusinessDay(newYearEve));
     }
 
@@ -77,11 +74,9 @@ public class BusinessCalendarTest extends TestCase {
         assertEquals(monday, businessCalendar().nearestBusinessDay(monday));
 
         CalendarDate newYearEve = CalendarDate.from(2004, 1, 1); // it's a
-                                                                 // Thursday
         assertEquals("it's a holiday & a thursday; wait till friday", newYearEve.nextDay(), businessCalendar().nearestBusinessDay(newYearEve));
 
         CalendarDate christmas = CalendarDate.from(2004, 12, 24); // it's a
-                                                                  // Friday
         assertEquals("it's a holiday & a friday; wait till monday", CalendarDate.from(2004, 12, 27), businessCalendar().nearestBusinessDay(christmas));
     }
 

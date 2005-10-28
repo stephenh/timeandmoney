@@ -15,14 +15,14 @@ import com.domainlanguage.tests.*;
 public class TimePointTest extends TestCase {
     private static final String AM = "AM";
     private static final String PM = "PM";
-    TimeZone gmt = TimeZone.getTimeZone("Universal");
-    TimeZone pt = TimeZone.getTimeZone("America/Los_Angeles");
-    TimeZone ct = TimeZone.getTimeZone("America/Chicago");
-
-    TimePoint dec19_2003 = TimePoint.atMidnightGMT(2003, 12, 19);
-    TimePoint dec20_2003 = TimePoint.atMidnightGMT(2003, 12, 20);
-    TimePoint dec21_2003 = TimePoint.atMidnightGMT(2003, 12, 21);
-    TimePoint dec22_2003 = TimePoint.atMidnightGMT(2003, 12, 22);
+    
+    private TimeZone gmt = TimeZone.getTimeZone("Universal");
+    private TimeZone pt = TimeZone.getTimeZone("America/Los_Angeles");
+    private TimeZone ct = TimeZone.getTimeZone("America/Chicago");
+    private TimePoint dec19_2003 = TimePoint.atMidnightGMT(2003, 12, 19);
+    private TimePoint dec20_2003 = TimePoint.atMidnightGMT(2003, 12, 20);
+    private TimePoint dec21_2003 = TimePoint.atMidnightGMT(2003, 12, 21);
+    private TimePoint dec22_2003 = TimePoint.atMidnightGMT(2003, 12, 22);
 
     public void testSerialization() {
         SerializationTester.assertCanBeSerialized(dec19_2003);
@@ -38,32 +38,24 @@ public class TimePointTest extends TestCase {
     }
 
     public void testCreationWithTimeZone() {
-        //TimePoints are based on miliseconds from the Epoc. They do not have a
-        // "timezone".
-        //When that basic value needs to be converted to or from a date or
-        // hours and minutes,
-        //then a Timezone must be specified or assumed. The default is always
-        // GMT. So creation
-        //operations which don't pass any Timezone assume the date, hours and
-        // minutes are GMT.
-        //The TimeLibrary does not use the default TimeZone operation in Java,
-        // the selection of
-        //the appropriate Timezone is left to the application.
-
+/*      TimePoints are based on miliseconds from the Epoc. They do not have a "timezone".
+        When that basic value needs to be converted to or from a date or hours and minutes,
+        then a Timezone must be specified or assumed. The default is always GMT. So creation
+        operations which don't pass any Timezone assume the date, hours and minutes are GMT.
+        The TimeLibrary does not use the default TimeZone operation in Java, the selection of
+        the appropriate Timezone is left to the application.
+*/
         TimePoint gmt10Hour = TimePoint.at(2004, 3, 5, 10, 10, 0, 0, gmt);
         TimePoint default10Hour = TimePoint.atGMT(2004, 3, 5, 10, 10, 0, 0);
         TimePoint pt2Hour = TimePoint.at(2004, 3, 5, 2, 10, 0, 0, pt);
-
         assertEquals(gmt10Hour, default10Hour);
         assertEquals(gmt10Hour, pt2Hour);
 
         TimePoint gmt6Hour = TimePoint.at(2004, 3, 5, 6, 0, 0, 0, gmt);
         TimePoint ct0Hour = TimePoint.at(2004, 3, 5, 0, 0, 0, 0, ct);
         TimePoint ctMidnight = TimePoint.atMidnight(2004, 3, 5, ct);
-
         assertEquals(gmt6Hour, ct0Hour);
         assertEquals(gmt6Hour, ctMidnight);
-
     }
 
     public void testStringFormat() {
@@ -92,7 +84,6 @@ public class TimePointTest extends TestCase {
         assertEquals(TimePoint.atMidnightGMT(2004, 11, 22), threeOClock.backToMidnight(gmt));
         TimePoint thirteenOClock = TimePoint.atGMT(2004, 11, 22, 13, 0);
         assertEquals(TimePoint.atMidnightGMT(2004, 11, 22), thirteenOClock.backToMidnight(gmt));
-
     }
 
     public void testFromString() {
@@ -114,6 +105,7 @@ public class TimePointTest extends TestCase {
     public void testEqualsOverYearMonthDay() {
         TimePoint thePoint = TimePoint.atGMT(2000, 1, 1, 8, 0);
         TimeZone gmt = TimeZone.getTimeZone("Universal");
+        
         assertTrue("exactly the same", TimePoint.atGMT(2000, 1, 1, 8, 0).isSameDayAs(thePoint, gmt));
         assertTrue("same second", TimePoint.atGMT(2000, 1, 1, 8, 0, 0, 500).isSameDayAs(thePoint, gmt));
         assertTrue("same minute", TimePoint.atGMT(2000, 1, 1, 8, 0, 30, 0).isSameDayAs(thePoint, gmt));
@@ -152,8 +144,7 @@ public class TimePointTest extends TestCase {
         assertEquals(dec19_2003, dec21_2003.minus(twoDays));
     }
 
-    // This is only an integration test.
-    // The primary responsibility is in TimePeriod
+    // This is only an integration test. The primary responsibility is in TimePeriod
     public void testBeforeAfterPeriod() {
         TimeInterval period = TimeInterval.closed(dec20_2003, dec22_2003);
         assertTrue(dec19_2003.isBefore(period));
@@ -174,23 +165,11 @@ public class TimePointTest extends TestCase {
         assertTrue(dec20_2003.compareTo(dec20_2003) == 0);
     }
 
-/*  TODO:  test provided by Per Kåre Foss @ StatOil
-  	I believe I've tracked it down to the usage of Duration>>toBaseUnitsUsage()
-  	I'm illustrating the problem in DurationTest>>testProblemWithConversionToBaseUnitsUsage()
-    since we're relying on java.util.Calendar calculus, e.g.:
-		Calendar calendar = point.asJavaCalendar();
-		calendar.add(unit.javaCalendarConstantForBaseType(), (int) inBaseUnits());
-	we have a more serious problem, and we need to discuss it further before fixing it.
-	-- Benny
-	*/
-    public void testProblemDueToUsageOf_toBaseUnitsUsage() {
+//    TODO: do we still need this "regression" test?
+    public void testPotentialProblemDueToOldUsageOf_Duration_toBaseUnitsUsage() {
         TimePoint start = TimePoint.atGMT(2005,10,1,0,0);
-        //This line gives correct answer:
         TimePoint end1 = start.plus( Duration.days(24));
-        //But look at the result of this one: - which is wrong
         TimePoint end2 = start.plus( Duration.days(25));
- 
-        //System.out.println( "Start= " + start + "\nEnd1= " + end1 + "\nEnd2= " + end2);
         assertTrue("Start timepoint is before end1", start.isBefore( end1));
         assertTrue("and should of course be before end2", start.isBefore( end2)); 
     }

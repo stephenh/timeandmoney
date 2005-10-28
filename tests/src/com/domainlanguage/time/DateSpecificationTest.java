@@ -15,19 +15,15 @@ public class DateSpecificationTest extends TestCase {
     public void testFixedDate() {
         CalendarInterval y2004 = CalendarInterval.year(2004);
         DateSpecification independenceDay = DateSpecification.fixed(7, 4);
-
         assertEquals(CalendarDate.date(2004, 7, 4), ((AnnualDateSpecification) independenceDay).ofYear(2004));
-
         assertEquals(CalendarDate.date(2004, 7, 4), independenceDay.firstOccurrenceIn(y2004));
         assertTrue(independenceDay.isSatisfiedBy(CalendarDate.date(2004, 7, 4)));
         assertFalse(independenceDay.isSatisfiedBy(CalendarDate.date(2004, 7, 3)));
         assertTrue(independenceDay.isSatisfiedBy(CalendarDate.date(1970, 7, 4)));
-
     }
 
     public void testNthWeekdayInMonth() {
         DateSpecification thanksgiving = DateSpecification.nthOccuranceOfWeekdayInMonth(11, Calendar.THURSDAY, 4);
-
         assertEquals(CalendarDate.date(2004, 11, 25), ((AnnualDateSpecification) thanksgiving).ofYear(2004));
 
         CalendarInterval y2004 = CalendarInterval.year(2004);
@@ -49,7 +45,6 @@ public class DateSpecificationTest extends TestCase {
         assertTrue(iterator.hasNext());
         assertEquals(CalendarDate.date(2004, 11, 25), iterator.next());
         assertFalse(iterator.hasNext());
-
     }
 
     public void testSelectFirstFromInterval() {
@@ -57,7 +52,6 @@ public class DateSpecificationTest extends TestCase {
         CalendarInterval ylate2002_2004 = CalendarInterval.inclusive(2002, 8, 1, 2004, 12, 31);
         CalendarInterval ylate2002 = CalendarInterval.inclusive(2002, 8, 1, 2002, 12, 31);
         CalendarInterval ylate2002_early2003 = CalendarInterval.inclusive(2002, 8, 1, 2003, 6, 30);
-
         DateSpecification independenceDay = DateSpecification.fixed(7, 4);
         assertEquals(CalendarDate.date(2002, 7, 4), independenceDay.firstOccurrenceIn(y2002_2004));
         assertEquals(CalendarDate.date(2003, 7, 4), independenceDay.firstOccurrenceIn(ylate2002_2004));
@@ -75,6 +69,5 @@ public class DateSpecificationTest extends TestCase {
         assertEquals(CalendarDate.date(2004, 7, 4), it.next());
         assertFalse(it.hasNext());
         assertNull(it.next());
-
     }
 }

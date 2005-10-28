@@ -13,11 +13,10 @@ import junit.framework.*;
 import com.domainlanguage.tests.*;
 
 public class CalendarDateTest extends TestCase {
-
-    CalendarDate feb17 = CalendarDate.from(2003, 2, 17);
-    CalendarDate mar13 = CalendarDate.from(2003, 3, 13);
-    TimeZone gmt = TimeZone.getTimeZone("Universal");
-    TimeZone ct = TimeZone.getTimeZone("America/Chicago");
+	private CalendarDate feb17 = CalendarDate.from(2003, 2, 17);
+	private CalendarDate mar13 = CalendarDate.from(2003, 3, 13);
+	private TimeZone gmt = TimeZone.getTimeZone("Universal");
+	private TimeZone ct = TimeZone.getTimeZone("America/Chicago");
 
     public void testSerialization() {
         SerializationTester.assertCanBeSerialized(feb17);
@@ -63,11 +62,6 @@ public class CalendarDateTest extends TestCase {
         CalendarDate mapped = CalendarDate.from(feb18Hour0Ct, ct);
         assertEquals(CalendarDate.from(2003, 2, 17), mapped);
     }
-
-    //	public String getSqlString() {
-    //		_formatter.applyPattern("#M/d/yyyy#");
-    //		return _formatter.format(getTime());
-    //	}
 
     public void testIncludes() {
         assertTrue(feb17.covers(feb17));
