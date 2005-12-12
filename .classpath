@@ -3,7 +3,19 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="examples/src"/>
 	<classpathentry kind="src" path="tests/src"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk1.4.2_09"/>
 	<classpathentry sourcepath="lib/junit-src.zip" kind="lib" path="lib/junit.jar"/>
+	<classpathentry kind="lib" path="examples/lib/hibernate3.0.5.jar"/>
+	<classpathentry kind="lib" path="examples/lib/hsqldb-1.8.0.2.jar"/>
+	<classpathentry kind="lib" path="examples/lib/hibernateLibs/antlr-2.7.5H3.jar"/>
+	<classpathentry kind="lib" path="examples/lib/hibernateLibs/asm.jar"/>
+	<classpathentry kind="lib" path="examples/lib/hibernateLibs/asm-attrs.jar"/>
+	<classpathentry kind="lib" path="examples/lib/hibernateLibs/cglib-2.1.jar"/>
+	<classpathentry kind="lib" path="examples/lib/hibernateLibs/commons-collections-2.1.1.jar"/>
+	<classpathentry kind="lib" path="examples/lib/hibernateLibs/commons-logging-1.0.4.jar"/>
+	<classpathentry kind="lib" path="examples/lib/hibernateLibs/dom4j-1.6.jar"/>
+	<classpathentry kind="lib" path="examples/lib/hibernateLibs/jdbc2_0-stdext.jar"/>
+	<classpathentry kind="lib" path="examples/lib/hibernateLibs/jta.jar"/>
+	<classpathentry kind="lib" path="examples/lib/hibernateLibs/ehcache-1.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

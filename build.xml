@@ -1,25 +1,53 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <project name="TimeLibrary" default="all">
-    <property name="build" value= "build"/>
-	<property name="lib" value="lib"/>
-
+	
+	<property name="source.dir" value="${basedir}/src"/>
+	<property name="library.dir" value="${basedir}/lib"/>
+	<property name="examples.dir" value="${basedir}/examples"/>
+	<property name="build.dir" value= "${basedir}/build"/>
+	
 	<path id="classpath">
-		<pathelement path="${build}"/>
-		<pathelement path="${lib}/junit.jar"/>
+		<pathelement path="${build.dir}"/>
+		<fileset dir="${library.dir}">
+	    	<include name="*.jar"/>
+	    </fileset>
 	</path>
+	
+	<path id="examples.classpath">
+		<fileset dir="${examples.dir}/lib">
+			<include name="*.jar"/>
+		</fileset>
+		<fileset dir="${examples.dir}/lib/hibernateLibs">
+			<include name="*.jar"/>
+		</fileset>
+	</path>
+	
+    
 
     <target name = "clean">
-        <delete dir = "${build}"/>
+        <delete dir = "${build.dir}"/>
     </target>
 
-    <target name="compile" >
-        <mkdir dir="${build}"/>
-        <javac srcdir="src" destdir="${build}" source="1.4"/>
-        <javac srcdir="tests" destdir="${build}">
+	<target name="copy-resources">
+		<copy todir="${build.dir}">
+	    	<fileset dir="${examples.dir}/src">
+	        	<exclude name="**/*.java"/>
+	        </fileset>
+			<fileset dir="${source.dir}">
+				<exclude name="**/*.java"/>
+			</fileset>
+	    </copy>
+	</target>
+		
+    <target name="compile" depends="copy-resources">
+        <mkdir dir="${build.dir}"/>
+        <javac srcdir="src" destdir="${build.dir}" source="1.4"/>
+        <javac srcdir="tests" destdir="${build.dir}" source="1.4">
     		<classpath refid="classpath"/>
     	</javac>
-        <javac srcdir="examples" destdir="${build}">
-    		<classpath refid="classpath"/>
+        <javac srcdir="examples" destdir="${build.dir}" source="1.4">
+        	<classpath refid="classpath"/>
+    		<classpath refid="examples.classpath"/>
     	</javac>
     </target>
 	
@@ -28,6 +56,7 @@
             taskname="junit" failonerror="true">
             <arg value="com.domainlanguage.tests.AllTests"/>
     		<classpath refid="classpath"/>
+        	<classpath refid="examples.classpath"/>
         	<assertions>
         		<enable/>
         	</assertions>
@@ -35,10 +64,10 @@
     </target>
 
     <target name="jar" depends="clean, compile, test">
-        <jar jarfile="${build}/timeandmoney.jar"
-            basedir="${build}" includes="com/**" excludes="**/tests/**, **/**Test.class"/>
-    	<jar jarfile="${build}/timeandmoney-tests.jar"
-    		basedir="${build}" includes="**/tests/**, example/**, **/**Test.class"/>
+        <jar jarfile="${build.dir}/timeandmoney.jar"
+            basedir="${build.dir}" includes="com/**" excludes="**/tests/**, **/**Test.class"/>
+    	<jar jarfile="${build.dir}/timeandmoney-tests.jar"
+    		basedir="${build.dir}" includes="**/tests/**, example/**, **/**Test.class"/>
     </target>
 	
 	<target name="all" depends="jar"/>

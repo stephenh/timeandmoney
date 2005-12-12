@@ -9,14 +9,26 @@ package example.doctorAppointments;
 import com.domainlanguage.time.*;
 
 class Appointment {
+    private Long id; //for Hibernate
     private TimeInterval timeInterval;
 
-    public void setTimeInterval(TimeInterval anInterval) {
-        timeInterval = anInterval;
+    public Appointment(TimeInterval interval) {
+        timeInterval=interval;
     }
-
+    Appointment() {
+        //only for Hibernate
+    }
     public TimeInterval getTimeInterval() {
         return timeInterval;
     }
-
+    //for Hibernate
+    private Long getId() {
+        return id;
+    }
+    private void setId(Long id) {
+        this.id = id;
+    }
+    private void setTimeInterval(TimeInterval timeInterval) {
+        this.timeInterval = timeInterval;
+    }
 }

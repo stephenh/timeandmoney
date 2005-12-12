@@ -13,9 +13,13 @@ import com.domainlanguage.time.*;
 class AppointmentCalendar {
     TimeZone defaultZone;
     Set events = new HashSet();
-
+    private Long id; //for Hibernate
+    
     AppointmentCalendar(TimeZone zone) {
         defaultZone = zone;
+    }
+    AppointmentCalendar() {
+        //for Hibernate
     }
 
     void add(Appointment anEvent) {
@@ -33,6 +37,26 @@ class AppointmentCalendar {
             }
         }
         return daysAppointments;
+    }
+    
+    //for Hibernate
+    private String getDefaultZoneID() {
+        return defaultZone.getID();
+    }
+    private void setDefaultZoneID(String name) {
+        defaultZone=TimeZone.getTimeZone(name);
+    }
+    private Long getId() {
+        return id;
+    }
+    private void setId(Long id) {
+        this.id = id;
+    }
+    private Set getEvents() {
+        return events;
+    }
+    private void setEvents(Set events) {
+        this.events = events;
     }
 
 }

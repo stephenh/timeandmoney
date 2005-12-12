@@ -17,7 +17,8 @@ public class TimeInterval extends Interval {
 	private boolean includesLowerLimit;
 	private Comparable upperLimit;
 	private boolean includesUpperLimit;
-
+	private Long id; //for Hibernate
+    
 	public static final TimeInterval ALWAYS = over(TimePoint.FAR_PAST, TimePoint.FAR_FUTURE);
 
 	public static TimeInterval over(TimePoint start, boolean closedStart, TimePoint end, boolean closedEnd) {
@@ -77,7 +78,9 @@ public class TimeInterval extends Interval {
 		upperLimit = end;
 		includesUpperLimit = endIncluded;
 	}
-
+	TimeInterval() {
+        //only for Hibernate
+    }
 	public Comparable upperLimit() {
 		return upperLimit;
 	}
@@ -153,6 +156,39 @@ public class TimeInterval extends Interval {
 	public TimeInterval intersect(TimeInterval interval) {
 		return (TimeInterval)intersect((Interval)interval);
 	}
+
+    //for Hibernate
+    private boolean isIncludesLowerLimit() {
+        return includesLowerLimit;
+    }
+
+    private void setIncludesLowerLimit(boolean includesLowerLimit) {
+        this.includesLowerLimit = includesLowerLimit;
+    }
+
+    private boolean isIncludesUpperLimit() {
+        return includesUpperLimit;
+    }
+
+    private void setIncludesUpperLimit(boolean includesUpperLimit) {
+        this.includesUpperLimit = includesUpperLimit;
+    }
+
+    private Comparable getLowerLimit() {
+        return lowerLimit;
+    }
+
+    private void setLowerLimit(Comparable lowerLimit) {
+        this.lowerLimit = lowerLimit;
+    }
+
+    private Comparable getUpperLimit() {
+        return upperLimit;
+    }
+
+    private void setUpperLimit(Comparable upperLimit) {
+        this.upperLimit = upperLimit;
+    }
 
 	
 }

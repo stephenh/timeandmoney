@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="example.doctorAppointments.Appointment" table="APPOINTMENT">
+        <id name="id" column="ID">
+            <generator class="increment"/>
+        </id>
+		<component name="timeInterval" class="com.domainlanguage.time.TimeInterval">
+        	<component name="lowerLimit" class="com.domainlanguage.time.TimePoint">
+				<property name="millisecondsFromEpoc" column="LOWER_LIMIT"/>
+			</component>
+        	<property name="includesLowerLimit"/>
+        	<component name="lowerLimit" class="com.domainlanguage.time.TimePoint">
+				<property name="millisecondsFromEpoc" column="UPPER_LIMIT"/>
+			</component>
+			<property name="includesUpperLimit"/>
+    	</component>
+    </class>
+</hibernate-mapping>

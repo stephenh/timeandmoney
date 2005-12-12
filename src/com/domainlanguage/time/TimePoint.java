@@ -15,7 +15,8 @@ public class TimePoint implements Comparable, Serializable {
 	public static final TimePoint FAR_PAST = atMidnightGMT(0001, 1, 1); 
 	public static final TimePoint FAR_FUTURE = atMidnightGMT(9999, 9, 9); 
 
-	final long millisecondsFromEpoc;
+	long millisecondsFromEpoc;
+    private Long id; //for Hibernate
 
 // CREATION METHODS
 	
@@ -95,6 +96,9 @@ public class TimePoint implements Comparable, Serializable {
 	private TimePoint(long milliseconds) {
 		this.millisecondsFromEpoc = milliseconds;
 	}
+    TimePoint() {
+        //for Hibernate
+    }
 	
 	
 // BEHAVIORAL METHODS
@@ -189,5 +193,14 @@ public class TimePoint implements Comparable, Serializable {
 	public TimeInterval until(TimePoint end) {
 		return TimeInterval.over(this, end);
 	}
+
+    //For Hibernate
+    private long getMillisecondsFromEpoc() {
+        return millisecondsFromEpoc;
+    }
+
+    private void setMillisecondsFromEpoc(long millisecondsFromEpoc) {
+        this.millisecondsFromEpoc = millisecondsFromEpoc;
+    }
 	
 }
