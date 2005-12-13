@@ -158,35 +158,35 @@ public class TimeInterval extends Interval {
 	}
 
     //for Hibernate
-    private boolean isIncludesLowerLimit() {
+    private boolean isIncludesLowerLimitForPersistentMapping() {
         return includesLowerLimit;
     }
 
-    private void setIncludesLowerLimit(boolean includesLowerLimit) {
+    private void setIncludesLowerLimitForPersistentMapping(boolean includesLowerLimit) {
         this.includesLowerLimit = includesLowerLimit;
     }
 
-    private boolean isIncludesUpperLimit() {
+    private boolean isIncludesUpperLimitForPersistentMapping() {
         return includesUpperLimit;
     }
 
-    private void setIncludesUpperLimit(boolean includesUpperLimit) {
+    private void setIncludesUpperLimitForPersistentMapping(boolean includesUpperLimit) {
         this.includesUpperLimit = includesUpperLimit;
     }
 
-    private Comparable getLowerLimit() {
+    private Comparable getLowerLimitForPersistentMapping() {
         return lowerLimit;
     }
 
-    private void setLowerLimit(Comparable lowerLimit) {
+    private void setLowerLimitForPersistentMapping(Comparable lowerLimit) {
         this.lowerLimit = lowerLimit;
     }
 
-    private Comparable getUpperLimit() {
+    private Comparable getUpperLimitForPersistentMapping() {
         return upperLimit;
     }
 
-    private void setUpperLimit(Comparable upperLimit) {
+    private void setUpperLimitForPersistentMapping(Comparable upperLimit) {
         this.upperLimit = upperLimit;
     }
 

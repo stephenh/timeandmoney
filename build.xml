@@ -22,8 +22,6 @@
 		</fileset>
 	</path>
 	
-    
-
     <target name = "clean">
         <delete dir = "${build.dir}"/>
     </target>

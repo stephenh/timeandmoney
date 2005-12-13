@@ -5,11 +5,11 @@
 
 <hibernate-mapping>
 	<class name="example.doctorAppointments.AppointmentCalendar" table="APPOINTMENT_CALENDAR">
-        <id name="id" column="ID">
+        <id name="idForPersistentMapping" column="ID">
             <generator class="increment"/>
         </id>
-		<property name="defaultZoneID" column="DEFAULT_ZONE"/>
-        <set name="events" table="APPOINTMENT_EVENT">
+		<property name="defaultZoneIdForPersistentMapping" column="DEFAULT_ZONE"/>
+        <set name="eventsForPersistentMapping" table="APPOINTMENT_EVENT">
         	<key column="EVENT_ID"/>
         	<many-to-many column="APPOINTMENT_ID" class="example.doctorAppointments.Appointment"/>
     	</set>

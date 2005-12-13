@@ -195,11 +195,11 @@ public class TimePoint implements Comparable, Serializable {
 	}
 
     //For Hibernate
-    private long getMillisecondsFromEpoc() {
+    private long getMillisecondsFromEpocForPersistentMapping() {
         return millisecondsFromEpoc;
     }
 
-    private void setMillisecondsFromEpoc(long millisecondsFromEpoc) {
+    private void setMillisecondsFromEpocForPersistentMapping(long millisecondsFromEpoc) {
         this.millisecondsFromEpoc = millisecondsFromEpoc;
     }
 	

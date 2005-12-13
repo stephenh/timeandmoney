@@ -40,22 +40,22 @@ class AppointmentCalendar {
     }
     
     //for Hibernate
-    private String getDefaultZoneID() {
+    private String getDefaultZoneIdForPersistentMapping() {
         return defaultZone.getID();
     }
-    private void setDefaultZoneID(String name) {
+    private void setDefaultZoneIdForPersistentMapping(String name) {
         defaultZone=TimeZone.getTimeZone(name);
     }
-    private Long getId() {
+    private Long getIdForPersistentMapping() {
         return id;
     }
-    private void setId(Long id) {
+    private void setIdForPersistentMapping(Long id) {
         this.id = id;
     }
-    private Set getEvents() {
+    private Set getEventsForPersistentMapping() {
         return events;
     }
-    private void setEvents(Set events) {
+    private void setEventsForPersistentMapping(Set events) {
         this.events = events;
     }
 

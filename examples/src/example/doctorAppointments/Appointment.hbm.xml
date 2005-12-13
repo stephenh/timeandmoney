@@ -5,18 +5,18 @@
 
 <hibernate-mapping>
 	<class name="example.doctorAppointments.Appointment" table="APPOINTMENT">
-        <id name="id" column="ID">
+        <id name="idForPersistentMapping" column="ID">
             <generator class="increment"/>
         </id>
-		<component name="timeInterval" class="com.domainlanguage.time.TimeInterval">
-        	<component name="lowerLimit" class="com.domainlanguage.time.TimePoint">
-				<property name="millisecondsFromEpoc" column="LOWER_LIMIT"/>
+		<component name="timeIntervalForPersistentMapping" class="com.domainlanguage.time.TimeInterval">
+        	<component name="lowerLimitForPersistentMapping" class="com.domainlanguage.time.TimePoint">
+				<property name="millisecondsFromEpocForPersistentMapping" column="LOWER_LIMIT"/>
 			</component>
-        	<property name="includesLowerLimit"/>
-        	<component name="lowerLimit" class="com.domainlanguage.time.TimePoint">
-				<property name="millisecondsFromEpoc" column="UPPER_LIMIT"/>
+        	<property name="includesLowerLimitForPersistentMapping" column="INCLUDES_LOWER_LIMIT"/>
+        	<component name="lowerLimitForPersistentMapping" class="com.domainlanguage.time.TimePoint">
+				<property name="millisecondsFromEpocForPersistentMapping" column="UPPER_LIMIT"/>
 			</component>
-			<property name="includesUpperLimit"/>
+			<property name="includesUpperLimitForPersistentMapping" column="INCLUDES_UPPER_LIMIT"/>
     	</component>
     </class>
 </hibernate-mapping>

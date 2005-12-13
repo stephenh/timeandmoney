@@ -22,13 +22,16 @@ class Appointment {
         return timeInterval;
     }
     //for Hibernate
-    private Long getId() {
+    private Long getIdForPersistentMapping() {
         return id;
     }
-    private void setId(Long id) {
+    private void setIdForPersistentMapping(Long id) {
         this.id = id;
     }
-    private void setTimeInterval(TimeInterval timeInterval) {
+    private TimeInterval getTimeIntervalForPersistentMapping() {
+        return timeInterval;
+    }
+    private void setTimeIntervalForPersistentMapping(TimeInterval timeInterval) {
         this.timeInterval = timeInterval;
     }
 }
