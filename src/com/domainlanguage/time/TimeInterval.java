@@ -17,7 +17,6 @@ public class TimeInterval extends Interval {
 	private boolean includesLowerLimit;
 	private Comparable upperLimit;
 	private boolean includesUpperLimit;
-	private Long id; //for Hibernate
     
 	public static final TimeInterval ALWAYS = over(TimePoint.FAR_PAST, TimePoint.FAR_FUTURE);
 
@@ -78,9 +77,7 @@ public class TimeInterval extends Interval {
 		upperLimit = end;
 		includesUpperLimit = endIncluded;
 	}
-	TimeInterval() {
-        //only for Hibernate
-    }
+	
 	public Comparable upperLimit() {
 		return upperLimit;
 	}
@@ -158,6 +155,10 @@ public class TimeInterval extends Interval {
 	}
 
     //for Hibernate
+    TimeInterval() {
+        //only for Hibernate
+    }
+    
     private boolean isIncludesLowerLimitForPersistentMapping() {
         return includesLowerLimit;
     }

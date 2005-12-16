@@ -22,11 +22,9 @@ public class AppointmentCalendarTest extends TestCase {
     public void setUp() throws Exception {
         super.setUp();
         sessionFactory = new Configuration().configure().buildSessionFactory();
-        session = sessionFactory.openSession();
     }
     public void tearDown() throws Exception {
         super.tearDown();
-        session.close();
     }
     public void testEventsForDate() {
         TimeZone pt = TimeZone.getTimeZone("America/Los_Angeles");
@@ -50,17 +48,22 @@ public class AppointmentCalendarTest extends TestCase {
         assertEquals(0, cal.dailyScheduleFor(CalendarDate.date(2004, 6, 6)).size());
         
         //test Hibernate mapping
+        session = sessionFactory.openSession();
         Transaction tx = session.beginTransaction();
         session.save(shortEvent);
         session.save(longEvent);
         session.save(cal);
         tx.commit();
+        session.close();
         
+        session = sessionFactory.openSession();
         List result = session.createQuery("from example.doctorAppointments.AppointmentCalendar").list();
         AppointmentCalendar stored=(AppointmentCalendar)result.get(0);
+        assertNotSame(stored, cal);
         assertEquals(2, stored.dailyScheduleFor(CalendarDate.date(2004, 6, 7)).size());
         assertEquals(1, stored.dailyScheduleFor(CalendarDate.date(2004, 6, 8)).size());
         assertEquals(0, stored.dailyScheduleFor(CalendarDate.date(2004, 6, 6)).size());
+        session.close();
     }
 
 }
