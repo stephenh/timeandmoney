@@ -13,31 +13,11 @@
 	    </fileset>
 	</path>
 	
-	<path id="examples.classpath">
-		<fileset dir="${examples.dir}/lib">
-			<include name="*.jar"/>
-		</fileset>
-		<fileset dir="${examples.dir}/lib/hibernateLibs">
-			<include name="*.jar"/>
-		</fileset>
-	</path>
-	
     <target name = "clean">
         <delete dir = "${build.dir}"/>
     </target>
-
-	<target name="copy-resources">
-		<copy todir="${build.dir}">
-	    	<fileset dir="${examples.dir}/src">
-	        	<exclude name="**/*.java"/>
-	        </fileset>
-			<fileset dir="${source.dir}">
-				<exclude name="**/*.java"/>
-			</fileset>
-	    </copy>
-	</target>
 		
-    <target name="compile" depends="copy-resources">
+    <target name="compile" depends="clean">
         <mkdir dir="${build.dir}"/>
         <javac srcdir="src" destdir="${build.dir}" source="1.4"/>
         <javac srcdir="tests" destdir="${build.dir}" source="1.4">
@@ -45,23 +25,21 @@
     	</javac>
         <javac srcdir="examples" destdir="${build.dir}" source="1.4">
         	<classpath refid="classpath"/>
-    		<classpath refid="examples.classpath"/>
     	</javac>
     </target>
 	
-    <target name="test">
+    <target name="test" depends="compile">
         <java fork="yes" classname="junit.textui.TestRunner" 
             taskname="junit" failonerror="true">
             <arg value="com.domainlanguage.tests.AllTests"/>
     		<classpath refid="classpath"/>
-        	<classpath refid="examples.classpath"/>
         	<assertions>
         		<enable/>
         	</assertions>
         </java>
     </target>
 
-    <target name="jar" depends="clean, compile, test">
+    <target name="jar" depends="compile, test">
         <jar jarfile="${build.dir}/timeandmoney.jar"
             basedir="${build.dir}" includes="com/**" excludes="**/tests/**, **/**Test.class"/>
     	<jar jarfile="${build.dir}/timeandmoney-tests.jar"

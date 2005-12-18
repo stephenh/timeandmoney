@@ -13,13 +13,9 @@ import com.domainlanguage.time.*;
 class AppointmentCalendar {
     TimeZone defaultZone;
     Set events = new HashSet();
-    private Long id; //for Hibernate
     
     AppointmentCalendar(TimeZone zone) {
         defaultZone = zone;
-    }
-    AppointmentCalendar() {
-        //for Hibernate
     }
 
     void add(Appointment anEvent) {
@@ -39,24 +35,4 @@ class AppointmentCalendar {
         return daysAppointments;
     }
     
-    //for Hibernate
-    private String getDefaultZoneIdForPersistentMapping() {
-        return defaultZone.getID();
-    }
-    private void setDefaultZoneIdForPersistentMapping(String name) {
-        defaultZone=TimeZone.getTimeZone(name);
-    }
-    private Long getIdForPersistentMapping() {
-        return id;
-    }
-    private void setIdForPersistentMapping(Long id) {
-        this.id = id;
-    }
-    private Set getEventsForPersistentMapping() {
-        return events;
-    }
-    private void setEventsForPersistentMapping(Set events) {
-        this.events = events;
-    }
-
 }
