@@ -15,10 +15,10 @@
 	
     <target name = "clean">
         <delete dir = "${build.dir}"/>
+    	<mkdir dir="${build.dir}"/>
     </target>
 		
     <target name="compile" depends="clean">
-        <mkdir dir="${build.dir}"/>
         <javac srcdir="src" destdir="${build.dir}" source="1.4"/>
         <javac srcdir="tests" destdir="${build.dir}" source="1.4">
     		<classpath refid="classpath"/>
@@ -41,7 +41,7 @@
 
     <target name="jar" depends="compile, test">
         <jar jarfile="${build.dir}/timeandmoney.jar"
-            basedir="${build.dir}" includes="com/**" excludes="**/tests/**, **/**Test.class"/>
+            basedir="${build.dir}" includes="com/**" excludes="example/**, **/tests/**, **/**Test.class"/>
     	<jar jarfile="${build.dir}/timeandmoney-tests.jar"
     		basedir="${build.dir}" includes="**/tests/**, example/**, **/**Test.class"/>
     </target>
