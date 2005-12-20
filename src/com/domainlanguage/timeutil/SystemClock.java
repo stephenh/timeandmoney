@@ -11,7 +11,8 @@ import java.util.*;
 import com.domainlanguage.time.*;
 
 public class SystemClock {
-
+    private static Date now;
+    
     public static TimeSource timeSource() {
         return new TimeSource() {
             public TimePoint now() {
@@ -21,7 +22,11 @@ public class SystemClock {
     }
 
     public static TimePoint now() {
-        return TimePoint.from(new Date());
+        return TimePoint.from(now == null ? new Date() : now);
     }
-
+    
+    //Dependency injection to make sure tests return consistent results
+    static void setNow(Date aDate) {
+        now=aDate;
+    }
 }
