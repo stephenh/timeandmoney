@@ -165,7 +165,10 @@ public class TimePointTest extends TestCase {
         assertTrue(dec20_2003.compareTo(dec20_2003) == 0);
     }
 
-//    TODO: do we still need this "regression" test?
+    //This test verifies bug #1336072 fix
+    //The problem is Duration.days(25) overflowed and became negative
+    //on a conversion from a long to int in the bowels of the model.
+    //We made the conversion unnecessary
     public void testPotentialProblemDueToOldUsageOf_Duration_toBaseUnitsUsage() {
         TimePoint start = TimePoint.atGMT(2005,10,1,0,0);
         TimePoint end1 = start.plus( Duration.days(24));
