@@ -38,7 +38,7 @@ public class SystemClockTest extends TestCase {
         TimePoint expectedNow = TimePoint.from(new Date());
         TimePoint now = source.now();
         assertTrue(now.until(expectedNow).length().compareTo(
-                Duration.milliseconds(5)) < 0);
+                Duration.milliseconds(50)) < 0);
     }
 
     
