@@ -13,24 +13,7 @@ import junit.framework.*;
 import com.domainlanguage.time.*;
 
 public class SystemClockTest extends TestCase {
-    Date expectedPrimitiveNow = new Date(1124679473000l);
     
-
-    public void tearDown() throws Exception {
-        super.tearDown();
-        SystemClock.setNow(null);
-    }
-
-    public void testSystemClock() {
-        SystemClock.setNow(expectedPrimitiveNow);
-        TimePoint expectedNow = TimePoint.from(expectedPrimitiveNow);
-        
-        TimePoint now = SystemClock.now();
-        
-        assertEquals(expectedNow, now);
-        assertEquals(expectedPrimitiveNow, now.asJavaUtilDate());
-    }
-
     public void testSystemClockTimeSource() {
         // The following calls allow polymorphic substitution of TimeSources
         // either in applications or, more often, in testing.
