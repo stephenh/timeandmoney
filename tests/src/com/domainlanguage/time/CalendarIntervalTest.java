@@ -13,14 +13,14 @@ import junit.framework.*;
 import com.domainlanguage.tests.*;
 
 public class CalendarIntervalTest extends TestCase {
-	private CalendarDate may1 = CalendarInterval.date(2004, 5, 1);
-	private CalendarDate may2 = CalendarInterval.date(2004, 5, 2);
-	private CalendarDate may3 = CalendarInterval.date(2004, 5, 3);
-	private CalendarDate may14 = CalendarInterval.date(2004, 5, 14);
-	private CalendarDate may20 = CalendarInterval.date(2004, 5, 20);
-	private CalendarDate may31 = CalendarInterval.date(2004, 5, 31);
-	private CalendarDate apr15 = CalendarInterval.date(2004, 4, 15);
-	private CalendarDate jun1 = CalendarInterval.date(2004, 6, 1);
+	private CalendarDate may1 = CalendarDate.date(2004, 5, 1);
+	private CalendarDate may2 = CalendarDate.date(2004, 5, 2);
+	private CalendarDate may3 = CalendarDate.date(2004, 5, 3);
+	private CalendarDate may14 = CalendarDate.date(2004, 5, 14);
+	private CalendarDate may20 = CalendarDate.date(2004, 5, 20);
+	private CalendarDate may31 = CalendarDate.date(2004, 5, 31);
+	private CalendarDate apr15 = CalendarDate.date(2004, 4, 15);
+	private CalendarDate jun1 = CalendarDate.date(2004, 6, 1);
 	private CalendarInterval may = CalendarInterval.inclusive(2004, 5, 1, 2004, 5, 31);
 	private TimeZone ct = TimeZone.getTimeZone("America/Chicago");
 
@@ -34,10 +34,10 @@ public class CalendarIntervalTest extends TestCase {
     }
 
     public void testIncludes() {
-        assertFalse("apr15", may.covers(apr15));
-        assertTrue("may1", may.covers(may1));
-        assertTrue("may20", may.covers(may20));
-        assertFalse("jun1", may.covers(jun1));
+        assertFalse("apr15", may.includes(apr15));
+        assertTrue("may1", may.includes(may1));
+        assertTrue("may20", may.includes(may20));
+        assertFalse("jun1", may.includes(jun1));
         assertTrue("may", may.covers(may));
     }
 
@@ -67,11 +67,11 @@ public class CalendarIntervalTest extends TestCase {
         CalendarInterval may1_3 = CalendarInterval.inclusive(may1, may3);
         Iterator iterator = may1_3.subintervalIterator(Duration.days(1));
         assertTrue(iterator.hasNext());
-        assertEquals(may1, iterator.next());
+        assertEquals(may1, ((CalendarInterval)iterator.next()).start());
         assertTrue(iterator.hasNext());
-        assertEquals(may2, iterator.next());
+        assertEquals(may2, ((CalendarInterval)iterator.next()).start());
         assertTrue(iterator.hasNext());
-        assertEquals(may3, iterator.next());
+        assertEquals(may3, ((CalendarInterval)iterator.next()).start());
         assertFalse(iterator.hasNext());
 
         iterator = may1_3.subintervalIterator(Duration.days(2));
@@ -113,16 +113,18 @@ public class CalendarIntervalTest extends TestCase {
         
         CalendarInterval complement = (CalendarInterval) complementList.iterator().next();
         assertTrue(complement.isClosed());
-        assertEquals(may1, complement);
+        assertEquals(may1, complement.start());
+        assertEquals(may1, complement.end());
     }
 
     public void testSingleDateCalendarIntervalCompare() {
         CalendarInterval may1_may1 = CalendarInterval.inclusive(may1, may1);
-        assertEquals(may1, may1_may1);
-        assertEquals(0, may1.compareTo(may1_may1));
-        assertEquals(0, may1_may1.compareTo(may1));
+        assertEquals(may1, may1_may1.start());
+        assertEquals(may1, may1_may1.end());
+        assertEquals(0, may1.compareTo(may1_may1.start()));
+        assertEquals(0, may1_may1.start().compareTo(may1));
         CalendarInterval may1_may2 = CalendarInterval.inclusive(may1, may2);
         assertTrue(may1.compareTo(may1_may2) < 0);
-        assertTrue(may1_may2.compareTo(may1) > 0);
+        assertTrue(may1_may2.compareTo(may1_may1) > 0);
     }
 }

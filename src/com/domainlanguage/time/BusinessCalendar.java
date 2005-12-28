@@ -62,7 +62,7 @@ class BusinessCalendar {
             CalendarDate next = interval.start();
 
             public boolean hasNext() {
-                return interval.covers(next);
+                return interval.includes(next);
             }
 
             public Object next() {

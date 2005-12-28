@@ -6,11 +6,12 @@
 
 package com.domainlanguage.time;
 
+import java.io.*;
 import java.util.*;
 
 import com.domainlanguage.util.*;
 
-public class CalendarDate extends CalendarInterval {
+public class CalendarDate implements Comparable, Serializable {
 	public static final CalendarDate FAR_FUTURE = from(9999, 9, 9);
 	public static final CalendarDate FAR_PAST = from(0001,1,1);
 
@@ -18,6 +19,10 @@ public class CalendarDate extends CalendarInterval {
 	final int month; // 1 based: January = 1, February = 2, ...
 	final int day;
 	
+    public static CalendarDate date(int year, int month, int day) {
+        return CalendarDate.from(year, month, day);
+    }
+    
 	public static CalendarDate from(int year, int month, int day) {
 		CalendarDate result =  new CalendarDate(year, month, day);
         assert FAR_FUTURE == null || result.isBefore(FAR_FUTURE);
@@ -84,7 +89,7 @@ public class CalendarDate extends CalendarInterval {
 			if (this.isAfter(otherDate)) return 1;
 			return 0;
 		}
-		return super.compareTo(other);
+		return -1;
 	}
 
 	public boolean equals(Object object) {
@@ -186,14 +191,6 @@ public class CalendarDate extends CalendarInterval {
 
 	public CalendarInterval through(CalendarDate otherDate) {
 		return CalendarInterval.inclusive(this, otherDate);
-	}
-
-	public Comparable upperLimit() {
-		return this;
-	}
-
-	public Comparable lowerLimit() {
-		return this;
 	}
 
 	public int dayOfWeek() {

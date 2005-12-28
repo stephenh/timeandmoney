@@ -14,8 +14,6 @@ import com.domainlanguage.util.*;
 public abstract class CalendarInterval extends Interval {
 
     public static CalendarInterval inclusive(CalendarDate start, CalendarDate end) {
-        if (start.equals(end))
-            return start;
         return ConcreteCalendarInterval.from(start, end);
     }
 
@@ -25,19 +23,15 @@ public abstract class CalendarInterval extends Interval {
         return ConcreteCalendarInterval.from(startDate, endDate);
     }
 
-    public static CalendarDate date(int year, int month, int day) {
-        return CalendarDate.from(year, month, day);
-    }
-
     public static CalendarInterval month(int year, int month) {
-        CalendarDate startDate = date(year, month, 1);
+        CalendarDate startDate = CalendarDate.date(year, month, 1);
         CalendarDate endDate = startDate.plusMonths(1).plusDays(-1);
         return inclusive(startDate, endDate);
     }
 
     public static CalendarInterval year(int year) {
-        CalendarDate startDate = date(year, 1, 1);
-        CalendarDate endDate = date(year + 1, 1, 1).plusDays(-1);
+        CalendarDate startDate = CalendarDate.date(year, 1, 1);
+        CalendarDate endDate = CalendarDate.date(year + 1, 1, 1).plusDays(-1);
         return inclusive(startDate, endDate);
     }
 
@@ -124,7 +118,7 @@ public abstract class CalendarInterval extends Interval {
             public Object next() {
                 if (!hasNext())
                     return null;
-                Object current = next;
+                CalendarInterval current = next;
                 next = segmentLength.startingFrom(next.end().plusDays(1));
                 return current;
             }

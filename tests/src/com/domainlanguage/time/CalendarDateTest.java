@@ -64,8 +64,8 @@ public class CalendarDateTest extends TestCase {
     }
 
     public void testIncludes() {
-        assertTrue(feb17.covers(feb17));
-        assertFalse(feb17.covers(mar13));
+        assertTrue(feb17.equals(feb17));
+        assertFalse(feb17.equals(mar13));
     }
 
     public void testDayOfWeek() {
@@ -107,7 +107,7 @@ public class CalendarDateTest extends TestCase {
     }
 
     public void testToString() {
-        CalendarDate date = CalendarInterval.date(2004, 5, 28);
+        CalendarDate date = CalendarDate.date(2004, 5, 28);
         assertEquals("2004-5-28", date.toString());
     }
     
