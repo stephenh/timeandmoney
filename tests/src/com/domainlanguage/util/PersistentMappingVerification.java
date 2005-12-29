@@ -58,28 +58,40 @@ public class PersistentMappingVerification {
 
     private void check(Field theField) {
         String name = capitalize(theField.getName());
-        String getter = "get" + name + FOR_PERSISTENT_MAPPING;
-        String setter = "set" + name + FOR_PERSISTENT_MAPPING;
+        Method getter = null;
+        Method setter = null;
 
         try {
-            checkGetter(name, getter);
-            checkSetter(theField, setter);
+            getter=getGetter(name, "get" + name + FOR_PERSISTENT_MAPPING);
+            setter=getSetter(theField, "set" + name + FOR_PERSISTENT_MAPPING);
         } catch (NoSuchMethodException ex) {
-            unmappedFieldNames.add(theField.getName());
+            addToUnmappedFields(theField);
+            return;
         }
+        if (!(isMethodPrivate(getter) && isMethodPrivate(setter))) {
+            addToUnmappedFields(theField);
+            return;
+        }
+        //check for getter/setter working properly
+    }
+    private boolean isMethodPrivate(Method toCheck) {
+        return (toCheck.getModifiers() & Modifier.PRIVATE) > 0;
+    }
+    private void addToUnmappedFields(Field theField) {
+        unmappedFieldNames.add(theField.getName());
     }
 
-    private void checkSetter(Field theField, String setter) throws NoSuchMethodException {
+    private Method getSetter(Field theField, String setter) throws NoSuchMethodException {
         Class[] setterTypes = new Class[1];
         setterTypes[0] = theField.getType();
-        klass.getDeclaredMethod(setter, setterTypes);
+        return klass.getDeclaredMethod(setter, setterTypes);
     }
 
-    private void checkGetter(String name, String getter) throws NoSuchMethodException {
+    private Method getGetter(String name, String getter) throws NoSuchMethodException {
         try {
-            klass.getDeclaredMethod(getter, null);
+            return klass.getDeclaredMethod(getter, null);
         } catch (NoSuchMethodException unknownGetter) {
-            klass.getDeclaredMethod("is" + name + FOR_PERSISTENT_MAPPING,
+            return klass.getDeclaredMethod("is" + name + FOR_PERSISTENT_MAPPING,
                     null);
         }
     }
