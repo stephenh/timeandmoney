@@ -219,6 +219,9 @@ public class Duration implements Comparable, Serializable {
         addAmountToCalendar(-1 * amount, calendar);
     }
 
+    //for persistent mapping
+    Duration() {
+    }
     private long getQuantityForPersistentMapping() {
         return quantity;
     }

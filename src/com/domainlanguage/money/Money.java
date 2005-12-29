@@ -284,6 +284,9 @@ public class Money implements Comparable, Serializable {
         return currency;
     }
 
+    //for persistent mapping
+    Money() {
+    }
     private BigDecimal getAmountForPersistentMapping() {
         return amount;
     }

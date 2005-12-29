@@ -64,7 +64,10 @@ public class Ratio {
     public String toString() {
         return numerator.toString() + "/" + denominator;
     }
-
+    
+    //for persistent mapping
+    Ratio() {
+    }
     private BigDecimal getDenominatorForPersistentMapping() {
         return denominator;
     }

@@ -45,7 +45,9 @@ public class MoneyTimeRate {
 	public String toString() {
 		return rate.toString();
 	}
-
+    //for persistent mapping
+    MoneyTimeRate() {
+    }
     private Currency getCurrencyForPersistentMapping() {
         return currency;
     }

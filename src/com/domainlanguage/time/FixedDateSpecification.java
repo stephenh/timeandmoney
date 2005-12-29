@@ -23,6 +23,9 @@ class FixedDateSpecification extends AnnualDateSpecification {
         return day == date.getDay() && month == date.getMonth();
     }
 
+    //for persistent mapping
+    FixedDateSpecification() {
+    }
     private int getDayForPersistentMapping() {
         return day;
     }

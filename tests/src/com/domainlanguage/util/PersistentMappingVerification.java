@@ -10,27 +10,29 @@ import java.util.*;
 
 public class PersistentMappingVerification {
     private static final String FOR_PERSISTENT_MAPPING = "ForPersistentMapping";
+    private static final String LINE_SEPARATOR=System.getProperty("line.separator");
     private Class klass;
-    private List unmappedFieldNames;
+    private List problems;
 
     public static PersistentMappingVerification on(Class klass) throws ClassNotFoundException {
         return new PersistentMappingVerification(klass);
     }
     
     public boolean hasAllPersistentMappingsForAllFields() {
-        return unmappedFieldNames.isEmpty();
+        return problems.isEmpty();
     }
 
     public String formatFailure() {
-        String[] fieldNames = getFieldNamesWithoutPersistentMappings();
         StringBuffer buffer = new StringBuffer();
-        buffer.append(klass.toString());
-        buffer.append(" needs persistent mappings for: ");
-        for (int fieldIndex = 0; fieldIndex < fieldNames.length; fieldIndex++) {
-            if (0 != fieldIndex) {
-                buffer.append(", ");
+        boolean first=true;
+        String nextProblem;
+        for (Iterator problemsIterator=problems.iterator(); problemsIterator.hasNext();) {
+            nextProblem=(String)problemsIterator.next();
+            if (!first) {
+                buffer.append(LINE_SEPARATOR);
             }
-            buffer.append(fieldNames[fieldIndex]);
+            first=false;
+            buffer.append(nextProblem);
         }
         return buffer.toString();
     }
@@ -41,44 +43,68 @@ public class PersistentMappingVerification {
 
     private void initialize(Class klass) {
         this.klass = klass;
-        this.unmappedFieldNames = new ArrayList();
-        check();
+        this.problems = new ArrayList();
+        checkEverything();
     }
 
-    private void check() {
+    private void checkEverything() {
+        checkClass();
+        checkFields();
+    }
+
+    private void checkFields() {
         Field[] fields = this.klass.getDeclaredFields();
         for (int index = 0; index < fields.length; index++) {
             Field each = fields[index];
             if ((each.getModifiers() & Modifier.STATIC) > 0) {
                 continue;
             }
-            check(each);
+            checkField(each);
         }
     }
 
-    private void check(Field theField) {
-        String name = capitalize(theField.getName());
-        Method getter = null;
-        Method setter = null;
+    private void checkClass() {
+        try {
+            if (this.klass.isInterface()) {
+                return;
+            }
+            this.klass.getDeclaredConstructor(null);
+        } catch (NoSuchMethodException ex) {
+            addToProblems(this.klass.toString() + " has no default constructor");
+        }
+    }
 
+    private void checkField(Field theField) {
+        String name = capitalize(theField.getName());
+        
+        Method getter = null;
         try {
             getter=getGetter(name, "get" + name + FOR_PERSISTENT_MAPPING);
-            setter=getSetter(theField, "set" + name + FOR_PERSISTENT_MAPPING);
+            if (!isMethodPrivate(getter)) { 
+                addToProblems(getter.toString() + " not declared private");
+            }
         } catch (NoSuchMethodException ex) {
-            addToUnmappedFields(theField);
-            return;
+            addToProblems(theField.toString() + " getter does not exist");
         }
-        if (!(isMethodPrivate(getter) && isMethodPrivate(setter))) {
-            addToUnmappedFields(theField);
-            return;
+        
+        Method setter = null;
+        try {
+            setter=getSetter(theField, "set" + name + FOR_PERSISTENT_MAPPING);
+            if (!isMethodPrivate(setter)) {
+                addToProblems(setter.toString() + " not declared private");
+            }
+        } catch (NoSuchMethodException ex) {
+            addToProblems(theField.toString() + " setter does not exist");
         }
+        
         //check for getter/setter working properly
     }
+    
     private boolean isMethodPrivate(Method toCheck) {
         return (toCheck.getModifiers() & Modifier.PRIVATE) > 0;
     }
-    private void addToUnmappedFields(Field theField) {
-        unmappedFieldNames.add(theField.getName());
+    private void addToProblems(String reason) {
+        problems.add(reason);
     }
 
     private Method getSetter(Field theField, String setter) throws NoSuchMethodException {
@@ -101,13 +127,4 @@ public class PersistentMappingVerification {
         chars[0] = Character.toUpperCase(chars[0]);
         return new String(chars);
     }
-
-    private String[] getFieldNamesWithoutPersistentMappings() {
-        String[] result = new String[unmappedFieldNames.size()];
-        unmappedFieldNames.toArray(result);
-        return result;
-    }
-
-    
-
 }

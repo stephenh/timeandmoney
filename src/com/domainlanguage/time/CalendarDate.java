@@ -208,6 +208,9 @@ public class CalendarDate implements Comparable, Serializable {
     int getYear() {
         return year;
     }
+    //for persistent mapping
+    CalendarDate() {
+    }
     
     private int getDayForPersistentMapping() {
         return day;

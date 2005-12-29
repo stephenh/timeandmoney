@@ -34,7 +34,9 @@ class ConcreteCalendarInterval extends CalendarInterval {
     public Comparable lowerLimit() {
         return start;
     }
-
+    //for persistent mapping
+    ConcreteCalendarInterval() {
+    }
     private CalendarDate getEndForPersistentMapping() {
         return end;
     }

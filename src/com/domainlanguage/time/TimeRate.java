@@ -57,7 +57,9 @@ public class TimeRate {
 		buffer.append(unit);
 		return buffer.toString();
 	}
-
+    //for persistent mapping
+    TimeRate() {
+    }
     private BigDecimal getQuantityForPersistentMapping() {
         return quantity;
     }

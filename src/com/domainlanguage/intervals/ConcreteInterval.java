@@ -41,6 +41,9 @@ class ConcreteInterval extends Interval {
 		return includesUpperLimit;
 	}
 
+    //for persistent mapping
+    ConcreteInterval() {
+    }
     private boolean isIncludesLowerLimitForPersistentMapping() {
         return includesLowerLimit;
     }

@@ -28,7 +28,9 @@ class FloatingDateSpecification extends AnnualDateSpecification {
     public boolean isSatisfiedBy(CalendarDate date) {
         return ofYear(date.getYear()).equals(date);
     }
-
+    //for persistent mapping
+    FloatingDateSpecification() {
+    }
     private int getDayOfWeekForPersistentMapping() {
         return dayOfWeek;
     }

@@ -138,6 +138,9 @@ class TimeUnit implements Comparable, Serializable, TimeUnitConversionFactors {
     int getFactor() {
         return factor;
     }
+    //for persistent mapping
+    TimeUnit() {
+    }
     private Type getBaseTypeForPersistentMapping() {
         return baseType;
     }
