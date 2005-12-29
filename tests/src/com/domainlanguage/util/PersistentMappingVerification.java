@@ -16,7 +16,25 @@ public class PersistentMappingVerification {
     public static PersistentMappingVerification on(Class klass) throws ClassNotFoundException {
         return new PersistentMappingVerification(klass);
     }
+    
+    public boolean hasAllPersistentMappingsForAllFields() {
+        return unmappedFieldNames.isEmpty();
+    }
 
+    public String formatFailure() {
+        String[] fieldNames = getFieldNamesWithoutPersistentMappings();
+        StringBuffer buffer = new StringBuffer();
+        buffer.append(klass.toString());
+        buffer.append(" needs persistent mappings for: ");
+        for (int fieldIndex = 0; fieldIndex < fieldNames.length; fieldIndex++) {
+            if (0 != fieldIndex) {
+                buffer.append(", ");
+            }
+            buffer.append(fieldNames[fieldIndex]);
+        }
+        return buffer.toString();
+    }
+    
     private PersistentMappingVerification(Class klass) {
         initialize(klass);
     }
@@ -78,22 +96,6 @@ public class PersistentMappingVerification {
         return result;
     }
 
-    public boolean hasAllPersistentMappingsForAllFields() {
-        return unmappedFieldNames.isEmpty();
-    }
-
-    public String formatFailure() {
-        String[] fieldNames = getFieldNamesWithoutPersistentMappings();
-        StringBuffer buffer = new StringBuffer();
-        buffer.append(klass.toString());
-        buffer.append(" needs persistent mappings for: ");
-        for (int fieldIndex = 0; fieldIndex < fieldNames.length; fieldIndex++) {
-            if (0 != fieldIndex) {
-                buffer.append(", ");
-            }
-            buffer.append(fieldNames[fieldIndex]);
-        }
-        return buffer.toString();
-    }
+    
 
 }

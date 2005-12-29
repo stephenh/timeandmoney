@@ -10,7 +10,6 @@ import java.util.*;
 import java.util.jar.*;
 
 public abstract class ClassGenerator {
-
     private static final String JAR_POST_FIX = ".jar";
     private static final String CLASS_POST_FIX = ".class";
 
@@ -39,6 +38,8 @@ public abstract class ClassGenerator {
             }
         }
     }
+    
+    protected abstract void next(Class klass) throws Exception;
 
     private void searchInJar(File jarFile) throws Exception {
         JarFile jar = new JarFile(jarFile);
@@ -96,8 +97,6 @@ public abstract class ClassGenerator {
             }
         }
     }
-
-    protected abstract void next(Class klass) throws Exception;
 
     private StringTokenizer getClassPath() {
         String classPath = System.getProperty("java.class.path");
