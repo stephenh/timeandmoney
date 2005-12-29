@@ -20,7 +20,23 @@ class FixedDateSpecification extends AnnualDateSpecification {
     }
 
     public boolean isSatisfiedBy(CalendarDate date) {
-        return day == date.day && month == date.month;
+        return day == date.getDay() && month == date.getMonth();
+    }
+
+    private int getDayForPersistentMapping() {
+        return day;
+    }
+
+    private void setDayForPersistentMapping(int day) {
+        this.day = day;
+    }
+
+    private int getMonthForPersistentMapping() {
+        return month;
+    }
+
+    private void setMonthForPersistentMapping(int month) {
+        this.month = month;
     }
 
 }

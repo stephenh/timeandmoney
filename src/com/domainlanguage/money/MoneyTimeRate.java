@@ -17,8 +17,8 @@ public class MoneyTimeRate {
 	private Currency currency;
 
 	public MoneyTimeRate(Money money, Duration duration) {
-		rate = new TimeRate(money.amount, duration);
-		currency = money.currency;
+		rate = new TimeRate(money.getAmount(), duration);
+		currency = money.getCurrency();
 	}
 
 	public Money over(Duration duration) {
@@ -45,4 +45,20 @@ public class MoneyTimeRate {
 	public String toString() {
 		return rate.toString();
 	}
+
+    private Currency getCurrencyForPersistentMapping() {
+        return currency;
+    }
+
+    private void setCurrencyForPersistentMapping(Currency currency) {
+        this.currency = currency;
+    }
+
+    private TimeRate getRateForPersistentMapping() {
+        return rate;
+    }
+
+    private void setRateForPersistentMapping(TimeRate rate) {
+        this.rate = rate;
+    }
 }

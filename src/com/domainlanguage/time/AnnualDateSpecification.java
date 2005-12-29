@@ -15,10 +15,10 @@ public abstract class AnnualDateSpecification extends DateSpecification {
     public abstract CalendarDate ofYear(int year);
 
     public CalendarDate firstOccurrenceIn(CalendarInterval interval) {
-        CalendarDate firstTry = ofYear(interval.start().year);
+        CalendarDate firstTry = ofYear(interval.start().getYear());
         if (interval.includes(firstTry))
             return firstTry;
-        CalendarDate secondTry = ofYear(interval.start().year + 1);
+        CalendarDate secondTry = ofYear(interval.start().getYear() + 1);
         if (interval.includes(secondTry))
             return secondTry;
         return null;
@@ -28,7 +28,7 @@ public abstract class AnnualDateSpecification extends DateSpecification {
         final AnnualDateSpecification spec = this;
         return new ImmutableIterator() {
             CalendarDate next = firstOccurrenceIn(interval);
-            int year = next.year;
+            int year = next.getYear();
 
             public boolean hasNext() {
                 return next != null;

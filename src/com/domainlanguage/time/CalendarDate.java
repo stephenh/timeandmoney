@@ -15,9 +15,9 @@ public class CalendarDate implements Comparable, Serializable {
 	public static final CalendarDate FAR_FUTURE = from(9999, 9, 9);
 	public static final CalendarDate FAR_PAST = from(0001,1,1);
 
-	final int year;
-	final int month; // 1 based: January = 1, February = 2, ...
-	final int day;
+	private int year;
+	private int month; // 1 based: January = 1, February = 2, ...
+	private int day;
 	
     public static CalendarDate date(int year, int month, int day) {
         return CalendarDate.from(year, month, day);
@@ -197,5 +197,44 @@ public class CalendarDate implements Comparable, Serializable {
 		Calendar calendar = asJavaCalendarUniversalZoneMidnight();
 		return calendar.get(Calendar.DAY_OF_WEEK);
 	}
+    int getDay() {
+        return day;
+    }
+
+    int getMonth() {
+        return month;
+    }
+
+    int getYear() {
+        return year;
+    }
+    
+    private int getDayForPersistentMapping() {
+        return day;
+    }
+
+    private void setDayForPersistentMapping(int day) {
+        this.day = day;
+    }
+
+    private int getMonthForPersistentMapping() {
+        return month;
+    }
+
+    private void setMonthForPersistentMapping(int month) {
+        this.month = month;
+    }
+
+    private int getYearForPersistentMapping() {
+        return year;
+    }
+
+    private void setYearForPersistentMapping(int year) {
+        this.year = year;
+    }
+
+
+
+    
 	
 }

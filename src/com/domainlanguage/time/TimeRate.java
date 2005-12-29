@@ -57,4 +57,20 @@ public class TimeRate {
 		buffer.append(unit);
 		return buffer.toString();
 	}
+
+    private BigDecimal getQuantityForPersistentMapping() {
+        return quantity;
+    }
+
+    private void setQuantityForPersistentMapping(BigDecimal quantity) {
+        this.quantity = quantity;
+    }
+
+    private Duration getUnitForPersistentMapping() {
+        return unit;
+    }
+
+    private void setUnitForPersistentMapping(Duration unit) {
+        this.unit = unit;
+    }
 }

@@ -11,7 +11,7 @@ import java.util.*;
 import com.domainlanguage.util.*;
 
 class BusinessCalendar {
-    private Set holidays = new HashSet();
+    private Set holidays;
 
     static BusinessCalendar defaultBusinessCalendar() {
         BusinessCalendar calendar = new BusinessCalendar();
@@ -24,6 +24,9 @@ class BusinessCalendar {
         return new HashSet();
     }
 
+    public BusinessCalendar() {
+        holidays = new HashSet();
+    }
     public void addHolidays(Set days) {
         holidays.addAll(days);
     }
@@ -73,6 +76,8 @@ class BusinessCalendar {
         };
     }
 
+
+
     /*
      * boolean isBusinessHours(TimePoint now) { Calendar date =
      * now.asJavaCalendar(); int theHour = date.get(Calendar.HOUR_OF_DAY); int
@@ -119,5 +124,11 @@ class BusinessCalendar {
      * 
      * return false; }
      */
+    private Set getHolidaysForPersistentMapping() {
+        return holidays;
+    }
 
+    private void setHolidaysForPersistentMapping(Set holidays) {
+        this.holidays = holidays;
+    }
 }

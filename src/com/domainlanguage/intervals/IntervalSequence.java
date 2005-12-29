@@ -9,8 +9,12 @@ package com.domainlanguage.intervals;
 import java.util.*;
 
 public class IntervalSequence {
-    List intervals = new ArrayList();
+    List intervals;
 
+    public IntervalSequence() {
+        intervals = new ArrayList();
+    }
+    
     public Iterator iterator() {
         return intervals.iterator();
     }
@@ -48,5 +52,13 @@ public class IntervalSequence {
         Interval left = (Interval) intervals.get(0);
         Interval right = (Interval) intervals.get(intervals.size() - 1);
         return left.newOfSameType(left.lowerLimit(), left.includesLowerLimit(), right.upperLimit(), right.includesUpperLimit());
+    }
+
+    private List getIntervalsForPersistentMapping() {
+        return intervals;
+    }
+
+    private void setIntervalsForPersistentMapping(List intervals) {
+        this.intervals = intervals;
     }
 }

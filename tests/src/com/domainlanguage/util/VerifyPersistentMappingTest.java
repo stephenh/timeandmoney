@@ -19,9 +19,7 @@ public class VerifyPersistentMappingTest extends TestCase {
                 }
             }
         };
-        //Comment this in to execute test
-        //It's commented out until we get all classes mapped
-        //generator.go();
+        generator.go();
     }
 
     String formatFailure(PersistentMappingVerification verification) {

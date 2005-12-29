@@ -9,8 +9,12 @@ package com.domainlanguage.intervals;
 import java.util.*;
 
 public class LinearIntervalMap implements IntervalMap {
-    private Map keyValues = new HashMap();
+    private Map keyValues;
 
+    public LinearIntervalMap() {
+        keyValues = new HashMap();
+    }
+    
     public void put(Interval keyInterval, Object value) {
         remove(keyInterval);
         keyValues.put(keyInterval, value);
@@ -67,6 +71,14 @@ public class LinearIntervalMap implements IntervalMap {
 
     public boolean containsIntersectingKey(Interval otherInterval) {
         return !intersectingKeys(otherInterval).isEmpty();
+    }
+
+    private Map getKeyValuesForPersistentMapping() {
+        return keyValues;
+    }
+
+    private void setKeyValuesForPersistentMapping(Map keyValues) {
+        this.keyValues = keyValues;
     }
 
 }

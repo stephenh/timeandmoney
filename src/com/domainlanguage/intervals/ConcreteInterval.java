@@ -41,4 +41,36 @@ class ConcreteInterval extends Interval {
 		return includesUpperLimit;
 	}
 
+    private boolean isIncludesLowerLimitForPersistentMapping() {
+        return includesLowerLimit;
+    }
+
+    private void setIncludesLowerLimitForPersistentMapping(boolean includesLowerLimit) {
+        this.includesLowerLimit = includesLowerLimit;
+    }
+
+    private boolean isIncludesUpperLimitForPersistentMapping() {
+        return includesUpperLimit;
+    }
+
+    private void setIncludesUpperLimitForPersistentMapping(boolean includesUpperLimit) {
+        this.includesUpperLimit = includesUpperLimit;
+    }
+
+    private Comparable getLowerLimitForPersistentMapping() {
+        return lowerLimit;
+    }
+
+    private void setLowerLimitForPersistentMapping(Comparable lowerLimit) {
+        this.lowerLimit = lowerLimit;
+    }
+
+    private Comparable getUpperLimitForPersistentMapping() {
+        return upperLimit;
+    }
+
+    private void setUpperLimitForPersistentMapping(Comparable upperLimit) {
+        this.upperLimit = upperLimit;
+    }
+
 }

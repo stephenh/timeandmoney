@@ -26,9 +26,9 @@ class TimeUnit implements Comparable, Serializable, TimeUnitConversionFactors {
     static final TimeUnit[] descendingMonthBased = { year, quarter, month };
     static final TimeUnit[] descendingMonthBasedForDisplay = { year, month };
 
-    final Type type;
-    final Type baseType;
-    final int factor;
+    private Type type;
+    private Type baseType;
+    private int factor;
 
     private TimeUnit(Type type, Type baseType, int factor) {
         this.type = type;
@@ -135,5 +135,32 @@ class TimeUnit implements Comparable, Serializable, TimeUnitConversionFactors {
         }
 
     }
+    int getFactor() {
+        return factor;
+    }
+    private Type getBaseTypeForPersistentMapping() {
+        return baseType;
+    }
 
+    private void setBaseTypeForPersistentMapping(Type baseType) {
+        this.baseType = baseType;
+    }
+
+    private int getFactorForPersistentMapping() {
+        return factor;
+    }
+
+    private void setFactorForPersistentMapping(int factor) {
+        this.factor = factor;
+    }
+
+    private Type getTypeForPersistentMapping() {
+        return type;
+    }
+
+    private void setTypeForPersistentMapping(Type type) {
+        this.type = type;
+    }
+
+    
 }

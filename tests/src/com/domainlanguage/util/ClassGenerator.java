@@ -73,6 +73,8 @@ public abstract class ClassGenerator {
             klass = Class.forName(className);
         } catch (ClassNotFoundException ex) {
             return;
+        } catch (NoClassDefFoundError ex) {
+            return;
         }
         if (filter.accepts(klass)) {
             next(klass);

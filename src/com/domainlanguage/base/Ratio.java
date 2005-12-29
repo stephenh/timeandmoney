@@ -65,4 +65,20 @@ public class Ratio {
         return numerator.toString() + "/" + denominator;
     }
 
+    private BigDecimal getDenominatorForPersistentMapping() {
+        return denominator;
+    }
+
+    private void setDenominatorForPersistentMapping(BigDecimal denominator) {
+        this.denominator = denominator;
+    }
+
+    private BigDecimal getNumeratorForPersistentMapping() {
+        return numerator;
+    }
+
+    private void setNumeratorForPersistentMapping(BigDecimal numerator) {
+        this.numerator = numerator;
+    }
+
 }

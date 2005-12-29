@@ -73,7 +73,7 @@ public class Duration implements Comparable, Serializable {
 	}
     
 	long inBaseUnits() {
-		return quantity * unit.factor;
+		return quantity * unit.getFactor();
 	}
 	
 	//TODO: What SHOULD happen if assertion fails?
@@ -148,7 +148,7 @@ public class Duration implements Comparable, Serializable {
 		boolean first = true;		
 		for (int i = 0; i < units.length; i++) {
 			TimeUnit aUnit = units[i];
-			long portion = remainder / aUnit.factor;			
+			long portion = remainder / aUnit.getFactor();			
 			if (portion > 0) {
 				if (!first)
 					buffer.append(", ");
@@ -156,7 +156,7 @@ public class Duration implements Comparable, Serializable {
 					first = false;
 				buffer.append(aUnit.toString(portion));
 			}
-			remainder = remainder % aUnit.factor;
+			remainder = remainder % aUnit.getFactor();
 		}
 		return buffer.toString();
 	}
@@ -166,7 +166,7 @@ public class Duration implements Comparable, Serializable {
 		long baseAmount = inBaseUnits();
 		for (int i = 0; i < units.length; i++) {
 			TimeUnit aUnit = units[i];
-			long remainder = baseAmount % aUnit.factor;
+			long remainder = baseAmount % aUnit.getFactor();
 			if (remainder == 0) return aUnit;
 		}
 		return null;
@@ -217,5 +217,21 @@ public class Duration implements Comparable, Serializable {
     }
     void subtractAmountFromCalendar(long amount, Calendar calendar) {
         addAmountToCalendar(-1 * amount, calendar);
+    }
+
+    private long getQuantityForPersistentMapping() {
+        return quantity;
+    }
+
+    private void setQuantityForPersistentMapping(long quantity) {
+        this.quantity = quantity;
+    }
+
+    private TimeUnit getUnitForPersistentMapping() {
+        return unit;
+    }
+
+    private void setUnitForPersistentMapping(TimeUnit unit) {
+        this.unit = unit;
     }
 }

@@ -19,8 +19,8 @@ public class Money implements Comparable, Serializable {
 	private static final Currency EUR = Currency.getInstance("EUR");
 	private static final int DEFAULT_ROUNDING_MODE = Rounding.HALF_EVEN;
 	
-	final BigDecimal amount;
-	final Currency currency;
+	private BigDecimal amount;
+	private Currency currency;
 	
 	/**
      * The constructor does not complex computations and requires simple, inputs
@@ -266,15 +266,43 @@ public class Money implements Comparable, Serializable {
     public MoneyTimeRate per(Duration duration) {
        return new MoneyTimeRate(this, duration);
     }
+    
+//  TODO: Provide some currency-dependent formatting. Java 1.4 Currency doesn't
+//  do it.
+//  public String formatString() {
+//      return currency.formatString(amount());
+//  }
+//  public String localString() {
+//      return currency.getFormat().format(amount());
+//  }
+    
+    BigDecimal getAmount() {
+        return amount;
+    }
+
+    Currency getCurrency() {
+        return currency;
+    }
+
+    private BigDecimal getAmountForPersistentMapping() {
+        return amount;
+    }
+
+    private void setAmountForPersistentMapping(BigDecimal amount) {
+        this.amount = amount;
+    }
+
+    private Currency getCurrencyForPersistentMapping() {
+        return currency;
+    }
+
+    private void setCurrencyForPersistentMapping(Currency currency) {
+        this.currency = currency;
+    }
+
+    
 	
-//	TODO: Provide some currency-dependent formatting. Java 1.4 Currency doesn't
-// do it.
-//	public String formatString() {
-//		return currency.formatString(amount());
-//	}
-//	public String localString() {
-//		return currency.getFormat().format(amount());
-//	}
+
 	
 
 }

@@ -35,4 +35,20 @@ class ConcreteCalendarInterval extends CalendarInterval {
         return start;
     }
 
+    private CalendarDate getEndForPersistentMapping() {
+        return end;
+    }
+
+    private void setEndForPersistentMapping(CalendarDate end) {
+        this.end = end;
+    }
+
+    private CalendarDate getStartForPersistentMapping() {
+        return start;
+    }
+
+    private void setStartForPersistentMapping(CalendarDate start) {
+        this.start = start;
+    }
+
 }

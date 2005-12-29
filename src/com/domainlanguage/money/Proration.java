@@ -13,7 +13,7 @@ import com.domainlanguage.base.*;
 public class Proration {
 
 	static Money sum(Money[] elements) {
-		Money sum = Money.valueOf(0, elements[0].currency);
+		Money sum = Money.valueOf(0, elements[0].getCurrency());
 		for (int i = 0; i < elements.length; i++) 
 			sum = sum.plus(elements[i]);
 		return sum;
@@ -35,7 +35,7 @@ public class Proration {
 	}
 
 	private static int defaultScaleForIntermediateCalculations(Money total) {
-		return total.currency.getDefaultFractionDigits() + 1;
+		return total.getCurrency().getDefaultFractionDigits() + 1;
 	}
 
 	public Money[] dividedEvenlyIntoParts(Money total, int n) {

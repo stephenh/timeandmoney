@@ -26,7 +26,31 @@ class FloatingDateSpecification extends AnnualDateSpecification {
     }
 
     public boolean isSatisfiedBy(CalendarDate date) {
-        return ofYear(date.year).equals(date);
+        return ofYear(date.getYear()).equals(date);
+    }
+
+    private int getDayOfWeekForPersistentMapping() {
+        return dayOfWeek;
+    }
+
+    private void setDayOfWeekForPersistentMapping(int dayOfWeek) {
+        this.dayOfWeek = dayOfWeek;
+    }
+
+    private int getMonthForPersistentMapping() {
+        return month;
+    }
+
+    private void setMonthForPersistentMapping(int month) {
+        this.month = month;
+    }
+
+    private int getOccurrenceForPersistentMapping() {
+        return occurrence;
+    }
+
+    private void setOccurrenceForPersistentMapping(int occurrence) {
+        this.occurrence = occurrence;
     }
 
 }

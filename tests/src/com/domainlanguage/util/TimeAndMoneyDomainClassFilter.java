@@ -15,20 +15,30 @@ public class TimeAndMoneyDomainClassFilter implements ClassFilter {
         if (isTestCase(klass)) {
             return false;
         }
+        if (isInnerClass(klass)) {
+            return false;
+        }
         if (isTimeAndMoney(klass)) {
             return true;
         }
         return false;
     }
+    private boolean isInnerClass(Class klass) {
+        return klass.getName().indexOf('$') > -1;
+    }
     private boolean isTimeAndMoney(Class klass) {
         StringTokenizer parts=new StringTokenizer(klass.getName(), ".");
+        boolean result=false;
         while (parts.hasMoreTokens()) {
             String next=parts.nextToken();
             if (next.equals("domainlanguage")) {
-                return true;
+                result=true;
+            }
+            if (next.equals("tests") || next.equals("util")) {
+                result=false;
             }
         }
-        return false;
+        return result;
     }
     private boolean isTestCase(Class klass) {
         Class superclass=klass.getSuperclass();
