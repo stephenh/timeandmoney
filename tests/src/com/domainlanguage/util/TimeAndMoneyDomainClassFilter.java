@@ -15,7 +15,7 @@ public class TimeAndMoneyDomainClassFilter implements ClassFilter {
         if (isTestCase(klass)) {
             return false;
         }
-        if (isInnerClass(klass)) {
+        if (isInnerClass(klass) && !isTimeAndMoney(klass.getDeclaringClass())) {
             return false;
         }
         if (isTimeAndMoney(klass)) {
@@ -27,6 +27,8 @@ public class TimeAndMoneyDomainClassFilter implements ClassFilter {
         return klass.getName().indexOf('$') > -1;
     }
     private boolean isTimeAndMoney(Class klass) {
+        if (klass == null)
+            return false;
         StringTokenizer parts=new StringTokenizer(klass.getName(), ".");
         boolean result=false;
         while (parts.hasMoreTokens()) {

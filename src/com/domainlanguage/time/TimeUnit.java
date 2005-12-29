@@ -11,7 +11,7 @@ import java.util.*;
 
 import com.domainlanguage.util.*;
 
-class TimeUnit implements Comparable, Serializable, TimeUnitConversionFactors {
+public class TimeUnit implements Comparable, Serializable, TimeUnitConversionFactors {
     static final TimeUnit millisecond = new TimeUnit(Type.millisecond, Type.millisecond, 1);
     static final TimeUnit second = new TimeUnit(Type.second, Type.millisecond, millisecondsPerSecond);
     static final TimeUnit minute = new TimeUnit(Type.minute, Type.millisecond, millisecondsPerMinute);
@@ -120,7 +120,7 @@ class TimeUnit implements Comparable, Serializable, TimeUnitConversionFactors {
         static final Type quarter = new Type("quarter");
         static final Type year = new Type("year");
 
-        final String name;
+        private String name;
 
         Type(String name) {
             this.name = name;
@@ -133,7 +133,15 @@ class TimeUnit implements Comparable, Serializable, TimeUnitConversionFactors {
         public int hashCode() {
             return name.hashCode();
         }
-
+        //for persistence mapping
+        Type() {
+        }
+        private String getNameForPersistentMapping() {
+            return this.name;
+        }
+        private void setNameForPersistentMapping(String name) {
+            this.name = name;
+        }
     }
     int getFactor() {
         return factor;
@@ -165,5 +173,10 @@ class TimeUnit implements Comparable, Serializable, TimeUnitConversionFactors {
         this.type = type;
     }
 
-    
+    public static TimeUnit exampleForPersistentMappingTesting() {
+        return second;
+    }
+    public static Type exampleTypeForPersistentMappingTesting() {
+        return Type.hour;
+    }
 }

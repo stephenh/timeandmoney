@@ -16,7 +16,7 @@ public class VerifyPersistentMappingTest extends TestCase {
             protected void next(Class klass) throws Exception {
                 PersistentMappingVerification verification;
                 verification = PersistentMappingVerification.on(klass);
-                if (!verification.hasAllPersistentMappingsForAllFields()) {
+                if (!verification.isPersistableRequirementsSatisfied()) {
                     hasFailures=true;
                     System.err.println(formatFailure(verification));
                 }
