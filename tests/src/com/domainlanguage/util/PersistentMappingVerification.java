@@ -110,12 +110,15 @@ public class PersistentMappingVerification {
         if (klass.isInterface()) {
             return;
         }
+        if (isAbstract(klass)) {
+            return;
+        }
+        if(isFinal(klass)) {
+            addToProblems(klass.toString() + " must not be final");
+        }
         Constructor constructor = null;
         try {
             constructor = klass.getDeclaredConstructor(null);
-            if ((klass.getModifiers() & Modifier.ABSTRACT) > 0) {
-                return;
-            }
             constructor.setAccessible(true);
             instance = constructor.newInstance(null);
         } catch (NoSuchMethodException ex) {
@@ -134,7 +137,12 @@ public class PersistentMappingVerification {
                     + " had an invocation exception");
         }
     }
-
+    private boolean isAbstract(Class klass) {
+        return (klass.getModifiers() & Modifier.ABSTRACT) > 0;
+    }
+    private boolean isFinal(Class klass) {
+        return (klass.getModifiers() & Modifier.FINAL) > 0;
+    }
     private void checkField(Field theField) {
         String name = capitalize(theField.getName());
         Method setter = null;
