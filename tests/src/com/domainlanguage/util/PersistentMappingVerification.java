@@ -9,9 +9,6 @@ import java.lang.reflect.*;
 import java.math.*;
 import java.util.*;
 
-import com.domainlanguage.base.*;
-import com.domainlanguage.intervals.*;
-import com.domainlanguage.money.*;
 import com.domainlanguage.time.*;
 
 public class PersistentMappingVerification {
