@@ -124,11 +124,15 @@ class BusinessCalendar {
      * 
      * return false; }
      */
-    private Set getHolidaysForPersistentMapping() {
+    
+    //Only for use by persistence mapping frameworks
+    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
+    private Set getForPersistentMapping_Holidays() {
         return holidays;
     }
-
-    private void setHolidaysForPersistentMapping(Set holidays) {
+    //Only for use by persistence mapping frameworks
+    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
+    private void setForPersistentMapping_Holidays(Set holidays) {
         this.holidays = holidays;
     }
 }

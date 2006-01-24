@@ -26,6 +26,10 @@ public class IntervalTest extends TestCase {
     private Interval c1_1o = Interval.over(new BigDecimal(1), true, new BigDecimal(1), false);
     private Interval c1_1c = Interval.over(new BigDecimal(1), true, new BigDecimal(1), true);
     private Interval o1_1o = Interval.over(new BigDecimal(1), false, new BigDecimal(1), false);
+    
+    public static IntervalLimit exampleLimitForPersistentMappingTesting() {
+        return IntervalLimit.upper(true, new Integer(78));
+    }
 //    private Interval o1_10o = Interval.open(new BigDecimal(1), new BigDecimal(10));
 //    private Interval o10_12o = Interval.open(new BigDecimal(10), new BigDecimal(12));
 
@@ -59,11 +63,11 @@ public class IntervalTest extends TestCase {
     //	}
     //
     public void testAbstractCreation() {
-        Interval concrete = new ConcreteInterval(new Integer(1), true, new Integer(3), true);
+        Interval concrete = new Interval(new Integer(1), true, new Integer(3), true);
         Interval newInterval = concrete.newOfSameType(new Integer(1), false, new Integer(4), false);
-        assertTrue(TypeCheck.is(newInterval, ConcreteInterval.class));
+        assertTrue(TypeCheck.is(newInterval, Interval.class));
 
-        Interval expected = new ConcreteInterval(new Integer(1), false, new Integer(4), false);
+        Interval expected = new Interval(new Integer(1), false, new Integer(4), false);
         assertEquals(expected, newInterval);
     }
 

@@ -219,22 +219,28 @@ public class Duration implements Comparable, Serializable {
         addAmountToCalendar(-1 * amount, calendar);
     }
 
-    //for persistent mapping
+    //Only for use by persistence mapping frameworks
+    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
     Duration() {
     }
-    private long getQuantityForPersistentMapping() {
+    //Only for use by persistence mapping frameworks
+    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
+    private long getForPersistentMapping_Quantity() {
         return quantity;
     }
-
-    private void setQuantityForPersistentMapping(long quantity) {
+    //Only for use by persistence mapping frameworks
+    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
+    private void setForPersistentMapping_Quantity(long quantity) {
         this.quantity = quantity;
     }
-
-    private TimeUnit getUnitForPersistentMapping() {
+    //Only for use by persistence mapping frameworks
+    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
+    private TimeUnit getForPersistentMapping_Unit() {
         return unit;
     }
-
-    private void setUnitForPersistentMapping(TimeUnit unit) {
+    //Only for use by persistence mapping frameworks
+    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
+    private void setForPersistentMapping_Unit(TimeUnit unit) {
         this.unit = unit;
     }
 }

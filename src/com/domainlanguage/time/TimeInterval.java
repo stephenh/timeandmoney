@@ -13,12 +13,8 @@ import com.domainlanguage.util.*;
 
 
 public class TimeInterval extends Interval {
-	private Comparable lowerLimit;
-	private boolean includesLowerLimit;
-	private Comparable upperLimit;
-	private boolean includesUpperLimit;
     
-	public static final TimeInterval ALWAYS = over(TimePoint.FAR_PAST, TimePoint.FAR_FUTURE);
+//	public static final TimeInterval ALWAYS = over(TimePoint.FAR_PAST, TimePoint.FAR_FUTURE);
 
 	public static TimeInterval over(TimePoint start, boolean closedStart, TimePoint end, boolean closedEnd) {
 		return new TimeInterval(start, closedStart, end, closedEnd);
@@ -58,11 +54,11 @@ public class TimeInterval extends Interval {
 	}
 	
 	public static TimeInterval everFrom(TimePoint start) {
-		return over(start, TimePoint.FAR_FUTURE);
+		return over(start, null);
 	} 
 
 	public static TimeInterval everPreceding(TimePoint end) {
-		return over(TimePoint.FAR_PAST, end);
+		return over(null, end);
 	} 
 
 	public TimeInterval(TimePoint start, boolean startIncluded, TimePoint end, boolean endIncluded) {
@@ -71,27 +67,7 @@ public class TimeInterval extends Interval {
 //	revisit: also, as with any java assert, an AssertionError will be thrown only
 // if compiled with the -ea option (enableassertions)
 //	so maybe we want to throw an IllegalArgumentException instead?
-		assert start.compareTo(end) <= 0;
-		lowerLimit = start;
-		includesLowerLimit = startIncluded;
-		upperLimit = end;
-		includesUpperLimit = endIncluded;
-	}
-	
-	public Comparable upperLimit() {
-		return upperLimit;
-	}
-	
-	public Comparable lowerLimit() {
-		return lowerLimit;
-	}
-	
-	public boolean includesLowerLimit() {
-		return includesLowerLimit;
-	}
-	
-	public boolean includesUpperLimit() {
-		return includesUpperLimit;
+		super(start, startIncluded, end, endIncluded);
 	}
 	
 	public Interval newOfSameType(Comparable start, boolean isStartClosed, Comparable end, boolean isEndClosed) {
@@ -154,43 +130,9 @@ public class TimeInterval extends Interval {
 		return (TimeInterval)intersect((Interval)interval);
 	}
 
-    //for Hibernate
+    //Only for use by persistence mapping frameworks
+    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
     TimeInterval() {
-        //only for Hibernate
     }
-    
-    private boolean isIncludesLowerLimitForPersistentMapping() {
-        return includesLowerLimit;
-    }
-
-    private void setIncludesLowerLimitForPersistentMapping(boolean includesLowerLimit) {
-        this.includesLowerLimit = includesLowerLimit;
-    }
-
-    private boolean isIncludesUpperLimitForPersistentMapping() {
-        return includesUpperLimit;
-    }
-
-    private void setIncludesUpperLimitForPersistentMapping(boolean includesUpperLimit) {
-        this.includesUpperLimit = includesUpperLimit;
-    }
-
-    private Comparable getLowerLimitForPersistentMapping() {
-        return lowerLimit;
-    }
-
-    private void setLowerLimitForPersistentMapping(Comparable lowerLimit) {
-        this.lowerLimit = lowerLimit;
-    }
-
-    private Comparable getUpperLimitForPersistentMapping() {
-        return upperLimit;
-    }
-
-    private void setUpperLimitForPersistentMapping(Comparable upperLimit) {
-        this.upperLimit = upperLimit;
-    }
-
-	
 }
  

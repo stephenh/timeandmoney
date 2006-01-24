@@ -11,7 +11,7 @@ import java.util.*;
 
 import com.domainlanguage.util.*;
 
-public class TimeUnit implements Comparable, Serializable, TimeUnitConversionFactors {
+class TimeUnit implements Comparable, Serializable, TimeUnitConversionFactors {
     static final TimeUnit millisecond = new TimeUnit(Type.millisecond, Type.millisecond, 1);
     static final TimeUnit second = new TimeUnit(Type.second, Type.millisecond, millisecondsPerSecond);
     static final TimeUnit minute = new TimeUnit(Type.minute, Type.millisecond, millisecondsPerMinute);
@@ -109,7 +109,7 @@ public class TimeUnit implements Comparable, Serializable, TimeUnitConversionFac
         return factor + baseType.hashCode() + type.hashCode();
     }
 
-    static private class Type implements Serializable {
+    static class Type implements Serializable {
         static final Type millisecond = new Type("millisecond");
         static final Type second = new Type("second");
         static final Type minute = new Type("minute");
@@ -133,50 +133,60 @@ public class TimeUnit implements Comparable, Serializable, TimeUnitConversionFac
         public int hashCode() {
             return name.hashCode();
         }
-        //for persistence mapping
+        
+        //Only for use by persistence mapping frameworks
+        //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
         Type() {
         }
-        private String getNameForPersistentMapping() {
+        private String getForPersistentMapping_Name() {
             return this.name;
         }
-        private void setNameForPersistentMapping(String name) {
+        private void setForPersistentMapping_Name(String name) {
             this.name = name;
         }
     }
     int getFactor() {
         return factor;
     }
-    //for persistent mapping
+    //Only for use by persistence mapping frameworks
+    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
     TimeUnit() {
     }
-    private Type getBaseTypeForPersistentMapping() {
+    //Only for use by persistence mapping frameworks
+    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
+    private Type getForPersistentMapping_BaseType() {
         return baseType;
     }
-
-    private void setBaseTypeForPersistentMapping(Type baseType) {
+    //Only for use by persistence mapping frameworks
+    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
+    private void setForPersistentMapping_BaseType(Type baseType) {
         this.baseType = baseType;
     }
-
-    private int getFactorForPersistentMapping() {
+    //Only for use by persistence mapping frameworks
+    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
+    private int getForPersistentMapping_Factor() {
         return factor;
     }
-
-    private void setFactorForPersistentMapping(int factor) {
+    //Only for use by persistence mapping frameworks
+    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
+    private void setForPersistentMapping_Factor(int factor) {
         this.factor = factor;
     }
-
-    private Type getTypeForPersistentMapping() {
+    //Only for use by persistence mapping frameworks
+    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
+    private Type getForPersistentMapping_Type() {
         return type;
     }
-
-    private void setTypeForPersistentMapping(Type type) {
+    //Only for use by persistence mapping frameworks
+    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
+    private void setForPersistentMapping_Type(Type type) {
         this.type = type;
     }
 
-    public static TimeUnit exampleForPersistentMappingTesting() {
+    static TimeUnit exampleForPersistentMappingTesting() {
         return second;
     }
-    public static Type exampleTypeForPersistentMappingTesting() {
+    static Type exampleTypeForPersistentMappingTesting() {
         return Type.hour;
     }
 }

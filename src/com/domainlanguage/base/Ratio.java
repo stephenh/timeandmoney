@@ -65,22 +65,28 @@ public class Ratio {
         return numerator.toString() + "/" + denominator;
     }
     
-    //for persistent mapping
+    //Only for use by persistence mapping frameworks
+    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
     Ratio() {
     }
-    private BigDecimal getDenominatorForPersistentMapping() {
+    //Only for use by persistence mapping frameworks
+    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
+    private BigDecimal getForPersistentMapping_Denominator() {
         return denominator;
     }
-
-    private void setDenominatorForPersistentMapping(BigDecimal denominator) {
+    //Only for use by persistence mapping frameworks
+    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
+    private void setForPersistentMapping_Denominator(BigDecimal denominator) {
         this.denominator = denominator;
     }
-
-    private BigDecimal getNumeratorForPersistentMapping() {
+    //Only for use by persistence mapping frameworks
+    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
+    private BigDecimal getForPersistentMapping_Numerator() {
         return numerator;
     }
-
-    private void setNumeratorForPersistentMapping(BigDecimal numerator) {
+    //Only for use by persistence mapping frameworks
+    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
+    private void setForPersistentMapping_Numerator(BigDecimal numerator) {
         this.numerator = numerator;
     }
 

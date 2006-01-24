@@ -53,12 +53,14 @@ public class IntervalSequence {
         Interval right = (Interval) intervals.get(intervals.size() - 1);
         return left.newOfSameType(left.lowerLimit(), left.includesLowerLimit(), right.upperLimit(), right.includesUpperLimit());
     }
-
-    private List getIntervalsForPersistentMapping() {
+    //Only for use by persistence mapping frameworks
+    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
+    private List getForPersistentMapping_Intervals() {
         return intervals;
     }
-
-    private void setIntervalsForPersistentMapping(List intervals) {
+    //Only for use by persistence mapping frameworks
+    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
+    private void setForPersistentMapping_Intervals(List intervals) {
         this.intervals = intervals;
     }
 }

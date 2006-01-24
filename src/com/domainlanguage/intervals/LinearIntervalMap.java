@@ -72,12 +72,14 @@ public class LinearIntervalMap implements IntervalMap {
     public boolean containsIntersectingKey(Interval otherInterval) {
         return !intersectingKeys(otherInterval).isEmpty();
     }
-
-    private Map getKeyValuesForPersistentMapping() {
+    //Only for use by persistence mapping frameworks
+    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
+    private Map getForPersistentMapping_KeyValues() {
         return keyValues;
     }
-
-    private void setKeyValuesForPersistentMapping(Map keyValues) {
+    //Only for use by persistence mapping frameworks
+    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
+    private void setForPersistentMapping_KeyValues(Map keyValues) {
         this.keyValues = keyValues;
     }
 

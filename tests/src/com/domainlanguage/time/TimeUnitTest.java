@@ -13,7 +13,12 @@ import junit.framework.*;
 import com.domainlanguage.tests.*;
 
 public class TimeUnitTest extends TestCase {
-
+    public static TimeUnit exampleForPersistentMappingTesting() {
+        return TimeUnit.second;
+    }
+    public static TimeUnit.Type exampleTypeForPersistentMappingTesting() {
+        return TimeUnit.Type.hour;
+    }
     public void testSerialization() {
         SerializationTester.assertCanBeSerialized(TimeUnit.month);
     }

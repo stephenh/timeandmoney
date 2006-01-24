@@ -23,22 +23,28 @@ class FixedDateSpecification extends AnnualDateSpecification {
         return day == date.getDay() && month == date.getMonth();
     }
 
-    //for persistent mapping
+    //Only for use by persistence mapping frameworks
+    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
     FixedDateSpecification() {
     }
-    private int getDayForPersistentMapping() {
+    //Only for use by persistence mapping frameworks
+    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
+    private int getForPersistentMapping_Day() {
         return day;
     }
-
-    private void setDayForPersistentMapping(int day) {
+    //Only for use by persistence mapping frameworks
+    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
+    private void setForPersistentMapping_Day(int day) {
         this.day = day;
     }
-
-    private int getMonthForPersistentMapping() {
+    //Only for use by persistence mapping frameworks
+    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
+    private int getForPersistentMapping_Month() {
         return month;
     }
-
-    private void setMonthForPersistentMapping(int month) {
+    //Only for use by persistence mapping frameworks
+    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
+    private void setForPersistentMapping_Month(int month) {
         this.month = month;
     }
 

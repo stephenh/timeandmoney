@@ -9,13 +9,15 @@ import java.lang.reflect.*;
 import java.math.*;
 import java.util.*;
 
+import com.domainlanguage.intervals.*;
 import com.domainlanguage.time.*;
 
 public class PersistentMappingVerification {
-    private static final String FOR_PERSISTENT_MAPPING = "ForPersistentMapping";
+    private static final String FOR_PERSISTENT_MAPPING = "ForPersistentMapping_";
     private static final String LINE_SEPARATOR = System
             .getProperty("line.separator");
     private static final Map TEST_TYPE_MAPPING;
+    private static final Set SHOULD_IGNORE_FIELDS;
     static {
         TEST_TYPE_MAPPING = new HashMap();
         TEST_TYPE_MAPPING
@@ -28,6 +30,7 @@ public class PersistentMappingVerification {
                 .getInstance("EUR"));
         TEST_TYPE_MAPPING.put(Duration.class.getName(), Duration.days(11));
         TEST_TYPE_MAPPING.put(Integer.TYPE.getName(), new Integer(3));
+        TEST_TYPE_MAPPING.put("com.domainlanguage.intervals.IntervalLimit", IntervalTest.exampleLimitForPersistentMappingTesting());
         TEST_TYPE_MAPPING.put(Long.TYPE.getName(), new Long(4));
         TEST_TYPE_MAPPING.put(List.class.getName(), new ArrayList());
         TEST_TYPE_MAPPING.put(Map.class.getName(), new HashMap());
@@ -35,10 +38,14 @@ public class PersistentMappingVerification {
         TEST_TYPE_MAPPING.put(String.class.getName(), "sample value");
         TEST_TYPE_MAPPING.put(TimeRate.class.getName(), new TimeRate(BigDecimal
                 .valueOf(5), Duration.days(6)));
-        TEST_TYPE_MAPPING.put(TimeUnit.class.getName(), TimeUnit
+        TEST_TYPE_MAPPING.put("com.domainlanguage.time.TimeUnit", TimeUnitTest
                 .exampleForPersistentMappingTesting());
-        TEST_TYPE_MAPPING.put(TimeUnit.class.getName() + "$Type", TimeUnit
+        TEST_TYPE_MAPPING.put("com.domainlanguage.time.TimeUnit$Type", TimeUnitTest
                 .exampleTypeForPersistentMappingTesting());
+        
+        SHOULD_IGNORE_FIELDS=new HashSet();
+        SHOULD_IGNORE_FIELDS.add(Interval.class.getName());
+        SHOULD_IGNORE_FIELDS.add("com.domainlanguage.intervals.IntervalLimit");
     }
     private Class toVerify;
     private Object instance;
@@ -93,6 +100,9 @@ public class PersistentMappingVerification {
     }
 
     private void checkFields(Class klass) {
+        if (shouldIgnoreFields(klass)) {
+            return;
+        }
         Field[] fields = klass.getDeclaredFields();
         for (int index = 0; index < fields.length; index++) {
             Field each = fields[index];
@@ -110,6 +120,7 @@ public class PersistentMappingVerification {
         if (isAbstract(klass)) {
             return;
         }
+        
         if(isFinal(klass)) {
             addToProblems(klass.toString() + " must not be final");
         }
@@ -134,6 +145,10 @@ public class PersistentMappingVerification {
                     + " had an invocation exception");
         }
     }
+    private boolean shouldIgnoreFields(Class klass) {
+        return SHOULD_IGNORE_FIELDS.contains(klass.getName());
+    }
+
     private boolean isAbstract(Class klass) {
         return (klass.getModifiers() & Modifier.ABSTRACT) > 0;
     }
@@ -148,7 +163,7 @@ public class PersistentMappingVerification {
         Object actual = null;
 
         try {
-            setter = getSetter(theField, "set" + name + FOR_PERSISTENT_MAPPING);
+            setter = getSetter(theField, "set" + FOR_PERSISTENT_MAPPING + name);
             if (!isMethodPrivate(setter)) {
                 addToProblems(setter.toString() + " not declared private");
             }
@@ -157,7 +172,7 @@ public class PersistentMappingVerification {
                 setter.invoke(instance, new Object[] { toTest });
             }
         } catch (NoSuchMethodException ex) {
-            addToProblems(theField.toString() + " setter does not exist");
+            addToProblems(ex.getMessage() + "does not exist");
         } catch (IllegalArgumentException ex) {
             addToProblems(setter.toString()
                     + " had an illegal argument exception");
@@ -171,8 +186,7 @@ public class PersistentMappingVerification {
 
         Method getter = null;
         try {
-            getter = getGetter(theField, name, "get" + name
-                    + FOR_PERSISTENT_MAPPING);
+            getter = getGetter(theField, name, "get" + FOR_PERSISTENT_MAPPING + name);
             if (!isMethodPrivate(getter)) {
                 addToProblems(getter.toString() + " not declared private");
             }
@@ -181,7 +195,7 @@ public class PersistentMappingVerification {
                 actual = getter.invoke(instance, null);
             }
         } catch (NoSuchMethodException ex) {
-            addToProblems(theField.toString() + " getter does not exist");
+            addToProblems(ex.getMessage() + "does not exist");
         } catch (IllegalArgumentException ex) {
             addToProblems(getter.toString()
                     + " had an illegal argument exception");
@@ -192,7 +206,7 @@ public class PersistentMappingVerification {
             addToProblems(getter.toString()
                     + " had an invocation target exception");
         }
-        if (!TypeCheck.sameClassOrBothNull(toTest, actual)) {
+        if (instance != null && !TypeCheck.sameClassOrBothNull(toTest, actual)) {
             addToProblems(theField.toString()
                     + " getter/setter result do not match, expected [" + toTest
                     + "], but got [" + actual + "]");
@@ -231,7 +245,7 @@ public class PersistentMappingVerification {
             return theField.getDeclaringClass().getDeclaredMethod(getter, null);
         } catch (NoSuchMethodException unknownGetter) {
             return theField.getDeclaringClass().getDeclaredMethod(
-                    "is" + name + FOR_PERSISTENT_MAPPING, null);
+                    "is" + FOR_PERSISTENT_MAPPING + name, null);
         }
     }
 

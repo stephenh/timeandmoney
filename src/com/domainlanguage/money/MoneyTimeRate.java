@@ -45,22 +45,28 @@ public class MoneyTimeRate {
 	public String toString() {
 		return rate.toString();
 	}
-    //for persistent mapping
+    //Only for use by persistence mapping frameworks
+    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
     MoneyTimeRate() {
     }
-    private Currency getCurrencyForPersistentMapping() {
+    //Only for use by persistence mapping frameworks
+    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
+    private Currency getForPersistentMapping_Currency() {
         return currency;
     }
-
-    private void setCurrencyForPersistentMapping(Currency currency) {
+    //Only for use by persistence mapping frameworks
+    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
+    private void setForPersistentMapping_Currency(Currency currency) {
         this.currency = currency;
     }
-
-    private TimeRate getRateForPersistentMapping() {
+    //Only for use by persistence mapping frameworks
+    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
+    private TimeRate getForPersistentMapping_Rate() {
         return rate;
     }
-
-    private void setRateForPersistentMapping(TimeRate rate) {
+    //Only for use by persistence mapping frameworks
+    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
+    private void setForPersistentMapping_Rate(TimeRate rate) {
         this.rate = rate;
     }
 }

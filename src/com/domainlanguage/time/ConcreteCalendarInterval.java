@@ -34,22 +34,28 @@ class ConcreteCalendarInterval extends CalendarInterval {
     public Comparable lowerLimit() {
         return start;
     }
-    //for persistent mapping
+    //Only for use by persistence mapping frameworks
+    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
     ConcreteCalendarInterval() {
     }
-    private CalendarDate getEndForPersistentMapping() {
+    //Only for use by persistence mapping frameworks
+    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
+    private CalendarDate getForPersistentMapping_End() {
         return end;
     }
-
-    private void setEndForPersistentMapping(CalendarDate end) {
+    //Only for use by persistence mapping frameworks
+    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
+    private void setForPersistentMapping_End(CalendarDate end) {
         this.end = end;
     }
-
-    private CalendarDate getStartForPersistentMapping() {
+    //Only for use by persistence mapping frameworks
+    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
+    private CalendarDate getForPersistentMapping_Start() {
         return start;
     }
-
-    private void setStartForPersistentMapping(CalendarDate start) {
+    //Only for use by persistence mapping frameworks
+    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
+    private void setForPersistentMapping_Start(CalendarDate start) {
         this.start = start;
     }
 

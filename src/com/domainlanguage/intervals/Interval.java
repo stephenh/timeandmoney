@@ -22,45 +22,82 @@ import com.domainlanguage.util.*;
  * check if an Integer is within a range, make an Interval. Any class of yours
  * which implements Comparable can have intervals defined this way.
  */
-public abstract class Interval implements Comparable, Serializable {
-
+public class Interval implements Comparable, Serializable {
+    private IntervalLimit lowerLimitObject;
+    private IntervalLimit upperLimitObject;
+    
     public static Interval closed(Comparable lower, Comparable upper) {
-        return new ConcreteInterval(lower, true, upper, true);
+        return new Interval(lower, true, upper, true);
     }
 
     public static Interval open(Comparable lower, Comparable upper) {
-        return new ConcreteInterval(lower, false, upper, false);
+        return new Interval(lower, false, upper, false);
     }
 
     public static Interval over(Comparable lower, boolean lowerIncluded, Comparable upper, boolean upperIncluded) {
-        return new ConcreteInterval(lower, lowerIncluded, upper, upperIncluded);
+        return new Interval(lower, lowerIncluded, upper, upperIncluded);
     }
 
-    public abstract Comparable upperLimit();
+    Interval(IntervalLimit lower, IntervalLimit upper) {
+        assert lower.isLower();
+        assert upper.isUpper();
+        assert lower.compareTo(upper) <= 0;
+        this.lowerLimitObject=lower;
+        this.upperLimitObject=upper;
+    }
+    protected Interval(Comparable lower, boolean isLowerClosed, Comparable upper, boolean isUpperClosed) {
+        this(IntervalLimit.lower(isLowerClosed, lower), IntervalLimit.upper(isUpperClosed, upper));
+    }
+    
+    //Warning: This method should generally be used for display
+    //purposes and interactions with closely coupled classes.
+    //Look for (or add) other methods to do computations.
+    public Comparable upperLimit() {
+        return upperLimitObject.getValue();
+    }
 
     //Warning: This method should generally be used for display
     //purposes and interactions with closely coupled classes.
     //Look for (or add) other methods to do computations.
 
-    public abstract Comparable lowerLimit();
+    public boolean includesUpperLimit() {
+        return upperLimitObject.isClosed();
+    }
 
+   //Warning: This method should generally be used for display
+   //purposes and interactions with closely coupled classes.
+   //Look for (or add) other methods to do computations.
+    
+    public boolean hasUpperLimit() {
+        return upperLimit() != null;
+    }
+      
     //Warning: This method should generally be used for display
     //purposes and interactions with closely coupled classes.
     //Look for (or add) other methods to do computations.
-
-    public abstract boolean includesLowerLimit();
-
+    public Comparable lowerLimit() {
+        return lowerLimitObject.getValue();
+    }
+    
     //Warning: This method should generally be used for display
     //purposes and interactions with closely coupled classes.
     //Look for (or add) other methods to do computations.
-
-    public abstract boolean includesUpperLimit();
-
+    public boolean includesLowerLimit() {
+        return lowerLimitObject.isClosed();
+    }
+    
     //Warning: This method should generally be used for display
     //purposes and interactions with closely coupled classes.
     //Look for (or add) other methods to do computations.
+    public boolean hasLowerLimit() {
+        return lowerLimit() != null;
+    }
+    
 
-    public abstract Interval newOfSameType(Comparable lower, boolean isLowerClosed, Comparable upper, boolean isUpperClosed);
+
+    public Interval newOfSameType(Comparable lower, boolean isLowerClosed, Comparable upper, boolean isUpperClosed) {
+        return new Interval(lower,isLowerClosed,upper,isUpperClosed);
+    }
 
     public Interval emptyOfSameType() {
         return newOfSameType(lowerLimit(), false, lowerLimit(), false);
@@ -98,11 +135,13 @@ public abstract class Interval implements Comparable, Serializable {
     }
 
     public boolean isBelow(Comparable value) {
+        if (!hasUpperLimit()) return false;
         int comparison = upperLimit().compareTo(value);
         return comparison < 0 || (comparison == 0 && !includesUpperLimit());
     }
 
     public boolean isAbove(Comparable value) {
+        if (!hasLowerLimit()) return false;
         int comparison = lowerLimit().compareTo(value);
         return comparison > 0 || (comparison == 0 && !includesLowerLimit());
     }
@@ -260,5 +299,57 @@ public abstract class Interval implements Comparable, Serializable {
             return null;
         return newOfSameType(this.upperLimit(), !this.includesUpperLimit(), other.upperLimit(), other.includesUpperLimit());
     }
-
+    //Only for use by persistence mapping frameworks
+    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
+    protected Interval() {
+    }
+    
+    //Only for use by persistence mapping frameworks
+    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
+    private Comparable getForPersistentMapping_LowerLimit() {
+        return lowerLimitObject.getForPersistentMapping_Value();
+    }
+    //Only for use by persistence mapping frameworks
+    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
+    private void setForPersistentMapping_LowerLimit(Comparable value) {
+        if (lowerLimitObject == null)
+            lowerLimitObject=IntervalLimit.lower(true, value);
+        lowerLimitObject.setForPersistentMapping_Value(value);
+    }
+    //Only for use by persistence mapping frameworks
+    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
+    private boolean isForPersistentMapping_IncludesLowerLimit() {
+        return !lowerLimitObject.isForPersistentMapping_Closed();
+    }
+    //Only for use by persistence mapping frameworks
+    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
+    private void setForPersistentMapping_IncludesLowerLimit(boolean value) {
+        if (lowerLimitObject == null)
+            lowerLimitObject=IntervalLimit.lower(value, null);
+        lowerLimitObject.setForPersistentMapping_Closed(!value);
+    }
+    //Only for use by persistence mapping frameworks
+    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
+    private Comparable getForPersistentMapping_UpperLimit() {
+        return upperLimitObject.getForPersistentMapping_Value();
+    }
+    //Only for use by persistence mapping frameworks
+    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
+    private void setForPersistentMapping_UpperLimit(Comparable value) {
+        if (upperLimitObject == null)
+            upperLimitObject=IntervalLimit.upper(true, value);
+        upperLimitObject.setForPersistentMapping_Value(value);
+    }
+    //Only for use by persistence mapping frameworks
+    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
+    private boolean isForPersistentMapping_IncludesUpperLimit() {
+        return !upperLimitObject.isForPersistentMapping_Closed();
+    }
+    //Only for use by persistence mapping frameworks
+    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
+    private void setForPersistentMapping_IncludesUpperLimit(boolean value) {
+        if (upperLimitObject == null)
+            upperLimitObject=IntervalLimit.upper(value, null);
+        upperLimitObject.setForPersistentMapping_Closed(!value);
+    }
 }

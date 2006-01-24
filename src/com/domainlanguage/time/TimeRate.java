@@ -57,22 +57,28 @@ public class TimeRate {
 		buffer.append(unit);
 		return buffer.toString();
 	}
-    //for persistent mapping
+    //Only for use by persistence mapping frameworks
+    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
     TimeRate() {
     }
-    private BigDecimal getQuantityForPersistentMapping() {
+    //Only for use by persistence mapping frameworks
+    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
+    private BigDecimal getForPersistentMapping_Quantity() {
         return quantity;
     }
-
-    private void setQuantityForPersistentMapping(BigDecimal quantity) {
+    //Only for use by persistence mapping frameworks
+    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
+    private void setForPersistentMapping_Quantity(BigDecimal quantity) {
         this.quantity = quantity;
     }
-
-    private Duration getUnitForPersistentMapping() {
+    //Only for use by persistence mapping frameworks
+    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
+    private Duration getForPersistentMapping_Unit() {
         return unit;
     }
-
-    private void setUnitForPersistentMapping(Duration unit) {
+    //Only for use by persistence mapping frameworks
+    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
+    private void setForPersistentMapping_Unit(Duration unit) {
         this.unit = unit;
     }
 }

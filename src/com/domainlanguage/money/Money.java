@@ -284,28 +284,28 @@ public class Money implements Comparable, Serializable {
         return currency;
     }
 
-    //for persistent mapping
+    //Only for use by persistence mapping frameworks
+    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
     Money() {
     }
-    private BigDecimal getAmountForPersistentMapping() {
+    //Only for use by persistence mapping frameworks
+    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
+    private BigDecimal getForPersistentMapping_Amount() {
         return amount;
     }
-
-    private void setAmountForPersistentMapping(BigDecimal amount) {
+    //Only for use by persistence mapping frameworks
+    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
+    private void setForPersistentMapping_Amount(BigDecimal amount) {
         this.amount = amount;
     }
-
-    private Currency getCurrencyForPersistentMapping() {
+    //Only for use by persistence mapping frameworks
+    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
+    private Currency getForPersistentMapping_Currency() {
         return currency;
     }
-
-    private void setCurrencyForPersistentMapping(Currency currency) {
+    //Only for use by persistence mapping frameworks
+    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
+    private void setForPersistentMapping_Currency(Currency currency) {
         this.currency = currency;
     }
-
-    
-	
-
-	
-
 }

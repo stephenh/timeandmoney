@@ -12,8 +12,8 @@ import java.util.*;
 
 public class TimePoint implements Comparable, Serializable {
 	private static final TimeZone GMT = TimeZone.getTimeZone("Universal");
-	public static final TimePoint FAR_PAST = atMidnightGMT(0001, 1, 1); 
-	public static final TimePoint FAR_FUTURE = atMidnightGMT(9999, 9, 9); 
+	//public static final TimePoint FAR_PAST = null; //atMidnightGMT(0001, 1, 1); 
+	//public static final TimePoint FAR_FUTURE = null; //atMidnightGMT(9999, 9, 9); 
 
 	long millisecondsFromEpoc;
 
@@ -86,8 +86,8 @@ public class TimePoint implements Comparable, Serializable {
 
 	public static TimePoint from(long milliseconds) {
 		TimePoint result =  new TimePoint(milliseconds);
-		assert FAR_FUTURE == null || result.isBefore(FAR_FUTURE);
-		assert FAR_PAST == null || result.isAfter(FAR_PAST);
+		//assert FAR_FUTURE == null || result.isBefore(FAR_FUTURE);
+		//assert FAR_PAST == null || result.isAfter(FAR_PAST);
 		return result;
 
 	}
@@ -191,16 +191,18 @@ public class TimePoint implements Comparable, Serializable {
 		return TimeInterval.over(this, end);
 	}
 
-    //For Hibernate
+    //Only for use by persistence mapping frameworks
+    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
     TimePoint() {
-        //for Hibernate
     }
-    
-    private long getMillisecondsFromEpocForPersistentMapping() {
+    //Only for use by persistence mapping frameworks
+    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
+    private long getForPersistentMapping_MillisecondsFromEpoc() {
         return millisecondsFromEpoc;
     }
-
-    private void setMillisecondsFromEpocForPersistentMapping(long millisecondsFromEpoc) {
+    //Only for use by persistence mapping frameworks
+    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
+    private void setForPersistentMapping_MillisecondsFromEpoc(long millisecondsFromEpoc) {
         this.millisecondsFromEpoc = millisecondsFromEpoc;
     }
 	
