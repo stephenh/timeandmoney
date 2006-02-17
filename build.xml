@@ -13,6 +13,9 @@
 	<property name="examples.dir" value="${compile.root.dir}/examples"/>
 	<property name="build.dir" value= "${compile.root.dir}/build"/>
 	
+	<property name="jar.file" value="${build.dir}/timeandmoney-${cvs.version}.jar"/>
+	<property name="jar.tests.file" value="${build.dir}/timeandmoney-tests-${cvs.version}.jar"/>
+	
 	<path id="build.classpath">
 		<pathelement path="${build.dir}"/>
 		<fileset dir="${library.dir}">
@@ -62,10 +65,12 @@
 	</target>
 	
     <target name="jar" depends="check_out, compile, test">
-        <jar jarfile="${build.dir}/timeandmoney-${cvs.version}.jar"
+        <jar jarfile="${jar.file}"
             basedir="${build.dir}" includes="com/**" excludes="example/**, **/tests/**, **/**Test.class"/>
-    	<jar jarfile="${build.dir}/timeandmoney-tests-${cvs.version}.jar"
+    	<copy file="${jar.file}" todir="${release.dir}"/>
+    	<jar jarfile="${jar.tests.file}"
     		basedir="${build.dir}" includes="**/tests/**, example/**, **/**Test.class"/>
+    	<copy file="${jar.tests.file}" todir="${release.dir}"/>
     </target>
 	
 	<target name="src_zip" depends="jar">
