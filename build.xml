@@ -1,30 +1,43 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <project name="TimeLibrary" default="all">
+	<property name="cvs.version" value="HEAD"/>
 	
-	<property name="source.dir" value="${basedir}/src"/>
-	<property name="library.dir" value="${basedir}/lib"/>
-	<property name="examples.dir" value="${basedir}/examples"/>
-	<property name="build.dir" value= "${basedir}/build"/>
+	<property name="timeandmoney.dir" value="${java.io.tmpdir}/TimeAndMoney"/>
+	<property name="checkout.dir" value="${timeandmoney.dir}/cvs"/>
+	<property name="release.dir" value="${timeandmoney.dir}/release"/>
 	
-	<path id="classpath">
+	<property name="compile.root.dir" value="${checkout.dir}/TimeAndMoney"/>
+	<property name="source.dir" value="${compile.root.dir}/src"/>
+	<property name="tests.dir" value="${compile.root.dir}/tests"/>
+	<property name="library.dir" value="${compile.root.dir}/lib"/>
+	<property name="examples.dir" value="${compile.root.dir}/examples"/>
+	<property name="build.dir" value= "${compile.root.dir}/build"/>
+	
+	<path id="build.classpath">
 		<pathelement path="${build.dir}"/>
 		<fileset dir="${library.dir}">
 	    	<include name="*.jar"/>
 	    </fileset>
 	</path>
 	
+	<target name="echo_info">
+		<echo message="Build Temp: ${java.io.tmpdir}"/>
+	</target>
+	
     <target name = "clean">
-        <delete dir = "${build.dir}"/>
+        <delete dir="${build.dir}"/>
     	<mkdir dir="${build.dir}"/>
+    	<delete dir="${release.dir}"/>
+    	<mkdir dir="${release.dir}"/>
     </target>
 		
     <target name="compile" depends="clean">
-        <javac srcdir="src" destdir="${build.dir}" source="1.4"/>
-        <javac srcdir="tests" destdir="${build.dir}" source="1.4">
-    		<classpath refid="classpath"/>
+        <javac srcdir="${source.dir}" destdir="${build.dir}" source="1.4"/>
+        <javac srcdir="${tests.dir}" destdir="${build.dir}" source="1.4">
+    		<classpath refid="build.classpath"/>
     	</javac>
-        <javac srcdir="examples" destdir="${build.dir}" source="1.4">
-        	<classpath refid="classpath"/>
+        <javac srcdir="${examples.dir}" destdir="${build.dir}" source="1.4">
+        	<classpath refid="build.classpath"/>
     	</javac>
     </target>
 	
@@ -32,19 +45,33 @@
         <java fork="yes" classname="junit.textui.TestRunner" 
             taskname="junit" failonerror="true">
             <arg value="com.domainlanguage.tests.AllTests"/>
-    		<classpath refid="classpath"/>
+    		<classpath refid="build.classpath"/>
         	<assertions>
         		<enable/>
         	</assertions>
         </java>
     </target>
-
-    <target name="jar" depends="compile, test">
-        <jar jarfile="${build.dir}/timeandmoney.jar"
+	
+	<target name="check_out">
+		<echo message="Checking out Version: ${cvs.version}"/>
+		<delete dir="${checkout.dir}"/>
+		<cvs cvsRoot=":pserver:anonymous@cvs.sourceforge.net:/cvsroot/timeandmoney"
+			     package="TimeAndMoney"
+			     dest="${checkout.dir}"
+				 tag="${cvs.version}"/>
+	</target>
+	
+    <target name="jar" depends="check_out, compile, test">
+        <jar jarfile="${build.dir}/timeandmoney-${cvs.version}.jar"
             basedir="${build.dir}" includes="com/**" excludes="example/**, **/tests/**, **/**Test.class"/>
-    	<jar jarfile="${build.dir}/timeandmoney-tests.jar"
+    	<jar jarfile="${build.dir}/timeandmoney-tests-${cvs.version}.jar"
     		basedir="${build.dir}" includes="**/tests/**, example/**, **/**Test.class"/>
     </target>
 	
-	<target name="all" depends="jar"/>
+	<target name="src_zip" depends="jar">
+		<zip destfile="${release.dir}/timeandmoney-src-${cvs.version}.zip"
+		       basedir="${checkout.dir}"/>
+	</target>
+	
+	<target name="all" depends="echo_info, src_zip"/>
 </project>
