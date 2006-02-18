@@ -25,7 +25,7 @@
 	</path>
 	
 	<target name="echo_info">
-		<echo message="Build Temp: ${java.io.tmpdir}"/>
+		<echo message="Build Temp: ${temp.dir}"/>
 	</target>
 	
     <target name = "clean">
