@@ -2,7 +2,8 @@
 <project name="TimeLibrary" default="all">
 	<property name="cvs.version" value="HEAD"/>
 	
-	<property name="timeandmoney.dir" value="${java.io.tmpdir}/TimeAndMoney"/>
+	<property name="temp.dir" value="${java.io.tempdir}"/>
+	<property name="timeandmoney.dir" value="${temp.dir}/TimeAndMoney"/>
 	<property name="checkout.dir" value="${timeandmoney.dir}/cvs"/>
 	<property name="release.dir" value="${timeandmoney.dir}/release"/>
 	
