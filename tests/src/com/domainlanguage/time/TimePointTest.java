@@ -176,4 +176,11 @@ public class TimePointTest extends TestCase {
         assertTrue("Start timepoint is before end1", start.isBefore( end1));
         assertTrue("and should of course be before end2", start.isBefore( end2)); 
     }
+    //TimePoint.at() ignores the minute parameter.
+    public void testNotIgnoringMinuteParameter() {
+        TimePoint point= TimePoint.at(2006,03,22,13,45,59,499,gmt);
+        assertEquals("2006-03-22 13:45:59:499", point.toString("yyyy-MM-dd HH:mm:ss:SSS", gmt));
+        TimePoint pointNoMilli= TimePoint.at(2006,03,22,13,45,59,gmt);
+        assertEquals("2006-03-22 13:45:59:000", pointNoMilli.toString("yyyy-MM-dd HH:mm:ss:SSS", gmt));
+    }
 }

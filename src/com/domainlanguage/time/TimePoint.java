@@ -36,7 +36,7 @@ public class TimePoint implements Comparable, Serializable {
 	}
 
 	public static TimePoint at(int year, int month, int date, int hour, int minute, int second, TimeZone zone) {
-		return at(year, month, date, hour, second, 0, 0, zone);
+		return at(year, month, date, hour, minute, second, 0, zone);
 	}
 
 	public static TimePoint atGMT(int year, int month, int date, int hour, int minute, int second, int millisecond) {
