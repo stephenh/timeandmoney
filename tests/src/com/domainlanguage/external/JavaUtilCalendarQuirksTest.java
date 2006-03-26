@@ -15,7 +15,7 @@ import junit.framework.TestCase;
  * expect it to. We ran into a small problem with HOUR and HOUR_OF_DAY in
  * CalendarDateTest.testConversionToJavaUtil(). These tests are mainly for peace of mind.
  */
-public class CalendarTest extends TestCase {
+public class JavaUtilCalendarQuirksTest extends TestCase {
     
     public void testHour() {
         TimeZone gmt = TimeZone.getTimeZone("Universal");

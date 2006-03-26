@@ -122,10 +122,18 @@ public class CalendarDate implements Comparable, Serializable {
 		return this.plusDays(-1);
 	}
 	
+    /**
+     * @deprecated (2006-03-23)
+     * Use calendarDate.month().start() instead.
+     */
 	public CalendarDate firstOfMonth() {
 		return month().start();
 	}
 	
+    /**
+     * @deprecated (2006-03-23)
+     * Use calendarDate.month().end() instead.
+     */
 	public CalendarDate lastOfMonth() {
 		return month().end();
 	}

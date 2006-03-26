@@ -198,5 +198,15 @@ public class MoneyTest extends TestCase {
         assertEquals(Money.dollars(2.52), d2_51.incremented());
         assertEquals(Money.valueOf(51, JPY), y50.incremented());
     }
+    
+    public void testFractionalPennies() {
+//        CurrencyPolicy(USD, 0.0025); 
+//        Smallest unit.unit Any Money based on this CurrencyPolicy must be some multiple of the
+//        smallest unit. "Scale" is insufficient, because the limit is not always a number of demial places.
+//        Money someFee = Money.dollars(0.0025);
+//        Money wholeMoney = someFee.times(4);
+//        assertEquals(Money.dollars(0.01), wholeMoney);
+        
+    }
 
 }

@@ -184,40 +184,5 @@ public class TimePointTest extends TestCase {
         TimePoint pointNoMilli= TimePoint.at(2006,03,22,13,45,59,gmt);
         assertEquals("2006-03-22 13:45:59:000", pointNoMilli.toString("yyyy-MM-dd HH:mm:ss:SSS", gmt));
     }
-    //[ 1455295 ] Adding a 1 day Duration to a TimePoint also changes hours
-    public void testOneDayChangesHours() {
-        TimePoint gmtTimePoint = TimePoint.atMidnight(2006, 1, 1, gmt);
-        TimePoint plusOneDay=gmtTimePoint.plus(Duration.days(1));
-        
-        //make sure TimePoint is good
-        assertEquals("2006-01-01 00:00:00:000", gmtTimePoint.toString("yyyy-MM-dd HH:mm:ss:SSS", gmt));
-        assertEquals("2006-01-02 00:00:00:000", plusOneDay.toString("yyyy-MM-dd HH:mm:ss:SSS", gmt));
-        
-        //convert to java.util.Date
-        Date date = gmtTimePoint.asJavaUtilDate();
-        Date plusOneDate=plusOneDay.asJavaUtilDate();
-        
-        //set up format for gmt
-        DateFormat format=DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.MEDIUM);
-        format.setTimeZone(gmt);
-        
-        assertEquals("1/1/06 12:00:00 AM", format.format(date));
-        assertEquals("1/2/06 12:00:00 AM", format.format(plusOneDate));
-        
-        //check for central time zone
-        format.setTimeZone(ct);
-        assertEquals("12/31/05 6:00:00 PM", format.format(date));
-        assertEquals("1/1/06 6:00:00 PM", format.format(plusOneDate));
-        
-        //one more check in different time zone
-        TimePoint ctTimePoint = TimePoint.atMidnight(2006, 1, 1, ct);
-        TimePoint ctPlusOne = ctTimePoint.plus(Duration.days(1));
-        
-        assertEquals("2006-01-02 00:00:00:000", ctPlusOne.toString("yyyy-MM-dd HH:mm:ss:SSS", ct));
-        
-        Date ctDate = ctPlusOne.asJavaUtilDate();
- 
-        assertEquals("1/2/06 12:00:00 AM", format.format(ctDate));
-        
-    }
+    
 }
