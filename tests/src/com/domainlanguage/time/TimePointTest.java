@@ -6,7 +6,6 @@
 
 package com.domainlanguage.time;
 
-import java.text.*;
 import java.util.*;
 
 import junit.framework.*;
