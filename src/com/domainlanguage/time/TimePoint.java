@@ -12,8 +12,6 @@ import java.util.*;
 
 public class TimePoint implements Comparable, Serializable {
 	private static final TimeZone GMT = TimeZone.getTimeZone("Universal");
-	//public static final TimePoint FAR_PAST = null; //atMidnightGMT(0001, 1, 1); 
-	//public static final TimePoint FAR_FUTURE = null; //atMidnightGMT(9999, 9, 9); 
 
 	long millisecondsFromEpoc;
 

@@ -13,8 +13,6 @@ import com.domainlanguage.util.*;
 
 
 public class TimeInterval extends Interval {
-    
-//	public static final TimeInterval ALWAYS = over(TimePoint.FAR_PAST, TimePoint.FAR_FUTURE);
 
 	public static TimeInterval over(TimePoint start, boolean closedStart, TimePoint end, boolean closedEnd) {
 		return new TimeInterval(start, closedStart, end, closedEnd);

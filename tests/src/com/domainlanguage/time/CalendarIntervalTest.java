@@ -106,8 +106,8 @@ public class CalendarIntervalTest extends TestCase {
     }
 
     public void testComplements() {
-        CalendarInterval may1Onward = CalendarInterval.inclusive(may1, CalendarDate.FAR_FUTURE);
-        CalendarInterval may2Onward = CalendarInterval.inclusive(may2, CalendarDate.FAR_FUTURE);
+        CalendarInterval may1Onward = CalendarInterval.inclusive(may1, null);
+        CalendarInterval may2Onward = CalendarInterval.inclusive(may2, null);
         List complementList = may2Onward.complementRelativeTo(may1Onward);
         assertEquals(1, complementList.size());
         

@@ -172,6 +172,9 @@ public class Interval implements Comparable, Serializable {
     }
 
     private Comparable lesserOfLowerLimits(Interval other) {
+        if (lowerLimit() == null) {
+            return null;
+        }
         int lowerComparison = lowerLimit().compareTo(other.lowerLimit());
         if (lowerComparison <= 0)
             return this.lowerLimit();
@@ -179,6 +182,9 @@ public class Interval implements Comparable, Serializable {
     }
 
     Comparable greaterOfLowerLimits(Interval other) {
+        if (lowerLimit() == null) {
+            return other.lowerLimit();
+        }
         int lowerComparison = lowerLimit().compareTo(other.lowerLimit());
         if (lowerComparison >= 0)
             return this.lowerLimit();
@@ -186,6 +192,9 @@ public class Interval implements Comparable, Serializable {
     }
 
     Comparable lesserOfUpperLimits(Interval other) {
+        if (upperLimit() == null) {
+            return other.upperLimit();
+        }
         int upperComparison = upperLimit().compareTo(other.upperLimit());
         if (upperComparison <= 0)
             return this.upperLimit();
@@ -193,6 +202,9 @@ public class Interval implements Comparable, Serializable {
     }
 
     private Comparable greaterOfUpperLimits(Interval other) {
+        if (upperLimit() == null) {
+            return null;
+        }
         int upperComparison = upperLimit().compareTo(other.upperLimit());
         if (upperComparison >= 0)
             return this.upperLimit();

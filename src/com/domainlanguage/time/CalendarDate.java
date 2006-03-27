@@ -12,9 +12,6 @@ import java.util.*;
 import com.domainlanguage.util.*;
 
 public class CalendarDate implements Comparable, Serializable {
-	public static final CalendarDate FAR_FUTURE = from(9999, 9, 9);
-	public static final CalendarDate FAR_PAST = from(0001,1,1);
-
 	private int year;
 	private int month; // 1 based: January = 1, February = 2, ...
 	private int day;
@@ -25,8 +22,6 @@ public class CalendarDate implements Comparable, Serializable {
     
 	public static CalendarDate from(int year, int month, int day) {
 		CalendarDate result =  new CalendarDate(year, month, day);
-        assert FAR_FUTURE == null || result.isBefore(FAR_FUTURE);
-		assert FAR_PAST == null || result.isAfter(FAR_PAST);
 		return result;
 
 	}
