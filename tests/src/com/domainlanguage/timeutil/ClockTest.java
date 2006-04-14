@@ -30,6 +30,16 @@ public class ClockTest extends TestCase {
 		Clock.setTimeSource(dummySourceDec1_5h);
 		assertEquals(dec1_5am_gmt, Clock.now());
 	}
+    //[ 1466694 ] Clock.now() should use default TimeSource
+    public void testNowDoesntBreak() {
+        Exception possibleNullPointerException=null;
+        try {
+            Clock.now();
+        } catch (Exception exceptionalEvent) {
+            possibleNullPointerException = exceptionalEvent;
+        }
+        assertNull(possibleNullPointerException);
+    }
 	
 	public void testToday() {
 		Clock.setTimeSource(dummySourceDec1_5h);

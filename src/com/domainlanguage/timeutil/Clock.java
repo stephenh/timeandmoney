@@ -34,7 +34,7 @@ public class Clock {
 	}
 	
 	public static TimePoint now() {
-		return timeSource.now();
+		return timeSource().now();
 	}
 	
 	public static CalendarDate today() {
