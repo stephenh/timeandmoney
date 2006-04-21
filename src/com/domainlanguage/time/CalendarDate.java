@@ -181,15 +181,7 @@ public class CalendarDate implements Comparable, Serializable {
 	}
 	
 	public TimePoint startAsTimePoint(TimeZone zone) {
-		Calendar calendar = Calendar.getInstance(zone);
-		calendar.set(Calendar.YEAR, year);
-		calendar.set(Calendar.MONTH, month-1);
-		calendar.set(Calendar.DATE, day);
-		calendar.set(Calendar.HOUR_OF_DAY, 0);
-		calendar.set(Calendar.MINUTE, 0);
-		calendar.set(Calendar.SECOND, 0);
-		calendar.set(Calendar.MILLISECOND, 0);
-		return TimePoint.from(calendar);
+        return TimePoint.atMidnight(year, month, day, zone);
 	}
 
 	public CalendarInterval through(CalendarDate otherDate) {
@@ -244,6 +236,10 @@ public class CalendarDate implements Comparable, Serializable {
     //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
     private void setForPersistentMapping_Year(int year) {
         this.year = year;
+    }
+
+    public CalendarMinute at(TimeOfDay timeOfDay) {
+        return CalendarMinute.dateAndTimeOfDay(this, timeOfDay);
     }
 
 

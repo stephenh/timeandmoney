@@ -11,8 +11,12 @@ import java.util.*;
 
 import com.domainlanguage.intervals.*;
 import com.domainlanguage.time.*;
+import com.domainlanguage.time.adt.*;
 
 public class PersistentMappingVerification {
+    private static final String SET = "set";
+    private static final String GET = "get";
+    private static final String GET_PRIMITIVE_PERSISTENCE_MAPPING_TYPE = "getPrimitivePersistenceMappingType";
     private static final String FOR_PERSISTENT_MAPPING = "ForPersistentMapping_";
     private static final String LINE_SEPARATOR = System
             .getProperty("line.separator");
@@ -29,13 +33,16 @@ public class PersistentMappingVerification {
         TEST_TYPE_MAPPING.put(Currency.class.getName(), Currency
                 .getInstance("EUR"));
         TEST_TYPE_MAPPING.put(Duration.class.getName(), Duration.days(11));
+        TEST_TYPE_MAPPING.put(Hour.class.getName(), Hour.value(11));
         TEST_TYPE_MAPPING.put(Integer.TYPE.getName(), new Integer(3));
         TEST_TYPE_MAPPING.put("com.domainlanguage.intervals.IntervalLimit", IntervalTest.exampleLimitForPersistentMappingTesting());
         TEST_TYPE_MAPPING.put(Long.TYPE.getName(), new Long(4));
         TEST_TYPE_MAPPING.put(List.class.getName(), new ArrayList());
         TEST_TYPE_MAPPING.put(Map.class.getName(), new HashMap());
+        TEST_TYPE_MAPPING.put(Minute.class.getName(), Minute.value(22));
         TEST_TYPE_MAPPING.put(Set.class.getName(), new HashSet());
         TEST_TYPE_MAPPING.put(String.class.getName(), "sample value");
+        TEST_TYPE_MAPPING.put(TimeOfDay.class.getName(), TimeOfDay.hourAndMinute(7, 44));
         TEST_TYPE_MAPPING.put(TimeRate.class.getName(), new TimeRate(BigDecimal
                 .valueOf(5), Duration.days(6)));
         TEST_TYPE_MAPPING.put("com.domainlanguage.time.TimeUnit", TimeUnitTest
@@ -124,6 +131,10 @@ public class PersistentMappingVerification {
         if(isFinal(klass)) {
             addToProblems(klass.toString() + " must not be final");
         }
+        checkConstructor(klass);
+    }
+
+    private void checkConstructor(Class klass) {
         Constructor constructor = null;
         try {
             constructor = klass.getDeclaredConstructor(null);
@@ -157,36 +168,23 @@ public class PersistentMappingVerification {
     }
     private void checkField(Field theField) {
         String name = capitalize(theField.getName());
-        Method setter = null;
-        Class type = theField.getType();
+        Class type = getTypeFor(theField);
         Object toTest = getTestValueFor(type);
-        Object actual = null;
-
-        try {
-            setter = getSetter(theField, "set" + FOR_PERSISTENT_MAPPING + name);
-            if (!isMethodPrivate(setter)) {
-                addToProblems(setter.toString() + " not declared private");
-            }
-            if (instance != null) {
-                setter.setAccessible(true);
-                setter.invoke(instance, new Object[] { toTest });
-            }
-        } catch (NoSuchMethodException ex) {
-            addToProblems(ex.getMessage() + "does not exist");
-        } catch (IllegalArgumentException ex) {
-            addToProblems(setter.toString()
-                    + " had an illegal argument exception");
-        } catch (IllegalAccessException ex) {
-            addToProblems(setter.toString()
-                    + " had an illegal access exception");
-        } catch (InvocationTargetException ex) {
-            addToProblems(setter.toString()
-                    + " had an invocation target exception");
+        checkSetter(theField, name, toTest);
+        Object actual = checkGetter(theField, name);
+        if (instance != null && !TypeCheck.sameClassOrBothNull(toTest, actual)) {
+            addToProblems(theField.toString()
+                    + " getter/setter result do not match, expected [" + toTest
+                    + "], but got [" + actual + "]");
+            return;
         }
+    }
 
+    private Object checkGetter(Field theField, String name) {
         Method getter = null;
+        Object actual=null;
         try {
-            getter = getGetter(theField, name, "get" + FOR_PERSISTENT_MAPPING + name);
+            getter = getGetter(theField, name, GET + FOR_PERSISTENT_MAPPING + name);
             if (!isMethodPrivate(getter)) {
                 addToProblems(getter.toString() + " not declared private");
             }
@@ -206,11 +204,53 @@ public class PersistentMappingVerification {
             addToProblems(getter.toString()
                     + " had an invocation target exception");
         }
-        if (instance != null && !TypeCheck.sameClassOrBothNull(toTest, actual)) {
-            addToProblems(theField.toString()
-                    + " getter/setter result do not match, expected [" + toTest
-                    + "], but got [" + actual + "]");
-            return;
+        return actual;
+    }
+
+    private void checkSetter(Field theField, String name, Object toTest) {
+        Method setter = null;
+        try {
+            setter = getSetter(theField, SET + FOR_PERSISTENT_MAPPING + name);
+            if (!isMethodPrivate(setter)) {
+                addToProblems(setter.toString() + " not declared private");
+            }
+            if (instance != null) {
+                setter.setAccessible(true);
+                setter.invoke(instance, new Object[] { toTest });
+            }
+        } catch (NoSuchMethodException ex) {
+            addToProblems(ex.getMessage() + "does not exist");
+        } catch (IllegalArgumentException ex) {
+            addToProblems(setter.toString()
+                    + " had an illegal argument exception");
+        } catch (IllegalAccessException ex) {
+            addToProblems(setter.toString()
+                    + " had an illegal access exception");
+        } catch (InvocationTargetException ex) {
+            addToProblems(setter.toString()
+                    + " had an invocation target exception");
+        }
+    }
+
+    private Class getTypeFor(Field theField) {
+        Class type = theField.getType();
+        if (type.isPrimitive())
+            return type;
+        try {
+            Method method = type.getDeclaredMethod(
+                    GET_PRIMITIVE_PERSISTENCE_MAPPING_TYPE, null);
+            method.setAccessible(true);
+            return (Class) method.invoke(null, null);
+        } catch (IllegalArgumentException ex) {
+            return type;
+        } catch (IllegalAccessException ex) {
+            return type;
+        } catch (InvocationTargetException ex) {
+            return type;
+        } catch (SecurityException ex) {
+            return type;
+        } catch (NoSuchMethodException ex) {
+            return type;
         }
     }
 
@@ -234,7 +274,7 @@ public class PersistentMappingVerification {
     private Method getSetter(Field theField, String setter)
             throws NoSuchMethodException {
         Class[] setterTypes = new Class[1];
-        setterTypes[0] = theField.getType();
+        setterTypes[0] = getTypeFor(theField);
         return theField.getDeclaringClass().getDeclaredMethod(setter,
                 setterTypes);
     }

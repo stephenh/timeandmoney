@@ -36,7 +36,7 @@ public class TimeAndMoneyDomainClassFilter implements ClassFilter {
             if (next.equals("domainlanguage")) {
                 result=true;
             }
-            if (next.equals("tests") || next.equals("util")) {
+            if (next.equals("tests") || next.equals("util") || next.equals("adt")) {
                 result=false;
             }
         }
