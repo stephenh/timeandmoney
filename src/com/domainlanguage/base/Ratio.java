@@ -43,10 +43,16 @@ public class Ratio {
     }
 
     public boolean equals(Object anObject) {
-        if (!TypeCheck.is(anObject, Ratio.class))
+        try {
+            return equals((Ratio)anObject);
+        } catch(ClassCastException ex) {
             return false;
-        Ratio other = (Ratio) anObject;
-        return this.numerator.equals(other.numerator) && this.denominator.equals(other.denominator);
+        }
+    }
+    public boolean equals(Ratio other) {
+        return 
+        	other != null &&
+        	this.numerator.equals(other.numerator) && this.denominator.equals(other.denominator);
     }
 
     public int hashCode() {

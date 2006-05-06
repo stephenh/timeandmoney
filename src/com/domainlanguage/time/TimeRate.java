@@ -40,11 +40,17 @@ public class TimeRate {
 	}
 
 	public boolean equals(Object another) {
-		if (!TypeCheck.sameClassOrBothNull(this, another))
-			return false;
-		TimeRate anotherRate = (TimeRate) another;
-		return quantity.equals(anotherRate.quantity) && unit.equals(anotherRate.unit);
+		try {
+            return equals((TimeRate)another);
+        } catch(ClassCastException ex) {
+            return false;
+        }
 	}
+    public boolean equals(TimeRate another) {
+    	return 
+    		another != null &&
+    		quantity.equals(another.quantity) && unit.equals(another.unit);
+    }
 
 	public int scale() {
 		return quantity.scale();

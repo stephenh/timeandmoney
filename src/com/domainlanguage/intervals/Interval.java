@@ -231,10 +231,16 @@ public class Interval implements Comparable, Serializable {
         return this.includes(limit) || other.includes(limit);
     }
 
-    public boolean equals(Object object) {
-        if (!TypeCheck.is(object, Interval.class))
+    public boolean equals(Object other) {
+        try {
+            return equals((Interval)other);
+        } catch(ClassCastException ex) {
             return false;
-        Interval other = ((Interval) object);
+        }
+    }
+    public boolean equals(Interval other) {
+        if (other == null) return false;
+        
         boolean thisEmpty = this.isEmpty();
         boolean otherEmpty = other.isEmpty();
         if (thisEmpty & otherEmpty)
@@ -249,7 +255,7 @@ public class Interval implements Comparable, Serializable {
         if (thisSingle ^ otherSingle)
             return false;
 
-        return compareTo(object) == 0;
+        return compareTo(other) == 0;
     }
 
     public int hashCode() {

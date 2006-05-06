@@ -15,7 +15,7 @@ import com.domainlanguage.util.*;
 public class SerializationTester {
 
     public static void assertCanBeSerialized(Object serializable) throws AssertionFailedError {
-        if (!TypeCheck.is(serializable, Serializable.class))
+        if (!Serializable.class.isInstance(serializable))
             throw new AssertionFailedError("Object doesn't implement java.io.Serializable interface");
 
         ObjectOutputStream out = null;

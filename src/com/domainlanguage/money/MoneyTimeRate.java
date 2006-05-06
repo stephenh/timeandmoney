@@ -33,13 +33,18 @@ public class MoneyTimeRate {
 		return Money.valueOf(rate.over(duration, scale, roundRule), currency);
 	}
 
-	public boolean equals(Object another) {
-		if (!TypeCheck.sameClassOrBothNull(this, another))
-			return false;
-		MoneyTimeRate anotherRate = (MoneyTimeRate) another;
+    public boolean equals(Object other) {
+        try {
+            return equals((MoneyTimeRate) other);
+        } catch(ClassCastException ex) {
+            return false;
+        }
+    }
+	public boolean equals(MoneyTimeRate another) {
 		return 
-			this.rate.equals(anotherRate.rate) && 
-			this.currency.equals(anotherRate.currency);
+            another != null &&
+			this.rate.equals(another.rate) && 
+			this.currency.equals(another.currency);
 	}
 
 	public String toString() {

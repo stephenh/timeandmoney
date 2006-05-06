@@ -86,7 +86,7 @@ public class FilteredTestCaseCollector implements TestCollector {
 
     private boolean isExludedByType(Class testClass) {
         for (int i = 0; i < exludedTypes.length; i++)
-            if (TypeCheck.is(testClass, exludedTypes[i]))
+            if (exludedTypes[i].isAssignableFrom(testClass))
                 return true;
         return false;
     }
@@ -94,7 +94,7 @@ public class FilteredTestCaseCollector implements TestCollector {
     private boolean isTestClass(Class testClass) {
         return !Modifier.isAbstract(testClass.getModifiers())
                 && Modifier.isPublic(testClass.getModifiers())
-                && TypeCheck.is(testClass, TestCase.class);
+                && TestCase.class.isAssignableFrom(testClass);
     }
 
     protected void gatherFiles(File classRoot, String classFileName, Hashtable result) {

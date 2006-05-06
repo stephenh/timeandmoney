@@ -65,11 +65,16 @@ public abstract class CalendarInterval extends Interval {
     }
 
     public boolean equals(Object object) {
-        //revisit: maybe use: Reflection.equalsOverClassAndNull(this, other)
-        if (!(object instanceof CalendarInterval))
+        try {
+            return equals((CalendarInterval)object);
+        } catch(ClassCastException ex) {
             return false;
-        CalendarInterval other = (CalendarInterval) object;
-        return this.upperLimit().equals(other.upperLimit()) && this.lowerLimit().equals(other.lowerLimit());
+        }
+    }
+    public boolean equals(CalendarInterval other) {
+        return
+            other != null &&
+            this.upperLimit().equals(other.upperLimit()) && this.lowerLimit().equals(other.lowerLimit());
     }
 
     public int hashCode() {

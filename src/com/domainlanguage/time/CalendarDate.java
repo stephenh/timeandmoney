@@ -78,24 +78,33 @@ public class CalendarDate implements Comparable, Serializable {
 	}
 
 	public int compareTo(Object other) {
-		if (TypeCheck.is(other, CalendarDate.class)) {
-			CalendarDate otherDate = (CalendarDate) other;
-			if (this.isBefore(otherDate)) return -1;
-			if (this.isAfter(otherDate)) return 1;
-			return 0;
-		}
-		return -1;
+		try {
+			return compareTo ((CalendarDate) other);
+		} catch (ClassCastException ex) {
+            return -1;
+        }
 	}
+    public int compareTo(CalendarDate other) {
+        if (other == null) return -1;
+        if (isBefore(other)) return -1;
+        if (isAfter(other)) return 1;
+        return 0;
+    }
 
 	public boolean equals(Object object) {
-		//revisit: maybe use: Reflection.equalsOverClassAndNull(this, other)
-		if (!(object instanceof CalendarDate)) return false;
-		CalendarDate other = (CalendarDate) object;
-		return 
-			this.year == other.year &&
-			this.month == other.month &&
-			this.day == other.day;
+        try {
+            return equals((CalendarDate) object);
+        } catch(ClassCastException ex) {
+            return false;
+        }
 	}
+    public boolean equals(CalendarDate other) {
+        return 
+            other != null &&
+            this.year == other.year &&
+            this.month == other.month &&
+            this.day == other.day;
+    }
 
 	public int hashCode() {
 		return year * month * day;

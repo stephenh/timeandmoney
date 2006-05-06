@@ -172,12 +172,21 @@ public class PersistentMappingVerification {
         Object toTest = getTestValueFor(type);
         checkSetter(theField, name, toTest);
         Object actual = checkGetter(theField, name);
-        if (instance != null && !TypeCheck.sameClassOrBothNull(toTest, actual)) {
+        if (instance != null && !sameClassOrBothNull(toTest, actual)) {
             addToProblems(theField.toString()
                     + " getter/setter result do not match, expected [" + toTest
                     + "], but got [" + actual + "]");
             return;
         }
+    }
+    private boolean sameClassOrBothNull(Object one, Object another) {
+        if (one == another)
+            return true;
+        if (one == null)
+            return false;
+        if (another == null)
+            return false;
+        return one.getClass().isInstance(another);
     }
 
     private Object checkGetter(Field theField, String name) {
