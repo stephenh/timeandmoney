@@ -10,7 +10,7 @@ import java.util.*;
 
 import com.domainlanguage.util.*;
 
-class BusinessCalendar {
+public class BusinessCalendar {
     private Set holidays;
 
     static BusinessCalendar defaultBusinessCalendar() {
