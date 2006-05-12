@@ -59,7 +59,7 @@
 	<target name="check_out">
 		<echo message="Checking out Version: ${cvs.version}"/>
 		<delete dir="${checkout.dir}"/>
-		<cvs cvsRoot=":pserver:anonymous@cvs.sourceforge.net:/cvsroot/timeandmoney"
+		<cvs cvsRoot=":pserver:anonymous@timeandmoney.cvs.sourceforge.net:/cvsroot/timeandmoney"
 			     package="TimeAndMoney"
 			     dest="${checkout.dir}"
 				 tag="${cvs.version}"/>
