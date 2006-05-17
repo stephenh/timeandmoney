@@ -55,4 +55,34 @@ public class HourTest extends TestCase {
         }
         fail("Illegal Argument Not Caught");
     }
+    public void testLaterAfterEarlier() {
+        Hour later = Hour.value(8);
+        Hour earlier = Hour.value(6);
+        assertTrue(later.after(earlier));
+    }
+    public void testEarlierAfterLater() {
+        Hour earlier = Hour.value(8);
+        Hour later = Hour.value(20);
+        assertFalse(earlier.after(later));
+    }
+    public void testEqualAfterEqual() {
+        Hour anHour = Hour.value(8);
+        Hour anotherHour = Hour.value(8);
+        assertFalse(anHour.after(anotherHour));
+    }
+    public void testLaterBeforeEarlier() {
+        Hour later = Hour.value(8);
+        Hour earlier = Hour.value(6);
+        assertFalse(later.before(earlier));
+    }
+    public void testEarlierBeforeLater() {
+        Hour earlier = Hour.value(8);
+        Hour later = Hour.value(20);
+        assertTrue(earlier.before(later));
+    }
+    public void testEqualBeforeEqual() {
+        Hour anHour = Hour.value(8);
+        Hour anotherHour = Hour.value(8);
+        assertFalse(anHour.before(anotherHour));
+    }
 }

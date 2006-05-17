@@ -28,4 +28,34 @@ public class MinuteTest extends TestCase {
         }
         fail("Illegal Argument Not Caught");
     }
+    public void testLaterAfterEarlier() {
+        Minute later = Minute.value(45);
+        Minute earlier = Minute.value(15);
+        assertTrue(later.after(earlier));
+    }
+    public void testEarlierAfterLater() {
+        Minute earlier = Minute.value(15);
+        Minute later = Minute.value(45);
+        assertFalse(earlier.after(later));
+    }
+    public void testEqualAfterEqual() {
+        Minute anMinute = Minute.value(45);
+        Minute anotherMinute = Minute.value(45);
+        assertFalse(anMinute.after(anotherMinute));
+    }
+    public void testLaterBeforeEarlier() {
+        Minute later = Minute.value(45);
+        Minute earlier = Minute.value(15);
+        assertFalse(later.before(earlier));
+    }
+    public void testEarlierBeforeLater() {
+        Minute earlier = Minute.value(15);
+        Minute later = Minute.value(45);
+        assertTrue(earlier.before(later));
+    }
+    public void testEqualBeforeEqual() {
+        Minute anMinute = Minute.value(15);
+        Minute anotherMinute = Minute.value(15);
+        assertFalse(anMinute.before(anotherMinute));
+    }
 }

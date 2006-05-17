@@ -40,6 +40,18 @@ public class TimeOfDay {
         return hour.hashCode() ^ minute.hashCode();
     }
 
+    public boolean after(TimeOfDay another) {
+        return
+            hour.after(another.hour) ||
+            hour.equals(another) && minute.after(another.minute);
+    }
+
+    public boolean before(TimeOfDay another) {
+        return
+            hour.before(another.hour) ||
+            hour.equals(another) && minute.before(another.minute);
+    }
+
     int getHour() {
         return hour.value();
     }

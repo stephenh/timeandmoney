@@ -40,6 +40,15 @@ public class Hour {
     public int hashCode() {
         return value;
     }
+
+    public boolean after(Hour another) {
+        return value > another.value;
+    }
+
+    public boolean before(Hour another) {
+        return value < another.value;
+    }
+
     public int value() {
         return value;
     }

@@ -28,6 +28,15 @@ public class Minute {
     public int hashCode() {
         return value;
     }
+
+    public boolean after(Minute another) {
+        return value > another.value;
+    }
+
+    public boolean before(Minute another) {
+        return value < another.value;
+    }
+
     public int value() {
         return value;
     }
