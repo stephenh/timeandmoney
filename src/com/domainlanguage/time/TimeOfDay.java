@@ -5,19 +5,17 @@
  */
 package com.domainlanguage.time;
 
-import com.domainlanguage.time.adt.*;
-
 public class TimeOfDay {
-    private Hour hour;
-    private Minute minute;
+    private HourOfDay hour;
+    private MinuteOfHour minute;
     
     public static TimeOfDay hourAndMinute(int hour, int minute) {
         return new TimeOfDay(hour, minute);
     }
     
     private TimeOfDay(int hour, int minute) {
-        this.hour = Hour.value(hour);
-        this.minute = Minute.value(minute);
+        this.hour = HourOfDay.value(hour);
+        this.minute = MinuteOfHour.value(minute);
     }
 
     public CalendarMinute on(CalendarDate date) {
@@ -42,14 +40,14 @@ public class TimeOfDay {
 
     public boolean after(TimeOfDay another) {
         return
-            hour.after(another.hour) ||
-            hour.equals(another) && minute.after(another.minute);
+            hour.isAfter(another.hour) ||
+            hour.equals(another) && minute.isAfter(another.minute);
     }
 
     public boolean before(TimeOfDay another) {
         return
-            hour.before(another.hour) ||
-            hour.equals(another) && minute.before(another.minute);
+            hour.isBefore(another.hour) ||
+            hour.equals(another) && minute.isBefore(another.minute);
     }
 
     int getHour() {
@@ -71,7 +69,7 @@ public class TimeOfDay {
     //Only for use by persistence mapping frameworks
     //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
     private void setForPersistentMapping_Hour(int hour) {
-        this.hour = Hour.value(hour);
+        this.hour = HourOfDay.value(hour);
     }
     //Only for use by persistence mapping frameworks
     //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
@@ -81,6 +79,6 @@ public class TimeOfDay {
     //Only for use by persistence mapping frameworks
     //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
     private void setForPersistentMapping_Minute(int minute) {
-        this.minute = Minute.value(minute);
+        this.minute = MinuteOfHour.value(minute);
     }
 }

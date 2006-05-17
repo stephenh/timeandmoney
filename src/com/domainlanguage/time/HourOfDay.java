@@ -3,16 +3,16 @@
  * free software is distributed under the "MIT" licence. See file licence.txt.
  * For more information, see http://timeandmoney.sourceforge.net.
  */
-package com.domainlanguage.time.adt;
+package com.domainlanguage.time;
 
-public class Hour {
+public class HourOfDay {
     int value;
     
-    public static Hour value(int initial) {
-        return new Hour(initial);
+    public static HourOfDay value(int initial) {
+        return new HourOfDay(initial);
     }
-    public static Hour value(int initial, String am_pm) {
-        return Hour.value(convertTo24hour(initial, am_pm));
+    public static HourOfDay value(int initial, String am_pm) {
+        return HourOfDay.value(convertTo24hour(initial, am_pm));
     }
     private static int convertTo24hour(int hour, String am_pm) {
         if (!("AM".equalsIgnoreCase(am_pm) || "PM".equalsIgnoreCase(am_pm)))
@@ -23,29 +23,29 @@ public class Hour {
         translatedAmPm -= (hour == 12) ? 12 : 0;
         return hour + translatedAmPm;
     }
-    private Hour(int initial) {
+    private HourOfDay(int initial) {
         if (initial < 0 || initial > 23)
             throw new IllegalArgumentException("Illegal value for 24 hour: " + initial + ", please use a value between 0 and 23");
         value = initial;
     }
     
     public boolean equals(Object another) {
-        if (!(another instanceof Hour))
+        if (!(another instanceof HourOfDay))
             return false;
-        return equals((Hour)another);
+        return equals((HourOfDay)another);
     }
-    public boolean equals(Hour another) {
+    public boolean equals(HourOfDay another) {
         return value == another.value;
     }
     public int hashCode() {
         return value;
     }
 
-    public boolean after(Hour another) {
+    public boolean isAfter(HourOfDay another) {
         return value > another.value;
     }
 
-    public boolean before(Hour another) {
+    public boolean isBefore(HourOfDay another) {
         return value < another.value;
     }
 

@@ -11,7 +11,6 @@ import java.util.*;
 
 import com.domainlanguage.intervals.*;
 import com.domainlanguage.time.*;
-import com.domainlanguage.time.adt.*;
 
 public class PersistentMappingVerification {
     private static final String SET = "set";
@@ -33,13 +32,13 @@ public class PersistentMappingVerification {
         TEST_TYPE_MAPPING.put(Currency.class.getName(), Currency
                 .getInstance("EUR"));
         TEST_TYPE_MAPPING.put(Duration.class.getName(), Duration.days(11));
-        TEST_TYPE_MAPPING.put(Hour.class.getName(), Hour.value(11));
+        TEST_TYPE_MAPPING.put(HourOfDay.class.getName(), HourOfDay.value(11));
         TEST_TYPE_MAPPING.put(Integer.TYPE.getName(), new Integer(3));
         TEST_TYPE_MAPPING.put("com.domainlanguage.intervals.IntervalLimit", IntervalTest.exampleLimitForPersistentMappingTesting());
         TEST_TYPE_MAPPING.put(Long.TYPE.getName(), new Long(4));
         TEST_TYPE_MAPPING.put(List.class.getName(), new ArrayList());
         TEST_TYPE_MAPPING.put(Map.class.getName(), new HashMap());
-        TEST_TYPE_MAPPING.put(Minute.class.getName(), Minute.value(22));
+        TEST_TYPE_MAPPING.put(MinuteOfHour.class.getName(), MinuteOfHour.value(22));
         TEST_TYPE_MAPPING.put(Set.class.getName(), new HashSet());
         TEST_TYPE_MAPPING.put(String.class.getName(), "sample value");
         TEST_TYPE_MAPPING.put(TimeOfDay.class.getName(), TimeOfDay.hourAndMinute(7, 44));
@@ -91,6 +90,9 @@ public class PersistentMappingVerification {
         this.toVerify = klass;
         this.problems = new ArrayList();
         try {
+            if (isPrimitivePersistenceMappingType(klass)) {
+                return;
+            }
             checkEverything();
         } catch (RuntimeException ex) {
             addToProblems(ex.toString());
@@ -127,7 +129,6 @@ public class PersistentMappingVerification {
         if (isAbstract(klass)) {
             return;
         }
-        
         if(isFinal(klass)) {
             addToProblems(klass.toString() + " must not be final");
         }
@@ -302,5 +303,14 @@ public class PersistentMappingVerification {
         char chars[] = string.toCharArray();
         chars[0] = Character.toUpperCase(chars[0]);
         return new String(chars);
+    }
+    private boolean isPrimitivePersistenceMappingType(Class klass) {
+        try {
+            return klass.getDeclaredMethod(GET_PRIMITIVE_PERSISTENCE_MAPPING_TYPE, null) != null;
+        } catch (SecurityException ex) {
+            return false;
+        } catch (NoSuchMethodException ex) {
+            return false;
+        }
     }
 }

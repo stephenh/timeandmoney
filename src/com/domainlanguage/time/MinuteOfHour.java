@@ -3,37 +3,37 @@
  * free software is distributed under the "MIT" licence. See file licence.txt.
  * For more information, see http://timeandmoney.sourceforge.net.
  */
-package com.domainlanguage.time.adt;
+package com.domainlanguage.time;
 
-public class Minute {
+public class MinuteOfHour {
     int value;
     
-    public static Minute value(int initial) {
-        return new Minute(initial);
+    public static MinuteOfHour value(int initial) {
+        return new MinuteOfHour(initial);
     }
-    private Minute(int initial) {
+    private MinuteOfHour(int initial) {
         if (initial < 0 || initial > 59)
             throw new IllegalArgumentException("Illegal value for minute: " + initial + ", please use a value between 0 and 59");
         value = initial;
     }
     
     public boolean equals(Object another) {
-        if (!(another instanceof Minute))
+        if (!(another instanceof MinuteOfHour))
             return false;
-        return equals((Minute)another);
+        return equals((MinuteOfHour)another);
     }
-    public boolean equals(Minute another) {
+    public boolean equals(MinuteOfHour another) {
         return value == another.value;
     }
     public int hashCode() {
         return value;
     }
 
-    public boolean after(Minute another) {
+    public boolean isAfter(MinuteOfHour another) {
         return value > another.value;
     }
 
-    public boolean before(Minute another) {
+    public boolean isBefore(MinuteOfHour another) {
         return value < another.value;
     }
 
