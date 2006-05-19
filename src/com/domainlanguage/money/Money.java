@@ -97,6 +97,19 @@ public class Money implements Comparable, Serializable {
 	public static Money euros (BigDecimal amount) {
 		return Money.valueOf(amount, EUR);
 	}
+    
+    public static Money sum(Collection monies) {
+        //TODO
+        if (monies.isEmpty())
+            return Money.dollars(0.00);
+        Iterator iterator = monies.iterator();
+        Money sum = (Money) iterator.next();
+        while (iterator.hasNext()){
+            Money each = (Money) iterator.next();
+            sum = sum.plus(each);
+        }
+        return sum;
+    }
 
 	/**
 	 * How best to handle access to the internals? It is needed for
@@ -312,4 +325,6 @@ public class Money implements Comparable, Serializable {
     private void setForPersistentMapping_Currency(Currency currency) {
         this.currency = currency;
     }
+
+    
 }

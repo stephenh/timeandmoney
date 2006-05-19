@@ -38,13 +38,13 @@ public class TimeOfDay {
         return hour.hashCode() ^ minute.hashCode();
     }
 
-    public boolean after(TimeOfDay another) {
+    public boolean isAfter(TimeOfDay another) {
         return
             hour.isAfter(another.hour) ||
             hour.equals(another) && minute.isAfter(another.minute);
     }
 
-    public boolean before(TimeOfDay another) {
+    public boolean isBefore(TimeOfDay another) {
         return
             hour.isBefore(another.hour) ||
             hour.equals(another) && minute.isBefore(another.minute);

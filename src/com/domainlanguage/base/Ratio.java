@@ -32,6 +32,9 @@ public class Ratio {
     public static Ratio of(long numerator, long denominator) {
         return new Ratio(BigDecimal.valueOf(numerator), BigDecimal.valueOf(denominator));
     }
+    public static Ratio of(BigDecimal fractional) {
+        return new Ratio(fractional, BigDecimal.valueOf(1));
+    }
 
     public Ratio(BigDecimal numerator, BigDecimal denominator) {
         this.numerator = numerator;
@@ -95,5 +98,7 @@ public class Ratio {
     private void setForPersistentMapping_Numerator(BigDecimal numerator) {
         this.numerator = numerator;
     }
+
+
 
 }

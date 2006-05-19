@@ -66,41 +66,41 @@ public class TimeOfDayTest extends TestCase {
     }
 
     public void testAfterWithEarlierTimeOfDay() {
-        assertTrue("expected twoMinutesBeforeMidnight to be after midnight", twoMinutesBeforeMidnight.after(midnight));
-        assertTrue("expected afternoon to be after morning", afternoon.after(morning));
-        assertTrue("expected noon to be after midnight", noon.after(midnight));
+        assertTrue("expected twoMinutesBeforeMidnight to be after midnight", twoMinutesBeforeMidnight.isAfter(midnight));
+        assertTrue("expected afternoon to be after morning", afternoon.isAfter(morning));
+        assertTrue("expected noon to be after midnight", noon.isAfter(midnight));
     }
 
     public void testAfterWithLaterTimeOfDay() {
-        assertFalse("expected midnight not after twoMinutesBeforeMidnight", midnight.after(twoMinutesBeforeMidnight));
-        assertFalse("expected morning not after afternoon", morning.after(afternoon));
-        assertFalse("expected noon not after twoMinutesBeforeMidnight", noon.after(twoMinutesBeforeMidnight));
+        assertFalse("expected midnight not after twoMinutesBeforeMidnight", midnight.isAfter(twoMinutesBeforeMidnight));
+        assertFalse("expected morning not after afternoon", morning.isAfter(afternoon));
+        assertFalse("expected noon not after twoMinutesBeforeMidnight", noon.isAfter(twoMinutesBeforeMidnight));
     }
 
     public void testAfterWithSameTimeOfDay() {
-        assertFalse("expected midnight not after midnight", midnight.after(midnight));
-        assertFalse("expected morning not after morning", morning.after(morning));
-        assertFalse("expected afternoon not after afternoon", afternoon.after(afternoon));
-        assertFalse("expected noon not after noon", noon.after(noon));
+        assertFalse("expected midnight not after midnight", midnight.isAfter(midnight));
+        assertFalse("expected morning not after morning", morning.isAfter(morning));
+        assertFalse("expected afternoon not after afternoon", afternoon.isAfter(afternoon));
+        assertFalse("expected noon not after noon", noon.isAfter(noon));
     }
 
     public void testBeforeWithEarlierTimeOfDay() {
-        assertFalse("expected twoMinutesBeforeMidnight not after midnight", twoMinutesBeforeMidnight.before(midnight));
-        assertFalse("expected afternoon not after morning", afternoon.before(morning));
-        assertFalse("expected noon not after midnight", noon.before(midnight));
+        assertFalse("expected twoMinutesBeforeMidnight not after midnight", twoMinutesBeforeMidnight.isBefore(midnight));
+        assertFalse("expected afternoon not after morning", afternoon.isBefore(morning));
+        assertFalse("expected noon not after midnight", noon.isBefore(midnight));
     }
 
     public void testBeforeWithLaterTimeOfDay() {
-        assertTrue("expected midnight not after twoMinutesBeforeMidnight", midnight.before(twoMinutesBeforeMidnight));
-        assertTrue("expected morning not after afternoon", morning.before(afternoon));
-        assertTrue("expected noon not after twoMinutesBeforeMidnight", noon.before(twoMinutesBeforeMidnight));
+        assertTrue("expected midnight not after twoMinutesBeforeMidnight", midnight.isBefore(twoMinutesBeforeMidnight));
+        assertTrue("expected morning not after afternoon", morning.isBefore(afternoon));
+        assertTrue("expected noon not after twoMinutesBeforeMidnight", noon.isBefore(twoMinutesBeforeMidnight));
     }
 
     public void testBeforeWithSameTimeOfDay() {
-        assertFalse("expected midnight not after midnight", midnight.before(midnight));
-        assertFalse("expected morning not after morning", morning.before(morning));
-        assertFalse("expected afternoon not after afternoon", afternoon.before(afternoon));
-        assertFalse("expected noon not after noon", noon.before(noon));
+        assertFalse("expected midnight not after midnight", midnight.isBefore(midnight));
+        assertFalse("expected morning not after morning", morning.isBefore(morning));
+        assertFalse("expected afternoon not after afternoon", afternoon.isBefore(afternoon));
+        assertFalse("expected noon not after noon", noon.isBefore(noon));
     }
 
     public void testGetHour() {
