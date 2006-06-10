@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<project name="TimeLibrary" default="all">
+<project name="TimeAndMoney" default="all">
+	<!-- Set this to the tag you want to build for -->
 	<property name="cvs.version" value="HEAD"/>
 	
 	<property name="temp.dir" value="${java.io.tmpdir}"/>
