@@ -1,7 +1,9 @@
 /* Copyright (c) 2006 - Blue River Systems Group, LLC - All Rights Reserved */
 package com.domainlanguage.time;
 
-import junit.framework.TestCase;
+import java.util.*;
+
+import junit.framework.*;
 
 /**
  * TimeOfDayTest
@@ -12,6 +14,7 @@ import junit.framework.TestCase;
  */
 public class TimeOfDayTest extends TestCase {
 
+    private static final TimeZone CST = TimeZone.getTimeZone("CST");
     private CalendarDate feb17 = CalendarDate.from(2006, 2, 17);
     private TimeOfDay midnight = TimeOfDay.hourAndMinute(0, 0);
     private TimeOfDay morning = TimeOfDay.hourAndMinute(10, 20);
@@ -117,5 +120,11 @@ public class TimeOfDayTest extends TestCase {
         assertEquals(0, noon.getMinute());
         assertEquals(40, afternoon.getMinute());
         assertEquals(58, twoMinutesBeforeMidnight.getMinute());
+    }
+    public void testAsTimePoint() {
+        TimeOfDay fiveFifteen=TimeOfDay.hourAndMinute(17,15);
+        CalendarDate mayEleventh=CalendarDate.date(2006,5, 11);
+        TimePoint mayEleventhAtFiveFifteen=fiveFifteen.asTimePointGiven(mayEleventh, CST);
+        assertEquals(TimePoint.at(2006,5,11,17,15,0,0,CST), mayEleventhAtFiveFifteen);
     }
 }

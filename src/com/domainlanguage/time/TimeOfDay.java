@@ -5,6 +5,8 @@
  */
 package com.domainlanguage.time;
 
+import java.util.*;
+
 public class TimeOfDay {
     private HourOfDay hour;
     private MinuteOfHour minute;
@@ -80,5 +82,10 @@ public class TimeOfDay {
     //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
     private void setForPersistentMapping_Minute(int minute) {
         this.minute = MinuteOfHour.value(minute);
+    }
+
+    public TimePoint asTimePointGiven(CalendarDate date, TimeZone timeZone) {
+        CalendarMinute timeOfDayOnDate = on(date);
+        return timeOfDayOnDate.asTimePoint(timeZone);
     }
 }
