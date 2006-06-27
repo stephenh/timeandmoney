@@ -13,19 +13,13 @@ import com.domainlanguage.util.*;
 public class BusinessCalendar {
     private Set holidays;
 
-    static BusinessCalendar defaultBusinessCalendar() {
-        BusinessCalendar calendar = new BusinessCalendar();
-        calendar.addHolidays(defaultHolidays());
-        return calendar;
-    }
-
     /** Should be rewritten for each particular organization */
     static Set defaultHolidays() {
         return new HashSet();
     }
 
     public BusinessCalendar() {
-        holidays = new HashSet();
+        holidays = defaultHolidays();
     }
     public void addHolidays(Set days) {
         holidays.addAll(days);
