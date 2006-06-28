@@ -69,8 +69,21 @@ public class BusinessCalendar {
             }
         };
     }
-
-
+    public CalendarDate addBusinessDays(CalendarDate startDate, int numberOfDays) {
+        if (numberOfDays < 0)
+            throw new IllegalArgumentException("Negative numberOfDays not supported");
+        if (numberOfDays == 0 && !isBusinessDay(startDate))
+            throw new IllegalArgumentException("Adding 0 to a non-business day ["+startDate+"] is ambiguous");
+        CalendarDate result=nearestBusinessDay(startDate);
+        Iterator iterator=businessDaysIterator(CalendarInterval.everFrom(result));
+        for (int i=0; i <= numberOfDays; i++) {
+            result=(CalendarDate)iterator.next();
+        }
+        return result;
+    }
+    public CalendarDate nextBusinessDay(CalendarDate startDate) {
+        return addBusinessDays(startDate, 1);
+    }
 
     /*
      * boolean isBusinessHours(TimePoint now) { Calendar date =

@@ -39,6 +39,12 @@ public abstract class CalendarInterval extends Interval {
         // Uses the common default for calendar intervals, [start, end].
         return inclusive(start, start.plus(length).plusDays(-1));
     }
+    public static CalendarInterval everFrom(CalendarDate startDate) {
+        return inclusive(startDate, null);
+    }
+    public static CalendarInterval everPreceding(CalendarDate endDate) {
+        return inclusive(null, endDate);
+    }
 
     public abstract TimeInterval asTimeInterval(TimeZone zone);
 
@@ -147,5 +153,7 @@ public abstract class CalendarInterval extends Interval {
             }
         };
     }
+
+
 
 }

@@ -91,5 +91,39 @@ public class BusinessCalendarTest extends TestCase {
         assertEquals(CalendarDate.from(2004, 2, 6), it.next());
         assertFalse(it.hasNext());
     }
-
+    public void testNextBusinessDayOverWeekend() {
+        CalendarDate friday=CalendarDate.from(2006, 06, 16);
+        CalendarDate monday=CalendarDate.from(2006, 06, 19);
+        CalendarDate actual=businessCalendar().nextBusinessDay(friday);
+        assertEquals(monday, actual);
+    }
+    public void testNextBusinessDayOverWeekday() {
+        CalendarDate monday=CalendarDate.from(2006, 06, 19);
+        CalendarDate tuesday=CalendarDate.from(2006, 06, 20);
+        CalendarDate actual=businessCalendar().nextBusinessDay(monday);
+        assertEquals(tuesday, actual);
+    }
+    public void testAddBusinessDayZero() {
+        CalendarDate monday=CalendarDate.from(2006, 06, 19);
+        CalendarDate actual=businessCalendar().addBusinessDays(monday, 0);
+        assertEquals(monday, actual);
+    }
+    public void testAddNonBusinessDayZero() {
+        CalendarDate saturday=CalendarDate.from(2006, 06, 17);
+        try {
+            businessCalendar().addBusinessDays(saturday, 0);
+            fail("should not allow add zero to non-business for BusinessCalendar.addBusinessDays(CalendarDate, int)");
+        } catch(IllegalArgumentException notAllowed) {
+        }
+    }
+    public void testPreviousBusinessDay() {
+        //CalendarDate friday=CalendarDate.from(2006, 06, 16);
+        CalendarDate monday=CalendarDate.from(2006, 06, 19);
+        try {
+            CalendarDate actual=businessCalendar().addBusinessDays(monday,-1);
+        } catch(IllegalArgumentException notAllowedForNow) {
+            //TODO revisit
+        }
+        //assertEquals(friday, actual);
+    }
 }
