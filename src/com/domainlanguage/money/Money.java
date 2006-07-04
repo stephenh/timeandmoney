@@ -6,13 +6,15 @@
 
 package com.domainlanguage.money;
 
-import java.io.*;
-import java.math.*;
-import java.util.*;
-
-import com.domainlanguage.base.*;
-import com.domainlanguage.time.*;
-import com.domainlanguage.util.*;
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.Collection;
+import java.util.Currency;
+import java.util.Iterator;
+import java.util.Locale;
+import com.domainlanguage.base.Ratio;
+import com.domainlanguage.base.Rounding;
+import com.domainlanguage.time.Duration;
 
 public class Money implements Comparable, Serializable {
 	private static final Currency USD = Currency.getInstance("USD");

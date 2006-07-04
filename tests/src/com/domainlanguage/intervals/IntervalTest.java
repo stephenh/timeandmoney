@@ -6,13 +6,10 @@
 
 package com.domainlanguage.intervals;
 
-import java.math.*;
-import java.util.*;
-
-import junit.framework.*;
-
-import com.domainlanguage.tests.*;
-import com.domainlanguage.util.*;
+import java.math.BigDecimal;
+import java.util.List;
+import junit.framework.TestCase;
+import com.domainlanguage.tests.SerializationTester;
 
 public class IntervalTest extends TestCase {
     private Interval empty = Interval.open(new BigDecimal(1), new BigDecimal(1));

@@ -6,11 +6,17 @@
 
 package com.domainlanguage.tests;
 
-import java.util.*;
-
-import junit.framework.*;
-
-import com.domainlanguage.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Enumeration;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
 
 abstract public class Tests {
 

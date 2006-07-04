@@ -6,10 +6,9 @@
 
 package com.domainlanguage.intervals;
 
-import java.io.*;
-import java.util.*;
-
-import com.domainlanguage.util.*;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The rules of this class are consistent with the common mathematical

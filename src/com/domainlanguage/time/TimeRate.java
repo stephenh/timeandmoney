@@ -5,10 +5,7 @@
  */
 package com.domainlanguage.time;
 
-import java.math.*;
-
-import com.domainlanguage.util.*;
-
+import java.math.BigDecimal;
 
 public class TimeRate {
 	private BigDecimal quantity;

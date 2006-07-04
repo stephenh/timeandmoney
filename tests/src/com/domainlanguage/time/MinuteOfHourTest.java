@@ -5,9 +5,7 @@
  */
 package com.domainlanguage.time;
 
-import com.domainlanguage.time.*;
-
-import junit.framework.*;
+import junit.framework.TestCase;
 
 public class MinuteOfHourTest extends TestCase {
     public void testSimple() {

@@ -5,12 +5,10 @@
  */
 package com.domainlanguage.money;
 
-import java.math.*;
-import java.util.*;
-
-import com.domainlanguage.time.*;
-import com.domainlanguage.util.*;
-
+import java.math.BigDecimal;
+import java.util.Currency;
+import com.domainlanguage.time.Duration;
+import com.domainlanguage.time.TimeRate;
 
 public class MoneyTimeRate {
 	private TimeRate rate;

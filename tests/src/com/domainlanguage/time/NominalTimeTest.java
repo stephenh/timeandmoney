@@ -5,10 +5,8 @@
  */
 package com.domainlanguage.time;
 
-import junit.framework.*;
-import java.util.*;
-
-import com.domainlanguage.time.*;
+import java.util.TimeZone;
+import junit.framework.TestCase;
 
 public class NominalTimeTest extends TestCase {
 

@@ -6,15 +6,22 @@
 
 package com.domainlanguage.tests;
 
-import java.io.*;
-import java.lang.reflect.*;
-import java.util.*;
-import java.util.jar.*;
-
-import junit.framework.*;
-import junit.runner.*;
-
-import com.domainlanguage.util.*;
+import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.Modifier;
+import java.util.Collection;
+import java.util.Enumeration;
+import java.util.HashSet;
+import java.util.Hashtable;
+import java.util.Set;
+import java.util.StringTokenizer;
+import java.util.Vector;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
+import junit.runner.TestCaseClassLoader;
+import junit.runner.TestCollector;
 
 /**
  * I loads all TestCase subclasses on the class path, excluding specified

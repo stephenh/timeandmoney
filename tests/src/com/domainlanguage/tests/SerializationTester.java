@@ -6,11 +6,13 @@
 
 package com.domainlanguage.tests;
 
-import java.io.*;
-
-import junit.framework.*;
-
-import com.domainlanguage.util.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import junit.framework.Assert;
+import junit.framework.AssertionFailedError;
 
 public class SerializationTester {
 

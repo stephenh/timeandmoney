@@ -6,10 +6,8 @@
 
 package com.domainlanguage.time;
 
-import java.io.*;
-import java.util.*;
-
-import com.domainlanguage.util.*;
+import java.io.Serializable;
+import java.util.Calendar;
 
 class TimeUnit implements Comparable, Serializable, TimeUnitConversionFactors {
     static final TimeUnit millisecond = new TimeUnit(Type.millisecond, Type.millisecond, 1);

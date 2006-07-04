@@ -6,10 +6,9 @@
 
 package com.domainlanguage.time;
 
-import java.io.*;
-import java.util.*;
-
-import com.domainlanguage.util.*;
+import java.io.Serializable;
+import java.util.Calendar;
+import java.util.TimeZone;
 
 public class CalendarDate implements Comparable, Serializable {
 	private int year;
