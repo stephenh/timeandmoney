@@ -115,14 +115,18 @@ public class BusinessCalendarTest extends TestCase {
             fail("should not allow add zero to non-business for BusinessCalendar.addBusinessDays(CalendarDate, int)");
         } catch(IllegalArgumentException notAllowed) {
         }
-    }
+    }    
     public void testPreviousBusinessDay() {
+        //TODO revisit - We would like to refactor BusinessCalendar to support business day subtraction
+        //For now we will prevent this.
+        
         //CalendarDate friday=CalendarDate.from(2006, 06, 16);
         CalendarDate monday=CalendarDate.from(2006, 06, 19);
         try {
-            CalendarDate actual=businessCalendar().addBusinessDays(monday,-1);
+            //CalendarDate actual =
+            businessCalendar().addBusinessDays(monday,-1);
+            fail("should not allow negative values (subtraction) for BusinessCalendar.addBusinessDays(CalendarDate, int)");
         } catch(IllegalArgumentException notAllowedForNow) {
-            //TODO revisit
         }
         //assertEquals(friday, actual);
     }
