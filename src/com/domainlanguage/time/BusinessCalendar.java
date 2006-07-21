@@ -53,36 +53,59 @@ public class BusinessCalendar {
         return !isWeekend(day) && !isHoliday(day);
     }
 
-    public Iterator businessDaysIterator(CalendarInterval anInterval) {
-        final CalendarInterval interval = anInterval;
+    public Iterator businessDaysOnly(final Iterator calendarDays) {
         return new ImmutableIterator() {
-            CalendarDate next = interval.start();
-
+            CalendarDate lookAhead = null;
+            {
+                next();
+            }
             public boolean hasNext() {
-                return interval.includes(next);
+                return lookAhead != null;
             }
 
             public Object next() {
-                Object current = next;
-                next = nearestBusinessDay(next.nextDay());
-                return current;
+                CalendarDate next = lookAhead;
+                lookAhead = nextBusinessDate();
+                return next;
+            }
+
+            private CalendarDate nextBusinessDate() {
+                CalendarDate result = null;
+                do {
+                    result = calendarDays.hasNext() ?  (CalendarDate) calendarDays.next() : null;
+                } while (!(result == null || isBusinessDay(result)));
+                return result;
             }
         };
     }
-    public CalendarDate addBusinessDays(CalendarDate startDate, int numberOfDays) {
+    
+    public CalendarDate plusBusinessDays(CalendarDate startDate, int numberOfDays) {
         if (numberOfDays < 0)
             throw new IllegalArgumentException("Negative numberOfDays not supported");
         if (numberOfDays == 0 && !isBusinessDay(startDate))
             throw new IllegalArgumentException("Adding 0 to a non-business day ["+startDate+"] is ambiguous");
-        CalendarDate result=nearestBusinessDay(startDate);
-        Iterator iterator=businessDaysIterator(CalendarInterval.everFrom(result));
+        Iterator iterator=businessDaysOnly(CalendarInterval.everFrom(startDate).daysIterator());
+        return nextNumberOfBusinessDays(numberOfDays, iterator);
+    }
+    public CalendarDate minusBusinessDays(CalendarDate startDate, int numberOfDays) {
+        if (numberOfDays < 0)
+            throw new IllegalArgumentException("Negative numberOfDays not supported");
+        if (numberOfDays == 0 && !isBusinessDay(startDate))
+            throw new IllegalArgumentException("Adding 0 to a non-business day ["+startDate+"] is ambiguous");
+        Iterator iterator=businessDaysOnly(CalendarInterval.everFrom(startDate).daysInReverseIterator());
+        return nextNumberOfBusinessDays(numberOfDays, iterator);
+    }
+
+    private CalendarDate nextNumberOfBusinessDays(int numberOfDays, Iterator calendarDays) {
+        Iterator businessDays=businessDaysOnly(calendarDays);
+        CalendarDate result=null;
         for (int i=0; i <= numberOfDays; i++) {
-            result=(CalendarDate)iterator.next();
+            result=(CalendarDate)businessDays.next();
         }
         return result;
     }
     public CalendarDate nextBusinessDay(CalendarDate startDate) {
-        return addBusinessDays(startDate, 1);
+        return plusBusinessDays(startDate, 1);
     }
 
     /*
@@ -110,18 +133,16 @@ public class BusinessCalendar {
      * Calendar.JANUARY, Calendar.MONDAY, 3, // MLK Day, 3rd monday in Jan
      * Calendar.FEBRUARY, Calendar.MONDAY, 3, // President's day
      * Calendar.SEPTEMBER, Calendar.MONDAY, 1, // Labor day Calendar.NOVEMBER,
-     * Calendar.THURSDAY, 4, // Thanksgiving };
-     *  // Columbus Day is a federal holiday. // it is the second Monday in
-     * October int mm = javaCal.get(Calendar.MONTH); int dd =
-     * javaCal.get(Calendar.DAY_OF_MONTH); int dw =
-     * javaCal.get(Calendar.DAY_OF_WEEK); int wm =
-     * javaCal.get(Calendar.WEEK_OF_MONTH);
-     *  // go over the month/day-of-month entries, return true on full match for
-     * (int i = 0; i < month_date.length; i += 2) { if ((mm == month_date[i +
-     * 0]) && (dd == month_date[i + 1])) return true; }
-     *  // go over month/weekday/week-of-month entries, return true on full
-     * match for (int i = 0; i < month_weekday_monthweek.length; i += 3) { if
-     * ((mm == month_weekday_monthweek[i + 0]) && (dw ==
+     * Calendar.THURSDAY, 4, // Thanksgiving }; // Columbus Day is a federal
+     * holiday. // it is the second Monday in October int mm =
+     * javaCal.get(Calendar.MONTH); int dd = javaCal.get(Calendar.DAY_OF_MONTH);
+     * int dw = javaCal.get(Calendar.DAY_OF_WEEK); int wm =
+     * javaCal.get(Calendar.WEEK_OF_MONTH); // go over the month/day-of-month
+     * entries, return true on full match for (int i = 0; i < month_date.length;
+     * i += 2) { if ((mm == month_date[i + 0]) && (dd == month_date[i + 1]))
+     * return true; } // go over month/weekday/week-of-month entries, return
+     * true on full match for (int i = 0; i < month_weekday_monthweek.length; i +=
+     * 3) { if ((mm == month_weekday_monthweek[i + 0]) && (dw ==
      * month_weekday_monthweek[i + 1]) && (wm == month_weekday_monthweek[i +
      * 2])) return true; }
      * 
@@ -132,13 +153,15 @@ public class BusinessCalendar {
      * return false; }
      */
     
-    //Only for use by persistence mapping frameworks
-    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
+    // Only for use by persistence mapping frameworks
+    // <rant>These methods break encapsulation and we put them in here
+    // begrudgingly</rant>
     private Set getForPersistentMapping_Holidays() {
         return holidays;
     }
-    //Only for use by persistence mapping frameworks
-    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
+    // Only for use by persistence mapping frameworks
+    // <rant>These methods break encapsulation and we put them in here
+    // begrudgingly</rant>
     private void setForPersistentMapping_Holidays(Set holidays) {
         this.holidays = holidays;
     }

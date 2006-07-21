@@ -73,6 +73,8 @@ public class CalendarDate implements Comparable, Serializable {
 	}
 
 	public boolean isAfter(CalendarDate other) {
+        if (other == null)
+            return false;
 		return !isBefore(other) && !this.equals(other);
 	}
 

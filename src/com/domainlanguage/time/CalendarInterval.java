@@ -153,6 +153,23 @@ public abstract class CalendarInterval extends Interval {
             }
         };
     }
+    public Iterator daysInReverseIterator() {
+        final CalendarDate start = (CalendarDate) upperLimit();
+        final CalendarDate end = (CalendarDate) lowerLimit();
+        return new ImmutableIterator() {
+            CalendarDate next = start;
+
+            public boolean hasNext() {
+                return !next.isBefore(end);
+            }
+
+            public Object next() {
+                Object current = next;
+                next = next.plusDays(-1);
+                return current;
+            }
+        };
+    }
 
 
 

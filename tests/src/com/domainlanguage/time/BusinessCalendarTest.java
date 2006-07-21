@@ -84,7 +84,7 @@ public class BusinessCalendarTest extends TestCase {
         CalendarDate start = CalendarDate.from(2004, 2, 5);
         CalendarDate end = CalendarDate.from(2004, 2, 8);
         CalendarInterval interval = CalendarInterval.inclusive(start, end);
-        Iterator it = businessCalendar().businessDaysIterator(interval);
+        Iterator it = businessCalendar().businessDaysOnly(interval.daysIterator());
         assertTrue(it.hasNext());
         assertEquals(start, it.next());
         assertTrue(it.hasNext());
@@ -105,29 +105,30 @@ public class BusinessCalendarTest extends TestCase {
     }
     public void testAddBusinessDayZero() {
         CalendarDate monday=CalendarDate.from(2006, 06, 19);
-        CalendarDate actual=businessCalendar().addBusinessDays(monday, 0);
+        CalendarDate actual=businessCalendar().plusBusinessDays(monday, 0);
         assertEquals(monday, actual);
     }
     public void testAddNonBusinessDayZero() {
         CalendarDate saturday=CalendarDate.from(2006, 06, 17);
         try {
-            businessCalendar().addBusinessDays(saturday, 0);
+            businessCalendar().plusBusinessDays(saturday, 0);
             fail("should not allow add zero to non-business for BusinessCalendar.addBusinessDays(CalendarDate, int)");
         } catch(IllegalArgumentException notAllowed) {
         }
     }    
-    public void testPreviousBusinessDay() {
-        //TODO revisit - We would like to refactor BusinessCalendar to support business day subtraction
-        //For now we will prevent this.
-        
-        //CalendarDate friday=CalendarDate.from(2006, 06, 16);
-        CalendarDate monday=CalendarDate.from(2006, 06, 19);
-        try {
-            //CalendarDate actual =
-            businessCalendar().addBusinessDays(monday,-1);
-            fail("should not allow negative values (subtraction) for BusinessCalendar.addBusinessDays(CalendarDate, int)");
-        } catch(IllegalArgumentException notAllowedForNow) {
-        }
-        //assertEquals(friday, actual);
+    public void testBusinessDayReverseIterator() {
+        CalendarDate friday=CalendarDate.from(2006, 06, 16);
+        CalendarDate nextTuesday=CalendarDate.from(2006, 06, 20);
+        CalendarInterval interval = CalendarInterval.inclusive(friday, nextTuesday);
+        Iterator it = businessCalendar().businessDaysOnly(interval.daysInReverseIterator());
+        assertTrue(it.hasNext());
+        assertEquals(nextTuesday, it.next());
+        assertTrue(it.hasNext());
+        CalendarDate nextMonday=CalendarDate.from(2006, 06, 19);
+        assertEquals(nextMonday, it.next());
+        assertTrue(it.hasNext());
+        assertEquals(friday, it.next());
+        assertFalse(it.hasNext());
     }
+    
 }
