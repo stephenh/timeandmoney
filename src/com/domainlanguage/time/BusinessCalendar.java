@@ -27,17 +27,21 @@ public class BusinessCalendar {
 
     public int getElapsedBusinessDays(CalendarInterval interval) {
         int tally = 0;
-        for (Iterator iterator = interval.daysIterator(); iterator.hasNext();)
-            if (isBusinessDay((CalendarDate) iterator.next()))
-                tally += 1;
+        Iterator iterator=businessDaysOnly(interval.daysIterator());
+        while (iterator.hasNext()) {
+            iterator.next();
+            tally += 1;
+        }
         return tally;
     }
-
+    /*
+     * @deprecated
+     */
     public CalendarDate nearestBusinessDay(CalendarDate day) {
-        CalendarDate current = day;
-        while (!isBusinessDay(current))
-            current = current.plusDays(1);
-        return current;
+       if (isBusinessDay(day)) 
+           return day;
+       else
+           return nextBusinessDay(day);
     }
 
     public boolean isHoliday(CalendarDate day) {
@@ -82,17 +86,14 @@ public class BusinessCalendar {
     public CalendarDate plusBusinessDays(CalendarDate startDate, int numberOfDays) {
         if (numberOfDays < 0)
             throw new IllegalArgumentException("Negative numberOfDays not supported");
-        if (numberOfDays == 0 && !isBusinessDay(startDate))
-            throw new IllegalArgumentException("Adding 0 to a non-business day ["+startDate+"] is ambiguous");
-        Iterator iterator=businessDaysOnly(CalendarInterval.everFrom(startDate).daysIterator());
+        Iterator iterator=CalendarInterval.everFrom(startDate).daysIterator();
         return nextNumberOfBusinessDays(numberOfDays, iterator);
     }
+    
     public CalendarDate minusBusinessDays(CalendarDate startDate, int numberOfDays) {
         if (numberOfDays < 0)
             throw new IllegalArgumentException("Negative numberOfDays not supported");
-        if (numberOfDays == 0 && !isBusinessDay(startDate))
-            throw new IllegalArgumentException("Adding 0 to a non-business day ["+startDate+"] is ambiguous");
-        Iterator iterator=businessDaysOnly(CalendarInterval.everFrom(startDate).daysInReverseIterator());
+        Iterator iterator=CalendarInterval.everPreceding(startDate).daysInReverseIterator();
         return nextNumberOfBusinessDays(numberOfDays, iterator);
     }
 
@@ -105,7 +106,10 @@ public class BusinessCalendar {
         return result;
     }
     public CalendarDate nextBusinessDay(CalendarDate startDate) {
-        return plusBusinessDays(startDate, 1);
+        if (isBusinessDay(startDate))
+            return plusBusinessDays(startDate, 1);
+        else
+            return plusBusinessDays(startDate, 0);    
     }
 
     /*

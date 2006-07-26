@@ -65,6 +65,8 @@ public class CalendarDate implements Comparable, Serializable {
 	}
 	
 	public boolean isBefore(CalendarDate other) {
+        if (other == null)
+            return false;
 		if (year < other.year) return true;
 		if (year > other.year) return false;
 		if (month < other.month) return true;

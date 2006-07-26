@@ -103,18 +103,24 @@ public class BusinessCalendarTest extends TestCase {
         CalendarDate actual=businessCalendar().nextBusinessDay(monday);
         assertEquals(tuesday, actual);
     }
-    public void testAddBusinessDayZero() {
+    public void testPlusBusinessDayZero() {
         CalendarDate monday=CalendarDate.from(2006, 06, 19);
         CalendarDate actual=businessCalendar().plusBusinessDays(monday, 0);
         assertEquals(monday, actual);
     }
-    public void testAddNonBusinessDayZero() {
+    public void testPlusNonBusinessDayZero() {
         CalendarDate saturday=CalendarDate.from(2006, 06, 17);
-        try {
-            businessCalendar().plusBusinessDays(saturday, 0);
-            fail("should not allow add zero to non-business for BusinessCalendar.addBusinessDays(CalendarDate, int)");
-        } catch(IllegalArgumentException notAllowed) {
-        }
+        CalendarDate monday=CalendarDate.from(2006, 06, 19);
+        CalendarDate actual = businessCalendar().plusBusinessDays(saturday, 0);
+        assertEquals(monday, actual);
+        
+    }    
+    public void testMinusNonBusinessDayZero() {
+        CalendarDate saturday=CalendarDate.from(2006, 06, 17);
+        CalendarDate friday=CalendarDate.from(2006, 06, 16);
+        CalendarDate actual = businessCalendar().minusBusinessDays(saturday, 0);
+        assertEquals(friday, actual);
+        
     }    
     public void testBusinessDayReverseIterator() {
         CalendarDate friday=CalendarDate.from(2006, 06, 16);
