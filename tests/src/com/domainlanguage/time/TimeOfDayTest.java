@@ -1,4 +1,8 @@
-/* Copyright (c) 2006 - Blue River Systems Group, LLC - All Rights Reserved */
+/**
+ * Copyright (c) 2006 Domain Language, Inc. (http://domainlanguage.com) This
+ * free software is distributed under the "MIT" licence. See file licence.txt.
+ * For more information, see http://timeandmoney.sourceforge.net.
+ */
 package com.domainlanguage.time;
 
 import java.util.*;
@@ -9,8 +13,6 @@ import junit.framework.*;
  * TimeOfDayTest
  *
  * @author davem
- * @since May 15, 2006
- * @copyright Copyright (c) 2006 - Blue River Systems Group, LLC - All Rights Reserved
  */
 public class TimeOfDayTest extends TestCase {
 
