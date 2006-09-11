@@ -49,7 +49,7 @@ public abstract class ClassGenerator {
                 JarEntry next = (JarEntry) enumeration.nextElement();
                 if (next.getName().toLowerCase().endsWith(CLASS_POST_FIX)
                         && next.getName().indexOf('$') == -1) {
-                    nextCandidate(convertToClassName(next.getName()));
+                    doNext(convertToClassName(next.getName()));
                 }
             }
         } finally {
@@ -67,13 +67,13 @@ public abstract class ClassGenerator {
         return changeToPeriods.replace('/', '.');
     }
 
-    private void nextCandidate(String className) throws Exception {
+    private void doNext(String className) throws Exception {
         Class klass = null;
         try {
             klass = Class.forName(className);
-        } catch (ClassNotFoundException ex) {
+        } catch (Exception ex) {
             return;
-        } catch (NoClassDefFoundError ex) {
+        } catch (Error ex) {
             return;
         }
         if (filter.accepts(klass)) {
@@ -95,7 +95,7 @@ public abstract class ClassGenerator {
                 String fullFileName = next.getAbsolutePath();
                 String fileName = fullFileName.substring(root.getAbsolutePath()
                         .length() + 1);
-                nextCandidate(convertToClassName(fileName));
+                doNext(convertToClassName(fileName));
             }
         }
     }

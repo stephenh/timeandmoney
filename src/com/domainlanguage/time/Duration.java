@@ -67,7 +67,7 @@ public class Duration implements Comparable, Serializable {
 	}
 
 	Duration(long quantity, TimeUnit unit) {
-		assert quantity >= 0;
+		assertQuantityPositiveOrZero(quantity);
 		this.quantity = quantity;
 		this.unit = unit;
 	}
@@ -75,21 +75,21 @@ public class Duration implements Comparable, Serializable {
 	long inBaseUnits() {
 		return quantity * unit.getFactor();
 	}
-	
-	//TODO: What SHOULD happen if assertion fails?
+
 	public Duration plus(Duration other) {
-		assert other.unit.isConvertibleTo(this.unit);
+		assertNotConvertible(other);
 		long newQuantity = this.inBaseUnits() + other.inBaseUnits();
 		return new Duration(newQuantity, unit.baseUnit());
 	}
 
-	//TODO: What SHOULD happen if assertion fails?
 	public Duration minus(Duration other) {
-		assert other.unit.isConvertibleTo(this.unit);
+        assertNotConvertible(other);
 		assert this.compareTo(other) >= 0;
 		long newQuantity = this.inBaseUnits() - other.inBaseUnits();
 		return new Duration(newQuantity, unit.baseUnit());
 	}
+
+    
 	
 	public TimePoint addedTo(TimePoint point) {
         return addAmountToTimePoint(inBaseUnits(), point);
@@ -127,38 +127,18 @@ public class Duration implements Comparable, Serializable {
 	}
 
 	public boolean equals(Object object) {
-		//revisit: maybe use: Reflection.equalsOverClassAndNull(this, other)
 		if (!(object instanceof Duration)) return false;
 		Duration other = (Duration) object;
-		if (!this.unit.isConvertibleTo(other.unit)) return false;
+		if (!isConvertibleTo(other)) return false;
 		return this.inBaseUnits() == other.inBaseUnits();
 	}
-	
+
 	public String toString() {
 		return toNormalizedString(unit.descendingUnitsForDisplay());
 	}
 
 	public String toNormalizedString() {
 		return toNormalizedString(unit.descendingUnits());
-	}
-
-	private String toNormalizedString(TimeUnit[] units) {
-		StringBuffer buffer = new StringBuffer();
-		long remainder = inBaseUnits();
-		boolean first = true;		
-		for (int i = 0; i < units.length; i++) {
-			TimeUnit aUnit = units[i];
-			long portion = remainder / aUnit.getFactor();			
-			if (portion > 0) {
-				if (!first)
-					buffer.append(", ");
-				else
-					first = false;
-				buffer.append(aUnit.toString(portion));
-			}
-			remainder = remainder % aUnit.getFactor();
-		}
-		return buffer.toString();
 	}
 	
 	public TimeUnit normalizedUnit() {
@@ -176,11 +156,10 @@ public class Duration implements Comparable, Serializable {
 	public int hashCode() {
 		return (int) quantity;
 	}
-	
-	//TODO: What should happen if units are not convertible?
+
 	public int compareTo(Object arg) {
 		Duration other = (Duration) arg;
-		assert this.unit.isConvertibleTo(other.unit);
+		assertNotConvertible(other);
 		long difference = this.inBaseUnits() - other.inBaseUnits();
 		if (difference > 0) return 1;
 		if (difference < 0) return -1;
@@ -217,6 +196,36 @@ public class Duration implements Comparable, Serializable {
     }
     void subtractAmountFromCalendar(long amount, Calendar calendar) {
         addAmountToCalendar(-1 * amount, calendar);
+    }
+    
+    private void assertNotConvertible(Duration other) {
+        if (!other.unit.isConvertibleTo(this.unit))
+            throw new IllegalArgumentException(other.toString() + " is not convertible to: " + this.toString());
+    }
+    private void assertQuantityPositiveOrZero(long quantity) {
+        if (quantity < 0)
+            throw new IllegalArgumentException("Quantity: "+quantity+" must be zero or positive");
+    }
+    private boolean isConvertibleTo(Duration other) {
+        return this.unit.isConvertibleTo(other.unit);
+    }
+    private String toNormalizedString(TimeUnit[] units) {
+        StringBuffer buffer = new StringBuffer();
+        long remainder = inBaseUnits();
+        boolean first = true;       
+        for (int i = 0; i < units.length; i++) {
+            TimeUnit aUnit = units[i];
+            long portion = remainder / aUnit.getFactor();           
+            if (portion > 0) {
+                if (!first)
+                    buffer.append(", ");
+                else
+                    first = false;
+                buffer.append(aUnit.toString(portion));
+            }
+            remainder = remainder % aUnit.getFactor();
+        }
+        return buffer.toString();
     }
 
     //Only for use by persistence mapping frameworks

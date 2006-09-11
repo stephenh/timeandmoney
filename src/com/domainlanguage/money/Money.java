@@ -101,7 +101,7 @@ public class Money implements Comparable, Serializable {
 	}
     
     public static Money sum(Collection monies) {
-        //TODO
+        //TODO Return Default Currency
         if (monies.isEmpty())
             return Money.dollars(0.00);
         Iterator iterator = monies.iterator();
@@ -192,9 +192,9 @@ public class Money implements Comparable, Serializable {
 	}
 	
 	public Ratio dividedBy (Money divisor) {
-		assert currency.equals(divisor.currency);
+		assertCurrencyIsSame(divisor);
 		return Ratio.of(amount, divisor.amount);
-	}
+    }
 
 	public Money applying (Ratio ratio, int roundingRule) {
 	    return applying(ratio, currency.getDefaultFractionDigits(), roundingRule);
@@ -243,7 +243,8 @@ public class Money implements Comparable, Serializable {
 	}
 	
 	public int compareTo(Money other) {
-		if (!isSameCurrencyAs(other)) throw new IllegalArgumentException("Compare is not defined between different currencies");
+		if (!isSameCurrencyAs(other)) 
+            throw new IllegalArgumentException("Compare is not defined between different currencies");
 		return amount.compareTo(other.amount);
 	}
 	
@@ -266,7 +267,7 @@ public class Money implements Comparable, Serializable {
     public boolean equals(Money other) {
         return 
             other != null &&
-            currency.equals(other.currency) && 
+            isSameCurrencyAs(other) && 
             amount.equals(other.amount);
     }
     
@@ -301,6 +302,11 @@ public class Money implements Comparable, Serializable {
 
     Currency getCurrency() {
         return currency;
+    }
+    
+    private void assertCurrencyIsSame(Money divisor) {
+        if (!isSameCurrencyAs(divisor))
+            throw new IllegalArgumentException(divisor.toString() + " is not same currency as " + this.toString());
     }
 
     //Only for use by persistence mapping frameworks
