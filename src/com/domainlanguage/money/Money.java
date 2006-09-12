@@ -145,7 +145,7 @@ public class Money implements Comparable, Serializable {
 		return this.plus(minimumIncrement());
 	}
 
-	boolean isSameCurrencyAs(Money arg) {
+	boolean hasSameCurrencyAs(Money arg) {
 		return currency.equals(arg.currency);
 	}
 
@@ -170,7 +170,7 @@ public class Money implements Comparable, Serializable {
 	}
 	
 	public Money plus(Money other) {
-        assertCurrencyIsSame(other);
+        assertHasSameCurrencyAs(other);
 		return Money.valueOf(amount.add(other.amount), currency);
 	}
 	
@@ -192,7 +192,7 @@ public class Money implements Comparable, Serializable {
 	}
 	
 	public Ratio dividedBy (Money divisor) {
-		assertCurrencyIsSame(divisor);
+		assertHasSameCurrencyAs(divisor);
 		return Ratio.of(amount, divisor.amount);
     }
 
@@ -243,7 +243,7 @@ public class Money implements Comparable, Serializable {
 	}
 	
 	public int compareTo(Money other) {
-		if (!isSameCurrencyAs(other)) 
+		if (!hasSameCurrencyAs(other)) 
             throw new IllegalArgumentException("Compare is not defined between different currencies");
 		return amount.compareTo(other.amount);
 	}
@@ -267,7 +267,7 @@ public class Money implements Comparable, Serializable {
     public boolean equals(Money other) {
         return 
             other != null &&
-            isSameCurrencyAs(other) && 
+            hasSameCurrencyAs(other) && 
             amount.equals(other.amount);
     }
     
@@ -304,8 +304,8 @@ public class Money implements Comparable, Serializable {
         return currency;
     }
     
-    private void assertCurrencyIsSame(Money aMoney) {
-        if (!isSameCurrencyAs(aMoney))
+    private void assertHasSameCurrencyAs(Money aMoney) {
+        if (!hasSameCurrencyAs(aMoney))
             throw new IllegalArgumentException(aMoney.toString() + " is not same currency as " + this.toString());
     }
 
