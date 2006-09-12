@@ -170,7 +170,7 @@ public class Money implements Comparable, Serializable {
 	}
 	
 	public Money plus(Money other) {
-		if (!isSameCurrencyAs(other)) throw new IllegalArgumentException("Addition is not defined between different currencies");
+        assertCurrencyIsSame(other);
 		return Money.valueOf(amount.add(other.amount), currency);
 	}
 	
@@ -304,9 +304,9 @@ public class Money implements Comparable, Serializable {
         return currency;
     }
     
-    private void assertCurrencyIsSame(Money divisor) {
-        if (!isSameCurrencyAs(divisor))
-            throw new IllegalArgumentException(divisor.toString() + " is not same currency as " + this.toString());
+    private void assertCurrencyIsSame(Money aMoney) {
+        if (!isSameCurrencyAs(aMoney))
+            throw new IllegalArgumentException(aMoney.toString() + " is not same currency as " + this.toString());
     }
 
     //Only for use by persistence mapping frameworks
