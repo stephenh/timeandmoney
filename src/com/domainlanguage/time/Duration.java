@@ -66,7 +66,7 @@ public class Duration implements Comparable, Serializable {
 		return new Duration(howMany, unit);
 	}
 
-	Duration(long quantity, TimeUnit unit) {
+	public Duration(long quantity, TimeUnit unit) {
 		assertQuantityPositiveOrZero(quantity);
 		this.quantity = quantity;
 		this.unit = unit;

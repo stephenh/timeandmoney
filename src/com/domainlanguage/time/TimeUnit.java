@@ -9,20 +9,20 @@ package com.domainlanguage.time;
 import java.io.Serializable;
 import java.util.Calendar;
 
-class TimeUnit implements Comparable, Serializable, TimeUnitConversionFactors {
-    static final TimeUnit millisecond = new TimeUnit(Type.millisecond, Type.millisecond, 1);
-    static final TimeUnit second = new TimeUnit(Type.second, Type.millisecond, millisecondsPerSecond);
-    static final TimeUnit minute = new TimeUnit(Type.minute, Type.millisecond, millisecondsPerMinute);
-    static final TimeUnit hour = new TimeUnit(Type.hour, Type.millisecond, millisecondsPerHour);
-    static final TimeUnit day = new TimeUnit(Type.day, Type.millisecond, millisecondsPerDay);
-    static final TimeUnit week = new TimeUnit(Type.week, Type.millisecond, millisecondsPerWeek);
-    static final TimeUnit[] descendingMillisecondBased = { week, day, hour, minute, second, millisecond };
-    static final TimeUnit[] descendingMillisecondBasedForDisplay = { day, hour, minute, second, millisecond };
-    static final TimeUnit month = new TimeUnit(Type.month, Type.month, 1);
-    static final TimeUnit quarter = new TimeUnit(Type.quarter, Type.month, monthsPerQuarter);
-    static final TimeUnit year = new TimeUnit(Type.year, Type.month, monthsPerYear);
-    static final TimeUnit[] descendingMonthBased = { year, quarter, month };
-    static final TimeUnit[] descendingMonthBasedForDisplay = { year, month };
+public class TimeUnit implements Comparable, Serializable, TimeUnitConversionFactors {
+    public static final TimeUnit millisecond = new TimeUnit(Type.millisecond, Type.millisecond, 1);
+    public static final TimeUnit second = new TimeUnit(Type.second, Type.millisecond, millisecondsPerSecond);
+    public static final TimeUnit minute = new TimeUnit(Type.minute, Type.millisecond, millisecondsPerMinute);
+    public static final TimeUnit hour = new TimeUnit(Type.hour, Type.millisecond, millisecondsPerHour);
+    public static final TimeUnit day = new TimeUnit(Type.day, Type.millisecond, millisecondsPerDay);
+    public static final TimeUnit week = new TimeUnit(Type.week, Type.millisecond, millisecondsPerWeek);
+    public static final TimeUnit[] descendingMillisecondBased = { week, day, hour, minute, second, millisecond };
+    public static final TimeUnit[] descendingMillisecondBasedForDisplay = { day, hour, minute, second, millisecond };
+    public static final TimeUnit month = new TimeUnit(Type.month, Type.month, 1);
+    public static final TimeUnit quarter = new TimeUnit(Type.quarter, Type.month, monthsPerQuarter);
+    public static final TimeUnit year = new TimeUnit(Type.year, Type.month, monthsPerYear);
+    public static final TimeUnit[] descendingMonthBased = { year, quarter, month };
+    public static final TimeUnit[] descendingMonthBasedForDisplay = { year, month };
 
     private Type type;
     private Type baseType;
