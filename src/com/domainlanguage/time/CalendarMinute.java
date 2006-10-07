@@ -39,7 +39,7 @@ public class CalendarMinute {
         return date.hashCode() ^ time.hashCode();
     }
     public TimePoint asTimePoint(TimeZone timeZone) {
-        return TimePoint.at(date.getYear(), date.getMonth(), date.getDay(), time.getHour(), time.getMinute(), 0, 0, timeZone);
+        return TimePoint.at(date.breachEncapsulationOf_year(), date.breachEncapsulationOf_month(), date.breachEncapsulationOf_day(), time.getHour(), time.getMinute(), 0, 0, timeZone);
     }
     
     //Only for use by persistence mapping frameworks

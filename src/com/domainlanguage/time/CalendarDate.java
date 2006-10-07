@@ -204,15 +204,15 @@ public class CalendarDate implements Comparable, Serializable {
 		Calendar calendar = asJavaCalendarUniversalZoneMidnight();
 		return calendar.get(Calendar.DAY_OF_WEEK);
 	}
-    int getDay() {
+    public int breachEncapsulationOf_day() {
         return day;
     }
 
-    int getMonth() {
+    public int breachEncapsulationOf_month() {
         return month;
     }
 
-    int getYear() {
+    public int breachEncapsulationOf_year() {
         return year;
     }
     //Only for use by persistence mapping frameworks
