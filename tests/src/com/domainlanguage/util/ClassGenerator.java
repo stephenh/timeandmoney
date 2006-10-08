@@ -10,6 +10,7 @@ import java.util.*;
 import java.util.jar.*;
 
 public abstract class ClassGenerator {
+    private static final String TIMEANDMONEY_JAR_NAME = "timeandmoney";
     private static final String JAR_POST_FIX = ".jar";
     private static final String CLASS_POST_FIX = ".class";
 
@@ -42,6 +43,8 @@ public abstract class ClassGenerator {
     protected abstract void next(Class klass) throws Exception;
 
     private void searchInJar(File jarFile) throws Exception {
+        if (!jarFile.getName().startsWith(TIMEANDMONEY_JAR_NAME))
+            return;
         JarFile jar = new JarFile(jarFile);
         try {
             Enumeration enumeration = jar.entries();
