@@ -13,6 +13,7 @@ import junit.framework.*;
 public class IntervalSequenceTest extends TestCase {
     private Interval c5_10c = Interval.closed(new Integer(5), new Integer(10));
     private Interval o10_12c = Interval.over(new Integer(10), false, new Integer(12), true);
+    private Interval o11_20c = Interval.over(new Integer(11), false, new Integer(20), true);
     private Interval o12_20o = Interval.open(new Integer(12), new Integer(20));
     private Interval c20_25c = Interval.closed(new Integer(20), new Integer(25));
     private Interval o25_30c = Interval.over(new Integer(25), false, new Integer(30), true);
@@ -69,6 +70,33 @@ public class IntervalSequenceTest extends TestCase {
 
     }
 
+    public void testOverlapping() {
+        IntervalSequence intervalSequence = new IntervalSequence();
+        intervalSequence.add(o10_12c);
+        intervalSequence.add(o11_20c);
+        Iterator it = intervalSequence.iterator();
+        assertTrue(it.hasNext());
+        assertEquals(o10_12c, it.next());
+        assertTrue(it.hasNext());
+        assertEquals(o11_20c, it.next());
+        assertFalse(it.hasNext());
+    }
+    
+//    public void testIntersections() {
+//        
+//        IntervalSequence intervalSequence = new IntervalSequence();
+//        intervalSequence.add(o10_12c);
+//        intervalSequence.add(o11_20c);
+//        intervalSequence.add(c20_25c);
+//        
+//        Iterator it = intervalSequence.intersections().iterator();
+//        assertTrue(it.hasNext());
+//        assertEquals(o11_12c, it.next());
+//        assertTrue(it.hasNext());
+//        assertEquals(c20_20c, it.next());
+//        assertFalse(it.hasNext());
+//    }
+    
     public void testExtent() {
         IntervalSequence intervalSequence = new IntervalSequence();
         intervalSequence.add(c5_10c);
