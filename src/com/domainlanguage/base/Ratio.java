@@ -3,6 +3,10 @@
  * free software is distributed under the "MIT" licence. See file licence.txt.
  * For more information, see http://timeandmoney.sourceforge.net.
  * 
+ */
+
+package com.domainlanguage.base;
+/**
  * Ratio represents the unitless division of two quantities of the same type.
  * The key to its usefulness is that it defers the calculation of a decimal
  * value for the ratio. An object which has responsibility for the two values in
@@ -13,9 +17,9 @@
  * time comes to compute a decimal value for the ratio. The client typically has
  * the responsibilities that enable an appropriate choice of these parameters.
  *  
+ * @author  Eric Evans
+ * @see 
  */
-
-package com.domainlanguage.base;
 
 import java.math.BigDecimal;
 
