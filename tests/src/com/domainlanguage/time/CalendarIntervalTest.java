@@ -127,4 +127,9 @@ public class CalendarIntervalTest extends TestCase {
         assertTrue(may1.compareTo(may1_may2) < 0);
         assertTrue(may1_may2.compareTo(may1_may1) > 0);
     }
+    public void testEverFromToString() {
+        CalendarDate x = CalendarDate.from(2007, 6, 5);
+        CalendarInterval i = CalendarInterval.everFrom(x);
+        assertEquals("[2007-6-5, Infinity]", i.toString());
+    }
 }

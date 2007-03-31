@@ -129,6 +129,8 @@ public class Interval implements Comparable, Serializable {
     }
 
     public boolean isSingleElement() {
+        if (!hasUpperLimit()) return false;
+        if (!hasLowerLimit()) return false;
         //An interval containing a single element, {a}.
         return upperLimit().equals(lowerLimit()) && !isEmpty();
     }
@@ -163,9 +165,9 @@ public class Interval implements Comparable, Serializable {
             return "{" + lowerLimit().toString() + "}";
         StringBuffer buffer = new StringBuffer();
         buffer.append(includesLowerLimit() ? "[" : "(");
-        buffer.append(lowerLimit().toString());
+        buffer.append(hasLowerLimit() ? lowerLimit().toString() : "Infinity");
         buffer.append(", ");
-        buffer.append(upperLimit().toString());
+        buffer.append(hasUpperLimit() ? upperLimit().toString() : "Infinity");
         buffer.append(includesUpperLimit() ? "]" : ")");
         return buffer.toString();
     }
