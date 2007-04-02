@@ -9,6 +9,7 @@ import java.math.*;
 
 import junit.framework.*;
 
+import com.domainlanguage.base.Rounding;
 import com.domainlanguage.time.*;
 
 public class MoneyTimeRateTest extends TestCase {
@@ -25,12 +26,12 @@ public class MoneyTimeRateTest extends TestCase {
     }
     public void testRoundingRate() {
         MoneyTimeRate rate = new MoneyTimeRate(Money.euros(100.00), Duration.minutes(3));
-        assertEquals(Money.euros(new BigDecimal("33.33")), rate.over(Duration.minutes(1), BigDecimal.ROUND_DOWN));
+        assertEquals(Money.euros(new BigDecimal("33.33")), rate.over(Duration.minutes(1), Rounding.DOWN));
     }
 
     public void testRoundingScalingRate() {
         MoneyTimeRate rate = new MoneyTimeRate(Money.euros(new BigDecimal("100.00")), Duration.minutes(3));
-        assertEquals(Money.euros(new BigDecimal("33.33")), rate.over(Duration.minutes(1), 2, BigDecimal.ROUND_DOWN));
+        assertEquals(Money.euros(new BigDecimal("33.33")), rate.over(Duration.minutes(1), 2, Rounding.DOWN));
     }
     public void testEquals() {
         Money amount=Money.euros(11.00);
