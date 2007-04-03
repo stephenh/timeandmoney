@@ -72,9 +72,14 @@ public class MoneyLanguageExampleTest extends TestCase {
         Proration proration = new Proration();
         
         //Salary rounds to 1538.46 per week.
-        Money[] salaryPayments = proration.dividedEvenlyIntoParts(Money.dollars(80000.88), 52);
-        //TODO Rounding problem Expected 1538.46 but got 1538.48.
-        //assertEquals(Money.dollars(1538.46), salaryPayments[0]);
+        Money[] salaryPayments = proration.dividedEvenlyIntoParts(Money.dollars(80000.00), 52);
+        assertEquals(Money.dollars(1538.47), salaryPayments[0]);
+        assertEquals(Money.dollars(1538.47), salaryPayments[2]);
+        assertEquals(Money.dollars(1538.47), salaryPayments[4]);
+        assertEquals(Money.dollars(1538.47), salaryPayments[6]);
+        assertEquals(Money.dollars(1538.46), salaryPayments[8]);
+        assertEquals(Money.dollars(1538.46), salaryPayments[10]);
+        assertEquals(Money.dollars(1538.46), salaryPayments[12]);
 
         Money totalSalaryEarned = proration.partOfWhole(Money.dollars(80000.00), 36, 52);
         //TODO Following currently fails. May be a problem in proration.
