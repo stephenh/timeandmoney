@@ -30,6 +30,7 @@ public class AllTests extends TestSuite {
                 String each = (String) enumeration.nextElement();
                 suite.addTestSuite(Class.forName(each));
             } catch (ClassNotFoundException ignore) {
+            } catch (NoClassDefFoundError ignore) {
             }
         return suite;
     }
