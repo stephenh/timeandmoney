@@ -78,7 +78,7 @@ public class Proration {
 	
 	Money[] distributeRemainderOver(Money[] amounts, Money remainder) {
 		int increments = remainder.dividedBy(remainder.minimumIncrement()).decimalValue(0, Rounding.UNNECESSARY).intValue();
-		assert increments <= amounts.length; 
+		assertAmountsLengthLessThanOrEqualTo(amounts, increments);
 
 		Money[] results = new Money[amounts.length];
 		for (int i = 0; i < increments; i++) 
@@ -87,5 +87,12 @@ public class Proration {
 			results[i] = amounts[i];
 		return results; 
 	}
+
+    private void assertAmountsLengthLessThanOrEqualTo(Money[] amounts,
+            int increments) {
+        if (increments > amounts.length) {
+		    throw new IllegalArgumentException();
+		}
+    }
 	
 }

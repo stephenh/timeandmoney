@@ -38,12 +38,11 @@ public class Interval implements Comparable, Serializable {
     }
 
     Interval(IntervalLimit lower, IntervalLimit upper) {
-        assert lower.isLower();
-        assert upper.isUpper();
-        assert lower.compareTo(upper) <= 0;
+        assertLowerIsLessThanOrEqualUpper(lower, upper);
         this.lowerLimitObject=lower;
         this.upperLimitObject=upper;
     }
+
     protected Interval(Comparable lower, boolean isLowerClosed, Comparable upper, boolean isUpperClosed) {
         this(IntervalLimit.lower(isLowerClosed, lower), IntervalLimit.upper(isUpperClosed, upper));
     }
@@ -317,6 +316,12 @@ public class Interval implements Comparable, Serializable {
         if (upperLimit().equals(other.upperLimit()) && !other.includesUpperLimit())
             return null;
         return newOfSameType(this.upperLimit(), !this.includesUpperLimit(), other.upperLimit(), other.includesUpperLimit());
+    }
+    private void assertLowerIsLessThanOrEqualUpper(IntervalLimit lower,
+            IntervalLimit upper) {
+        if (!(lower.isLower() && upper.isUpper() && lower.compareTo(upper) <= 0)) {
+            throw new IllegalArgumentException(lower + " is not before or equal to " + upper);
+        }
     }
     //Only for use by persistence mapping frameworks
     //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>

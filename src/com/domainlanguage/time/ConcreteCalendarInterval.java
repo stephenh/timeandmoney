@@ -13,10 +13,12 @@ class ConcreteCalendarInterval extends CalendarInterval {
     private CalendarDate end;
 
     static ConcreteCalendarInterval from(CalendarDate start, CalendarDate end) {
+        
         return new ConcreteCalendarInterval(start, end);
     }
 
     ConcreteCalendarInterval(CalendarDate start, CalendarDate end) {
+        assertStartIsBeforeEnd(start, end);
         this.start = start;
         this.end = end;
     }
@@ -34,6 +36,14 @@ class ConcreteCalendarInterval extends CalendarInterval {
     public Comparable lowerLimit() {
         return start;
     }
+    
+    private static void assertStartIsBeforeEnd(CalendarDate start,
+            CalendarDate end) {
+        if (start != null && end != null && start.compareTo(end) > 0) {
+            throw new IllegalArgumentException(start + " is not before or equal to " + end);
+        }
+    }
+    
     //Only for use by persistence mapping frameworks
     //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
     ConcreteCalendarInterval() {

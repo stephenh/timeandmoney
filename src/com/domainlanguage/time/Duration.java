@@ -77,19 +77,17 @@ public class Duration implements Comparable, Serializable {
 	}
 
 	public Duration plus(Duration other) {
-		assertNotConvertible(other);
+		assertConvertible(other);
 		long newQuantity = this.inBaseUnits() + other.inBaseUnits();
 		return new Duration(newQuantity, unit.baseUnit());
 	}
 
 	public Duration minus(Duration other) {
-        assertNotConvertible(other);
-		assert this.compareTo(other) >= 0;
+        assertConvertible(other);
+		assertGreaterThanOrEqualTo(other);
 		long newQuantity = this.inBaseUnits() - other.inBaseUnits();
 		return new Duration(newQuantity, unit.baseUnit());
 	}
-
-    
 	
 	public TimePoint addedTo(TimePoint point) {
         return addAmountToTimePoint(inBaseUnits(), point);
@@ -122,7 +120,7 @@ public class Duration implements Comparable, Serializable {
 	}
 
 	public Ratio dividedBy (Duration divisor) {
-		assert unit.isConvertibleTo(divisor.unit);
+		assertConvertible(divisor);
 		return Ratio.of(inBaseUnits(), divisor.inBaseUnits());
 	}
 
@@ -159,7 +157,7 @@ public class Duration implements Comparable, Serializable {
 
 	public int compareTo(Object arg) {
 		Duration other = (Duration) arg;
-		assertNotConvertible(other);
+		assertConvertible(other);
 		long difference = this.inBaseUnits() - other.inBaseUnits();
 		if (difference > 0) return 1;
 		if (difference < 0) return -1;
@@ -190,21 +188,33 @@ public class Duration implements Comparable, Serializable {
         if (unit.isConvertibleToMilliseconds()) {
             calendar.setTimeInMillis(calendar.getTimeInMillis() + amount);
         } else {
-            assert (amount >= Integer.MIN_VALUE && amount <= Integer.MAX_VALUE);
+            assertAmountValid(amount);
             calendar.add(unit.javaCalendarConstantForBaseType(), (int) amount);
         }
     }
+
+    
     void subtractAmountFromCalendar(long amount, Calendar calendar) {
         addAmountToCalendar(-1 * amount, calendar);
     }
     
-    private void assertNotConvertible(Duration other) {
+    private void assertConvertible(Duration other) {
         if (!other.unit.isConvertibleTo(this.unit))
             throw new IllegalArgumentException(other.toString() + " is not convertible to: " + this.toString());
     }
     private void assertQuantityPositiveOrZero(long quantity) {
         if (quantity < 0)
             throw new IllegalArgumentException("Quantity: "+quantity+" must be zero or positive");
+    }
+    private void assertGreaterThanOrEqualTo(Duration other) {
+        if (this.compareTo(other) < 0) {
+            throw new IllegalArgumentException(this + " is before " + other);
+        }
+    }
+    private void assertAmountValid(long amount) {
+        if (!(amount >= Integer.MIN_VALUE && amount <= Integer.MAX_VALUE)) {
+            throw new IllegalArgumentException(amount + " is not valid");
+        }
     }
     private boolean isConvertibleTo(Duration other) {
         return this.unit.isConvertibleTo(other.unit);

@@ -12,17 +12,23 @@ import junit.framework.*;
 public class TimeAndMoneyDomainClassFilter implements ClassFilter {
 
     public boolean accepts(Class klass) {
-        if (isTestCase(klass)) {
+        try {
+            if (isTestCase(klass)) {
+                return false;
+            }
+            if (isInnerClass(klass)
+                    && !isTimeAndMoney(klass.getDeclaringClass())) {
+                return false;
+            }
+            if (isTimeAndMoney(klass)) {
+                return true;
+            }
+            return false;
+        } catch (NoClassDefFoundError error) {
             return false;
         }
-        if (isInnerClass(klass) && !isTimeAndMoney(klass.getDeclaringClass())) {
-            return false;
-        }
-        if (isTimeAndMoney(klass)) {
-            return true;
-        }
-        return false;
     }
+    
     private boolean isInnerClass(Class klass) {
         return klass.getName().indexOf('$') > -1;
     }

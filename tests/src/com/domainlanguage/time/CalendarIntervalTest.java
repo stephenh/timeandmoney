@@ -6,11 +6,14 @@
 
 package com.domainlanguage.time;
 
-import java.util.*;
+import java.util.Iterator;
+import java.util.List;
+import java.util.TimeZone;
 
-import junit.framework.*;
+import junit.framework.TestCase;
 
-import com.domainlanguage.tests.*;
+import com.domainlanguage.intervals.Interval;
+import com.domainlanguage.tests.SerializationTester;
 
 public class CalendarIntervalTest extends TestCase {
 	private CalendarDate may1 = CalendarDate.date(2004, 5, 1);
@@ -131,5 +134,17 @@ public class CalendarIntervalTest extends TestCase {
         CalendarDate x = CalendarDate.from(2007, 6, 5);
         CalendarInterval i = CalendarInterval.everFrom(x);
         assertEquals("[2007-6-5, Infinity]", i.toString());
+    }
+    /*
+     * [ 1792849 ] ConcreteCalendarInterval allows misordered limits
+     */
+    public void testBackwardCalendarIvalIntersection() {
+        IllegalArgumentException problem=null;
+        try {
+            Interval i = CalendarInterval.inclusive(2001, 1, 1, 1776, 7, 4);
+        } catch(IllegalArgumentException error) {
+            problem=error;
+        }
+        assertNotNull(problem);
     }
 }
