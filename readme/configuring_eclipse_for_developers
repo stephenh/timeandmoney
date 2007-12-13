@@ -1,0 +1,58 @@
+To do timeandmoney development in Eclipse, 
+download the latest version of Eclipse and then
+follow these step-by-step instructions to configure
+plugins for Subversion and Mavin
+
+Installing the Subversion plugin (Subversive)
+-----------------------------------------------
+Help>Software Updates>Find And Install...
+Search for new features to install
+New Remote Site...
+Bring in both of these::
+Name: Subversive SVN Connectors update site
+URL:  http://www.polarion.org/projects/subversive/download/eclipse/2.0/update-site/
+Name: Subversive
+URL:  http://download.eclipse.org/technology/subversive/0.7/update-site/
+
+Make sure both have a check mark
+Click Finish
+Now you have to select features to install:  Select all except for Subversion Integration for the CSC project
+Accept license
+Finish
+
+When you see "Feature Verification" click "Install All"
+Restart Eclipse
+(Now Subversive is installed)
+
+
+Installing the Mavin plugin (Q4E)
+-----------------------------------------------
+Help>Software Updates>Find And Install...
+Search for new features to install
+New Remote Site...
+Name: Q4E
+URL: http://q4e.googlecode.com/svn/trunk/updatesite/
+Select Q4E and click Finish
+Select all features (Next)
+Accept Licence (Next)
+Finish
+At "Feature Verification" Install All
+Restart Eclipse
+(Now Q4E is installed)
+
+Setting Up the Project
+-----------------------------------------------
+Window>Open Perspective>Other...
+Select SVN Repository Exploring
+Right click in panel
+New>Repository Location
+URL: https://timeandmoney.svn.sourceforge.net/svnroot/timeandmoney
+User: your SourceForge login
+Password: your SourceForge password
+Finish
+
+Now right click on "trunk" and "Check Out"
+
+In Package Explorer menu > "Enable Maven Dependency Management"
+
+That's it. Everything should be working now. (You can check this by running the tests.)
