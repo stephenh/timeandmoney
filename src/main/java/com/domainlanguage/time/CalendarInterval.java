@@ -181,12 +181,4 @@ public abstract class CalendarInterval extends Interval<CalendarDate> {
         return this.start().equals(other.start()) && !other.hasUpperLimit() && this.hasUpperLimit();
     }
 
-    public String toString() {
-        return "["
-            + (hasLowerLimit() ? lowerLimit() : "open ended")
-            + "-"
-            + (hasUpperLimit() ? upperLimit() : "open ended")
-            + "]";
-    }
-
 }

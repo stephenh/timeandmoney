@@ -73,7 +73,7 @@ public class CalendarDate implements Comparable<CalendarDate>, Serializable {
 
 	@Override
 	public String toString() {
-		return toString("MM/dd/yyyy"); //default for console
+		return toString("yyyy-M-d"); //default for console
 	}
 
 	public String toString(String pattern) {

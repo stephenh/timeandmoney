@@ -175,7 +175,7 @@ public class MoneyTest extends TestCase {
     }
 
     public void testPrint() {
-        assertEquals("$ 15.00", d15.toString(Locale.US));
+        assertEquals("$15.00", d15.toString(Locale.US));
         assertEquals("USD 15.00", d15.toString(Locale.UK));
     }
     // TODO: Formatted printing of Money
