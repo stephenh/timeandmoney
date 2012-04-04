@@ -99,6 +99,51 @@ public class Money implements Comparable, Serializable {
 	}
 
 	/**
+	 * Return the max of <code>a</code> or <code>0</code>
+	 */
+	public static Money notBelowZero(Money a) {
+		Money zero = Money.valueOf(0.00, a.getCurrency());
+		return Money.max(zero, a);
+	}
+
+	/**
+	 * Return the max of <code>a</code> or <code>b</code>
+	 */
+	public static Money max(Money a, Money b) {
+		if (a.isGreaterThan(b)) {
+			return a;
+		} else {
+			return b;
+		}
+	}
+
+	/**
+	 * Return the min of <code>a</code> or <code>b</code>
+	 */
+	public static Money min(Money a, Money b) {
+		if (a.isLessThan(b)) {
+			return a;
+		} else {
+			return b;
+		}
+	}
+
+	/**
+	 * Return the sum of <code>money</code>
+	 */
+	public static Money sum(List money) {
+		Money total = Money.dollars(0.00);
+		for (Iterator i = money.iterator(); i.hasNext();) {
+			total = total.plus((Money) i.next());
+		}
+		return total;
+	}
+
+    public static Money zeroIfNull(Money money) {
+        return (money == null) ? Money.dollars(0.00) : money;
+    }
+
+	/**
 	 * How best to handle access to the internals? It is needed for
 	 * database mapping, UI presentation, and perhaps a few other
 	 * uses. Yet giving public access invites people to do the
@@ -146,12 +191,24 @@ public class Money implements Comparable, Serializable {
 		return amount.compareTo(new BigDecimal(0)) < 0;
 	}
 	
+	public boolean isNotNegative() {
+		return !this.isNegative();
+	}
+	
 	public boolean isPositive() {
 		return amount.compareTo(new BigDecimal(0)) > 0;
 	}
 	
+	public boolean isNotPositive() {
+		return !this.isPositive();
+	}
+	
 	public boolean isZero() {
 		return this.equals(Money.valueOf(0.0, currency));
+	}
+	
+	public boolean isNotZero() {
+		return !this.isZero();
 	}
 	
 	public Money plus(Money other) {
@@ -236,8 +293,16 @@ public class Money implements Comparable, Serializable {
 		return (compareTo(other) > 0);
 	}
 	
+	public boolean isGreaterThanOrEqualTo(Money other) {
+		return (compareTo(other) >= 0);
+	}
+	
 	public boolean isLessThan(Money other) {
 		return (compareTo(other) < 0);
+	}
+	
+	public boolean isLessThanOrEqualTo(Money other) {
+		return (compareTo(other) <= 0);
 	}
 	
 	public boolean equals(Object other) {
@@ -256,11 +321,19 @@ public class Money implements Comparable, Serializable {
 	}
 	
 	public String toString() {
-		return currency.getSymbol() + " " + amount;
+		String symbol = currency.getSymbol();
+		if (!"$".equals(symbol)) {
+			symbol = symbol + " ";
+		}
+		return symbol + amount;
 	}
 
 	public String toString(Locale locale) {
-		return currency.getSymbol(locale) + " " + amount;
+		String symbol = currency.getSymbol(locale);
+		if (!"$".equals(symbol)) {
+			symbol = symbol + " ";
+		}
+		return symbol + amount;
 	}
 
     public MoneyTimeRate per(Duration duration) {

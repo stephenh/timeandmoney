@@ -7,6 +7,7 @@
 package com.domainlanguage.money;
 
 import java.math.*;
+import java.util.List;
 
 import com.domainlanguage.base.*;
 
@@ -38,7 +39,7 @@ public class Proration {
 		return total.getCurrency().getDefaultFractionDigits() + 1;
 	}
 
-	public Money[] dividedEvenlyIntoParts(Money total, int n) {
+	public static Money[] dividedEvenlyIntoParts(Money total, int n) {
 		Money lowResult = total.dividedBy(BigDecimal.valueOf(n), Rounding.DOWN);
 		Money[] lowResults = new Money[n];
 		for (int i = 0; i < n; i++) lowResults[i] = lowResult;
@@ -46,7 +47,7 @@ public class Proration {
 		return distributeRemainderOver(lowResults, remainder);
 	}
 
-	public Money[] proratedOver(Money total, long[] longProportions) {
+	public static Money[] proratedOver(Money total, long[] longProportions) {
 		BigDecimal[] proportions = new BigDecimal[longProportions.length];
 		for (int i = 0; i < longProportions.length; i++) {
 			proportions[i] = BigDecimal.valueOf(longProportions[i]);
@@ -54,10 +55,37 @@ public class Proration {
 		return proratedOver(total, proportions);
 	}
 	
-	public Money[] proratedOver(Money total, BigDecimal[] proportions) {
-		Money[] simpleResult = new Money[proportions.length];
+	public static Money[] proratedOver(Money total, BigDecimal[] proportions) {
+		return proratedOver(total, ratios(proportions));
+	}
+
+	public static Money[] proratedOver(Money total, List ratios) {
+		return proratedOver(total, (Ratio[]) ratios.toArray(new Ratio[ratios.size()]));
+	}
+
+	public static Money[] proratedOver(Money total, Ratio[] ratios) {
+		Money[] simpleResult = new Money[ratios.length];
 		int scale = defaultScaleForIntermediateCalculations(total);
-		Ratio[] ratios = ratios(proportions);
+
+		// Check to see if the the total is a multiple of all the denominators,
+		// in which case simple multiplication is preferable to avoid rounding.
+		// Note: the cool thing to do would be to reduce the fractions, get the
+		// lowest common denominator, and see if total is a multiple of that.
+		// But we do the simple thing for now as that is all CBAS is passing in.
+		boolean dividesEvenly = true;
+		for (int i = 0; i < ratios.length; i++) {
+			if (!ratios[i].isMultipleOfDenominator(total.breachEncapsulationOfAmount())) {
+				dividesEvenly = false;
+				break;
+			}
+		}
+		if (dividesEvenly) {
+			for (int i = 0; i < ratios.length; i++) {
+				simpleResult[i] = Money.dollars(ratios[i].times(total.breachEncapsulationOfAmount()).decimalValue(scale, Rounding.DOWN));
+			}
+			return simpleResult;
+		}
+
 		for (int i = 0; i < ratios.length; i++) {
 			BigDecimal multiplier = ratios[i].decimalValue(scale, Rounding.DOWN);
 			simpleResult[i] = total.times(multiplier, Rounding.DOWN);
@@ -66,26 +94,25 @@ public class Proration {
 		return distributeRemainderOver(simpleResult, remainder);
 	}
 
-	public Money partOfWhole(Money total, long portion, long whole) {
+	public static Money partOfWhole(Money total, long portion, long whole) {
 		return partOfWhole(total, Ratio.of(portion, whole));
 	}
 
-	public Money partOfWhole(Money total, Ratio ratio) {
+	public static Money partOfWhole(Money total, Ratio ratio) {
 		int scale = defaultScaleForIntermediateCalculations(total);
 		BigDecimal multiplier = ratio.decimalValue(scale, Rounding.DOWN);
 		return total.times(multiplier, Rounding.DOWN);
 	}
 	
-	Money[] distributeRemainderOver(Money[] amounts, Money remainder) {
+	static Money[] distributeRemainderOver(Money[] amounts, Money remainder) {
 		int increments = remainder.dividedBy(remainder.minimumIncrement()).decimalValue(0, Rounding.UNNECESSARY).intValue();
-		assert increments <= amounts.length; 
 
 		Money[] results = new Money[amounts.length];
-		for (int i = 0; i < increments; i++) 
-			results[i] = amounts[i].incremented();
-		for (int i = increments; i < amounts.length; i++) 
+		for (int i = 0; i < amounts.length; i++)
 			results[i] = amounts[i];
-		return results; 
+		for (int i = 0; i < increments; i++)
+			results[i % results.length] = results[i % results.length].incremented();
+		return results;
 	}
-	
+
 }

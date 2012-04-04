@@ -61,10 +61,14 @@ public class Ratio {
         return Ratio.of(numerator.multiply(multiplier.numerator), denominator.multiply(multiplier.denominator));
     }
 
+    public boolean isMultipleOfDenominator(BigDecimal other) {
+        return other.remainder(this.denominator).unscaledValue().intValue() == 0;
+    }
+
     public String toString() {
         return numerator.toString() + "/" + denominator;
     }
-    
+
     //Only for use by persistence mapping frameworks
     //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
     Ratio() {

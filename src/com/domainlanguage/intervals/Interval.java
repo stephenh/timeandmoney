@@ -108,11 +108,17 @@ public class Interval implements Comparable, Serializable {
     }
 
     public boolean covers(Interval other) {
-        int lowerComparison = lowerLimit().compareTo(other.lowerLimit());
-        boolean lowerPass = this.includes(other.lowerLimit()) || (lowerComparison == 0 && !other.includesLowerLimit());
-        int upperComparison = upperLimit().compareTo(other.upperLimit());
-        boolean upperPass = this.includes(other.upperLimit()) || (upperComparison == 0 && !other.includesUpperLimit());
+        boolean lowerPass = lowerLimit() == null
+            || this.includes(other.lowerLimit())
+            || (lowerLimit().compareTo(other.lowerLimit()) == 0 && !other.includesLowerLimit());
+        boolean upperPass = upperLimit() == null
+            || this.includes(other.upperLimit())
+            || (upperLimit().compareTo(other.upperLimit()) == 0 && !other.includesUpperLimit());
         return lowerPass && upperPass;
+    }
+
+    public boolean within(Interval other) {
+        return other.covers(this);
     }
 
     public boolean isOpen() {
@@ -130,6 +136,9 @@ public class Interval implements Comparable, Serializable {
     }
 
     public boolean isSingleElement() {
+        if (!hasUpperLimit() || !hasLowerLimit()) {
+            return false;
+        }
         //An interval containing a single element, {a}.
         return upperLimit().equals(lowerLimit()) && !isEmpty();
     }
@@ -148,6 +157,13 @@ public class Interval implements Comparable, Serializable {
 
     public int compareTo(Object arg) {
         Interval other = (Interval) arg;
+        if (lowerLimit() == null) {
+            return (other.lowerLimit() == null) ? 0 : -1;
+        }
+        if (upperLimit() == null) {
+            return (other.upperLimit() == null) ? 0 : 1;
+        }
+
         if (!upperLimit().equals(other.upperLimit()))
             return upperLimit().compareTo(other.upperLimit());
         if (includesLowerLimit() && !other.includesLowerLimit())
@@ -162,16 +178,32 @@ public class Interval implements Comparable, Serializable {
             return "{}";
         if (isSingleElement())
             return "{" + lowerLimit().toString() + "}";
+
         StringBuffer buffer = new StringBuffer();
+
         buffer.append(includesLowerLimit() ? "[" : "(");
-        buffer.append(lowerLimit().toString());
+        if (hasLowerLimit()) {
+            buffer.append(lowerLimit().toString());
+        } else {
+            buffer.append("infin");
+        }
+
         buffer.append(", ");
-        buffer.append(upperLimit().toString());
+
+        if (hasUpperLimit()) {
+            buffer.append(upperLimit().toString());
+        } else {
+            buffer.append("infin");
+        }
         buffer.append(includesUpperLimit() ? "]" : ")");
+
         return buffer.toString();
     }
 
     private Comparable lesserOfLowerLimits(Interval other) {
+        if (lowerLimit() == null) {
+            return null;
+        }
         int lowerComparison = lowerLimit().compareTo(other.lowerLimit());
         if (lowerComparison <= 0)
             return this.lowerLimit();
@@ -179,6 +211,9 @@ public class Interval implements Comparable, Serializable {
     }
 
     Comparable greaterOfLowerLimits(Interval other) {
+        if (lowerLimit() == null) {
+            return other.lowerLimit();
+        }
         int lowerComparison = lowerLimit().compareTo(other.lowerLimit());
         if (lowerComparison >= 0)
             return this.lowerLimit();
@@ -186,6 +221,9 @@ public class Interval implements Comparable, Serializable {
     }
 
     Comparable lesserOfUpperLimits(Interval other) {
+        if (upperLimit() == null) {
+            return other.upperLimit();
+        }
         int upperComparison = upperLimit().compareTo(other.upperLimit());
         if (upperComparison <= 0)
             return this.upperLimit();
@@ -193,6 +231,9 @@ public class Interval implements Comparable, Serializable {
     }
 
     private Comparable greaterOfUpperLimits(Interval other) {
+        if (upperLimit() == null) {
+            return null;
+        }
         int upperComparison = upperLimit().compareTo(other.upperLimit());
         if (upperComparison >= 0)
             return this.upperLimit();
