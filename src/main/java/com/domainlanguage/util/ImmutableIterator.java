@@ -8,7 +8,7 @@ package com.domainlanguage.util;
 
 import java.util.*;
 
-abstract public class ImmutableIterator implements Iterator {
+abstract public class ImmutableIterator<T> implements Iterator<T> {
 
     public void remove() {
         throw new UnsupportedOperationException("sorry, no can do :-(");

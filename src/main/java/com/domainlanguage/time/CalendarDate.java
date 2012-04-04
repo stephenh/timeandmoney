@@ -10,7 +10,8 @@ import java.io.Serializable;
 import java.util.Calendar;
 import java.util.TimeZone;
 
-public class CalendarDate implements Comparable, Serializable {
+public class CalendarDate implements Comparable<CalendarDate>, Serializable {
+
 	private int year;
 	private int month; // 1 based: January = 1, February = 2, ...
 	private int day;
@@ -70,6 +71,7 @@ public class CalendarDate implements Comparable, Serializable {
 		this.day = day;
 	}
 
+	@Override
 	public String toString() {
 		return toString("MM/dd/yyyy"); //default for console
 	}
@@ -113,13 +115,7 @@ public class CalendarDate implements Comparable, Serializable {
 		return !interval.includes(this);
 	}
 
-	public int compareTo(Object other) {
-		try {
-			return compareTo ((CalendarDate) other);
-		} catch (ClassCastException ex) {
-            return -1;
-        }
-	}
+	@Override
     public int compareTo(CalendarDate other) {
         if (other == null) return -1;
         if (isBefore(other)) return -1;
@@ -127,6 +123,7 @@ public class CalendarDate implements Comparable, Serializable {
         return 0;
     }
 
+	@Override
 	public boolean equals(Object object) {
         try {
             return equals((CalendarDate) object);
@@ -142,6 +139,7 @@ public class CalendarDate implements Comparable, Serializable {
             this.day == other.day;
     }
 
+	@Override
 	public int hashCode() {
 		return year * month * day;
 	}

@@ -127,7 +127,6 @@ public class CalendarIntervalTest extends TestCase {
         assertEquals(0, may1.compareTo(may1_may1.start()));
         assertEquals(0, may1_may1.start().compareTo(may1));
         CalendarInterval may1_may2 = CalendarInterval.inclusive(may1, may2);
-        assertTrue(may1.compareTo(may1_may2) < 0);
         assertTrue(may1_may2.compareTo(may1_may1) > 0);
     }
     public void testEverFromToString() {

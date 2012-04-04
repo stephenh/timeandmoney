@@ -11,7 +11,7 @@ import java.util.*;
 import com.domainlanguage.intervals.*;
 import com.domainlanguage.util.*;
 
-public abstract class CalendarInterval extends Interval {
+public abstract class CalendarInterval extends Interval<CalendarDate> {
 
     public static CalendarInterval inclusive(CalendarDate start, CalendarDate end) {
         return ConcreteCalendarInterval.from(start, end);
@@ -48,9 +48,10 @@ public abstract class CalendarInterval extends Interval {
 
     public abstract TimeInterval asTimeInterval(TimeZone zone);
 
-    public Interval newOfSameType(Comparable lower, boolean isLowerClosed, Comparable upper, boolean isUpperClosed) {
-        CalendarDate includedLower = isLowerClosed ? (CalendarDate) lower : ((CalendarDate) lower).plusDays(1);
-        CalendarDate includedUpper = isUpperClosed ? (CalendarDate) upper : ((CalendarDate) upper).plusDays(-1);
+    @Override
+    public CalendarInterval newOfSameType(CalendarDate lower, boolean isLowerClosed, CalendarDate upper, boolean isUpperClosed) {
+        CalendarDate includedLower = isLowerClosed ? lower : lower.plusDays(1);
+        CalendarDate includedUpper = isUpperClosed ? upper : upper.plusDays(-1);
         return inclusive(includedLower, includedUpper);
     }
 
@@ -63,11 +64,11 @@ public abstract class CalendarInterval extends Interval {
     }
 
     public CalendarDate start() {
-        return (CalendarDate) lowerLimit();
+        return lowerLimit();
     }
 
     public CalendarDate end() {
-        return (CalendarDate) upperLimit();
+        return upperLimit();
     }
 
     public boolean equals(Object object) {
@@ -113,23 +114,23 @@ public abstract class CalendarInterval extends Interval {
         return (int) (diffMillis / TimeUnitConversionFactors.millisecondsPerDay);
     }
 
-    public Iterator subintervalIterator(Duration subintervalLength) {
+    public Iterator<CalendarInterval> subintervalIterator(Duration subintervalLength) {
         //assert TimeUnit.day.compareTo(subintervalLength.normalizedUnit()) <=
         // 0;
         if (TimeUnit.day.compareTo(subintervalLength.normalizedUnit()) > 0) {
             throw new IllegalArgumentException("CalendarIntervals must be a whole number of days or months.");
         }
 
-        final Interval totalInterval = this;
+        final Interval<CalendarDate> totalInterval = this;
         final Duration segmentLength = subintervalLength;
-        return new ImmutableIterator() {
+        return new ImmutableIterator<CalendarInterval>() {
             CalendarInterval next = segmentLength.startingFrom(start());
 
             public boolean hasNext() {
                 return totalInterval.covers(next);
             }
 
-            public Object next() {
+            public CalendarInterval next() {
                 if (!hasNext())
                     return null;
                 CalendarInterval current = next;
@@ -139,35 +140,35 @@ public abstract class CalendarInterval extends Interval {
         };
     }
 
-    public Iterator daysIterator() {
-        final CalendarDate start = (CalendarDate) lowerLimit();
-        final CalendarDate end = (CalendarDate) upperLimit();
-        return new ImmutableIterator() {
+    public Iterator<CalendarDate> daysIterator() {
+        final CalendarDate start = lowerLimit();
+        final CalendarDate end = upperLimit();
+        return new ImmutableIterator<CalendarDate>() {
             CalendarDate next = start;
 
             public boolean hasNext() {
                 return !next.isAfter(end);
             }
 
-            public Object next() {
-                Object current = next;
+            public CalendarDate next() {
+                CalendarDate current = next;
                 next = next.plusDays(1);
                 return current;
             }
         };
     }
-    public Iterator daysInReverseIterator() {
-        final CalendarDate start = (CalendarDate) upperLimit();
-        final CalendarDate end = (CalendarDate) lowerLimit();
-        return new ImmutableIterator() {
+    public Iterator<CalendarDate> daysInReverseIterator() {
+        final CalendarDate start = upperLimit();
+        final CalendarDate end = lowerLimit();
+        return new ImmutableIterator<CalendarDate>() {
             CalendarDate next = start;
 
             public boolean hasNext() {
                 return !next.isBefore(end);
             }
 
-            public Object next() {
-                Object current = next;
+            public CalendarDate next() {
+                CalendarDate current = next;
                 next = next.plusDays(-1);
                 return current;
             }

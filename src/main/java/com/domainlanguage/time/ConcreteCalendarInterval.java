@@ -9,11 +9,11 @@ package com.domainlanguage.time;
 import java.util.*;
 
 class ConcreteCalendarInterval extends CalendarInterval {
+
     private CalendarDate start;
     private CalendarDate end;
 
     static ConcreteCalendarInterval from(CalendarDate start, CalendarDate end) {
-        
         return new ConcreteCalendarInterval(start, end);
     }
 
@@ -29,11 +29,11 @@ class ConcreteCalendarInterval extends CalendarInterval {
         return TimeInterval.over(startPoint, endPoint);
     }
 
-    public Comparable upperLimit() {
+    public CalendarDate upperLimit() {
         return end;
     }
 
-    public Comparable lowerLimit() {
+    public CalendarDate lowerLimit() {
         return start;
     }
     
