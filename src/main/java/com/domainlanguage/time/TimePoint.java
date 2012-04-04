@@ -11,6 +11,7 @@ import java.text.*;
 import java.util.*;
 
 public class TimePoint implements Comparable, Serializable {
+
 	private static final TimeZone GMT = TimeZone.getTimeZone("Universal");
 
 	long millisecondsFromEpoc;

@@ -20,7 +20,7 @@ class FixedDateSpecification extends AnnualDateSpecification {
     }
 
     public boolean isSatisfiedBy(CalendarDate date) {
-        return day == date.breachEncapsulationOf_day() && month == date.breachEncapsulationOf_month();
+        return day == date.getDay() && month == date.getMonth();
     }
 
     //Only for use by persistence mapping frameworks

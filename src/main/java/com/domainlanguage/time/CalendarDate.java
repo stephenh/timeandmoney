@@ -14,6 +14,7 @@ public class CalendarDate implements Comparable, Serializable {
 	private int year;
 	private int month; // 1 based: January = 1, February = 2, ...
 	private int day;
+	private static final int MAX_YEAR = 9999;
 	
     public static CalendarDate date(int year, int month, int day) {
         return CalendarDate.from(year, month, day);
@@ -47,14 +48,30 @@ public class CalendarDate implements Comparable, Serializable {
 		return CalendarDate.from(year, month, date);
 	}
 
+	public static CalendarDate max(CalendarDate d1, CalendarDate d2) {
+		if (d1.isAfter(d2)) {
+			return d1;
+		} else {
+			return d2;
+		}
+	}
+
+	public static CalendarDate min(CalendarDate d1, CalendarDate d2) {
+		if (d1.isBefore(d2)) {
+			return d1;
+		} else {
+			return d2;
+		}
+	}
+
 	CalendarDate(int year, int month, int day) {
-		this.year = year;
+		this.year = year > MAX_YEAR ? MAX_YEAR : year;
 		this.month = month;
 		this.day = day;
 	}
 
 	public String toString() {
-		return toString("yyyy-M-d"); //default for console
+		return toString("MM/dd/yyyy"); //default for console
 	}
 
 	public String toString(String pattern) {
@@ -78,6 +95,22 @@ public class CalendarDate implements Comparable, Serializable {
         if (other == null)
             return false;
 		return !isBefore(other) && !this.equals(other);
+	}
+
+	public boolean isOnOrBefore(CalendarDate other) {
+		return !isAfter(other);
+	}
+
+	public boolean isOnOrAfter(CalendarDate other) {
+		return !isBefore(other);
+	}
+
+	public boolean in(CalendarInterval interval) {
+		return interval.includes(this);
+	}
+
+	public boolean notIn(CalendarInterval interval) {
+		return !interval.includes(this);
 	}
 
 	public int compareTo(Object other) {
@@ -204,15 +237,45 @@ public class CalendarDate implements Comparable, Serializable {
 		Calendar calendar = asJavaCalendarUniversalZoneMidnight();
 		return calendar.get(Calendar.DAY_OF_WEEK);
 	}
-    public int breachEncapsulationOf_day() {
+
+	public int dayOfMonth() {
+		Calendar calendar = asJavaCalendarUniversalZoneMidnight();
+		return calendar.get(Calendar.DAY_OF_MONTH);
+	}
+
+    public int weekOfMonth() {
+        Calendar calendar = asJavaCalendarUniversalZoneMidnight();
+        return calendar.get(Calendar.WEEK_OF_MONTH);
+    }
+
+    public int weekOfYear() {
+        Calendar calendar = asJavaCalendarUniversalZoneMidnight();
+        return calendar.get(Calendar.WEEK_OF_YEAR);
+    }
+
+    public int occurrenceOfDayInMonth() {
+        Calendar calendar = asJavaCalendarUniversalZoneMidnight();
+        return calendar.get(Calendar.DAY_OF_WEEK_IN_MONTH);
+    }
+
+    public boolean isWeekend() {
+        int dayOfWeek = this.dayOfWeek();
+        return (dayOfWeek == Calendar.SUNDAY || dayOfWeek == Calendar.SATURDAY);
+    }
+
+    public boolean isWeekday() {
+        return !this.isWeekend();
+    }
+
+    public int getDay() {
         return day;
     }
 
-    public int breachEncapsulationOf_month() {
+    public int getMonth() {
         return month;
     }
 
-    public int breachEncapsulationOf_year() {
+    public int getYear() {
         return year;
     }
     //Only for use by persistence mapping frameworks

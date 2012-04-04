@@ -78,13 +78,16 @@ public abstract class CalendarInterval extends Interval {
         }
     }
     public boolean equals(CalendarInterval other) {
-        return
-            other != null &&
-            this.upperLimit().equals(other.upperLimit()) && this.lowerLimit().equals(other.lowerLimit());
+        boolean lowerEquals = (!this.hasLowerLimit() && !other.hasLowerLimit()) || (this.hasLowerLimit() && this.lowerLimit().equals(other.lowerLimit()));
+        boolean upperEquals = (!this.hasUpperLimit() && !other.hasUpperLimit()) || (this.hasUpperLimit() && this.upperLimit().equals(other.upperLimit()));
+        return lowerEquals && upperEquals;
     }
 
     public int hashCode() {
-        return lowerLimit().hashCode();
+        int code = 27;
+        code *= (lowerLimit() != null) ? lowerLimit().hashCode() : 27;
+        code *= (upperLimit() != null) ? upperLimit().hashCode() : 27;
+        return code;
     }
 
     public Duration length() {
@@ -172,5 +175,17 @@ public abstract class CalendarInterval extends Interval {
     }
 
 
+
+    public boolean expires(CalendarInterval other) {
+        return this.start().equals(other.start()) && !other.hasUpperLimit() && this.hasUpperLimit();
+    }
+
+    public String toString() {
+        return "["
+            + (hasLowerLimit() ? lowerLimit() : "open ended")
+            + "-"
+            + (hasUpperLimit() ? upperLimit() : "open ended")
+            + "]";
+    }
 
 }

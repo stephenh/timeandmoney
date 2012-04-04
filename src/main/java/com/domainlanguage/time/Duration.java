@@ -175,6 +175,27 @@ public class Duration implements Comparable, Serializable {
 	public TimeInterval preceding(TimePoint end) {
 		return TimeInterval.preceding(end, this);
 	}
+
+	public boolean isGreaterThan(Duration other) {
+		assert this.unit.isConvertibleTo(other.unit);
+		return this.inBaseUnits() > other.inBaseUnits();
+	}
+
+	public boolean isLessThan(Duration other) {
+		assert this.unit.isConvertibleTo(other.unit);
+		return this.inBaseUnits() < other.inBaseUnits();
+	}
+
+	public boolean isGreaterThanOrEqualTo(Duration other) {
+		assert this.unit.isConvertibleTo(other.unit);
+		return this.inBaseUnits() >= other.inBaseUnits();
+	}
+
+	public boolean isLessThanOrEqualTo(Duration other) {
+		assert this.unit.isConvertibleTo(other.unit);
+		return this.inBaseUnits() <= other.inBaseUnits();
+	}
+
     TimePoint addAmountToTimePoint(long amount, TimePoint point) {
         if (unit.isConvertibleToMilliseconds()) {
             return TimePoint.from(amount + point.millisecondsFromEpoc);
