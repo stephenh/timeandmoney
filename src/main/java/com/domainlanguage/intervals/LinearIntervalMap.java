@@ -6,70 +6,80 @@
 
 package com.domainlanguage.intervals;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
-public class LinearIntervalMap implements IntervalMap {
-    private Map keyValues;
+public class LinearIntervalMap<K extends Comparable<K>, V> implements IntervalMap<K, V> {
+
+    private Map<Interval<K>, V> keyValues;
 
     public LinearIntervalMap() {
-        keyValues = new HashMap();
+        keyValues = new HashMap<Interval<K>, V>();
     }
     
-    public void put(Interval keyInterval, Object value) {
+    @Override
+    public void put(Interval<K> keyInterval, V value) {
         remove(keyInterval);
         keyValues.put(keyInterval, value);
     }
 
-    public void remove(Interval keyInterval) {
-        List intervalSequence = intersectingKeys(keyInterval);
-        for (Iterator iter = intervalSequence.iterator(); iter.hasNext();) {
-            Interval oldInterval = (Interval) iter.next();
-            Object oldValue = keyValues.get(oldInterval);
+    @Override
+    public void remove(Interval<K> keyInterval) {
+        List<Interval<K>> intervalSequence = intersectingKeys(keyInterval);
+        for (Iterator<Interval<K>> iter = intervalSequence.iterator(); iter.hasNext();) {
+            Interval<K> oldInterval = iter.next();
+            V oldValue = keyValues.get(oldInterval);
             keyValues.remove(oldInterval);
-            List complementIntervalSequence = keyInterval.complementRelativeTo(oldInterval);
+            List<Interval<K>> complementIntervalSequence = keyInterval.complementRelativeTo(oldInterval);
             directPut(complementIntervalSequence, oldValue);
         }
     }
 
-    private void directPut(List intervalSequence, Object value) {
-        for (Iterator iter = intervalSequence.iterator(); iter.hasNext();)
+    private void directPut(List<Interval<K>> intervalSequence, V value) {
+        for (Iterator<Interval<K>> iter = intervalSequence.iterator(); iter.hasNext();)
             keyValues.put(iter.next(), value);
     }
 
-    public Object get(Comparable key) {
-        Interval keyInterval = findKeyIntervalContaining(key);
+    @Override
+    public V get(K key) {
+        Interval<K> keyInterval = findKeyIntervalContaining(key);
         //		if (keyInterval == null) return null;
         return keyValues.get(keyInterval);
     }
 
-    public boolean containsKey(Comparable key) {
+    @Override
+    public boolean containsKey(K key) {
         return findKeyIntervalContaining(key) != null;
     }
 
-    private Interval findKeyIntervalContaining(Comparable key) {
+    private Interval<K> findKeyIntervalContaining(K key) {
         if (key == null)
             return null;
-        Iterator it = keyValues.keySet().iterator();
+        Iterator<Interval<K>> it = keyValues.keySet().iterator();
         while (it.hasNext()) {
-            Interval interval = (Interval) it.next();
+            Interval<K> interval = it.next();
             if (interval.includes(key))
                 return interval;
         }
         return null;
     }
 
-    private List intersectingKeys(Interval otherInterval) {
-        List intervalSequence = new ArrayList();
-        Iterator it = keyValues.keySet().iterator();
+    private List<Interval<K>> intersectingKeys(Interval<K> otherInterval) {
+        List<Interval<K>> intervalSequence = new ArrayList<Interval<K>>();
+        Iterator<Interval<K>> it = keyValues.keySet().iterator();
         while (it.hasNext()) {
-            Interval keyInterval = (Interval) it.next();
+            Interval<K> keyInterval = it.next();
             if (keyInterval.intersects(otherInterval))
                 intervalSequence.add(keyInterval);
         }
         return intervalSequence;
     }
 
-    public boolean containsIntersectingKey(Interval otherInterval) {
+    @Override
+    public boolean containsIntersectingKey(Interval<K> otherInterval) {
         return !intersectingKeys(otherInterval).isEmpty();
     }
     //Only for use by persistence mapping frameworks

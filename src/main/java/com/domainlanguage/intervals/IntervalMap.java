@@ -6,14 +6,15 @@
 
 package com.domainlanguage.intervals;
 
-public interface IntervalMap {
-    void put(Interval keyInterval, Object value);
+public interface IntervalMap<K extends Comparable<K>, V> {
 
-    Object get(Comparable key);
+    void put(Interval<K> keyInterval, V value);
 
-    void remove(Interval keyInterval);
+    V get(K key);
 
-    boolean containsKey(Comparable key);
+    void remove(Interval<K> keyInterval);
 
-    boolean containsIntersectingKey(Interval interval);
+    boolean containsKey(K key);
+
+    boolean containsIntersectingKey(Interval<K> interval);
 }

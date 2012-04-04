@@ -64,7 +64,7 @@ public class CalendarIntervalTest extends TestCase {
     }
 
     public void testDaysIterator() {
-        Iterator iterator = CalendarInterval.inclusive(may1, may3).daysIterator();
+        Iterator<CalendarDate> iterator = CalendarInterval.inclusive(may1, may3).daysIterator();
         assertTrue(iterator.hasNext());
         assertEquals(may1, iterator.next());
         assertTrue(iterator.hasNext());
@@ -77,13 +77,13 @@ public class CalendarIntervalTest extends TestCase {
 
     public void testSubintervalIterator() {
         CalendarInterval may1_3 = CalendarInterval.inclusive(may1, may3);
-        Iterator iterator = may1_3.subintervalIterator(Duration.days(1));
+        Iterator<CalendarInterval> iterator = may1_3.subintervalIterator(Duration.days(1));
         assertTrue(iterator.hasNext());
-        assertEquals(may1, ((CalendarInterval)iterator.next()).start());
+        assertEquals(may1, iterator.next().start());
         assertTrue(iterator.hasNext());
-        assertEquals(may2, ((CalendarInterval)iterator.next()).start());
+        assertEquals(may2, iterator.next().start());
         assertTrue(iterator.hasNext());
-        assertEquals(may3, ((CalendarInterval)iterator.next()).start());
+        assertEquals(may3, iterator.next().start());
         assertFalse(iterator.hasNext());
 
         iterator = may1_3.subintervalIterator(Duration.days(2));
@@ -120,7 +120,7 @@ public class CalendarIntervalTest extends TestCase {
     public void testComplements() {
         CalendarInterval may1Onward = CalendarInterval.inclusive(may1, null);
         CalendarInterval may2Onward = CalendarInterval.inclusive(may2, null);
-        List complementList = may2Onward.complementRelativeTo(may1Onward);
+        List<Interval<CalendarDate>> complementList = may2Onward.complementRelativeTo(may1Onward);
         assertEquals(1, complementList.size());
         
         CalendarInterval complement = (CalendarInterval) complementList.iterator().next();
@@ -149,7 +149,8 @@ public class CalendarIntervalTest extends TestCase {
     public void testBackwardCalendarIvalIntersection() {
         IllegalArgumentException problem=null;
         try {
-            Interval i = CalendarInterval.inclusive(2001, 1, 1, 1776, 7, 4);
+            @SuppressWarnings("unused")
+            Interval<CalendarDate> i = CalendarInterval.inclusive(2002, 1, 1, 1776, 7, 4);
         } catch(IllegalArgumentException error) {
             problem=error;
         }

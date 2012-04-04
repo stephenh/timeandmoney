@@ -11,7 +11,7 @@ import junit.framework.*;
 public class IntervalMapTest extends TestCase {
 
     public void testLookup() {
-        IntervalMap map = new LinearIntervalMap();
+        IntervalMap<Integer, String> map = new LinearIntervalMap<Integer, String>();
         map.put(Interval.closed(new Integer(1), new Integer(3)), "one-three");
         map.put(Interval.closed(new Integer(5), new Integer(9)), "five-nine");
         map.put(Interval.open(new Integer(9), new Integer(12)), "ten-eleven");
@@ -43,7 +43,7 @@ public class IntervalMapTest extends TestCase {
     }
 
     public void testRemove() {
-        IntervalMap map = new LinearIntervalMap();
+        IntervalMap<Integer, String> map = new LinearIntervalMap<Integer, String>();
         map.put(Interval.closed(new Integer(1), new Integer(10)), "one-ten");
         map.remove(Interval.closed(new Integer(3), new Integer(5)));
         assertEquals("one-ten", map.get(new Integer(2)));
@@ -54,7 +54,7 @@ public class IntervalMapTest extends TestCase {
     }
 
     public void testConstructionOverwriteOverlap() {
-        IntervalMap map = new LinearIntervalMap();
+        IntervalMap<Integer, String> map = new LinearIntervalMap<Integer, String>();
         map.put(Interval.closed(new Integer(1), new Integer(3)), "one-three");
         map.put(Interval.closed(new Integer(5), new Integer(9)), "five-nine");
         map.put(Interval.open(new Integer(9), new Integer(12)), "ten-eleven");
@@ -62,7 +62,7 @@ public class IntervalMapTest extends TestCase {
         assertEquals("ten-eleven", map.get(new Integer(11)));
         assertNull(map.get(new Integer(12)));
 
-        Interval eleven_thirteen = Interval.closed(new Integer(11), new Integer(13));
+        Interval<Integer> eleven_thirteen = Interval.closed(new Integer(11), new Integer(13));
         assertTrue(map.containsIntersectingKey(eleven_thirteen));
         map.put(eleven_thirteen, "eleven-thirteen");
         assertEquals("ten-eleven", map.get(new Integer(10)));
@@ -71,7 +71,7 @@ public class IntervalMapTest extends TestCase {
     }
 
     public void testConstructionOverwriteMiddle() {
-        IntervalMap map = new LinearIntervalMap();
+        IntervalMap<Integer, String> map = new LinearIntervalMap<Integer, String>();
         map.put(Interval.closed(new Integer(1), new Integer(3)), "one-three");
         map.put(Interval.closed(new Integer(5), new Integer(9)), "five-nine");
         map.put(Interval.open(new Integer(9), new Integer(12)), "ten-eleven");
@@ -80,7 +80,7 @@ public class IntervalMapTest extends TestCase {
         assertEquals("five-nine", map.get(new Integer(8)));
         assertEquals("five-nine", map.get(new Integer(9)));
 
-        Interval seven_eight = Interval.closed(new Integer(7), new Integer(8));
+        Interval<Integer> seven_eight = Interval.closed(new Integer(7), new Integer(8));
         assertTrue(map.containsIntersectingKey(seven_eight));
         map.put(seven_eight, "seven-eight");
         assertEquals("five-nine", map.get(new Integer(6)));
@@ -90,7 +90,7 @@ public class IntervalMapTest extends TestCase {
     }
 
     public void testConstructionOverwriteMultiple() {
-        IntervalMap map = new LinearIntervalMap();
+        IntervalMap<Integer, String> map = new LinearIntervalMap<Integer, String>();
         map.put(Interval.closed(new Integer(1), new Integer(2)), "one-two");
         map.put(Interval.closed(new Integer(3), new Integer(4)), "three-four");
         map.put(Interval.closed(new Integer(5), new Integer(6)), "five-six");
