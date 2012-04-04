@@ -21,36 +21,37 @@ import java.util.List;
  * check if an Integer is within a range, make an Interval. Any class of yours
  * which implements Comparable can have intervals defined this way.
  */
-public class Interval implements Comparable, Serializable {
-    private IntervalLimit lowerLimitObject;
-    private IntervalLimit upperLimitObject;
+public class Interval<T extends Comparable<T>> implements Comparable<Interval<T>>, Serializable {
+
+    private IntervalLimit<T> lowerLimitObject;
+    private IntervalLimit<T> upperLimitObject;
     
-    public static Interval closed(Comparable lower, Comparable upper) {
-        return new Interval(lower, true, upper, true);
+    public static <T extends Comparable<T>> Interval<T> closed(T lower, T upper) {
+        return new Interval<T>(lower, true, upper, true);
     }
 
-    public static Interval open(Comparable lower, Comparable upper) {
-        return new Interval(lower, false, upper, false);
+    public static <T extends Comparable<T>> Interval<T> open(T lower, T upper) {
+        return new Interval<T>(lower, false, upper, false);
     }
 
-    public static Interval over(Comparable lower, boolean lowerIncluded, Comparable upper, boolean upperIncluded) {
-        return new Interval(lower, lowerIncluded, upper, upperIncluded);
+    public static <T extends Comparable<T>> Interval<T> over(T lower, boolean lowerIncluded, T upper, boolean upperIncluded) {
+        return new Interval<T>(lower, lowerIncluded, upper, upperIncluded);
     }
 
-    Interval(IntervalLimit lower, IntervalLimit upper) {
+    Interval(IntervalLimit<T> lower, IntervalLimit<T> upper) {
         assertLowerIsLessThanOrEqualUpper(lower, upper);
         this.lowerLimitObject=lower;
         this.upperLimitObject=upper;
     }
 
-    protected Interval(Comparable lower, boolean isLowerClosed, Comparable upper, boolean isUpperClosed) {
+    protected Interval(T lower, boolean isLowerClosed, T upper, boolean isUpperClosed) {
         this(IntervalLimit.lower(isLowerClosed, lower), IntervalLimit.upper(isUpperClosed, upper));
     }
     
     //Warning: This method should generally be used for display
     //purposes and interactions with closely coupled classes.
     //Look for (or add) other methods to do computations.
-    public Comparable upperLimit() {
+    public T upperLimit() {
         return upperLimitObject.getValue();
     }
 
@@ -73,7 +74,7 @@ public class Interval implements Comparable, Serializable {
     //Warning: This method should generally be used for display
     //purposes and interactions with closely coupled classes.
     //Look for (or add) other methods to do computations.
-    public Comparable lowerLimit() {
+    public T lowerLimit() {
         return lowerLimitObject.getValue();
     }
     
@@ -91,21 +92,19 @@ public class Interval implements Comparable, Serializable {
         return lowerLimit() != null;
     }
     
-
-
-    public Interval newOfSameType(Comparable lower, boolean isLowerClosed, Comparable upper, boolean isUpperClosed) {
-        return new Interval(lower,isLowerClosed,upper,isUpperClosed);
+    public Interval<T> newOfSameType(T lower, boolean isLowerClosed, T upper, boolean isUpperClosed) {
+        return new Interval<T>(lower,isLowerClosed,upper,isUpperClosed);
     }
 
-    public Interval emptyOfSameType() {
+    public Interval<T> emptyOfSameType() {
         return newOfSameType(lowerLimit(), false, lowerLimit(), false);
     }
 
-    public boolean includes(Comparable value) {
+    public boolean includes(T value) {
         return !this.isBelow(value) && !this.isAbove(value);
     }
 
-    public boolean covers(Interval other) {
+    public boolean covers(Interval<T> other) {
         boolean lowerPass = lowerLimit() == null
             || this.includes(other.lowerLimit())
             || (lowerLimit().compareTo(other.lowerLimit()) == 0 && !other.includesLowerLimit());
@@ -115,7 +114,7 @@ public class Interval implements Comparable, Serializable {
         return lowerPass && upperPass;
     }
 
-    public boolean within(Interval other) {
+    public boolean within(Interval<T> other) {
         return other.covers(this);
     }
 
@@ -140,20 +139,19 @@ public class Interval implements Comparable, Serializable {
         return upperLimit().equals(lowerLimit()) && !isEmpty();
     }
 
-    public boolean isBelow(Comparable value) {
+    public boolean isBelow(T value) {
         if (!hasUpperLimit()) return false;
         int comparison = upperLimit().compareTo(value);
         return comparison < 0 || (comparison == 0 && !includesUpperLimit());
     }
 
-    public boolean isAbove(Comparable value) {
+    public boolean isAbove(T value) {
         if (!hasLowerLimit()) return false;
         int comparison = lowerLimit().compareTo(value);
         return comparison > 0 || (comparison == 0 && !includesLowerLimit());
     }
 
-    public int compareTo(Object arg) {
-        Interval other = (Interval) arg;
+    public int compareTo(Interval<T> other) {
         if (lowerLimit() == null) {
             return (other.lowerLimit() == null) ? 0 : -1;
         }
@@ -187,7 +185,7 @@ public class Interval implements Comparable, Serializable {
         return buffer.toString();
     }
 
-    private Comparable lesserOfLowerLimits(Interval other) {
+    private T lesserOfLowerLimits(Interval<T> other) {
         if (lowerLimit() == null) {
             return null;
         }
@@ -197,7 +195,7 @@ public class Interval implements Comparable, Serializable {
         return other.lowerLimit();
     }
 
-    Comparable greaterOfLowerLimits(Interval other) {
+    T greaterOfLowerLimits(Interval<T> other) {
         if (lowerLimit() == null) {
             return other.lowerLimit();
         }
@@ -207,7 +205,7 @@ public class Interval implements Comparable, Serializable {
         return other.lowerLimit();
     }
 
-    Comparable lesserOfUpperLimits(Interval other) {
+    T lesserOfUpperLimits(Interval<T> other) {
         if (upperLimit() == null) {
             return other.upperLimit();
         }
@@ -217,7 +215,7 @@ public class Interval implements Comparable, Serializable {
         return other.upperLimit();
     }
 
-    private Comparable greaterOfUpperLimits(Interval other) {
+    private T greaterOfUpperLimits(Interval<T> other) {
         if (upperLimit() == null) {
             return null;
         }
@@ -227,34 +225,34 @@ public class Interval implements Comparable, Serializable {
         return other.upperLimit();
     }
 
-    private boolean greaterOfLowerIncludedInIntersection(Interval other) {
-        Comparable limit = greaterOfLowerLimits(other);
+    private boolean greaterOfLowerIncludedInIntersection(Interval<T> other) {
+        T limit = greaterOfLowerLimits(other);
         return this.includes(limit) && other.includes(limit);
     }
 
-    private boolean lesserOfUpperIncludedInIntersection(Interval other) {
-        Comparable limit = lesserOfUpperLimits(other);
+    private boolean lesserOfUpperIncludedInIntersection(Interval<T> other) {
+        T limit = lesserOfUpperLimits(other);
         return this.includes(limit) && other.includes(limit);
     }
 
-    private boolean greaterOfLowerIncludedInUnion(Interval other) {
-        Comparable limit = greaterOfLowerLimits(other);
+    private boolean greaterOfLowerIncludedInUnion(Interval<T> other) {
+        T limit = greaterOfLowerLimits(other);
         return this.includes(limit) || other.includes(limit);
     }
 
-    private boolean lesserOfUpperIncludedInUnion(Interval other) {
-        Comparable limit = lesserOfUpperLimits(other);
+    private boolean lesserOfUpperIncludedInUnion(Interval<T> other) {
+        T limit = lesserOfUpperLimits(other);
         return this.includes(limit) || other.includes(limit);
     }
 
     public boolean equals(Object other) {
         try {
-            return equals((Interval)other);
+            return equals((Interval<T>)other);
         } catch(ClassCastException ex) {
             return false;
         }
     }
-    public boolean equals(Interval other) {
+    public boolean equals(Interval<T> other) {
         if (other == null) return false;
         
         boolean thisEmpty = this.isEmpty();
@@ -278,7 +276,7 @@ public class Interval implements Comparable, Serializable {
         return lowerLimit().hashCode() ^ upperLimit().hashCode();
     }
 
-    public boolean intersects(Interval other) {
+    public boolean intersects(Interval<T> other) {
         int comparison = greaterOfLowerLimits(other).compareTo(lesserOfUpperLimits(other));
         if (comparison < 0)
             return true;
@@ -287,15 +285,15 @@ public class Interval implements Comparable, Serializable {
         return greaterOfLowerIncludedInIntersection(other) && lesserOfUpperIncludedInIntersection(other);
     }
 
-    public Interval intersect(Interval other) {
-        Comparable intersectLowerBound = greaterOfLowerLimits(other);
-        Comparable intersectUpperBound = lesserOfUpperLimits(other);
+    public Interval<T> intersect(Interval<T> other) {
+        T intersectLowerBound = greaterOfLowerLimits(other);
+        T intersectUpperBound = lesserOfUpperLimits(other);
         if (intersectLowerBound.compareTo(intersectUpperBound) > 0)
             return emptyOfSameType();
         return newOfSameType(intersectLowerBound, greaterOfLowerIncludedInIntersection(other), intersectUpperBound, lesserOfUpperIncludedInIntersection(other));
     }
 
-    public Interval gap(Interval other) {
+    public Interval<T> gap(Interval<T> other) {
         if (this.intersects(other))
             return this.emptyOfSameType();
 
@@ -303,22 +301,22 @@ public class Interval implements Comparable, Serializable {
     }
 
     /** see: http://en.wikipedia.org/wiki/Set_theoretic_complement */
-    public List complementRelativeTo(Interval other) {
-        List intervalSequence = new ArrayList();
+    public List<Interval<T>> complementRelativeTo(Interval<T> other) {
+        List<Interval<T>> intervalSequence = new ArrayList<Interval<T>>();
         if (!this.intersects(other)) {
             intervalSequence.add(other);
             return intervalSequence;
         }
-        Interval left = leftComplementRelativeTo(other);
+        Interval<T> left = leftComplementRelativeTo(other);
         if (left != null)
             intervalSequence.add(left);
-        Interval right = rightComplementRelativeTo(other);
+        Interval<T> right = rightComplementRelativeTo(other);
         if (right != null)
             intervalSequence.add(right);
         return intervalSequence;
     }
 
-    private Interval leftComplementRelativeTo(Interval other) {
+    private Interval<T> leftComplementRelativeTo(Interval<T> other) {
         if (this.includes(lesserOfLowerLimits(other)))
             return null;
         if (lowerLimit().equals(other.lowerLimit()) && !other.includesLowerLimit())
@@ -326,15 +324,15 @@ public class Interval implements Comparable, Serializable {
         return newOfSameType(other.lowerLimit(), other.includesLowerLimit(), this.lowerLimit(), !this.includesLowerLimit());
     }
 
-    private Interval rightComplementRelativeTo(Interval other) {
+    private Interval<T> rightComplementRelativeTo(Interval<T> other) {
         if (this.includes(greaterOfUpperLimits(other)))
             return null;
         if (upperLimit().equals(other.upperLimit()) && !other.includesUpperLimit())
             return null;
         return newOfSameType(this.upperLimit(), !this.includesUpperLimit(), other.upperLimit(), other.includesUpperLimit());
     }
-    private void assertLowerIsLessThanOrEqualUpper(IntervalLimit lower,
-            IntervalLimit upper) {
+    private void assertLowerIsLessThanOrEqualUpper(IntervalLimit<T> lower,
+            IntervalLimit<T> upper) {
         if (!(lower.isLower() && upper.isUpper() && lower.compareTo(upper) <= 0)) {
             throw new IllegalArgumentException(lower + " is not before or equal to " + upper);
         }
@@ -346,12 +344,12 @@ public class Interval implements Comparable, Serializable {
     
     //Only for use by persistence mapping frameworks
     //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
-    private Comparable getForPersistentMapping_LowerLimit() {
+    private T getForPersistentMapping_LowerLimit() {
         return lowerLimitObject.getForPersistentMapping_Value();
     }
     //Only for use by persistence mapping frameworks
     //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
-    private void setForPersistentMapping_LowerLimit(Comparable value) {
+    private void setForPersistentMapping_LowerLimit(T value) {
         if (lowerLimitObject == null)
             lowerLimitObject=IntervalLimit.lower(true, value);
         lowerLimitObject.setForPersistentMapping_Value(value);
@@ -375,7 +373,7 @@ public class Interval implements Comparable, Serializable {
     }
     //Only for use by persistence mapping frameworks
     //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
-    private void setForPersistentMapping_UpperLimit(Comparable value) {
+    private void setForPersistentMapping_UpperLimit(T value) {
         if (upperLimitObject == null)
             upperLimitObject=IntervalLimit.upper(true, value);
         upperLimitObject.setForPersistentMapping_Value(value);

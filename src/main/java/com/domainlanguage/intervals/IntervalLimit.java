@@ -7,19 +7,20 @@ package com.domainlanguage.intervals;
 
 import java.io.*;
 
-class IntervalLimit implements Comparable, Serializable {
+class IntervalLimit<T extends Comparable<T>> implements Comparable<IntervalLimit<T>>, Serializable {
+    
     private boolean closed;
-    private Comparable value;
+    private T value;
     private boolean lower;
     
-    static IntervalLimit upper(boolean closed, Comparable value) {
-        return new IntervalLimit(closed, false, value);
+    static <T extends Comparable<T>> IntervalLimit<T> upper(boolean closed, T value) {
+        return new IntervalLimit<T>(closed, false, value);
     }
-    static IntervalLimit lower(boolean closed, Comparable value) {
-        return new IntervalLimit(closed, true, value);
+    static <T extends Comparable<T>> IntervalLimit<T> lower(boolean closed, T value) {
+        return new IntervalLimit<T>(closed, true, value);
     }
-    IntervalLimit(boolean closed, boolean lower, Comparable value) {
-        super();
+    
+    IntervalLimit(boolean closed, boolean lower, T value) {
         this.closed = closed;
         this.lower = lower;
         this.value = value;
@@ -37,13 +38,12 @@ class IntervalLimit implements Comparable, Serializable {
     boolean isOpen() {
         return !closed;
     }
-    Comparable getValue() {
+    T getValue() {
         return value;
     }
     
-    public int compareTo(Object another) {
-        IntervalLimit other=((IntervalLimit)another);
-        Comparable otherValue=other.value;
+    public int compareTo(IntervalLimit<T> other) {
+        T otherValue=other.value;
         if (otherValue == value) return 0;
         if (value == null) {
             return lower ? -1 : 1;
@@ -78,12 +78,12 @@ class IntervalLimit implements Comparable, Serializable {
     }
     //Only for use by persistence mapping frameworks
     //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
-    Comparable getForPersistentMapping_Value() {
+    T getForPersistentMapping_Value() {
         return value;
     }
     //Only for use by persistence mapping frameworks
     //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
-    void setForPersistentMapping_Value(Comparable value) {
+    void setForPersistentMapping_Value(T value) {
         this.value = value;
     }
 }
