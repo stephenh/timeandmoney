@@ -12,19 +12,19 @@ import junit.framework.TestCase;
 import com.domainlanguage.tests.SerializationTester;
 
 public class IntervalTest extends TestCase {
-    private Interval empty = Interval.open(new BigDecimal(1), new BigDecimal(1));
-    private Interval c5_10c = Interval.closed(new BigDecimal(5), new BigDecimal(10));
-    private Interval c1_10c = Interval.closed(new BigDecimal(1), new BigDecimal(10));
-    private Interval c4_6c = Interval.closed(new BigDecimal(4), new BigDecimal(6));
-    private Interval c5_15c = Interval.closed(new BigDecimal(5), new BigDecimal(15));
-    private Interval c12_16c = Interval.closed(new BigDecimal(12), new BigDecimal(16));
-    private Interval o10_12c = Interval.over(new BigDecimal(10), false, new BigDecimal(12), true);
-    private Interval o1_1c = Interval.over(new BigDecimal(1), false, new BigDecimal(1), true);
-    private Interval c1_1o = Interval.over(new BigDecimal(1), true, new BigDecimal(1), false);
-    private Interval c1_1c = Interval.over(new BigDecimal(1), true, new BigDecimal(1), true);
-    private Interval o1_1o = Interval.over(new BigDecimal(1), false, new BigDecimal(1), false);
+    private Interval<BigDecimal> empty = Interval.open(new BigDecimal(1), new BigDecimal(1));
+    private Interval<BigDecimal> c5_10c = Interval.closed(new BigDecimal(5), new BigDecimal(10));
+    private Interval<BigDecimal> c1_10c = Interval.closed(new BigDecimal(1), new BigDecimal(10));
+    private Interval<BigDecimal> c4_6c = Interval.closed(new BigDecimal(4), new BigDecimal(6));
+    private Interval<BigDecimal> c5_15c = Interval.closed(new BigDecimal(5), new BigDecimal(15));
+    private Interval<BigDecimal> c12_16c = Interval.closed(new BigDecimal(12), new BigDecimal(16));
+    private Interval<BigDecimal> o10_12c = Interval.over(new BigDecimal(10), false, new BigDecimal(12), true);
+    private Interval<BigDecimal> o1_1c = Interval.over(new BigDecimal(1), false, new BigDecimal(1), true);
+    private Interval<BigDecimal> c1_1o = Interval.over(new BigDecimal(1), true, new BigDecimal(1), false);
+    private Interval<BigDecimal> c1_1c = Interval.over(new BigDecimal(1), true, new BigDecimal(1), true);
+    private Interval<BigDecimal> o1_1o = Interval.over(new BigDecimal(1), false, new BigDecimal(1), false);
     
-    public static IntervalLimit exampleLimitForPersistentMappingTesting() {
+    public static IntervalLimit<Integer> exampleLimitForPersistentMappingTesting() {
         return IntervalLimit.upper(true, new Integer(78));
     }
 //    private Interval o1_10o = Interval.open(new BigDecimal(1), new BigDecimal(10));
@@ -60,10 +60,10 @@ public class IntervalTest extends TestCase {
     //	}
     //
     public void testAbstractCreation() {
-        Interval concrete = new Interval(new Integer(1), true, new Integer(3), true);
-        Interval newInterval = concrete.newOfSameType(new Integer(1), false, new Integer(4), false);
+        Interval<Integer> concrete = new Interval<Integer>(new Integer(1), true, new Integer(3), true);
+        Interval<Integer> newInterval = concrete.newOfSameType(new Integer(1), false, new Integer(4), false);
 
-        Interval expected = new Interval(new Integer(1), false, new Integer(4), false);
+        Interval<Integer> expected = new Interval<Integer>(new Integer(1), false, new Integer(4), false);
         assertEquals(expected, newInterval);
     }
 
@@ -79,7 +79,7 @@ public class IntervalTest extends TestCase {
     }
 
     public void testIsBelow() {
-        Interval range = Interval.closed(new BigDecimal(-5.5), new BigDecimal(6.6));
+        Interval<BigDecimal> range = Interval.closed(new BigDecimal(-5.5), new BigDecimal(6.6));
         assertFalse(range.isBelow(new BigDecimal(5.0)));
         assertFalse(range.isBelow(new BigDecimal(-5.5)));
         assertFalse(range.isBelow(new BigDecimal(-5.4999)));
@@ -89,7 +89,7 @@ public class IntervalTest extends TestCase {
     }
 
     public void testIncludes() {
-        Interval range = Interval.closed(new BigDecimal(-5.5), new BigDecimal(6.6));
+        Interval<BigDecimal> range = Interval.closed(new BigDecimal(-5.5), new BigDecimal(6.6));
         assertTrue(range.includes(new BigDecimal(5.0)));
         assertTrue(range.includes(new BigDecimal(-5.5)));
         assertTrue(range.includes(new BigDecimal(-5.4999)));
@@ -99,7 +99,7 @@ public class IntervalTest extends TestCase {
     }
 
     public void testOpenInterval() {
-        Interval exRange = Interval.over(new BigDecimal(-5.5), false, new BigDecimal(6.6), true);
+        Interval<BigDecimal> exRange = Interval.over(new BigDecimal(-5.5), false, new BigDecimal(6.6), true);
         assertTrue(exRange.includes(new BigDecimal(5.0)));
         assertFalse(exRange.includes(new BigDecimal(-5.5)));
         assertTrue(exRange.includes(new BigDecimal(-5.4999)));
@@ -166,7 +166,7 @@ public class IntervalTest extends TestCase {
         assertFalse(c4_6c.covers(c1_10c));
         assertTrue(c1_10c.covers(c4_6c));
         assertTrue(c5_10c.covers(c5_10c));
-        Interval halfOpen5_10 = Interval.over(new BigDecimal(5), false, new BigDecimal(10), true);
+        Interval<BigDecimal> halfOpen5_10 = Interval.over(new BigDecimal(5), false, new BigDecimal(10), true);
         assertTrue("closed incl left-open", c5_10c.covers(halfOpen5_10));
         assertTrue("left-open incl left-open", halfOpen5_10.covers(halfOpen5_10));
         assertFalse("left-open doesn't include closed", halfOpen5_10.covers(c5_10c));
@@ -174,10 +174,10 @@ public class IntervalTest extends TestCase {
     }
 
     public void testGap() {
-        Interval c1_3c = Interval.closed(new Integer(1), new Integer(3));
-        Interval c5_7c = Interval.closed(new Integer(5), new Integer(7));
-        Interval o3_5o = Interval.open(new Integer(3), new Integer(5));
-        Interval c2_3o = Interval.over(new Integer(2), true, new Integer(3), false);
+        Interval<Integer> c1_3c = Interval.closed(new Integer(1), new Integer(3));
+        Interval<Integer> c5_7c = Interval.closed(new Integer(5), new Integer(7));
+        Interval<Integer> o3_5o = Interval.open(new Integer(3), new Integer(5));
+        Interval<Integer> c2_3o = Interval.over(new Integer(2), true, new Integer(3), false);
 
         assertEquals(o3_5o, c1_3c.gap(c5_7c));
         assertTrue(c1_3c.gap(o3_5o).isEmpty());
@@ -186,77 +186,77 @@ public class IntervalTest extends TestCase {
     }
 
     public void testRelativeComplementDisjoint() {
-        Interval c1_3c = Interval.closed(new Integer(1), new Integer(3));
-        Interval c5_7c = Interval.closed(new Integer(5), new Integer(7));
-        List complement = c1_3c.complementRelativeTo(c5_7c);
+        Interval<Integer> c1_3c = Interval.closed(new Integer(1), new Integer(3));
+        Interval<Integer> c5_7c = Interval.closed(new Integer(5), new Integer(7));
+        List<Interval<Integer>> complement = c1_3c.complementRelativeTo(c5_7c);
         assertEquals(1, complement.size());
         assertEquals(c5_7c, complement.get(0));
     }
 
     public void testRelativeComplementDisjointAdjacentOpen() {
-        Interval c1_3o = Interval.over(new Integer(1), true, new Integer(3), false);
-        Interval c3_7c = Interval.closed(new Integer(3), new Integer(7));
-        List complement = c1_3o.complementRelativeTo(c3_7c);
+        Interval<Integer> c1_3o = Interval.over(new Integer(1), true, new Integer(3), false);
+        Interval<Integer> c3_7c = Interval.closed(new Integer(3), new Integer(7));
+        List<Interval<Integer>> complement = c1_3o.complementRelativeTo(c3_7c);
         assertEquals(1, complement.size());
         assertEquals(c3_7c, complement.get(0));
     }
 
     public void testRelativeComplementOverlapLeft() {
-        Interval c1_5c = Interval.closed(new Integer(1), new Integer(5));
-        Interval c3_7c = Interval.closed(new Integer(3), new Integer(7));
-        List complement = c3_7c.complementRelativeTo(c1_5c);
-        Interval c1_3o = Interval.over(new Integer(1), true, new Integer(3), false);
+        Interval<Integer> c1_5c = Interval.closed(new Integer(1), new Integer(5));
+        Interval<Integer> c3_7c = Interval.closed(new Integer(3), new Integer(7));
+        List<Interval<Integer>> complement = c3_7c.complementRelativeTo(c1_5c);
+        Interval<Integer> c1_3o = Interval.over(new Integer(1), true, new Integer(3), false);
         assertEquals(1, complement.size());
         assertEquals(c1_3o, complement.get(0));
     }
 
     public void testRelativeComplementOverlapRight() {
-        Interval c1_5c = Interval.closed(new Integer(1), new Integer(5));
-        Interval c3_7c = Interval.closed(new Integer(3), new Integer(7));
-        List complement = c1_5c.complementRelativeTo(c3_7c);
-        Interval o5_7c = Interval.over(new Integer(5), false, new Integer(7), true);
+        Interval<Integer> c1_5c = Interval.closed(new Integer(1), new Integer(5));
+        Interval<Integer> c3_7c = Interval.closed(new Integer(3), new Integer(7));
+        List<Interval<Integer>> complement = c1_5c.complementRelativeTo(c3_7c);
+        Interval<Integer> o5_7c = Interval.over(new Integer(5), false, new Integer(7), true);
         assertEquals(1, complement.size());
         assertEquals(o5_7c, complement.get(0));
     }
 
     public void testRelativeComplementAdjacentClosed() {
-        Interval c1_3c = Interval.closed(new Integer(1), new Integer(3));
-        Interval c5_7c = Interval.closed(new Integer(5), new Integer(7));
-        List complement = c1_3c.complementRelativeTo(c5_7c);
+        Interval<Integer> c1_3c = Interval.closed(new Integer(1), new Integer(3));
+        Interval<Integer> c5_7c = Interval.closed(new Integer(5), new Integer(7));
+        List<Interval<Integer>> complement = c1_3c.complementRelativeTo(c5_7c);
         assertEquals(1, complement.size());
         assertEquals(c5_7c, complement.get(0));
     }
 
     public void testRelativeComplementEnclosing() {
-        Interval c3_5c = Interval.closed(new Integer(3), new Integer(5));
-        Interval c1_7c = Interval.closed(new Integer(1), new Integer(7));
-        List complement = c1_7c.complementRelativeTo(c3_5c);
+        Interval<Integer> c3_5c = Interval.closed(new Integer(3), new Integer(5));
+        Interval<Integer> c1_7c = Interval.closed(new Integer(1), new Integer(7));
+        List<Interval<Integer>> complement = c1_7c.complementRelativeTo(c3_5c);
         assertEquals(0, complement.size());
     }
 
     public void testRelativeComplementEqual() {
-        Interval c1_7c = Interval.closed(new Integer(1), new Integer(7));
-        List complement = c1_7c.complementRelativeTo(c1_7c);
+        Interval<Integer> c1_7c = Interval.closed(new Integer(1), new Integer(7));
+        List<Interval<Integer>> complement = c1_7c.complementRelativeTo(c1_7c);
         assertEquals(0, complement.size());
     }
 
     public void testRelativeComplementEnclosed() {
-        Interval c3_5c = Interval.closed(new Integer(3), new Integer(5));
-        Interval c1_7c = Interval.closed(new Integer(1), new Integer(7));
-        Interval c1_3o = Interval.over(new Integer(1), true, new Integer(3), false);
-        Interval o5_7c = Interval.over(new Integer(5), false, new Integer(7), true);
-        List complement = c3_5c.complementRelativeTo(c1_7c);
+        Interval<Integer> c3_5c = Interval.closed(new Integer(3), new Integer(5));
+        Interval<Integer> c1_7c = Interval.closed(new Integer(1), new Integer(7));
+        Interval<Integer> c1_3o = Interval.over(new Integer(1), true, new Integer(3), false);
+        Interval<Integer> o5_7c = Interval.over(new Integer(5), false, new Integer(7), true);
+        List<Interval<Integer>> complement = c3_5c.complementRelativeTo(c1_7c);
         assertEquals(2, complement.size());
         assertEquals(c1_3o, complement.get(0));
         assertEquals(o5_7c, complement.get(1));
     }
 
     public void testRelativeComplementEnclosedEndPoint() {
-        Interval o3_5o = Interval.open(new Integer(3), new Integer(5));
-        Interval c3_5c = Interval.closed(new Integer(3), new Integer(5));
-        List complement = o3_5o.complementRelativeTo(c3_5c);
+        Interval<Integer> o3_5o = Interval.open(new Integer(3), new Integer(5));
+        Interval<Integer> c3_5c = Interval.closed(new Integer(3), new Integer(5));
+        List<Interval<Integer>> complement = o3_5o.complementRelativeTo(c3_5c);
         assertEquals(2, complement.size());
-        assertTrue(((Interval) complement.get(0)).includes(new Integer(3)));
+        assertTrue(complement.get(0).includes(new Integer(3)));
     }
 
     public void testIsSingleElement() {
@@ -279,11 +279,11 @@ public class IntervalTest extends TestCase {
     }
 
     public void testRelativeComplementEnclosedOpen() {
-        Interval o3_5o = Interval.open(new Integer(3), new Integer(5));
-        Interval c1_7c = Interval.closed(new Integer(1), new Integer(7));
-        Interval c1_3c = Interval.closed(new Integer(1), new Integer(3));
-        Interval c5_7c = Interval.closed(new Integer(5), new Integer(7));
-        List complement = o3_5o.complementRelativeTo(c1_7c);
+        Interval<Integer> o3_5o = Interval.open(new Integer(3), new Integer(5));
+        Interval<Integer> c1_7c = Interval.closed(new Integer(1), new Integer(7));
+        Interval<Integer> c1_3c = Interval.closed(new Integer(1), new Integer(3));
+        Interval<Integer> c5_7c = Interval.closed(new Integer(5), new Integer(7));
+        List<Interval<Integer>> complement = o3_5o.complementRelativeTo(c1_7c);
         assertEquals(2, complement.size());
         assertEquals(c1_3c, complement.get(0));
         assertEquals(c5_7c, complement.get(1));
