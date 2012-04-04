@@ -16,6 +16,7 @@ import com.domainlanguage.intervals.Interval;
 import com.domainlanguage.tests.SerializationTester;
 
 public class CalendarIntervalTest extends TestCase {
+
 	private CalendarDate may1 = CalendarDate.date(2004, 5, 1);
 	private CalendarDate may2 = CalendarDate.date(2004, 5, 2);
 	private CalendarDate may3 = CalendarDate.date(2004, 5, 3);
@@ -52,6 +53,14 @@ public class CalendarIntervalTest extends TestCase {
 
     public void testDaysAdd() {
         assertEquals(may20, may1.plusDays(19));
+    }
+
+    public void testIterator() {
+        int i = 0;
+        for (@SuppressWarnings("unused") CalendarDate day : may1.through(may31)) {
+            i++;
+        }
+        assertEquals(i, 31);
     }
 
     public void testDaysIterator() {

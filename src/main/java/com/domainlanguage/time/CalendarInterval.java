@@ -11,7 +11,7 @@ import java.util.*;
 import com.domainlanguage.intervals.*;
 import com.domainlanguage.util.*;
 
-public abstract class CalendarInterval extends Interval<CalendarDate> {
+public abstract class CalendarInterval extends Interval<CalendarDate> implements Iterable<CalendarDate> {
 
     public static CalendarInterval inclusive(CalendarDate start, CalendarDate end) {
         return ConcreteCalendarInterval.from(start, end);
@@ -138,6 +138,11 @@ public abstract class CalendarInterval extends Interval<CalendarDate> {
                 return current;
             }
         };
+    }
+
+    @Override
+    public Iterator<CalendarDate> iterator() {
+        return daysIterator();
     }
 
     public Iterator<CalendarDate> daysIterator() {
