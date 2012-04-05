@@ -6,6 +6,7 @@
  */
 
 package com.domainlanguage.base;
+
 /**
  * Ratio represents the unitless division of two quantities of the same type.
  * The key to its usefulness is that it defers the calculation of a decimal
@@ -18,12 +19,11 @@ package com.domainlanguage.base;
  * the responsibilities that enable an appropriate choice of these parameters.
  *  
  * @author  Eric Evans
- * @see 
  */
-
 import java.math.BigDecimal;
 
 public class Ratio {
+
     private final BigDecimal numerator;
     private final BigDecimal denominator;
 
@@ -34,6 +34,7 @@ public class Ratio {
     public static Ratio of(long numerator, long denominator) {
         return new Ratio(BigDecimal.valueOf(numerator), BigDecimal.valueOf(denominator));
     }
+
     public static Ratio of(BigDecimal fractional) {
         return new Ratio(fractional, BigDecimal.valueOf(1));
     }
@@ -45,23 +46,6 @@ public class Ratio {
 
     public BigDecimal decimalValue(int scale, int roundingRule) {
         return numerator.divide(denominator, scale, roundingRule);
-    }
-
-    public boolean equals(Object anObject) {
-        try {
-            return equals((Ratio)anObject);
-        } catch(ClassCastException ex) {
-            return false;
-        }
-    }
-    public boolean equals(Ratio other) {
-        return 
-        	other != null &&
-        	this.numerator.equals(other.numerator) && this.denominator.equals(other.denominator);
-    }
-
-    public int hashCode() {
-        return numerator.hashCode();
     }
 
     public Ratio times(BigDecimal multiplier) {
@@ -76,8 +60,23 @@ public class Ratio {
         return other.remainder(this.denominator).unscaledValue().intValue() == 0;
     }
 
+    @Override
+    public boolean equals(Object anObject) {
+        if (anObject instanceof Ratio) {
+            Ratio other = (Ratio) anObject;
+            return this.numerator.equals(other.numerator) && this.denominator.equals(other.denominator);
+        }
+        return false;
+    }
+
+    @Override
     public String toString() {
         return numerator.toString() + "/" + denominator;
+    }
+
+    @Override
+    public int hashCode() {
+        return numerator.hashCode();
     }
 
 }
