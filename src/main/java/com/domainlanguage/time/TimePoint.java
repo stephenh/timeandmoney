@@ -14,7 +14,7 @@ public class TimePoint implements Comparable<TimePoint>, Serializable {
 
 	private static final TimeZone GMT = TimeZone.getTimeZone("Universal");
 
-	long millisecondsFromEpoc;
+	final long millisecondsFromEpoc;
 
 // CREATION METHODS
 	
@@ -188,20 +188,5 @@ public class TimePoint implements Comparable<TimePoint>, Serializable {
 	public TimeInterval until(TimePoint end) {
 		return TimeInterval.over(this, end);
 	}
-
-    //Only for use by persistence mapping frameworks
-    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
-    TimePoint() {
-    }
-    //Only for use by persistence mapping frameworks
-    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
-    private long getForPersistentMapping_MillisecondsFromEpoc() {
-        return millisecondsFromEpoc;
-    }
-    //Only for use by persistence mapping frameworks
-    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
-    private void setForPersistentMapping_MillisecondsFromEpoc(long millisecondsFromEpoc) {
-        this.millisecondsFromEpoc = millisecondsFromEpoc;
-    }
 	
 }

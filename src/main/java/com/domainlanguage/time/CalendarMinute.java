@@ -8,8 +8,8 @@ package com.domainlanguage.time;
 import java.util.TimeZone;
 
 public class CalendarMinute {
-    private CalendarDate date;
-    private TimeOfDay time;
+    private final CalendarDate date;
+    private final TimeOfDay time;
     
     public static CalendarMinute dateHourAndMinute(int year, int month, int day, int hour, int minute) {
         return new CalendarMinute(CalendarDate.from(year,month,day), TimeOfDay.hourAndMinute(hour, minute));
@@ -42,28 +42,4 @@ public class CalendarMinute {
         return TimePoint.at(date.getYear(), date.getMonth(), date.getDay(), time.getHour(), time.getMinute(), 0, 0, timeZone);
     }
     
-    //Only for use by persistence mapping frameworks
-    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
-    CalendarMinute() {
-    }
-    //Only for use by persistence mapping frameworks
-    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
-    private CalendarDate getForPersistentMapping_Date() {
-        return date;
-    }
-    //Only for use by persistence mapping frameworks
-    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
-    private void setForPersistentMapping_Date(CalendarDate date) {
-        this.date = date;
-    }
-//  Only for use by persistence mapping frameworks
-    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
-    private TimeOfDay getForPersistentMapping_Time() {
-        return time;
-    }
-    //Only for use by persistence mapping frameworks
-    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
-    private void setForPersistentMapping_Time(TimeOfDay time) {
-        this.time = time;
-    }
 }

@@ -11,7 +11,8 @@ import java.util.*;
 import com.domainlanguage.util.*;
 
 public class BusinessCalendar {
-    private Set<CalendarDate> holidays;
+
+    private final Set<CalendarDate> holidays;
 
     /** Should be rewritten for each particular organization */
     static Set<CalendarDate> defaultHolidays() {
@@ -157,16 +158,4 @@ public class BusinessCalendar {
      * return false; }
      */
     
-    // Only for use by persistence mapping frameworks
-    // <rant>These methods break encapsulation and we put them in here
-    // begrudgingly</rant>
-    private Set getForPersistentMapping_Holidays() {
-        return holidays;
-    }
-    // Only for use by persistence mapping frameworks
-    // <rant>These methods break encapsulation and we put them in here
-    // begrudgingly</rant>
-    private void setForPersistentMapping_Holidays(Set holidays) {
-        this.holidays = holidays;
-    }
 }

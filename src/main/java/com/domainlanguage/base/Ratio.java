@@ -24,8 +24,8 @@ package com.domainlanguage.base;
 import java.math.BigDecimal;
 
 public class Ratio {
-    private BigDecimal numerator;
-    private BigDecimal denominator;
+    private final BigDecimal numerator;
+    private final BigDecimal denominator;
 
     public static Ratio of(BigDecimal numerator, BigDecimal denominator) {
         return new Ratio(numerator, denominator);
@@ -79,32 +79,5 @@ public class Ratio {
     public String toString() {
         return numerator.toString() + "/" + denominator;
     }
-
-    //Only for use by persistence mapping frameworks
-    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
-    Ratio() {
-    }
-    //Only for use by persistence mapping frameworks
-    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
-    private BigDecimal getForPersistentMapping_Denominator() {
-        return denominator;
-    }
-    //Only for use by persistence mapping frameworks
-    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
-    private void setForPersistentMapping_Denominator(BigDecimal denominator) {
-        this.denominator = denominator;
-    }
-    //Only for use by persistence mapping frameworks
-    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
-    private BigDecimal getForPersistentMapping_Numerator() {
-        return numerator;
-    }
-    //Only for use by persistence mapping frameworks
-    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
-    private void setForPersistentMapping_Numerator(BigDecimal numerator) {
-        this.numerator = numerator;
-    }
-
-
 
 }

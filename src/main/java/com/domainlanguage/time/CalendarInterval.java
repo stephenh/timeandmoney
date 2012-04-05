@@ -13,6 +13,10 @@ import com.domainlanguage.util.*;
 
 public abstract class CalendarInterval extends Interval<CalendarDate> implements Iterable<CalendarDate> {
 
+    protected CalendarInterval(CalendarDate lower, boolean isLowerClosed, CalendarDate upper, boolean isUpperClosed) {
+        super(lower, isLowerClosed, upper, isUpperClosed);
+    }
+
     public static CalendarInterval inclusive(CalendarDate start, CalendarDate end) {
         return ConcreteCalendarInterval.from(start, end);
     }
@@ -179,8 +183,6 @@ public abstract class CalendarInterval extends Interval<CalendarDate> implements
             }
         };
     }
-
-
 
     public boolean expires(CalendarInterval other) {
         return this.start().equals(other.start()) && !other.hasUpperLimit() && this.hasUpperLimit();

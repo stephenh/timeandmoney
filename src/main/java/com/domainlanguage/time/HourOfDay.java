@@ -55,7 +55,4 @@ public class HourOfDay {
     public String toString() {
         return String.valueOf(value);
     }
-    private static Class getPrimitivePersistenceMappingType() {
-        return Integer.TYPE;
-    }
 }

@@ -124,9 +124,5 @@ public class TimeInterval extends Interval<TimePoint> {
 		return intersect(interval);
 	}
 
-    //Only for use by persistence mapping frameworks
-    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
-    TimeInterval() {
-    }
 }
  

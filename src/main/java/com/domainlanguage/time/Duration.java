@@ -14,8 +14,8 @@ import com.domainlanguage.base.*;
 public class Duration implements Comparable<Duration>, Serializable {
 	public static final Duration NONE = milliseconds(0);
 
-	private long quantity;
-	private TimeUnit unit;
+	private final long quantity;
+	private final TimeUnit unit;
 	
 	public static Duration milliseconds(long howMany) {
 		return Duration.of(howMany, TimeUnit.millisecond);
@@ -258,28 +258,4 @@ public class Duration implements Comparable<Duration>, Serializable {
         return buffer.toString();
     }
 
-    //Only for use by persistence mapping frameworks
-    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
-    Duration() {
-    }
-    //Only for use by persistence mapping frameworks
-    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
-    private long getForPersistentMapping_Quantity() {
-        return quantity;
-    }
-    //Only for use by persistence mapping frameworks
-    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
-    private void setForPersistentMapping_Quantity(long quantity) {
-        this.quantity = quantity;
-    }
-    //Only for use by persistence mapping frameworks
-    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
-    private TimeUnit getForPersistentMapping_Unit() {
-        return unit;
-    }
-    //Only for use by persistence mapping frameworks
-    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
-    private void setForPersistentMapping_Unit(TimeUnit unit) {
-        this.unit = unit;
-    }
 }

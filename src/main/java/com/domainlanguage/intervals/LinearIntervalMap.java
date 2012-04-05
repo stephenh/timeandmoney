@@ -14,7 +14,7 @@ import java.util.Map;
 
 public class LinearIntervalMap<K extends Comparable<K>, V> implements IntervalMap<K, V> {
 
-    private Map<Interval<K>, V> keyValues;
+    private final Map<Interval<K>, V> keyValues;
 
     public LinearIntervalMap() {
         keyValues = new HashMap<Interval<K>, V>();
@@ -81,16 +81,6 @@ public class LinearIntervalMap<K extends Comparable<K>, V> implements IntervalMa
     @Override
     public boolean containsIntersectingKey(Interval<K> otherInterval) {
         return !intersectingKeys(otherInterval).isEmpty();
-    }
-    //Only for use by persistence mapping frameworks
-    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
-    private Map getForPersistentMapping_KeyValues() {
-        return keyValues;
-    }
-    //Only for use by persistence mapping frameworks
-    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
-    private void setForPersistentMapping_KeyValues(Map keyValues) {
-        this.keyValues = keyValues;
     }
 
 }

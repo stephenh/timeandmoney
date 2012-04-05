@@ -9,10 +9,10 @@ import java.io.*;
 
 class IntervalLimit<T extends Comparable<T>> implements Comparable<IntervalLimit<T>>, Serializable {
     
-    private boolean closed;
-    private T value;
-    private boolean lower;
-    
+    private final boolean closed;
+    private final T value;
+    private final boolean lower;
+
     static <T extends Comparable<T>> IntervalLimit<T> upper(boolean closed, T value) {
         return new IntervalLimit<T>(closed, false, value);
     }
@@ -52,38 +52,5 @@ class IntervalLimit<T extends Comparable<T>> implements Comparable<IntervalLimit
             return other.lower ? 1 : -1;
         }
         return value.compareTo(otherValue);
-    }
-    //Only for use by persistence mapping frameworks
-    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
-    IntervalLimit() {}
-    //Only for use by persistence mapping frameworks
-    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
-    boolean isForPersistentMapping_Closed() {
-        return closed;
-    }
-    //Only for use by persistence mapping frameworks
-    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
-    void setForPersistentMapping_Closed(boolean closed) {
-        this.closed = closed;
-    }
-    //Only for use by persistence mapping frameworks
-    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
-    boolean isForPersistentMapping_Lower() {
-        return lower;
-    }
-    //Only for use by persistence mapping frameworks
-    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
-    void setForPersistentMapping_Lower(boolean lower) {
-        this.lower = lower;
-    }
-    //Only for use by persistence mapping frameworks
-    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
-    T getForPersistentMapping_Value() {
-        return value;
-    }
-    //Only for use by persistence mapping frameworks
-    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
-    void setForPersistentMapping_Value(T value) {
-        this.value = value;
     }
 }

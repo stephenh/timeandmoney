@@ -7,9 +7,9 @@
 package com.domainlanguage.time;
 
 class FloatingDateSpecification extends AnnualDateSpecification {
-    private int month;
-    private int dayOfWeek;
-    private int occurrence;
+    private final int month;
+    private final int dayOfWeek;
+    private final int occurrence;
 
     FloatingDateSpecification(int month, int dayOfWeek, int occurrence) {
         this.month = month;
@@ -27,39 +27,5 @@ class FloatingDateSpecification extends AnnualDateSpecification {
 
     public boolean isSatisfiedBy(CalendarDate date) {
         return ofYear(date.getYear()).equals(date);
-    }
-    //Only for use by persistence mapping frameworks
-    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
-    FloatingDateSpecification() {
-    }
-    //Only for use by persistence mapping frameworks
-    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
-    private int getForPersistentMapping_DayOfWeek() {
-        return dayOfWeek;
-    }
-    //Only for use by persistence mapping frameworks
-    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
-    private void setForPersistentMapping_DayOfWeek(int dayOfWeek) {
-        this.dayOfWeek = dayOfWeek;
-    }
-    //Only for use by persistence mapping frameworks
-    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
-    private int getForPersistentMapping_Month() {
-        return month;
-    }
-    //Only for use by persistence mapping frameworks
-    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
-    private void setForPersistentMapping_Month(int month) {
-        this.month = month;
-    }
-    //Only for use by persistence mapping frameworks
-    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
-    private int getForPersistentMapping_Occurrence() {
-        return occurrence;
-    }
-    //Only for use by persistence mapping frameworks
-    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
-    private void setForPersistentMapping_Occurrence(int occurrence) {
-        this.occurrence = occurrence;
     }
 }

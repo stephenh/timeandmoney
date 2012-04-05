@@ -8,8 +8,8 @@ package com.domainlanguage.time;
 import java.util.*;
 
 public class TimeOfDay {
-    private HourOfDay hour;
-    private MinuteOfHour minute;
+    private final HourOfDay hour;
+    private final MinuteOfHour minute;
     
     public static TimeOfDay hourAndMinute(int hour, int minute) {
         return new TimeOfDay(hour, minute);
@@ -58,30 +58,6 @@ public class TimeOfDay {
 
     int getMinute() {
         return minute.value();
-    }
-    //Only for use by persistence mapping frameworks
-    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
-    TimeOfDay() {
-    }
-    //Only for use by persistence mapping frameworks
-    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
-    private int getForPersistentMapping_Hour() {
-        return hour.value();
-    }
-    //Only for use by persistence mapping frameworks
-    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
-    private void setForPersistentMapping_Hour(int hour) {
-        this.hour = HourOfDay.value(hour);
-    }
-    //Only for use by persistence mapping frameworks
-    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
-    private int getForPersistentMapping_Minute() {
-        return minute.value();
-    }
-    //Only for use by persistence mapping frameworks
-    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
-    private void setForPersistentMapping_Minute(int minute) {
-        this.minute = MinuteOfHour.value(minute);
     }
 
     public TimePoint asTimePointGiven(CalendarDate date, TimeZone timeZone) {

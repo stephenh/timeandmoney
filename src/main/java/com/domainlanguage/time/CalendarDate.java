@@ -12,10 +12,10 @@ import java.util.TimeZone;
 
 public class CalendarDate implements Comparable<CalendarDate>, Serializable {
 
-	private int year;
-	private int month; // 1 based: January = 1, February = 2, ...
-	private int day;
 	private static final int MAX_YEAR = 9999;
+	private final int year;
+	private final int month; // 1 based: January = 1, February = 2, ...
+	private final int day;
 	
     public static CalendarDate date(int year, int month, int day) {
         return CalendarDate.from(year, month, day);
@@ -275,40 +275,6 @@ public class CalendarDate implements Comparable<CalendarDate>, Serializable {
 
     public int getYear() {
         return year;
-    }
-    //Only for use by persistence mapping frameworks
-    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
-    CalendarDate() {
-    }
-    //Only for use by persistence mapping frameworks
-    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
-    private int getForPersistentMapping_Day() {
-        return day;
-    }
-    //Only for use by persistence mapping frameworks
-    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
-    private void setForPersistentMapping_Day(int day) {
-        this.day = day;
-    }
-    //Only for use by persistence mapping frameworks
-    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
-    private int getForPersistentMapping_Month() {
-        return month;
-    }
-    //Only for use by persistence mapping frameworks
-    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
-    private void setForPersistentMapping_Month(int month) {
-        this.month = month;
-    }
-    //Only for use by persistence mapping frameworks
-    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
-    private int getForPersistentMapping_Year() {
-        return year;
-    }
-    //Only for use by persistence mapping frameworks
-    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
-    private void setForPersistentMapping_Year(int year) {
-        this.year = year;
     }
 
     public CalendarMinute at(TimeOfDay timeOfDay) {

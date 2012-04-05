@@ -43,7 +43,4 @@ public class MinuteOfHour {
     public String toString() {
         return String.valueOf(value);
     }
-    private static Class getPrimitivePersistenceMappingType() {
-        return Integer.TYPE;
-    }
 }

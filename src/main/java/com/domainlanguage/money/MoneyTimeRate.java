@@ -11,8 +11,8 @@ import com.domainlanguage.time.Duration;
 import com.domainlanguage.time.TimeRate;
 
 public class MoneyTimeRate {
-	private TimeRate rate;
-	private Currency currency;
+	private final TimeRate rate;
+	private final Currency currency;
 
 	public MoneyTimeRate(Money money, Duration duration) {
 		rate = new TimeRate(money.getAmount(), duration);
@@ -48,28 +48,4 @@ public class MoneyTimeRate {
 	public String toString() {
 		return rate.toString();
 	}
-    //Only for use by persistence mapping frameworks
-    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
-    MoneyTimeRate() {
-    }
-    //Only for use by persistence mapping frameworks
-    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
-    private Currency getForPersistentMapping_Currency() {
-        return currency;
-    }
-    //Only for use by persistence mapping frameworks
-    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
-    private void setForPersistentMapping_Currency(Currency currency) {
-        this.currency = currency;
-    }
-    //Only for use by persistence mapping frameworks
-    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
-    private TimeRate getForPersistentMapping_Rate() {
-        return rate;
-    }
-    //Only for use by persistence mapping frameworks
-    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
-    private void setForPersistentMapping_Rate(TimeRate rate) {
-        this.rate = rate;
-    }
 }

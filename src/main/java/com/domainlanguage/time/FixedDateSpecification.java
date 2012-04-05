@@ -7,8 +7,8 @@
 package com.domainlanguage.time;
 
 class FixedDateSpecification extends AnnualDateSpecification {
-    private int month;
-    private int day;
+    private final int month;
+    private final int day;
 
     FixedDateSpecification(int month, int day) {
         this.month = month;
@@ -21,31 +21,6 @@ class FixedDateSpecification extends AnnualDateSpecification {
 
     public boolean isSatisfiedBy(CalendarDate date) {
         return day == date.getDay() && month == date.getMonth();
-    }
-
-    //Only for use by persistence mapping frameworks
-    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
-    FixedDateSpecification() {
-    }
-    //Only for use by persistence mapping frameworks
-    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
-    private int getForPersistentMapping_Day() {
-        return day;
-    }
-    //Only for use by persistence mapping frameworks
-    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
-    private void setForPersistentMapping_Day(int day) {
-        this.day = day;
-    }
-    //Only for use by persistence mapping frameworks
-    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
-    private int getForPersistentMapping_Month() {
-        return month;
-    }
-    //Only for use by persistence mapping frameworks
-    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
-    private void setForPersistentMapping_Month(int month) {
-        this.month = month;
     }
 
 }

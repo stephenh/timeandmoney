@@ -23,8 +23,8 @@ public class Money implements Comparable<Money>, Serializable {
 	private static final Currency EUR = Currency.getInstance("EUR");
 	private static final int DEFAULT_ROUNDING_MODE = Rounding.HALF_EVEN;
 	
-	private BigDecimal amount;
-	private Currency currency;
+	private final BigDecimal amount;
+	private final Currency currency;
 	
 	/**
      * The constructor does not complex computations and requires simple, inputs
@@ -379,31 +379,6 @@ public class Money implements Comparable<Money>, Serializable {
     private void assertHasSameCurrencyAs(Money aMoney) {
         if (!hasSameCurrencyAs(aMoney))
             throw new IllegalArgumentException(aMoney.toString() + " is not same currency as " + this.toString());
-    }
-
-    //Only for use by persistence mapping frameworks
-    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
-    Money() {
-    }
-    //Only for use by persistence mapping frameworks
-    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
-    private BigDecimal getForPersistentMapping_Amount() {
-        return amount;
-    }
-    //Only for use by persistence mapping frameworks
-    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
-    private void setForPersistentMapping_Amount(BigDecimal amount) {
-        this.amount = amount;
-    }
-    //Only for use by persistence mapping frameworks
-    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
-    private Currency getForPersistentMapping_Currency() {
-        return currency;
-    }
-    //Only for use by persistence mapping frameworks
-    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
-    private void setForPersistentMapping_Currency(Currency currency) {
-        this.currency = currency;
     }
     
 }

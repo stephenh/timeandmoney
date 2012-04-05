@@ -24,9 +24,9 @@ public class TimeUnit implements Comparable, Serializable, TimeUnitConversionFac
     public static final TimeUnit[] descendingMonthBased = { year, quarter, month };
     public static final TimeUnit[] descendingMonthBasedForDisplay = { year, month };
 
-    private Type type;
-    private Type baseType;
-    private int factor;
+    private final Type type;
+    private final Type baseType;
+    private final int factor;
 
     private TimeUnit(Type type, Type baseType, int factor) {
         this.type = type;
@@ -118,7 +118,7 @@ public class TimeUnit implements Comparable, Serializable, TimeUnitConversionFac
         static final Type quarter = new Type("quarter");
         static final Type year = new Type("year");
 
-        private String name;
+        private final String name;
 
         Type(String name) {
             this.name = name;
@@ -138,54 +138,9 @@ public class TimeUnit implements Comparable, Serializable, TimeUnitConversionFac
         public int hashCode() {
             return name.hashCode();
         }
-        
-        //Only for use by persistence mapping frameworks
-        //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
-        Type() {
-        }
-        private String getForPersistentMapping_Name() {
-            return this.name;
-        }
-        private void setForPersistentMapping_Name(String name) {
-            this.name = name;
-        }
     }
     int getFactor() {
         return factor;
-    }
-    //Only for use by persistence mapping frameworks
-    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
-    TimeUnit() {
-    }
-    //Only for use by persistence mapping frameworks
-    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
-    private Type getForPersistentMapping_BaseType() {
-        return baseType;
-    }
-    //Only for use by persistence mapping frameworks
-    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
-    private void setForPersistentMapping_BaseType(Type baseType) {
-        this.baseType = baseType;
-    }
-    //Only for use by persistence mapping frameworks
-    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
-    private int getForPersistentMapping_Factor() {
-        return factor;
-    }
-    //Only for use by persistence mapping frameworks
-    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
-    private void setForPersistentMapping_Factor(int factor) {
-        this.factor = factor;
-    }
-    //Only for use by persistence mapping frameworks
-    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
-    private Type getForPersistentMapping_Type() {
-        return type;
-    }
-    //Only for use by persistence mapping frameworks
-    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
-    private void setForPersistentMapping_Type(Type type) {
-        this.type = type;
     }
 
     static TimeUnit exampleForPersistentMappingTesting() {

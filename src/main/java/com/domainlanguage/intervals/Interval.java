@@ -23,8 +23,8 @@ import java.util.List;
  */
 public class Interval<T extends Comparable<T>> implements Comparable<Interval<T>>, Serializable {
 
-    private IntervalLimit<T> lowerLimitObject;
-    private IntervalLimit<T> upperLimitObject;
+    private final IntervalLimit<T> lowerLimitObject;
+    private final IntervalLimit<T> upperLimitObject;
     
     public static <T extends Comparable<T>> Interval<T> closed(T lower, T upper) {
         return new Interval<T>(lower, true, upper, true);
@@ -333,57 +333,5 @@ public class Interval<T extends Comparable<T>> implements Comparable<Interval<T>
             throw new IllegalArgumentException(lower + " is not before or equal to " + upper);
         }
     }
-    //Only for use by persistence mapping frameworks
-    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
-    protected Interval() {
-    }
     
-    //Only for use by persistence mapping frameworks
-    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
-    private T getForPersistentMapping_LowerLimit() {
-        return lowerLimitObject.getForPersistentMapping_Value();
-    }
-    //Only for use by persistence mapping frameworks
-    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
-    private void setForPersistentMapping_LowerLimit(T value) {
-        if (lowerLimitObject == null)
-            lowerLimitObject=IntervalLimit.lower(true, value);
-        lowerLimitObject.setForPersistentMapping_Value(value);
-    }
-    //Only for use by persistence mapping frameworks
-    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
-    private boolean isForPersistentMapping_IncludesLowerLimit() {
-        return !lowerLimitObject.isForPersistentMapping_Closed();
-    }
-    //Only for use by persistence mapping frameworks
-    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
-    private void setForPersistentMapping_IncludesLowerLimit(boolean value) {
-        if (lowerLimitObject == null)
-            lowerLimitObject=IntervalLimit.lower(value, null);
-        lowerLimitObject.setForPersistentMapping_Closed(!value);
-    }
-    //Only for use by persistence mapping frameworks
-    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
-    private Comparable getForPersistentMapping_UpperLimit() {
-        return upperLimitObject.getForPersistentMapping_Value();
-    }
-    //Only for use by persistence mapping frameworks
-    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
-    private void setForPersistentMapping_UpperLimit(T value) {
-        if (upperLimitObject == null)
-            upperLimitObject=IntervalLimit.upper(true, value);
-        upperLimitObject.setForPersistentMapping_Value(value);
-    }
-    //Only for use by persistence mapping frameworks
-    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
-    private boolean isForPersistentMapping_IncludesUpperLimit() {
-        return !upperLimitObject.isForPersistentMapping_Closed();
-    }
-    //Only for use by persistence mapping frameworks
-    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
-    private void setForPersistentMapping_IncludesUpperLimit(boolean value) {
-        if (upperLimitObject == null)
-            upperLimitObject=IntervalLimit.upper(value, null);
-        upperLimitObject.setForPersistentMapping_Closed(!value);
-    }
 }

@@ -10,11 +10,7 @@ import java.util.*;
 
 public class IntervalSequence<T extends Comparable<T>> {
 
-    List<Interval<T>> intervals;
-
-    public IntervalSequence() {
-        intervals = new ArrayList<Interval<T>>();
-    }
+    final List<Interval<T>> intervals = new ArrayList<Interval<T>>();
     
     public Iterator<Interval<T>> iterator() {
         return intervals.iterator();
@@ -54,14 +50,5 @@ public class IntervalSequence<T extends Comparable<T>> {
         Interval<T> right = intervals.get(intervals.size() - 1);
         return left.newOfSameType(left.lowerLimit(), left.includesLowerLimit(), right.upperLimit(), right.includesUpperLimit());
     }
-    //Only for use by persistence mapping frameworks
-    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
-    private List getForPersistentMapping_Intervals() {
-        return intervals;
-    }
-    //Only for use by persistence mapping frameworks
-    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
-    private void setForPersistentMapping_Intervals(List intervals) {
-        this.intervals = intervals;
-    }
+
 }

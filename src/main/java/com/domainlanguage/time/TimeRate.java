@@ -8,8 +8,8 @@ package com.domainlanguage.time;
 import java.math.BigDecimal;
 
 public class TimeRate {
-	private BigDecimal quantity;
-	private Duration unit;
+	private final BigDecimal quantity;
+	private final Duration unit;
 
 	public TimeRate(double quantity, Duration unit) {
 		this(new BigDecimal(quantity), unit);
@@ -60,28 +60,4 @@ public class TimeRate {
 		buffer.append(unit);
 		return buffer.toString();
 	}
-    //Only for use by persistence mapping frameworks
-    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
-    TimeRate() {
-    }
-    //Only for use by persistence mapping frameworks
-    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
-    private BigDecimal getForPersistentMapping_Quantity() {
-        return quantity;
-    }
-    //Only for use by persistence mapping frameworks
-    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
-    private void setForPersistentMapping_Quantity(BigDecimal quantity) {
-        this.quantity = quantity;
-    }
-    //Only for use by persistence mapping frameworks
-    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
-    private Duration getForPersistentMapping_Unit() {
-        return unit;
-    }
-    //Only for use by persistence mapping frameworks
-    //<rant>These methods break encapsulation and we put them in here begrudgingly</rant>
-    private void setForPersistentMapping_Unit(Duration unit) {
-        this.unit = unit;
-    }
 }
