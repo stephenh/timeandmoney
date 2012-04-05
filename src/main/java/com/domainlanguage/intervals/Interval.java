@@ -245,16 +245,12 @@ public class Interval<T extends Comparable<T>> implements Comparable<Interval<T>
         return this.includes(limit) || other.includes(limit);
     }
 
-    public boolean equals(Object other) {
-        try {
-            return equals((Interval<T>)other);
-        } catch(ClassCastException ex) {
-            return false;
-        }
-    }
-    public boolean equals(Interval<T> other) {
-        if (other == null) return false;
-        
+    @Override
+    public boolean equals(Object object) {
+        if (!(object instanceof Interval<?>)) return false;
+        @SuppressWarnings("unchecked")
+        Interval<T> other = (Interval<T>) object;
+
         boolean thisEmpty = this.isEmpty();
         boolean otherEmpty = other.isEmpty();
         if (thisEmpty & otherEmpty)
