@@ -10,7 +10,7 @@ import java.io.*;
 import java.text.*;
 import java.util.*;
 
-public class TimePoint implements Comparable, Serializable {
+public class TimePoint implements Comparable<TimePoint>, Serializable {
 
 	private static final TimeZone GMT = TimeZone.getTimeZone("Universal");
 
@@ -140,8 +140,7 @@ public class TimePoint implements Comparable, Serializable {
 		return this.millisecondsFromEpoc > other.millisecondsFromEpoc;
 	}
 
-	public int compareTo(Object other) {
-		TimePoint otherPoint = (TimePoint)other;
+	public int compareTo(TimePoint otherPoint) {
 		if (this.isBefore(otherPoint)) return -1;
 		if (this.isAfter(otherPoint)) return 1;
 		return 0;

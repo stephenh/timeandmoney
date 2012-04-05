@@ -6,13 +6,13 @@
 
 package com.domainlanguage.time;
 
-import java.util.*;
+import java.util.Iterator;
 
-import com.domainlanguage.intervals.*;
-import com.domainlanguage.util.*;
+import com.domainlanguage.intervals.Interval;
+import com.domainlanguage.util.ImmutableIterator;
 
 
-public class TimeInterval extends Interval {
+public class TimeInterval extends Interval<TimePoint> {
 
 	public static TimeInterval over(TimePoint start, boolean closedStart, TimePoint end, boolean closedEnd) {
 		return new TimeInterval(start, closedStart, end, closedEnd);
@@ -62,9 +62,10 @@ public class TimeInterval extends Interval {
 	public TimeInterval(TimePoint start, boolean startIncluded, TimePoint end, boolean endIncluded) {
 		super(start, startIncluded, end, endIncluded);
 	}
-	
-	public Interval newOfSameType(Comparable start, boolean isStartClosed, Comparable end, boolean isEndClosed) {
-		return new TimeInterval((TimePoint) start, isStartClosed, (TimePoint) end, isEndClosed);
+
+	@Override
+	public TimeInterval newOfSameType(TimePoint start, boolean isStartClosed, TimePoint end, boolean isEndClosed) {
+		return new TimeInterval(start, isStartClosed, end, isEndClosed);
 	}
 	
 	public boolean isBefore(TimePoint point) {
@@ -80,31 +81,31 @@ public class TimeInterval extends Interval {
 		return Duration.milliseconds(difference);
 	}
 	
-	public Iterator daysIterator() {
-		return new ImmutableIterator() {
+	public Iterator<TimePoint> daysIterator() {
+		return new ImmutableIterator<TimePoint>() {
 			TimePoint next = start();
 			public boolean hasNext() {
 				return end().isAfter(next);
 			}	
-			public Object next() {
-				Object current = next;
+			public TimePoint next() {
+				TimePoint current = next;
 				next = next.nextDay();
 				return current;
 			}
 		};
 	}
 
-	public Iterator subintervalIterator(Duration subintervalLength) {
+	public Iterator<TimeInterval> subintervalIterator(Duration subintervalLength) {
 		final Duration segmentLength = subintervalLength;
-		final Interval totalInterval = this;
-		return new ImmutableIterator() {
+		final Interval<TimePoint> totalInterval = this;
+		return new ImmutableIterator<TimeInterval>() {
 			TimeInterval next = segmentLength.startingFrom(start());
 			public boolean hasNext() {
 				return totalInterval.covers(next);
 			}	
-			public Object next() {
+			public TimeInterval next() {
 				if (!hasNext()) return null;
-				Object current = next;
+				TimeInterval current = next;
 				next = segmentLength.startingFrom(next.end());
 				return current;
 			}
@@ -112,15 +113,15 @@ public class TimeInterval extends Interval {
 	}
 
 	public TimePoint start() {
-		return (TimePoint) lowerLimit();
+		return lowerLimit();
 	}
-	
+
 	public TimePoint end() {
-		return (TimePoint) upperLimit();
+		return upperLimit();
 	}
-	
+
 	public TimeInterval intersect(TimeInterval interval) {
-		return (TimeInterval)intersect((Interval)interval);
+		return intersect(interval);
 	}
 
     //Only for use by persistence mapping frameworks
