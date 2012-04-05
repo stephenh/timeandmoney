@@ -48,46 +48,28 @@ public class Interval<T extends Comparable<T>> implements Comparable<Interval<T>
         this(IntervalLimit.lower(isLowerClosed, lower), IntervalLimit.upper(isUpperClosed, upper));
     }
     
-    //Warning: This method should generally be used for display
-    //purposes and interactions with closely coupled classes.
-    //Look for (or add) other methods to do computations.
+    /** Returns the upper limit or null if open-ended. */
     public T upperLimit() {
         return upperLimitObject.getValue();
     }
-
-    //Warning: This method should generally be used for display
-    //purposes and interactions with closely coupled classes.
-    //Look for (or add) other methods to do computations.
 
     public boolean includesUpperLimit() {
         return upperLimitObject.isClosed();
     }
 
-   //Warning: This method should generally be used for display
-   //purposes and interactions with closely coupled classes.
-   //Look for (or add) other methods to do computations.
-    
     public boolean hasUpperLimit() {
         return upperLimit() != null;
     }
-      
-    //Warning: This method should generally be used for display
-    //purposes and interactions with closely coupled classes.
-    //Look for (or add) other methods to do computations.
+
+    /** Returns the lower limit or null if open-ended. */
     public T lowerLimit() {
         return lowerLimitObject.getValue();
     }
     
-    //Warning: This method should generally be used for display
-    //purposes and interactions with closely coupled classes.
-    //Look for (or add) other methods to do computations.
     public boolean includesLowerLimit() {
         return lowerLimitObject.isClosed();
     }
     
-    //Warning: This method should generally be used for display
-    //purposes and interactions with closely coupled classes.
-    //Look for (or add) other methods to do computations.
     public boolean hasLowerLimit() {
         return lowerLimit() != null;
     }
