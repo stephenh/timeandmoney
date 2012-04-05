@@ -9,7 +9,8 @@ package com.domainlanguage.time;
 import java.io.Serializable;
 import java.util.Calendar;
 
-public class TimeUnit implements Comparable, Serializable, TimeUnitConversionFactors {
+public class TimeUnit implements Comparable<TimeUnit>, Serializable, TimeUnitConversionFactors {
+
     public static final TimeUnit millisecond = new TimeUnit(Type.millisecond, Type.millisecond, 1);
     public static final TimeUnit second = new TimeUnit(Type.second, Type.millisecond, millisecondsPerSecond);
     public static final TimeUnit minute = new TimeUnit(Type.minute, Type.millisecond, millisecondsPerMinute);
@@ -46,8 +47,8 @@ public class TimeUnit implements Comparable, Serializable, TimeUnitConversionFac
         return baseType.equals(other.baseType);
     }
 
-    public int compareTo(Object object) {
-        TimeUnit other = (TimeUnit) object;
+    @Override
+    public int compareTo(TimeUnit other) {
         if (other.baseType.equals(baseType))
             return factor - other.factor;
         if (baseType.equals(Type.month))
@@ -63,6 +64,7 @@ public class TimeUnit implements Comparable, Serializable, TimeUnitConversionFac
         return 0;
     }
 
+    @Override
     public String toString() {
         return type.name;
     }
@@ -95,6 +97,7 @@ public class TimeUnit implements Comparable, Serializable, TimeUnitConversionFac
         return descending[index + 1];
     }
 
+    @Override
     public boolean equals(Object object) {
         //revisit: maybe use: Reflection.equalsOverClassAndNull(this, other)
         if (object == null || !(object instanceof TimeUnit))
@@ -103,6 +106,7 @@ public class TimeUnit implements Comparable, Serializable, TimeUnitConversionFac
         return this.baseType.equals(other.baseType) && this.factor == other.factor && this.type.equals(other.type);
     }
 
+    @Override
     public int hashCode() {
         return factor + baseType.hashCode() + type.hashCode();
     }
