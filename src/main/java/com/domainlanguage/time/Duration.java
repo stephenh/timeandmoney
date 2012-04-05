@@ -11,7 +11,7 @@ import java.util.*;
 
 import com.domainlanguage.base.*;
 
-public class Duration implements Comparable, Serializable {
+public class Duration implements Comparable<Duration>, Serializable {
 	public static final Duration NONE = milliseconds(0);
 
 	private long quantity;
@@ -155,8 +155,7 @@ public class Duration implements Comparable, Serializable {
 		return (int) quantity;
 	}
 
-	public int compareTo(Object arg) {
-		Duration other = (Duration) arg;
+	public int compareTo(Duration other) {
 		assertConvertible(other);
 		long difference = this.inBaseUnits() - other.inBaseUnits();
 		if (difference > 0) return 1;
