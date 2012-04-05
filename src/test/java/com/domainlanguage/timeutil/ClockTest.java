@@ -21,15 +21,15 @@ public class ClockTest extends TestCase {
   TimeZone gmt = TimeZone.getTimeZone("Universal");
   TimeZone pt = TimeZone.getTimeZone("America/Los_Angeles");
   TimeZone ct = TimeZone.getTimeZone("America/Chicago");
-  TimeSource dummySourceDec1_5h = this.dummyTimeSource(this.dec1_5am_gmt);
+  TimeSource dummySourceDec1_5h = dummyTimeSource(dec1_5am_gmt);
 
   public void tearDown() {
     Clock.reset();
   }
 
   public void testNow() {
-    Clock.setTimeSource(this.dummySourceDec1_5h);
-    Assert.assertEquals(this.dec1_5am_gmt, Clock.now());
+    Clock.setTimeSource(dummySourceDec1_5h);
+    Assert.assertEquals(dec1_5am_gmt, Clock.now());
   }
 
   //[ 1466694 ] Clock.now() should use default TimeSource
@@ -44,20 +44,20 @@ public class ClockTest extends TestCase {
   }
 
   public void testToday() {
-    Clock.setTimeSource(this.dummySourceDec1_5h);
+    Clock.setTimeSource(dummySourceDec1_5h);
 
-    Clock.setDefaultTimeZone(this.gmt);
+    Clock.setDefaultTimeZone(gmt);
     Assert.assertEquals(CalendarDate.date(2004, 12, 1), Clock.today());
-    Assert.assertEquals(this.dec1_5am_gmt, Clock.now());
+    Assert.assertEquals(dec1_5am_gmt, Clock.now());
 
-    Clock.setDefaultTimeZone(this.pt);
+    Clock.setDefaultTimeZone(pt);
     Assert.assertEquals(CalendarDate.date(2004, 11, 30), Clock.today());
-    Assert.assertEquals(this.dec1_5am_gmt, Clock.now());
+    Assert.assertEquals(dec1_5am_gmt, Clock.now());
 
   }
 
   public void testTodayWithoutTimeZone() {
-    Clock.setTimeSource(this.dummySourceDec1_5h);
+    Clock.setTimeSource(dummySourceDec1_5h);
 
     try {
       Clock.today();

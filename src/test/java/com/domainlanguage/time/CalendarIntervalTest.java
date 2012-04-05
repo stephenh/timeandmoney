@@ -30,67 +30,67 @@ public class CalendarIntervalTest extends TestCase {
   private TimeZone ct = TimeZone.getTimeZone("America/Chicago");
 
   public void testSerialization() {
-    SerializationTester.assertCanBeSerialized(this.may);
+    SerializationTester.assertCanBeSerialized(may);
   }
 
   public void testTranslationToTimeInterval() {
-    TimeInterval day = this.may20.asTimeInterval(this.ct);
-    Assert.assertEquals("May20Ct", TimePoint.atMidnight(2004, 5, 20, this.ct), day.start());
+    TimeInterval day = may20.asTimeInterval(ct);
+    Assert.assertEquals("May20Ct", TimePoint.atMidnight(2004, 5, 20, ct), day.start());
   }
 
   public void testIncludes() {
-    Assert.assertFalse("apr15", this.may.includes(this.apr15));
-    Assert.assertTrue("may1", this.may.includes(this.may1));
-    Assert.assertTrue("may20", this.may.includes(this.may20));
-    Assert.assertFalse("jun1", this.may.includes(this.jun1));
-    Assert.assertTrue("may", this.may.covers(this.may));
+    Assert.assertFalse("apr15", may.includes(apr15));
+    Assert.assertTrue("may1", may.includes(may1));
+    Assert.assertTrue("may20", may.includes(may20));
+    Assert.assertFalse("jun1", may.includes(jun1));
+    Assert.assertTrue("may", may.covers(may));
   }
 
   public void testEquals() {
-    Assert.assertTrue(this.may.equals(CalendarInterval.inclusive(this.may1, this.may31)));
-    Assert.assertFalse(this.may.equals(this.may1));
-    Assert.assertFalse(this.may.equals(CalendarInterval.inclusive(this.may1, this.may20)));
+    Assert.assertTrue(may.equals(CalendarInterval.inclusive(may1, may31)));
+    Assert.assertFalse(may.equals(may1));
+    Assert.assertFalse(may.equals(CalendarInterval.inclusive(may1, may20)));
   }
 
   public void testDaysAdd() {
-    Assert.assertEquals(this.may20, this.may1.plusDays(19));
+    Assert.assertEquals(may20, may1.plusDays(19));
   }
 
   public void testIterator() {
     int i = 0;
     for (@SuppressWarnings("unused")
-    CalendarDate day : this.may1.through(this.may31)) {
+    CalendarDate day : may1.through(may31)) {
       i++;
     }
     Assert.assertEquals(i, 31);
   }
 
   public void testDaysIterator() {
-    Iterator<CalendarDate> iterator = CalendarInterval.inclusive(this.may1, this.may3).daysIterator();
+    Iterator<CalendarDate> iterator = CalendarInterval.inclusive(may1, may3).daysIterator();
     Assert.assertTrue(iterator.hasNext());
-    Assert.assertEquals(this.may1, iterator.next());
+    Assert.assertEquals(may1, iterator.next());
     Assert.assertTrue(iterator.hasNext());
-    Assert.assertEquals(this.may2, iterator.next());
+    Assert.assertEquals(may2, iterator.next());
     Assert.assertTrue(iterator.hasNext());
-    Assert.assertEquals(this.may3, iterator.next());
+    Assert.assertEquals(may3, iterator.next());
     Assert.assertFalse(iterator.hasNext());
 
   }
 
   public void testSubintervalIterator() {
-    CalendarInterval may1_3 = CalendarInterval.inclusive(this.may1, this.may3);
+    CalendarInterval may1_3 = CalendarInterval.inclusive(may1, may3);
     Iterator<CalendarInterval> iterator = may1_3.subintervalIterator(Duration.days(1));
     Assert.assertTrue(iterator.hasNext());
-    Assert.assertEquals(this.may1, iterator.next().start());
+    Assert.assertEquals(may1, iterator.next().start());
     Assert.assertTrue(iterator.hasNext());
-    Assert.assertEquals(this.may2, iterator.next().start());
+    Assert.assertEquals(may2, iterator.next().start());
     Assert.assertTrue(iterator.hasNext());
-    Assert.assertEquals(this.may3, iterator.next().start());
+    Assert.assertEquals(may3, iterator.next().start());
     Assert.assertFalse(iterator.hasNext());
 
     iterator = may1_3.subintervalIterator(Duration.days(2));
     Assert.assertTrue(iterator.hasNext());
-    Assert.assertEquals(this.may1.through(this.may2), iterator.next());
+    Assert.assertEquals(may1.through(may2), iterator.next());
     Assert.assertFalse(iterator.hasNext());
 
     try {
@@ -103,41 +103,41 @@ public class CalendarIntervalTest extends TestCase {
     iterator = may1_3.subintervalIterator(Duration.months(1));
     Assert.assertFalse(iterator.hasNext());
 
-    CalendarInterval apr15_jun1 = CalendarInterval.inclusive(this.apr15, this.jun1);
+    CalendarInterval apr15_jun1 = CalendarInterval.inclusive(apr15, jun1);
     iterator = apr15_jun1.subintervalIterator(Duration.months(1));
     Assert.assertTrue(iterator.hasNext());
-    Assert.assertEquals(this.apr15.through(this.may14), iterator.next());
+    Assert.assertEquals(apr15.through(may14), iterator.next());
     Assert.assertFalse(iterator.hasNext());
   }
 
   public void testLength() {
-    Assert.assertEquals(Duration.days(3), this.may1.through(this.may3).length());
+    Assert.assertEquals(Duration.days(3), may1.through(may3).length());
     CalendarInterval may2002_july2004 = CalendarInterval.inclusive(2002, 5, 1, 2004, 7, 1);
     // (5/1/2002-4/30/2003) 365 days + (-4/30/2004) 366 + (5/1-7/31) 31+30+1 = 793 days
     Assert.assertEquals(Duration.days(793), may2002_july2004.length());
     Assert.assertEquals(Duration.months(26), may2002_july2004.lengthInMonths());
-    Assert.assertEquals(Duration.months(1), this.apr15.through(this.may14).lengthInMonths());
+    Assert.assertEquals(Duration.months(1), apr15.through(may14).lengthInMonths());
   }
 
   public void testComplements() {
-    CalendarInterval may1Onward = CalendarInterval.inclusive(this.may1, null);
-    CalendarInterval may2Onward = CalendarInterval.inclusive(this.may2, null);
+    CalendarInterval may1Onward = CalendarInterval.inclusive(may1, null);
+    CalendarInterval may2Onward = CalendarInterval.inclusive(may2, null);
     List<Interval<CalendarDate>> complementList = may2Onward.complementRelativeTo(may1Onward);
     Assert.assertEquals(1, complementList.size());
 
     CalendarInterval complement = (CalendarInterval) complementList.iterator().next();
     Assert.assertTrue(complement.isClosed());
-    Assert.assertEquals(this.may1, complement.start());
-    Assert.assertEquals(this.may1, complement.end());
+    Assert.assertEquals(may1, complement.start());
+    Assert.assertEquals(may1, complement.end());
   }
 
   public void testSingleDateCalendarIntervalCompare() {
-    CalendarInterval may1_may1 = CalendarInterval.inclusive(this.may1, this.may1);
-    Assert.assertEquals(this.may1, may1_may1.start());
-    Assert.assertEquals(this.may1, may1_may1.end());
-    Assert.assertEquals(0, this.may1.compareTo(may1_may1.start()));
-    Assert.assertEquals(0, may1_may1.start().compareTo(this.may1));
-    CalendarInterval may1_may2 = CalendarInterval.inclusive(this.may1, this.may2);
+    CalendarInterval may1_may1 = CalendarInterval.inclusive(may1, may1);
+    Assert.assertEquals(may1, may1_may1.start());
+    Assert.assertEquals(may1, may1_may1.end());
+    Assert.assertEquals(0, may1.compareTo(may1_may1.start()));
+    Assert.assertEquals(0, may1_may1.start().compareTo(may1));
+    CalendarInterval may1_may2 = CalendarInterval.inclusive(may1, may2);
     Assert.assertTrue(may1_may2.compareTo(may1_may1) > 0);
   }
 

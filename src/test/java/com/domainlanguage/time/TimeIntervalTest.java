@@ -21,82 +21,82 @@ public class TimeIntervalTest extends TestCase {
   private TimePoint dec23_2003 = TimePoint.atMidnightGMT(2003, 12, 23);
 
   public void testSerialization() {
-    TimeInterval interval = TimeInterval.closed(this.dec20_2003, this.dec22_2003);
+    TimeInterval interval = TimeInterval.closed(dec20_2003, dec22_2003);
     SerializationTester.assertCanBeSerialized(interval);
   }
 
   public void testBeforeClosed() {
-    TimeInterval interval = TimeInterval.closed(this.dec20_2003, this.dec22_2003);
+    TimeInterval interval = TimeInterval.closed(dec20_2003, dec22_2003);
     // Only the upper end should matter for this test.
-    Assert.assertFalse(interval.isBefore(this.dec21_2003));
-    Assert.assertFalse(interval.isBefore(this.dec22_2003));
-    Assert.assertTrue(interval.isBefore(this.dec23_2003));
+    Assert.assertFalse(interval.isBefore(dec21_2003));
+    Assert.assertFalse(interval.isBefore(dec22_2003));
+    Assert.assertTrue(interval.isBefore(dec23_2003));
   }
 
   public void testAfterClosed() {
-    TimeInterval interval = TimeInterval.closed(this.dec20_2003, this.dec22_2003);
+    TimeInterval interval = TimeInterval.closed(dec20_2003, dec22_2003);
     // Only the lower end should matter for this test.
-    Assert.assertTrue(interval.isAfter(this.dec19_2003));
-    Assert.assertFalse(interval.isAfter(this.dec20_2003));
-    Assert.assertFalse(interval.isAfter(this.dec21_2003));
+    Assert.assertTrue(interval.isAfter(dec19_2003));
+    Assert.assertFalse(interval.isAfter(dec20_2003));
+    Assert.assertFalse(interval.isAfter(dec21_2003));
   }
 
   public void testIncludesClosed() {
-    TimeInterval interval = TimeInterval.closed(this.dec20_2003, this.dec22_2003);
-    Assert.assertFalse(interval.includes(this.dec19_2003));
-    Assert.assertTrue(interval.includes(this.dec20_2003));
-    Assert.assertTrue(interval.includes(this.dec21_2003));
-    Assert.assertTrue(interval.includes(this.dec22_2003));
-    Assert.assertFalse(interval.includes(this.dec23_2003));
+    TimeInterval interval = TimeInterval.closed(dec20_2003, dec22_2003);
+    Assert.assertFalse(interval.includes(dec19_2003));
+    Assert.assertTrue(interval.includes(dec20_2003));
+    Assert.assertTrue(interval.includes(dec21_2003));
+    Assert.assertTrue(interval.includes(dec22_2003));
+    Assert.assertFalse(interval.includes(dec23_2003));
   }
 
   public void testBeforeOpen() {
-    TimeInterval interval = TimeInterval.open(this.dec20_2003, this.dec22_2003);
+    TimeInterval interval = TimeInterval.open(dec20_2003, dec22_2003);
     // Only the upper end should matter for this test.
-    Assert.assertFalse(interval.isBefore(this.dec21_2003));
-    Assert.assertTrue(interval.isBefore(this.dec22_2003));
-    Assert.assertTrue(interval.isBefore(this.dec23_2003));
+    Assert.assertFalse(interval.isBefore(dec21_2003));
+    Assert.assertTrue(interval.isBefore(dec22_2003));
+    Assert.assertTrue(interval.isBefore(dec23_2003));
   }
 
   public void testAfterOpen() {
-    TimeInterval interval = TimeInterval.open(this.dec20_2003, this.dec22_2003);
+    TimeInterval interval = TimeInterval.open(dec20_2003, dec22_2003);
     // Only the lower end should matter for this test.
-    Assert.assertTrue(interval.isAfter(this.dec19_2003));
-    Assert.assertTrue(interval.isAfter(this.dec20_2003));
-    Assert.assertFalse(interval.isAfter(this.dec21_2003));
+    Assert.assertTrue(interval.isAfter(dec19_2003));
+    Assert.assertTrue(interval.isAfter(dec20_2003));
+    Assert.assertFalse(interval.isAfter(dec21_2003));
   }
 
   public void testIncludesOpen() {
-    TimeInterval interval = TimeInterval.open(this.dec20_2003, this.dec22_2003);
-    Assert.assertFalse(interval.includes(this.dec19_2003));
-    Assert.assertFalse(interval.includes(this.dec20_2003));
-    Assert.assertTrue(interval.includes(this.dec21_2003));
-    Assert.assertFalse(interval.includes(this.dec22_2003));
-    Assert.assertFalse(interval.includes(this.dec23_2003));
+    TimeInterval interval = TimeInterval.open(dec20_2003, dec22_2003);
+    Assert.assertFalse(interval.includes(dec19_2003));
+    Assert.assertFalse(interval.includes(dec20_2003));
+    Assert.assertTrue(interval.includes(dec21_2003));
+    Assert.assertFalse(interval.includes(dec22_2003));
+    Assert.assertFalse(interval.includes(dec23_2003));
   }
 
   public void testIncludesHalfOpen() {
-    TimeInterval interval = TimeInterval.over(this.dec20_2003, true, this.dec22_2003, false);
-    Assert.assertFalse(interval.includes(this.dec19_2003));
-    Assert.assertTrue(interval.includes(this.dec20_2003));
-    Assert.assertTrue(interval.includes(this.dec21_2003));
-    Assert.assertFalse(interval.includes(this.dec22_2003));
-    Assert.assertFalse(interval.includes(this.dec23_2003));
+    TimeInterval interval = TimeInterval.over(dec20_2003, true, dec22_2003, false);
+    Assert.assertFalse(interval.includes(dec19_2003));
+    Assert.assertTrue(interval.includes(dec20_2003));
+    Assert.assertTrue(interval.includes(dec21_2003));
+    Assert.assertFalse(interval.includes(dec22_2003));
+    Assert.assertFalse(interval.includes(dec23_2003));
   }
 
   public void testCreateWithDurationFrom() {
     Duration twoDays = Duration.days(2);
-    TimeInterval following = TimeInterval.startingFrom(this.dec20_2003, true, twoDays, true);
-    Assert.assertEquals("[ dec20", this.dec20_2003, following.start());
-    Assert.assertEquals("dec 22]", this.dec22_2003, following.end());
+    TimeInterval following = TimeInterval.startingFrom(dec20_2003, true, twoDays, true);
+    Assert.assertEquals("[ dec20", dec20_2003, following.start());
+    Assert.assertEquals("dec 22]", dec22_2003, following.end());
 
   }
 
   public void testCreateWithDurationUntil() {
     Duration twoDays = Duration.days(2);
-    TimeInterval preceding = TimeInterval.preceding(this.dec21_2003, true, twoDays, true);
-    Assert.assertEquals("[ dec19", this.dec19_2003, preceding.start());
-    Assert.assertEquals("dec21 )", this.dec21_2003, preceding.end());
+    TimeInterval preceding = TimeInterval.preceding(dec21_2003, true, twoDays, true);
+    Assert.assertEquals("[ dec19", dec19_2003, preceding.start());
+    Assert.assertEquals("dec21 )", dec21_2003, preceding.end());
   }
 
   public void testDefaultFromPoints() {
@@ -105,12 +105,12 @@ public class TimeIntervalTest extends TestCase {
              Days include 12:00am at their start, but do not
              include the 12:00am that end them.
     */
-    TimeInterval interval = TimeInterval.over(this.dec20_2003, this.dec22_2003);
-    Assert.assertFalse(interval.includes(this.dec19_2003));
-    Assert.assertTrue(interval.includes(this.dec20_2003));
-    Assert.assertTrue(interval.includes(this.dec21_2003));
-    Assert.assertFalse(interval.includes(this.dec22_2003));
-    Assert.assertFalse(interval.includes(this.dec23_2003));
+    TimeInterval interval = TimeInterval.over(dec20_2003, dec22_2003);
+    Assert.assertFalse(interval.includes(dec19_2003));
+    Assert.assertTrue(interval.includes(dec20_2003));
+    Assert.assertTrue(interval.includes(dec21_2003));
+    Assert.assertFalse(interval.includes(dec22_2003));
+    Assert.assertFalse(interval.includes(dec23_2003));
   }
 
   public void testDefaultFromDuration() {
@@ -119,30 +119,30 @@ public class TimeIntervalTest extends TestCase {
              Days include 12:00am at their start, but do not
              include the 12:00am that end them.
     */
-    TimeInterval interval = TimeInterval.startingFrom(this.dec20_2003, Duration.hours(48));
-    Assert.assertFalse(interval.includes(this.dec19_2003));
-    Assert.assertTrue(interval.includes(this.dec20_2003));
-    Assert.assertTrue(interval.includes(this.dec21_2003));
-    Assert.assertFalse(interval.includes(this.dec22_2003));
-    Assert.assertFalse(interval.includes(this.dec23_2003));
+    TimeInterval interval = TimeInterval.startingFrom(dec20_2003, Duration.hours(48));
+    Assert.assertFalse(interval.includes(dec19_2003));
+    Assert.assertTrue(interval.includes(dec20_2003));
+    Assert.assertTrue(interval.includes(dec21_2003));
+    Assert.assertFalse(interval.includes(dec22_2003));
+    Assert.assertFalse(interval.includes(dec23_2003));
   }
 
   public void testEverFrom() {
-    TimeInterval afterDec20 = TimeInterval.everFrom(this.dec20_2003);
+    TimeInterval afterDec20 = TimeInterval.everFrom(dec20_2003);
     Assert.assertTrue(afterDec20.includes(TimePoint.atMidnightGMT(2062, 3, 5)));
     Assert.assertFalse(afterDec20.includes(TimePoint.atMidnightGMT(1776, 7, 4)));
-    Assert.assertTrue(afterDec20.includes(this.dec20_2003));
+    Assert.assertTrue(afterDec20.includes(dec20_2003));
   }
 
   public void testEverUntil() {
-    TimeInterval afterDec20 = TimeInterval.everPreceding(this.dec20_2003);
+    TimeInterval afterDec20 = TimeInterval.everPreceding(dec20_2003);
     Assert.assertFalse(afterDec20.includes(TimePoint.atMidnightGMT(2062, 3, 5)));
     Assert.assertTrue(afterDec20.includes(TimePoint.atMidnightGMT(1776, 7, 4)));
-    Assert.assertFalse(afterDec20.includes(this.dec20_2003));
+    Assert.assertFalse(afterDec20.includes(dec20_2003));
   }
 
   public void testLength() {
-    TimeInterval interval = TimeInterval.open(this.dec20_2003, this.dec22_2003);
+    TimeInterval interval = TimeInterval.open(dec20_2003, dec22_2003);
     Assert.assertEquals(Duration.days(2), interval.length());
 
     TimePoint first = TimePoint.atGMT(2004, 1, 1, 1, 1, 1, 1);
@@ -205,15 +205,15 @@ public class TimeIntervalTest extends TestCase {
   }
 
   public void testIntersection() {
-    TimeInterval i19_22 = TimeInterval.over(this.dec19_2003, this.dec22_2003);
-    TimeInterval i20_23 = TimeInterval.over(this.dec20_2003, this.dec23_2003);
+    TimeInterval i19_22 = TimeInterval.over(dec19_2003, dec22_2003);
+    TimeInterval i20_23 = TimeInterval.over(dec20_2003, dec23_2003);
     TimeInterval intersection = i19_22.intersect(i20_23);
-    Assert.assertEquals(this.dec20_2003, intersection.start());
-    Assert.assertEquals(this.dec22_2003, intersection.end());
+    Assert.assertEquals(dec20_2003, intersection.start());
+    Assert.assertEquals(dec22_2003, intersection.end());
     Assert.assertTrue("intersects true", i19_22.intersects(i20_23));
 
-    TimeInterval i19_21 = TimeInterval.over(this.dec19_2003, this.dec21_2003);
-    TimeInterval i22_23 = TimeInterval.over(this.dec22_2003, this.dec23_2003);
+    TimeInterval i19_21 = TimeInterval.over(dec19_2003, dec21_2003);
+    TimeInterval i22_23 = TimeInterval.over(dec22_2003, dec23_2003);
     Assert.assertFalse("intersects false", i19_21.intersects(i22_23));
   }
 

@@ -25,38 +25,38 @@ public class TimeRate {
   }
 
   public BigDecimal over(Duration duration) {
-    return this.over(duration, BigDecimal.ROUND_UNNECESSARY);
+    return over(duration, BigDecimal.ROUND_UNNECESSARY);
   }
 
   public BigDecimal over(Duration duration, int roundRule) {
-    return this.over(duration, this.scale(), roundRule);
+    return over(duration, scale(), roundRule);
   }
 
   public BigDecimal over(Duration duration, int scale, int roundRule) {
-    return duration.dividedBy(this.unit).times(this.quantity).decimalValue(scale, roundRule);
+    return duration.dividedBy(unit).times(quantity).decimalValue(scale, roundRule);
   }
 
   public boolean equals(Object another) {
     try {
-      return this.equals((TimeRate) another);
+      return equals((TimeRate) another);
     } catch (ClassCastException ex) {
       return false;
     }
   }
 
   public boolean equals(TimeRate another) {
-    return another != null && this.quantity.equals(another.quantity) && this.unit.equals(another.unit);
+    return another != null && quantity.equals(another.quantity) && unit.equals(another.unit);
   }
 
   public int scale() {
-    return this.quantity.scale();
+    return quantity.scale();
   }
 
   public String toString() {
     StringBuffer buffer = new StringBuffer();
-    buffer.append(this.quantity);
+    buffer.append(quantity);
     buffer.append(" per ");
-    buffer.append(this.unit);
+    buffer.append(unit);
     return buffer.toString();
   }
 }

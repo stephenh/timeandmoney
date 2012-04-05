@@ -57,7 +57,7 @@ public class TimePoint implements Comparable<TimePoint>, Serializable {
 
   private static int convertedTo24hour(int hour, String am_pm) {
     int translatedAmPm = "AM".equalsIgnoreCase(am_pm) ? 0 : 12;
-    translatedAmPm -= (hour == 12) ? 12 : 0;
+    translatedAmPm -= hour == 12 ? 12 : 0;
     return hour + translatedAmPm;
   }
 
@@ -101,22 +101,24 @@ public class TimePoint implements Comparable<TimePoint>, Serializable {
   }
 
   private TimePoint(long milliseconds) {
-    this.millisecondsFromEpoc = milliseconds;
+    millisecondsFromEpoc = milliseconds;
   }
 
   // BEHAVIORAL METHODS
+  @Override
   public boolean equals(Object other) {
     return
     //revisit: maybe use: Reflection.equalsOverClassAndNull(this, other)
-    (other instanceof TimePoint) && ((TimePoint) other).millisecondsFromEpoc == this.millisecondsFromEpoc;
+    other instanceof TimePoint && ((TimePoint) other).millisecondsFromEpoc == millisecondsFromEpoc;
   }
 
+  @Override
   public int hashCode() {
-    return (int) this.millisecondsFromEpoc;
+    return (int) millisecondsFromEpoc;
   }
 
   public TimePoint backToMidnight(TimeZone zone) {
-    return this.calendarDate(zone).asTimeInterval(zone).start();
+    return calendarDate(zone).asTimeInterval(zone).start();
   }
 
   public CalendarDate calendarDate(TimeZone zone) {
@@ -124,54 +126,55 @@ public class TimePoint implements Comparable<TimePoint>, Serializable {
   }
 
   public boolean isSameDayAs(TimePoint other, TimeZone zone) {
-    return this.calendarDate(zone).equals(other.calendarDate(zone));
+    return calendarDate(zone).equals(other.calendarDate(zone));
   }
 
+  @Override
   public String toString() {
-    return this.asJavaUtilDate().toString(); //for better readability
-    //return String.valueOf(millisecondsFromEpoc);
+    return asJavaUtilDate().toString(); //for better readability
   }
 
   public String toString(String pattern, TimeZone zone) {
     DateFormat format = new SimpleDateFormat(pattern);
     format.setTimeZone(zone);
-    return format.format(this.asJavaUtilDate());
+    return format.format(asJavaUtilDate());
   }
 
   public boolean isBefore(TimePoint other) {
-    return this.millisecondsFromEpoc < other.millisecondsFromEpoc;
+    return millisecondsFromEpoc < other.millisecondsFromEpoc;
   }
 
   public boolean isAfter(TimePoint other) {
-    return this.millisecondsFromEpoc > other.millisecondsFromEpoc;
+    return millisecondsFromEpoc > other.millisecondsFromEpoc;
   }
 
+  @Override
   public int compareTo(TimePoint otherPoint) {
-    if (this.isBefore(otherPoint)) {
+    if (isBefore(otherPoint)) {
       return -1;
     }
-    if (this.isAfter(otherPoint)) {
+    if (isAfter(otherPoint)) {
       return 1;
     }
     return 0;
   }
 
   public TimePoint nextDay() {
-    return this.plus(Duration.days(1));
+    return plus(Duration.days(1));
   }
 
   public Date asJavaUtilDate() {
-    return new Date(this.millisecondsFromEpoc);
+    return new Date(millisecondsFromEpoc);
   }
 
   public Calendar asJavaCalendar(TimeZone zone) {
     Calendar result = Calendar.getInstance(zone);
-    result.setTime(this.asJavaUtilDate());
+    result.setTime(asJavaUtilDate());
     return result;
   }
 
   public Calendar asJavaCalendar() {
-    return this.asJavaCalendar(TimePoint.GMT);
+    return asJavaCalendar(TimePoint.GMT);
   }
 
   // CONVENIENCE METHODS

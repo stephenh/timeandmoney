@@ -23,16 +23,16 @@ public class BusinessCalendar {
   }
 
   public BusinessCalendar() {
-    this.holidays = BusinessCalendar.defaultHolidays();
+    holidays = BusinessCalendar.defaultHolidays();
   }
 
   public void addHolidays(Set<CalendarDate> days) {
-    this.holidays.addAll(days);
+    holidays.addAll(days);
   }
 
   public int getElapsedBusinessDays(CalendarInterval interval) {
     int tally = 0;
-    Iterator<CalendarDate> iterator = this.businessDaysOnly(interval.daysIterator());
+    Iterator<CalendarDate> iterator = businessDaysOnly(interval.daysIterator());
     while (iterator.hasNext()) {
       iterator.next();
       tally += 1;
@@ -44,15 +44,15 @@ public class BusinessCalendar {
    * @deprecated
    */
   public CalendarDate nearestBusinessDay(CalendarDate day) {
-    if (this.isBusinessDay(day)) {
+    if (isBusinessDay(day)) {
       return day;
     } else {
-      return this.nextBusinessDay(day);
+      return nextBusinessDay(day);
     }
   }
 
   public boolean isHoliday(CalendarDate day) {
-    return this.holidays.contains(day);
+    return holidays.contains(day);
   }
 
   public boolean isWeekend(CalendarDate day) {
@@ -61,23 +61,23 @@ public class BusinessCalendar {
   }
 
   public boolean isBusinessDay(CalendarDate day) {
-    return !this.isWeekend(day) && !this.isHoliday(day);
+    return !isWeekend(day) && !isHoliday(day);
   }
 
   public Iterator<CalendarDate> businessDaysOnly(final Iterator<CalendarDate> calendarDays) {
     return new ImmutableIterator<CalendarDate>() {
       CalendarDate lookAhead = null;
       {
-        this.next();
+        next();
       }
 
       public boolean hasNext() {
-        return this.lookAhead != null;
+        return lookAhead != null;
       }
 
       public CalendarDate next() {
-        CalendarDate next = this.lookAhead;
-        this.lookAhead = this.nextBusinessDate();
+        CalendarDate next = lookAhead;
+        lookAhead = nextBusinessDate();
         return next;
       }
 
@@ -96,7 +96,7 @@ public class BusinessCalendar {
       throw new IllegalArgumentException("Negative numberOfDays not supported");
     }
     Iterator<CalendarDate> iterator = CalendarInterval.everFrom(startDate).daysIterator();
-    return this.nextNumberOfBusinessDays(numberOfDays, iterator);
+    return nextNumberOfBusinessDays(numberOfDays, iterator);
   }
 
   public CalendarDate minusBusinessDays(CalendarDate startDate, int numberOfDays) {
@@ -104,11 +104,11 @@ public class BusinessCalendar {
       throw new IllegalArgumentException("Negative numberOfDays not supported");
     }
     Iterator<CalendarDate> iterator = CalendarInterval.everPreceding(startDate).daysInReverseIterator();
-    return this.nextNumberOfBusinessDays(numberOfDays, iterator);
+    return nextNumberOfBusinessDays(numberOfDays, iterator);
   }
 
   private CalendarDate nextNumberOfBusinessDays(int numberOfDays, Iterator<CalendarDate> calendarDays) {
-    Iterator<CalendarDate> businessDays = this.businessDaysOnly(calendarDays);
+    Iterator<CalendarDate> businessDays = businessDaysOnly(calendarDays);
     CalendarDate result = null;
     for (int i = 0; i <= numberOfDays; i++) {
       result = businessDays.next();
@@ -117,10 +117,10 @@ public class BusinessCalendar {
   }
 
   public CalendarDate nextBusinessDay(CalendarDate startDate) {
-    if (this.isBusinessDay(startDate)) {
-      return this.plusBusinessDays(startDate, 1);
+    if (isBusinessDay(startDate)) {
+      return plusBusinessDays(startDate, 1);
     } else {
-      return this.plusBusinessDays(startDate, 0);
+      return plusBusinessDays(startDate, 0);
     }
   }
 

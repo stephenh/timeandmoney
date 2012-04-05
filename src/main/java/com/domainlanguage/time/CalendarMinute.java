@@ -20,35 +20,37 @@ public class CalendarMinute {
   }
 
   private CalendarMinute(CalendarDate date, TimeOfDay time) {
-    super();
     this.date = date;
     this.time = time;
   }
 
+  @Override
   public String toString() {
-    return this.date.toString() + " at " + this.time.toString();
+    return date.toString() + " at " + time.toString();
   }
 
+  @Override
   public boolean equals(Object anotherObject) {
     if (!(anotherObject instanceof CalendarMinute)) {
       return false;
     }
-    return this.equals((CalendarMinute) anotherObject);
+    return equals((CalendarMinute) anotherObject);
   }
 
   public boolean equals(CalendarMinute another) {
     if (another == null) {
       return false;
     }
-    return this.date.equals(another.date) && this.time.equals(another.time);
+    return date.equals(another.date) && time.equals(another.time);
   }
 
+  @Override
   public int hashCode() {
-    return this.date.hashCode() ^ this.time.hashCode();
+    return date.hashCode() ^ time.hashCode();
   }
 
   public TimePoint asTimePoint(TimeZone timeZone) {
-    return TimePoint.at(this.date.getYear(), this.date.getMonth(), this.date.getDay(), this.time.getHour(), this.time.getMinute(), 0, 0, timeZone);
+    return TimePoint.at(date.getYear(), date.getMonth(), date.getDay(), time.getHour(), time.getMinute(), 0, 0, timeZone);
   }
 
 }

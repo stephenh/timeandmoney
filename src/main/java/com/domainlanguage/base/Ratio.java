@@ -45,38 +45,38 @@ public class Ratio {
   }
 
   public BigDecimal decimalValue(int scale, int roundingRule) {
-    return this.numerator.divide(this.denominator, scale, roundingRule);
+    return numerator.divide(denominator, scale, roundingRule);
   }
 
   public Ratio times(BigDecimal multiplier) {
-    return Ratio.of(this.numerator.multiply(multiplier), this.denominator);
+    return Ratio.of(numerator.multiply(multiplier), denominator);
   }
 
   public Ratio times(Ratio multiplier) {
-    return Ratio.of(this.numerator.multiply(multiplier.numerator), this.denominator.multiply(multiplier.denominator));
+    return Ratio.of(numerator.multiply(multiplier.numerator), denominator.multiply(multiplier.denominator));
   }
 
   public boolean isMultipleOfDenominator(BigDecimal other) {
-    return other.remainder(this.denominator).unscaledValue().intValue() == 0;
+    return other.remainder(denominator).unscaledValue().intValue() == 0;
   }
 
   @Override
   public boolean equals(Object anObject) {
     if (anObject instanceof Ratio) {
       Ratio other = (Ratio) anObject;
-      return this.numerator.equals(other.numerator) && this.denominator.equals(other.denominator);
+      return numerator.equals(other.numerator) && denominator.equals(other.denominator);
     }
     return false;
   }
 
   @Override
   public String toString() {
-    return this.numerator.toString() + "/" + this.denominator;
+    return numerator.toString() + "/" + denominator;
   }
 
   @Override
   public int hashCode() {
-    return this.numerator.hashCode();
+    return numerator.hashCode();
   }
 
 }

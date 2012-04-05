@@ -42,87 +42,87 @@ public class TimeOfDayTest extends TestCase {
 
   public void testOnStartOfDay() {
     CalendarMinute feb17AtStartOfDay = CalendarMinute.dateHourAndMinute(2006, 2, 17, 0, 0);
-    Assert.assertEquals(feb17AtStartOfDay, this.midnight.on(this.feb17));
+    Assert.assertEquals(feb17AtStartOfDay, midnight.on(feb17));
   }
 
   public void testOnMiddleOfDay() {
     CalendarMinute feb17AtMiddleOfDay = CalendarMinute.dateHourAndMinute(2006, 2, 17, 12, 0);
-    Assert.assertEquals(feb17AtMiddleOfDay, this.noon.on(this.feb17));
+    Assert.assertEquals(feb17AtMiddleOfDay, noon.on(feb17));
   }
 
   public void testOnEndOfDay() {
     CalendarMinute feb17AtEndOfDay = CalendarMinute.dateHourAndMinute(2006, 2, 17, 23, 58);
-    Assert.assertEquals(feb17AtEndOfDay, this.twoMinutesBeforeMidnight.on(this.feb17));
+    Assert.assertEquals(feb17AtEndOfDay, twoMinutesBeforeMidnight.on(feb17));
   }
 
   public void testEquals() {
-    Assert.assertEquals(TimeOfDay.hourAndMinute(0, 0), this.midnight);
-    Assert.assertEquals(TimeOfDay.hourAndMinute(10, 20), this.morning);
-    Assert.assertEquals(TimeOfDay.hourAndMinute(12, 0), this.noon);
-    Assert.assertEquals(TimeOfDay.hourAndMinute(15, 40), this.afternoon);
-    Assert.assertEquals(TimeOfDay.hourAndMinute(23, 58), this.twoMinutesBeforeMidnight);
+    Assert.assertEquals(TimeOfDay.hourAndMinute(0, 0), midnight);
+    Assert.assertEquals(TimeOfDay.hourAndMinute(10, 20), morning);
+    Assert.assertEquals(TimeOfDay.hourAndMinute(12, 0), noon);
+    Assert.assertEquals(TimeOfDay.hourAndMinute(15, 40), afternoon);
+    Assert.assertEquals(TimeOfDay.hourAndMinute(23, 58), twoMinutesBeforeMidnight);
   }
 
   public void testHashCode() {
-    Assert.assertEquals(TimeOfDay.hourAndMinute(0, 0).hashCode(), this.midnight.hashCode());
-    Assert.assertEquals(TimeOfDay.hourAndMinute(10, 20).hashCode(), this.morning.hashCode());
-    Assert.assertEquals(TimeOfDay.hourAndMinute(12, 0).hashCode(), this.noon.hashCode());
-    Assert.assertEquals(TimeOfDay.hourAndMinute(15, 40).hashCode(), this.afternoon.hashCode());
-    Assert.assertEquals(TimeOfDay.hourAndMinute(23, 58).hashCode(), this.twoMinutesBeforeMidnight.hashCode());
+    Assert.assertEquals(TimeOfDay.hourAndMinute(0, 0).hashCode(), midnight.hashCode());
+    Assert.assertEquals(TimeOfDay.hourAndMinute(10, 20).hashCode(), morning.hashCode());
+    Assert.assertEquals(TimeOfDay.hourAndMinute(12, 0).hashCode(), noon.hashCode());
+    Assert.assertEquals(TimeOfDay.hourAndMinute(15, 40).hashCode(), afternoon.hashCode());
+    Assert.assertEquals(TimeOfDay.hourAndMinute(23, 58).hashCode(), twoMinutesBeforeMidnight.hashCode());
   }
 
   public void testAfterWithEarlierTimeOfDay() {
-    Assert.assertTrue("expected twoMinutesBeforeMidnight to be after midnight", this.twoMinutesBeforeMidnight.isAfter(this.midnight));
-    Assert.assertTrue("expected afternoon to be after morning", this.afternoon.isAfter(this.morning));
-    Assert.assertTrue("expected noon to be after midnight", this.noon.isAfter(this.midnight));
+    Assert.assertTrue("expected twoMinutesBeforeMidnight to be after midnight", twoMinutesBeforeMidnight.isAfter(midnight));
+    Assert.assertTrue("expected afternoon to be after morning", afternoon.isAfter(morning));
+    Assert.assertTrue("expected noon to be after midnight", noon.isAfter(midnight));
   }
 
   public void testAfterWithLaterTimeOfDay() {
-    Assert.assertFalse("expected midnight not after twoMinutesBeforeMidnight", this.midnight.isAfter(this.twoMinutesBeforeMidnight));
-    Assert.assertFalse("expected morning not after afternoon", this.morning.isAfter(this.afternoon));
-    Assert.assertFalse("expected noon not after twoMinutesBeforeMidnight", this.noon.isAfter(this.twoMinutesBeforeMidnight));
+    Assert.assertFalse("expected midnight not after twoMinutesBeforeMidnight", midnight.isAfter(twoMinutesBeforeMidnight));
+    Assert.assertFalse("expected morning not after afternoon", morning.isAfter(afternoon));
+    Assert.assertFalse("expected noon not after twoMinutesBeforeMidnight", noon.isAfter(twoMinutesBeforeMidnight));
   }
 
   public void testAfterWithSameTimeOfDay() {
-    Assert.assertFalse("expected midnight not after midnight", this.midnight.isAfter(this.midnight));
-    Assert.assertFalse("expected morning not after morning", this.morning.isAfter(this.morning));
-    Assert.assertFalse("expected afternoon not after afternoon", this.afternoon.isAfter(this.afternoon));
-    Assert.assertFalse("expected noon not after noon", this.noon.isAfter(this.noon));
+    Assert.assertFalse("expected midnight not after midnight", midnight.isAfter(midnight));
+    Assert.assertFalse("expected morning not after morning", morning.isAfter(morning));
+    Assert.assertFalse("expected afternoon not after afternoon", afternoon.isAfter(afternoon));
+    Assert.assertFalse("expected noon not after noon", noon.isAfter(noon));
   }
 
   public void testBeforeWithEarlierTimeOfDay() {
-    Assert.assertFalse("expected twoMinutesBeforeMidnight not after midnight", this.twoMinutesBeforeMidnight.isBefore(this.midnight));
-    Assert.assertFalse("expected afternoon not after morning", this.afternoon.isBefore(this.morning));
-    Assert.assertFalse("expected noon not after midnight", this.noon.isBefore(this.midnight));
+    Assert.assertFalse("expected twoMinutesBeforeMidnight not after midnight", twoMinutesBeforeMidnight.isBefore(midnight));
+    Assert.assertFalse("expected afternoon not after morning", afternoon.isBefore(morning));
+    Assert.assertFalse("expected noon not after midnight", noon.isBefore(midnight));
   }
 
   public void testBeforeWithLaterTimeOfDay() {
-    Assert.assertTrue("expected midnight not after twoMinutesBeforeMidnight", this.midnight.isBefore(this.twoMinutesBeforeMidnight));
-    Assert.assertTrue("expected morning not after afternoon", this.morning.isBefore(this.afternoon));
-    Assert.assertTrue("expected noon not after twoMinutesBeforeMidnight", this.noon.isBefore(this.twoMinutesBeforeMidnight));
+    Assert.assertTrue("expected midnight not after twoMinutesBeforeMidnight", midnight.isBefore(twoMinutesBeforeMidnight));
+    Assert.assertTrue("expected morning not after afternoon", morning.isBefore(afternoon));
+    Assert.assertTrue("expected noon not after twoMinutesBeforeMidnight", noon.isBefore(twoMinutesBeforeMidnight));
   }
 
   public void testBeforeWithSameTimeOfDay() {
-    Assert.assertFalse("expected midnight not after midnight", this.midnight.isBefore(this.midnight));
-    Assert.assertFalse("expected morning not after morning", this.morning.isBefore(this.morning));
-    Assert.assertFalse("expected afternoon not after afternoon", this.afternoon.isBefore(this.afternoon));
-    Assert.assertFalse("expected noon not after noon", this.noon.isBefore(this.noon));
+    Assert.assertFalse("expected midnight not after midnight", midnight.isBefore(midnight));
+    Assert.assertFalse("expected morning not after morning", morning.isBefore(morning));
+    Assert.assertFalse("expected afternoon not after afternoon", afternoon.isBefore(afternoon));
+    Assert.assertFalse("expected noon not after noon", noon.isBefore(noon));
   }
 
   public void testGetHour() {
-    Assert.assertEquals(0, this.midnight.getHour());
-    Assert.assertEquals(10, this.morning.getHour());
-    Assert.assertEquals(12, this.noon.getHour());
-    Assert.assertEquals(15, this.afternoon.getHour());
-    Assert.assertEquals(23, this.twoMinutesBeforeMidnight.getHour());
+    Assert.assertEquals(0, midnight.getHour());
+    Assert.assertEquals(10, morning.getHour());
+    Assert.assertEquals(12, noon.getHour());
+    Assert.assertEquals(15, afternoon.getHour());
+    Assert.assertEquals(23, twoMinutesBeforeMidnight.getHour());
   }
 
   public void testGetMinute() {
-    Assert.assertEquals(0, this.midnight.getMinute());
-    Assert.assertEquals(20, this.morning.getMinute());
-    Assert.assertEquals(0, this.noon.getMinute());
-    Assert.assertEquals(40, this.afternoon.getMinute());
-    Assert.assertEquals(58, this.twoMinutesBeforeMidnight.getMinute());
+    Assert.assertEquals(0, midnight.getMinute());
+    Assert.assertEquals(20, morning.getMinute());
+    Assert.assertEquals(0, noon.getMinute());
+    Assert.assertEquals(40, afternoon.getMinute());
+    Assert.assertEquals(58, twoMinutesBeforeMidnight.getMinute());
   }
 
   public void testAsTimePoint() {

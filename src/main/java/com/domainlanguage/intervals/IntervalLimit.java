@@ -9,13 +9,10 @@ import java.io.Serializable;
 
 class IntervalLimit<T extends Comparable<T>> implements Comparable<IntervalLimit<T>>, Serializable {
 
-  /**
-   * 
-   */
   private static final long serialVersionUID = 1L;
   private final boolean closed;
-  private final T value;
   private final boolean lower;
+  private final T value;
 
   static <T extends Comparable<T>> IntervalLimit<T> upper(boolean closed, T value) {
     return new IntervalLimit<T>(closed, false, value);
@@ -32,36 +29,37 @@ class IntervalLimit<T extends Comparable<T>> implements Comparable<IntervalLimit
   }
 
   boolean isLower() {
-    return this.lower;
+    return lower;
   }
 
   boolean isUpper() {
-    return !this.lower;
+    return !lower;
   }
 
   boolean isClosed() {
-    return this.closed;
+    return closed;
   }
 
   boolean isOpen() {
-    return !this.closed;
+    return !closed;
   }
 
   T getValue() {
-    return this.value;
+    return value;
   }
 
+  @Override
   public int compareTo(IntervalLimit<T> other) {
     T otherValue = other.value;
-    if (otherValue == this.value) {
+    if (otherValue == value) {
       return 0;
     }
-    if (this.value == null) {
-      return this.lower ? -1 : 1;
+    if (value == null) {
+      return lower ? -1 : 1;
     }
     if (otherValue == null) {
       return other.lower ? 1 : -1;
     }
-    return this.value.compareTo(otherValue);
+    return value.compareTo(otherValue);
   }
 }

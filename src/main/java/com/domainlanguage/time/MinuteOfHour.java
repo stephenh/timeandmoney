@@ -16,37 +16,37 @@ public class MinuteOfHour {
     if (initial < 0 || initial > 59) {
       throw new IllegalArgumentException("Illegal value for minute: " + initial + ", please use a value between 0 and 59");
     }
-    this.value = initial;
+    value = initial;
   }
 
   public boolean equals(Object another) {
     if (!(another instanceof MinuteOfHour)) {
       return false;
     }
-    return this.equals((MinuteOfHour) another);
+    return equals((MinuteOfHour) another);
   }
 
   public boolean equals(MinuteOfHour another) {
-    return this.value == another.value;
+    return value == another.value;
   }
 
   public int hashCode() {
-    return this.value;
+    return value;
   }
 
   public boolean isAfter(MinuteOfHour another) {
-    return this.value > another.value;
+    return value > another.value;
   }
 
   public boolean isBefore(MinuteOfHour another) {
-    return this.value < another.value;
+    return value < another.value;
   }
 
   public int value() {
-    return this.value;
+    return value;
   }
 
   public String toString() {
-    return String.valueOf(this.value);
+    return String.valueOf(value);
   }
 }

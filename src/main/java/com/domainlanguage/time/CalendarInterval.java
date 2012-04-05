@@ -15,14 +15,7 @@ import com.domainlanguage.util.ImmutableIterator;
 
 public abstract class CalendarInterval extends Interval<CalendarDate> implements Iterable<CalendarDate> {
 
-  /**
-   * 
-   */
   private static final long serialVersionUID = 1L;
-
-  protected CalendarInterval(CalendarDate lower, boolean isLowerClosed, CalendarDate upper, boolean isUpperClosed) {
-    super(lower, isLowerClosed, upper, isUpperClosed);
-  }
 
   public static CalendarInterval inclusive(CalendarDate start, CalendarDate end) {
     return ConcreteCalendarInterval.from(start, end);
@@ -59,6 +52,10 @@ public abstract class CalendarInterval extends Interval<CalendarDate> implements
     return CalendarInterval.inclusive(null, endDate);
   }
 
+  protected CalendarInterval(CalendarDate lower, boolean isLowerClosed, CalendarDate upper, boolean isUpperClosed) {
+    super(lower, isLowerClosed, upper, isUpperClosed);
+  }
+
   public abstract TimeInterval asTimeInterval(TimeZone zone);
 
   @Override
@@ -68,20 +65,22 @@ public abstract class CalendarInterval extends Interval<CalendarDate> implements
     return CalendarInterval.inclusive(includedLower, includedUpper);
   }
 
+  @Override
   public boolean includesLowerLimit() {
     return true;
   }
 
+  @Override
   public boolean includesUpperLimit() {
     return true;
   }
 
   public CalendarDate start() {
-    return this.lowerLimit();
+    return lowerLimit();
   }
 
   public CalendarDate end() {
-    return this.upperLimit();
+    return upperLimit();
   }
 
   public boolean equals(Object object) {
@@ -93,37 +92,37 @@ public abstract class CalendarInterval extends Interval<CalendarDate> implements
   }
 
   public boolean equals(CalendarInterval other) {
-    boolean lowerEquals = (!this.hasLowerLimit() && !other.hasLowerLimit()) || (this.hasLowerLimit() && this.lowerLimit().equals(other.lowerLimit()));
-    boolean upperEquals = (!this.hasUpperLimit() && !other.hasUpperLimit()) || (this.hasUpperLimit() && this.upperLimit().equals(other.upperLimit()));
+    boolean lowerEquals = !hasLowerLimit() && !other.hasLowerLimit() || hasLowerLimit() && lowerLimit().equals(other.lowerLimit());
+    boolean upperEquals = !hasUpperLimit() && !other.hasUpperLimit() || hasUpperLimit() && upperLimit().equals(other.upperLimit());
     return lowerEquals && upperEquals;
   }
 
   public int hashCode() {
     int code = 27;
-    code *= (this.lowerLimit() != null) ? this.lowerLimit().hashCode() : 27;
-    code *= (this.upperLimit() != null) ? this.upperLimit().hashCode() : 27;
+    code *= lowerLimit() != null ? lowerLimit().hashCode() : 27;
+    code *= upperLimit() != null ? upperLimit().hashCode() : 27;
     return code;
   }
 
   public Duration length() {
-    return Duration.days(this.lengthInDaysInt());
+    return Duration.days(lengthInDaysInt());
   }
 
   public Duration lengthInMonths() {
-    return Duration.months(this.lengthInMonthsInt());
+    return Duration.months(lengthInMonthsInt());
   }
 
   public int lengthInMonthsInt() {
-    Calendar calStart = this.start().asJavaCalendarUniversalZoneMidnight();
-    Calendar calEnd = this.end().plusDays(1).asJavaCalendarUniversalZoneMidnight();
+    Calendar calStart = start().asJavaCalendarUniversalZoneMidnight();
+    Calendar calEnd = end().plusDays(1).asJavaCalendarUniversalZoneMidnight();
     int yearDiff = calEnd.get(Calendar.YEAR) - calStart.get(Calendar.YEAR);
     int monthDiff = yearDiff * 12 + calEnd.get(Calendar.MONTH) - calStart.get(Calendar.MONTH);
     return monthDiff;
   }
 
   public int lengthInDaysInt() {
-    Calendar calStart = this.start().asJavaCalendarUniversalZoneMidnight();
-    Calendar calEnd = this.end().plusDays(1).asJavaCalendarUniversalZoneMidnight();
+    Calendar calStart = start().asJavaCalendarUniversalZoneMidnight();
+    Calendar calEnd = end().plusDays(1).asJavaCalendarUniversalZoneMidnight();
     long diffMillis = calEnd.getTimeInMillis() - calStart.getTimeInMillis();
     return (int) (diffMillis / TimeUnitConversionFactors.millisecondsPerDay);
   }
@@ -141,15 +140,15 @@ public abstract class CalendarInterval extends Interval<CalendarDate> implements
       CalendarInterval next = segmentLength.startingFrom(CalendarInterval.this.start());
 
       public boolean hasNext() {
-        return totalInterval.covers(this.next);
+        return totalInterval.covers(next);
       }
 
       public CalendarInterval next() {
-        if (!this.hasNext()) {
+        if (!hasNext()) {
           return null;
         }
-        CalendarInterval current = this.next;
-        this.next = segmentLength.startingFrom(this.next.end().plusDays(1));
+        CalendarInterval current = next;
+        next = segmentLength.startingFrom(next.end().plusDays(1));
         return current;
       }
     };
@@ -157,47 +156,47 @@ public abstract class CalendarInterval extends Interval<CalendarDate> implements
 
   @Override
   public Iterator<CalendarDate> iterator() {
-    return this.daysIterator();
+    return daysIterator();
   }
 
   public Iterator<CalendarDate> daysIterator() {
-    final CalendarDate start = this.lowerLimit();
-    final CalendarDate end = this.upperLimit();
+    final CalendarDate start = lowerLimit();
+    final CalendarDate end = upperLimit();
     return new ImmutableIterator<CalendarDate>() {
       CalendarDate next = start;
 
       public boolean hasNext() {
-        return !this.next.isAfter(end);
+        return !next.isAfter(end);
       }
 
       public CalendarDate next() {
-        CalendarDate current = this.next;
-        this.next = this.next.plusDays(1);
+        CalendarDate current = next;
+        next = next.plusDays(1);
         return current;
       }
     };
   }
 
   public Iterator<CalendarDate> daysInReverseIterator() {
-    final CalendarDate start = this.upperLimit();
-    final CalendarDate end = this.lowerLimit();
+    final CalendarDate start = upperLimit();
+    final CalendarDate end = lowerLimit();
     return new ImmutableIterator<CalendarDate>() {
       CalendarDate next = start;
 
       public boolean hasNext() {
-        return !this.next.isBefore(end);
+        return !next.isBefore(end);
       }
 
       public CalendarDate next() {
-        CalendarDate current = this.next;
-        this.next = this.next.plusDays(-1);
+        CalendarDate current = next;
+        next = next.plusDays(-1);
         return current;
       }
     };
   }
 
   public boolean expires(CalendarInterval other) {
-    return this.start().equals(other.start()) && !other.hasUpperLimit() && this.hasUpperLimit();
+    return start().equals(other.start()) && !other.hasUpperLimit() && hasUpperLimit();
   }
 
 }

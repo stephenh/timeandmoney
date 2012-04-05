@@ -77,13 +77,13 @@ public class CalendarDate implements Comparable<CalendarDate>, Serializable {
 
   @Override
   public String toString() {
-    return this.toString("yyyy-M-d"); //default for console
+    return toString("yyyy-M-d"); //default for console
   }
 
   public String toString(String pattern) {
     TimeZone arbitraryZone = TimeZone.getTimeZone("Universal");
     //Any timezone works, as long as the same one is used throughout.
-    TimePoint point = this.startAsTimePoint(arbitraryZone);
+    TimePoint point = startAsTimePoint(arbitraryZone);
     return point.toString(pattern, arbitraryZone);
   }
 
@@ -91,34 +91,34 @@ public class CalendarDate implements Comparable<CalendarDate>, Serializable {
     if (other == null) {
       return false;
     }
-    if (this.year < other.year) {
+    if (year < other.year) {
       return true;
     }
-    if (this.year > other.year) {
+    if (year > other.year) {
       return false;
     }
-    if (this.month < other.month) {
+    if (month < other.month) {
       return true;
     }
-    if (this.month > other.month) {
+    if (month > other.month) {
       return false;
     }
-    return this.day < other.day;
+    return day < other.day;
   }
 
   public boolean isAfter(CalendarDate other) {
     if (other == null) {
       return false;
     }
-    return !this.isBefore(other) && !this.equals(other);
+    return !isBefore(other) && !equals(other);
   }
 
   public boolean isOnOrBefore(CalendarDate other) {
-    return !this.isAfter(other);
+    return !isAfter(other);
   }
 
   public boolean isOnOrAfter(CalendarDate other) {
-    return !this.isBefore(other);
+    return !isBefore(other);
   }
 
   public boolean in(CalendarInterval interval) {
@@ -134,10 +134,10 @@ public class CalendarDate implements Comparable<CalendarDate>, Serializable {
     if (other == null) {
       return -1;
     }
-    if (this.isBefore(other)) {
+    if (isBefore(other)) {
       return -1;
     }
-    if (this.isAfter(other)) {
+    if (isAfter(other)) {
       return 1;
     }
     return 0;
@@ -146,19 +146,19 @@ public class CalendarDate implements Comparable<CalendarDate>, Serializable {
   @Override
   public boolean equals(Object object) {
     try {
-      return this.equals((CalendarDate) object);
+      return equals((CalendarDate) object);
     } catch (ClassCastException ex) {
       return false;
     }
   }
 
   public boolean equals(CalendarDate other) {
-    return other != null && this.year == other.year && this.month == other.month && this.day == other.day;
+    return other != null && year == other.year && month == other.month && day == other.day;
   }
 
   @Override
   public int hashCode() {
-    return this.year * this.month * this.day;
+    return year * month * day;
   }
 
   public CalendarDate start() {
@@ -170,11 +170,11 @@ public class CalendarDate implements Comparable<CalendarDate>, Serializable {
   }
 
   public CalendarDate nextDay() {
-    return this.plusDays(1);
+    return plusDays(1);
   }
 
   public CalendarDate previousDay() {
-    return this.plusDays(-1);
+    return plusDays(-1);
   }
 
   /**
@@ -182,7 +182,7 @@ public class CalendarDate implements Comparable<CalendarDate>, Serializable {
    * Use calendarDate.month().start() instead.
    */
   public CalendarDate firstOfMonth() {
-    return this.month().start();
+    return month().start();
   }
 
   /**
@@ -190,19 +190,19 @@ public class CalendarDate implements Comparable<CalendarDate>, Serializable {
    * Use calendarDate.month().end() instead.
    */
   public CalendarDate lastOfMonth() {
-    return this.month().end();
+    return month().end();
   }
 
   public CalendarInterval month() {
-    return CalendarInterval.month(this.year, this.month);
+    return CalendarInterval.month(year, month);
   }
 
   public CalendarInterval year() {
-    return CalendarInterval.year(this.year);
+    return CalendarInterval.year(year);
   }
 
   public CalendarDate plusDays(int increment) {
-    Calendar calendar = this.asJavaCalendarUniversalZoneMidnight();
+    Calendar calendar = asJavaCalendarUniversalZoneMidnight();
     calendar.add(Calendar.DATE, increment);
     int year = calendar.get(Calendar.YEAR);
     int month = calendar.get(Calendar.MONTH) + 1;
@@ -211,7 +211,7 @@ public class CalendarDate implements Comparable<CalendarDate>, Serializable {
   }
 
   public CalendarDate plusMonths(int increment) {
-    Calendar calendar = this.asJavaCalendarUniversalZoneMidnight();
+    Calendar calendar = asJavaCalendarUniversalZoneMidnight();
     calendar.add(Calendar.MONTH, increment);
     int year = calendar.get(Calendar.YEAR);
     int month = calendar.get(Calendar.MONTH) + 1;
@@ -226,9 +226,9 @@ public class CalendarDate implements Comparable<CalendarDate>, Serializable {
   Calendar asJavaCalendarUniversalZoneMidnight() {
     TimeZone zone = TimeZone.getTimeZone("Universal");
     Calendar calendar = Calendar.getInstance(zone);
-    calendar.set(Calendar.YEAR, this.year);
-    calendar.set(Calendar.MONTH, this.month - 1);
-    calendar.set(Calendar.DATE, this.day);
+    calendar.set(Calendar.YEAR, year);
+    calendar.set(Calendar.MONTH, month - 1);
+    calendar.set(Calendar.DATE, day);
     calendar.set(Calendar.HOUR_OF_DAY, 0);
     calendar.set(Calendar.MINUTE, 0);
     calendar.set(Calendar.SECOND, 0);
@@ -237,11 +237,11 @@ public class CalendarDate implements Comparable<CalendarDate>, Serializable {
   }
 
   public TimeInterval asTimeInterval(TimeZone zone) {
-    return TimeInterval.startingFrom(this.startAsTimePoint(zone), true, Duration.days(1), false);
+    return TimeInterval.startingFrom(startAsTimePoint(zone), true, Duration.days(1), false);
   }
 
   public TimePoint startAsTimePoint(TimeZone zone) {
-    return TimePoint.atMidnight(this.year, this.month, this.day, zone);
+    return TimePoint.atMidnight(year, month, day, zone);
   }
 
   public CalendarInterval through(CalendarDate otherDate) {
@@ -249,49 +249,49 @@ public class CalendarDate implements Comparable<CalendarDate>, Serializable {
   }
 
   public int dayOfWeek() {
-    Calendar calendar = this.asJavaCalendarUniversalZoneMidnight();
+    Calendar calendar = asJavaCalendarUniversalZoneMidnight();
     return calendar.get(Calendar.DAY_OF_WEEK);
   }
 
   public int dayOfMonth() {
-    Calendar calendar = this.asJavaCalendarUniversalZoneMidnight();
+    Calendar calendar = asJavaCalendarUniversalZoneMidnight();
     return calendar.get(Calendar.DAY_OF_MONTH);
   }
 
   public int weekOfMonth() {
-    Calendar calendar = this.asJavaCalendarUniversalZoneMidnight();
+    Calendar calendar = asJavaCalendarUniversalZoneMidnight();
     return calendar.get(Calendar.WEEK_OF_MONTH);
   }
 
   public int weekOfYear() {
-    Calendar calendar = this.asJavaCalendarUniversalZoneMidnight();
+    Calendar calendar = asJavaCalendarUniversalZoneMidnight();
     return calendar.get(Calendar.WEEK_OF_YEAR);
   }
 
   public int occurrenceOfDayInMonth() {
-    Calendar calendar = this.asJavaCalendarUniversalZoneMidnight();
+    Calendar calendar = asJavaCalendarUniversalZoneMidnight();
     return calendar.get(Calendar.DAY_OF_WEEK_IN_MONTH);
   }
 
   public boolean isWeekend() {
-    int dayOfWeek = this.dayOfWeek();
-    return (dayOfWeek == Calendar.SUNDAY || dayOfWeek == Calendar.SATURDAY);
+    int dayOfWeek = dayOfWeek();
+    return dayOfWeek == Calendar.SUNDAY || dayOfWeek == Calendar.SATURDAY;
   }
 
   public boolean isWeekday() {
-    return !this.isWeekend();
+    return !isWeekend();
   }
 
   public int getDay() {
-    return this.day;
+    return day;
   }
 
   public int getMonth() {
-    return this.month;
+    return month;
   }
 
   public int getYear() {
-    return this.year;
+    return year;
   }
 
   public CalendarMinute at(TimeOfDay timeOfDay) {

@@ -16,11 +16,11 @@ public abstract class AnnualDateSpecification extends DateSpecification {
 
   @Override
   public CalendarDate firstOccurrenceIn(CalendarInterval interval) {
-    CalendarDate firstTry = this.ofYear(interval.start().getYear());
+    CalendarDate firstTry = ofYear(interval.start().getYear());
     if (interval.includes(firstTry)) {
       return firstTry;
     }
-    CalendarDate secondTry = this.ofYear(interval.start().getYear() + 1);
+    CalendarDate secondTry = ofYear(interval.start().getYear() + 1);
     if (interval.includes(secondTry)) {
       return secondTry;
     }
@@ -32,21 +32,21 @@ public abstract class AnnualDateSpecification extends DateSpecification {
     final AnnualDateSpecification spec = this;
     return new ImmutableIterator<CalendarDate>() {
       CalendarDate next = AnnualDateSpecification.this.firstOccurrenceIn(interval);
-      int year = this.next.getYear();
+      int year = next.getYear();
 
       public boolean hasNext() {
-        return this.next != null;
+        return next != null;
       }
 
       public CalendarDate next() {
-        if (this.next == null) {
+        if (next == null) {
           return null;
         }
-        CalendarDate current = this.next;
-        this.year += 1;
-        this.next = spec.ofYear(this.year);
-        if (!interval.includes(this.next)) {
-          this.next = null;
+        CalendarDate current = next;
+        year += 1;
+        next = spec.ofYear(year);
+        if (!interval.includes(next)) {
+          next = null;
         }
         return current;
       }

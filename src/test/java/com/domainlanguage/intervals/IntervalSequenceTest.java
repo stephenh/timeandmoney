@@ -24,13 +24,13 @@ public class IntervalSequenceTest extends TestCase {
   public void testIterate() {
     IntervalSequence<Integer> intervalSequence = new IntervalSequence<Integer>();
     Assert.assertTrue(intervalSequence.isEmpty());
-    intervalSequence.add(this.c5_10c);
-    intervalSequence.add(this.o10_12c);
+    intervalSequence.add(c5_10c);
+    intervalSequence.add(o10_12c);
     Iterator<Interval<Integer>> it = intervalSequence.iterator();
     Assert.assertTrue(it.hasNext());
-    Assert.assertEquals(this.c5_10c, it.next());
+    Assert.assertEquals(c5_10c, it.next());
     Assert.assertTrue(it.hasNext());
-    Assert.assertEquals(this.o10_12c, it.next());
+    Assert.assertEquals(o10_12c, it.next());
     Assert.assertFalse(it.hasNext());
     try {
       Assert.assertNull(it.next());
@@ -43,44 +43,44 @@ public class IntervalSequenceTest extends TestCase {
 
   public void testInsertedOutOfOrder() {
     IntervalSequence<Integer> intervalSequence = new IntervalSequence<Integer>();
-    intervalSequence.add(this.o10_12c);
-    intervalSequence.add(this.c5_10c);
+    intervalSequence.add(o10_12c);
+    intervalSequence.add(c5_10c);
     //Iterator behavior should be the same regardless of order of
     // insertion.
     Iterator<Interval<Integer>> it = intervalSequence.iterator();
     Assert.assertTrue(it.hasNext());
-    Assert.assertEquals(this.c5_10c, it.next());
+    Assert.assertEquals(c5_10c, it.next());
     Assert.assertTrue(it.hasNext());
-    Assert.assertEquals(this.o10_12c, it.next());
+    Assert.assertEquals(o10_12c, it.next());
     Assert.assertFalse(it.hasNext());
 
   }
 
   public void testGaps() {
     IntervalSequence<Integer> intervalSequence = new IntervalSequence<Integer>();
-    intervalSequence.add(this.c5_10c);
-    intervalSequence.add(this.o10_12c);
-    intervalSequence.add(this.c20_25c);
-    intervalSequence.add(this.o30_35o);
+    intervalSequence.add(c5_10c);
+    intervalSequence.add(o10_12c);
+    intervalSequence.add(c20_25c);
+    intervalSequence.add(o30_35o);
     IntervalSequence<Integer> gaps = intervalSequence.gaps();
     Iterator<Interval<Integer>> it = gaps.iterator();
     Assert.assertTrue(it.hasNext());
-    Assert.assertEquals(this.o12_20o, it.next());
+    Assert.assertEquals(o12_20o, it.next());
     Assert.assertTrue(it.hasNext());
-    Assert.assertEquals(this.o25_30c, it.next());
+    Assert.assertEquals(o25_30c, it.next());
     Assert.assertFalse(it.hasNext());
 
   }
 
   public void testOverlapping() {
     IntervalSequence<Integer> intervalSequence = new IntervalSequence<Integer>();
-    intervalSequence.add(this.o10_12c);
-    intervalSequence.add(this.o11_20c);
+    intervalSequence.add(o10_12c);
+    intervalSequence.add(o11_20c);
     Iterator<Interval<Integer>> it = intervalSequence.iterator();
     Assert.assertTrue(it.hasNext());
-    Assert.assertEquals(this.o10_12c, it.next());
+    Assert.assertEquals(o10_12c, it.next());
     Assert.assertTrue(it.hasNext());
-    Assert.assertEquals(this.o11_20c, it.next());
+    Assert.assertEquals(o11_20c, it.next());
     Assert.assertFalse(it.hasNext());
   }
 
@@ -101,9 +101,9 @@ public class IntervalSequenceTest extends TestCase {
 
   public void testExtent() {
     IntervalSequence<Integer> intervalSequence = new IntervalSequence<Integer>();
-    intervalSequence.add(this.c5_10c);
-    intervalSequence.add(this.o10_12c);
-    intervalSequence.add(this.c20_25c);
+    intervalSequence.add(c5_10c);
+    intervalSequence.add(o10_12c);
+    intervalSequence.add(c20_25c);
     Assert.assertEquals(Interval.closed(new Integer(5), new Integer(25)), intervalSequence.extent());
   }
 }

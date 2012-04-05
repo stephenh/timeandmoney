@@ -20,15 +20,15 @@ class FloatingDateSpecification extends AnnualDateSpecification {
 
   @Override
   public CalendarDate ofYear(int year) {
-    CalendarDate firstOfMonth = CalendarDate.date(year, this.month, 1);
-    int dayOfWeekOffset = this.dayOfWeek - firstOfMonth.dayOfWeek();
+    CalendarDate firstOfMonth = CalendarDate.date(year, month, 1);
+    int dayOfWeekOffset = dayOfWeek - firstOfMonth.dayOfWeek();
     int dateOfFirstOccurrenceOfDayOfWeek = dayOfWeekOffset + (dayOfWeekOffset < 0 ? 8 : 1);
-    int date = ((this.occurrence - 1) * 7) + dateOfFirstOccurrenceOfDayOfWeek;
-    return CalendarDate.date(year, this.month, date);
+    int date = ((occurrence - 1) * 7) + dateOfFirstOccurrenceOfDayOfWeek;
+    return CalendarDate.date(year, month, date);
   }
 
   @Override
   public boolean isSatisfiedBy(CalendarDate date) {
-    return this.ofYear(date.getYear()).equals(date);
+    return ofYear(date.getYear()).equals(date);
   }
 }

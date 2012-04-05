@@ -18,12 +18,12 @@ class FixedDateSpecification extends AnnualDateSpecification {
 
   @Override
   public CalendarDate ofYear(int year) {
-    return CalendarDate.date(year, this.month, this.day);
+    return CalendarDate.date(year, month, day);
   }
 
   @Override
   public boolean isSatisfiedBy(CalendarDate date) {
-    return this.day == date.getDay() && this.month == date.getMonth();
+    return day == date.getDay() && month == date.getMonth();
   }
 
 }

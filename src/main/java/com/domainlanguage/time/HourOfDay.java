@@ -24,7 +24,7 @@ public class HourOfDay {
       throw new IllegalArgumentException("Illegal value for 12 hour: " + hour + ", please use a value between 0 and 11");
     }
     int translatedAmPm = "AM".equalsIgnoreCase(am_pm) ? 0 : 12;
-    translatedAmPm -= (hour == 12) ? 12 : 0;
+    translatedAmPm -= hour == 12 ? 12 : 0;
     return hour + translatedAmPm;
   }
 
@@ -32,37 +32,37 @@ public class HourOfDay {
     if (initial < 0 || initial > 23) {
       throw new IllegalArgumentException("Illegal value for 24 hour: " + initial + ", please use a value between 0 and 23");
     }
-    this.value = initial;
+    value = initial;
   }
 
   public boolean equals(Object another) {
     if (!(another instanceof HourOfDay)) {
       return false;
     }
-    return this.equals((HourOfDay) another);
+    return equals((HourOfDay) another);
   }
 
   public boolean equals(HourOfDay another) {
-    return this.value == another.value;
+    return value == another.value;
   }
 
   public int hashCode() {
-    return this.value;
+    return value;
   }
 
   public boolean isAfter(HourOfDay another) {
-    return this.value > another.value;
+    return value > another.value;
   }
 
   public boolean isBefore(HourOfDay another) {
-    return this.value < another.value;
+    return value < another.value;
   }
 
   public int value() {
-    return this.value;
+    return value;
   }
 
   public String toString() {
-    return String.valueOf(this.value);
+    return String.valueOf(value);
   }
 }

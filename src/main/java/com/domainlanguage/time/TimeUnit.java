@@ -51,33 +51,33 @@ public class TimeUnit implements Comparable<TimeUnit>, Serializable, TimeUnitCon
   }
 
   TimeUnit baseUnit() {
-    return this.baseType.equals(Type.millisecond) ? TimeUnit.millisecond : TimeUnit.month;
+    return baseType.equals(Type.millisecond) ? TimeUnit.millisecond : TimeUnit.month;
   }
 
   public boolean isConvertibleToMilliseconds() {
-    return this.isConvertibleTo(TimeUnit.millisecond);
+    return isConvertibleTo(TimeUnit.millisecond);
   }
 
   public boolean isConvertibleTo(TimeUnit other) {
-    return this.baseType.equals(other.baseType);
+    return baseType.equals(other.baseType);
   }
 
   @Override
   public int compareTo(TimeUnit other) {
-    if (other.baseType.equals(this.baseType)) {
-      return this.factor - other.factor;
+    if (other.baseType.equals(baseType)) {
+      return factor - other.factor;
     }
-    if (this.baseType.equals(Type.month)) {
+    if (baseType.equals(Type.month)) {
       return 1;
     }
     return -1;
   }
 
   int javaCalendarConstantForBaseType() {
-    if (this.baseType.equals(Type.millisecond)) {
+    if (baseType.equals(Type.millisecond)) {
       return Calendar.MILLISECOND;
     }
-    if (this.baseType.equals(Type.month)) {
+    if (baseType.equals(Type.month)) {
       return Calendar.MONTH;
     }
     return 0;
@@ -85,28 +85,28 @@ public class TimeUnit implements Comparable<TimeUnit>, Serializable, TimeUnitCon
 
   @Override
   public String toString() {
-    return this.type.name;
+    return type.name;
   }
 
   String toString(long quantity) {
     StringBuffer buffer = new StringBuffer();
     buffer.append(quantity);
     buffer.append(" ");
-    buffer.append(this.type.name);
+    buffer.append(type.name);
     buffer.append(quantity == 1 ? "" : "s");
     return buffer.toString();
   }
 
   TimeUnit[] descendingUnits() {
-    return this.isConvertibleToMilliseconds() ? TimeUnit.descendingMillisecondBased : TimeUnit.descendingMonthBased;
+    return isConvertibleToMilliseconds() ? TimeUnit.descendingMillisecondBased : TimeUnit.descendingMonthBased;
   }
 
   TimeUnit[] descendingUnitsForDisplay() {
-    return this.isConvertibleToMilliseconds() ? TimeUnit.descendingMillisecondBasedForDisplay : TimeUnit.descendingMonthBasedForDisplay;
+    return isConvertibleToMilliseconds() ? TimeUnit.descendingMillisecondBasedForDisplay : TimeUnit.descendingMonthBasedForDisplay;
   }
 
   TimeUnit nextFinerUnit() {
-    TimeUnit[] descending = this.descendingUnits();
+    TimeUnit[] descending = descendingUnits();
     int index = -1;
     for (int i = 0; i < descending.length; i++) {
       if (descending[i].equals(this)) {
@@ -126,12 +126,12 @@ public class TimeUnit implements Comparable<TimeUnit>, Serializable, TimeUnitCon
       return false;
     }
     TimeUnit other = (TimeUnit) object;
-    return this.baseType.equals(other.baseType) && this.factor == other.factor && this.type.equals(other.type);
+    return baseType.equals(other.baseType) && factor == other.factor && type.equals(other.type);
   }
 
   @Override
   public int hashCode() {
-    return this.factor + this.baseType.hashCode() + this.type.hashCode();
+    return factor + baseType.hashCode() + type.hashCode();
   }
 
   static class Type implements Serializable {
@@ -157,23 +157,23 @@ public class TimeUnit implements Comparable<TimeUnit>, Serializable, TimeUnitCon
 
     public boolean equals(Object other) {
       try {
-        return this.equals((Type) other);
+        return equals((Type) other);
       } catch (ClassCastException ex) {
         return false;
       }
     }
 
     public boolean equals(Type another) {
-      return another != null && this.name.equals(another.name);
+      return another != null && name.equals(another.name);
     }
 
     public int hashCode() {
-      return this.name.hashCode();
+      return name.hashCode();
     }
   }
 
   int getFactor() {
-    return this.factor;
+    return factor;
   }
 
   static TimeUnit exampleForPersistentMappingTesting() {

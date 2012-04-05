@@ -10,9 +10,6 @@ import java.util.TimeZone;
 
 class ConcreteCalendarInterval extends CalendarInterval {
 
-  /**
-   * 
-   */
   private static final long serialVersionUID = 1L;
 
   static ConcreteCalendarInterval from(CalendarDate start, CalendarDate end) {
@@ -25,8 +22,8 @@ class ConcreteCalendarInterval extends CalendarInterval {
   }
 
   public TimeInterval asTimeInterval(TimeZone zone) {
-    TimePoint startPoint = this.upperLimit().asTimeInterval(zone).start();
-    TimePoint endPoint = this.lowerLimit().asTimeInterval(zone).end();
+    TimePoint startPoint = upperLimit().asTimeInterval(zone).start();
+    TimePoint endPoint = lowerLimit().asTimeInterval(zone).end();
     return TimeInterval.over(startPoint, endPoint);
   }
 

@@ -13,9 +13,6 @@ import com.domainlanguage.util.ImmutableIterator;
 
 public class TimeInterval extends Interval<TimePoint> {
 
-  /**
-   * 
-   */
   private static final long serialVersionUID = 1L;
 
   public static TimeInterval over(TimePoint start, boolean closedStart, TimePoint end, boolean closedEnd) {
@@ -73,15 +70,15 @@ public class TimeInterval extends Interval<TimePoint> {
   }
 
   public boolean isBefore(TimePoint point) {
-    return this.isBelow(point);
+    return isBelow(point);
   }
 
   public boolean isAfter(TimePoint point) {
-    return this.isAbove(point);
+    return isAbove(point);
   }
 
   public Duration length() {
-    long difference = this.end().millisecondsFromEpoc - this.start().millisecondsFromEpoc;
+    long difference = end().millisecondsFromEpoc - start().millisecondsFromEpoc;
     return Duration.milliseconds(difference);
   }
 
@@ -90,12 +87,12 @@ public class TimeInterval extends Interval<TimePoint> {
       TimePoint next = TimeInterval.this.start();
 
       public boolean hasNext() {
-        return TimeInterval.this.end().isAfter(this.next);
+        return TimeInterval.this.end().isAfter(next);
       }
 
       public TimePoint next() {
-        TimePoint current = this.next;
-        this.next = this.next.nextDay();
+        TimePoint current = next;
+        next = next.nextDay();
         return current;
       }
     };
@@ -108,30 +105,29 @@ public class TimeInterval extends Interval<TimePoint> {
       TimeInterval next = segmentLength.startingFrom(TimeInterval.this.start());
 
       public boolean hasNext() {
-        return totalInterval.covers(this.next);
+        return totalInterval.covers(next);
       }
 
       public TimeInterval next() {
-        if (!this.hasNext()) {
+        if (!hasNext()) {
           return null;
         }
-        TimeInterval current = this.next;
-        this.next = segmentLength.startingFrom(this.next.end());
+        TimeInterval current = next;
+        next = segmentLength.startingFrom(next.end());
         return current;
       }
     };
   }
 
   public TimePoint start() {
-    return this.lowerLimit();
+    return lowerLimit();
   }
 
   public TimePoint end() {
-    return this.upperLimit();
+    return upperLimit();
   }
 
   public TimeInterval intersect(TimeInterval interval) {
-    return this.intersect(interval);
+    return (TimeInterval) super.intersect(interval);
   }
-
 }

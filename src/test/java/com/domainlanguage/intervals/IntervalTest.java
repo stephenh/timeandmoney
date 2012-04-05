@@ -72,13 +72,13 @@ public class IntervalTest extends TestCase {
   }
 
   public void testSerialization() {
-    SerializationTester.assertCanBeSerialized(this.c5_10c);
+    SerializationTester.assertCanBeSerialized(c5_10c);
   }
 
   public void testToString() {
-    Assert.assertEquals("[1, 10]", this.c1_10c.toString());
-    Assert.assertEquals("(10, 12]", this.o10_12c.toString());
-    Assert.assertEquals("{}", this.empty.toString());
+    Assert.assertEquals("[1, 10]", c1_10c.toString());
+    Assert.assertEquals("(10, 12]", o10_12c.toString());
+    Assert.assertEquals("{}", empty.toString());
     Assert.assertEquals("{10}", Interval.closed(new Integer(10), new Integer(10)).toString());
   }
 
@@ -116,64 +116,64 @@ public class IntervalTest extends TestCase {
     Assert.assertFalse(Interval.closed(new Integer(5), new Integer(6)).isEmpty());
     Assert.assertFalse(Interval.closed(new Integer(6), new Integer(6)).isEmpty());
     Assert.assertTrue(Interval.open(new Integer(6), new Integer(6)).isEmpty());
-    Assert.assertTrue(this.c1_10c.emptyOfSameType().isEmpty());
+    Assert.assertTrue(c1_10c.emptyOfSameType().isEmpty());
   }
 
   public void testIntersects() {
-    Assert.assertTrue("c5_10c.intersects(c1_10c)", this.c5_10c.intersects(this.c1_10c));
-    Assert.assertTrue("c1_10c.intersects(c5_10c)", this.c1_10c.intersects(this.c5_10c));
-    Assert.assertTrue("c4_6c.intersects(c1_10c)", this.c4_6c.intersects(this.c1_10c));
-    Assert.assertTrue("c1_10c.intersects(c4_6c)", this.c1_10c.intersects(this.c4_6c));
-    Assert.assertTrue("c5_10c.intersects(c5_15c)", this.c5_10c.intersects(this.c5_15c));
-    Assert.assertTrue("c5_15c.intersects(c1_10c)", this.c5_15c.intersects(this.c1_10c));
-    Assert.assertTrue("c1_10c.intersects(c5_15c)", this.c1_10c.intersects(this.c5_15c));
-    Assert.assertFalse("c1_10c.intersects(c12_16c)", this.c1_10c.intersects(this.c12_16c));
-    Assert.assertFalse("c12_16c.intersects(c1_10c)", this.c12_16c.intersects(this.c1_10c));
-    Assert.assertTrue("c5_10c.intersects(c5_10c)", this.c5_10c.intersects(this.c5_10c));
-    Assert.assertFalse("c1_10c.intersects(o10_12c)", this.c1_10c.intersects(this.o10_12c));
-    Assert.assertFalse("o10_12c.intersects(c1_10c)", this.o10_12c.intersects(this.c1_10c));
+    Assert.assertTrue("c5_10c.intersects(c1_10c)", c5_10c.intersects(c1_10c));
+    Assert.assertTrue("c1_10c.intersects(c5_10c)", c1_10c.intersects(c5_10c));
+    Assert.assertTrue("c4_6c.intersects(c1_10c)", c4_6c.intersects(c1_10c));
+    Assert.assertTrue("c1_10c.intersects(c4_6c)", c1_10c.intersects(c4_6c));
+    Assert.assertTrue("c5_10c.intersects(c5_15c)", c5_10c.intersects(c5_15c));
+    Assert.assertTrue("c5_15c.intersects(c1_10c)", c5_15c.intersects(c1_10c));
+    Assert.assertTrue("c1_10c.intersects(c5_15c)", c1_10c.intersects(c5_15c));
+    Assert.assertFalse("c1_10c.intersects(c12_16c)", c1_10c.intersects(c12_16c));
+    Assert.assertFalse("c12_16c.intersects(c1_10c)", c12_16c.intersects(c1_10c));
+    Assert.assertTrue("c5_10c.intersects(c5_10c)", c5_10c.intersects(c5_10c));
+    Assert.assertFalse("c1_10c.intersects(o10_12c)", c1_10c.intersects(o10_12c));
+    Assert.assertFalse("o10_12c.intersects(c1_10c)", o10_12c.intersects(c1_10c));
   }
 
   public void testIntersection() {
-    Assert.assertEquals(this.c5_10c, this.c5_10c.intersect(this.c1_10c));
-    Assert.assertEquals(this.c5_10c, this.c1_10c.intersect(this.c5_10c));
-    Assert.assertEquals(this.c4_6c, this.c4_6c.intersect(this.c1_10c));
-    Assert.assertEquals(this.c4_6c, this.c1_10c.intersect(this.c4_6c));
-    Assert.assertEquals(this.c5_10c, this.c5_10c.intersect(this.c5_15c));
-    Assert.assertEquals(this.c5_10c, this.c5_15c.intersect(this.c1_10c));
-    Assert.assertEquals(this.c5_10c, this.c1_10c.intersect(this.c5_15c));
-    Assert.assertTrue(this.c1_10c.intersect(this.c12_16c).isEmpty());
-    Assert.assertEquals(this.empty, this.c1_10c.intersect(this.c12_16c));
-    Assert.assertEquals(this.empty, this.c12_16c.intersect(this.c1_10c));
-    Assert.assertEquals(this.c5_10c, this.c5_10c.intersect(this.c5_10c));
-    Assert.assertEquals(this.empty, this.c1_10c.intersect(this.o10_12c));
-    Assert.assertEquals(this.empty, this.o10_12c.intersect(this.c1_10c));
+    Assert.assertEquals(c5_10c, c5_10c.intersect(c1_10c));
+    Assert.assertEquals(c5_10c, c1_10c.intersect(c5_10c));
+    Assert.assertEquals(c4_6c, c4_6c.intersect(c1_10c));
+    Assert.assertEquals(c4_6c, c1_10c.intersect(c4_6c));
+    Assert.assertEquals(c5_10c, c5_10c.intersect(c5_15c));
+    Assert.assertEquals(c5_10c, c5_15c.intersect(c1_10c));
+    Assert.assertEquals(c5_10c, c1_10c.intersect(c5_15c));
+    Assert.assertTrue(c1_10c.intersect(c12_16c).isEmpty());
+    Assert.assertEquals(empty, c1_10c.intersect(c12_16c));
+    Assert.assertEquals(empty, c12_16c.intersect(c1_10c));
+    Assert.assertEquals(c5_10c, c5_10c.intersect(c5_10c));
+    Assert.assertEquals(empty, c1_10c.intersect(o10_12c));
+    Assert.assertEquals(empty, o10_12c.intersect(c1_10c));
   }
 
   public void testGreaterOfLowerLimits() {
-    Assert.assertEquals(new BigDecimal(5), this.c5_10c.greaterOfLowerLimits(this.c1_10c));
-    Assert.assertEquals(new BigDecimal(5), this.c1_10c.greaterOfLowerLimits(this.c5_10c));
-    Assert.assertEquals(new BigDecimal(12), this.c1_10c.greaterOfLowerLimits(this.c12_16c));
-    Assert.assertEquals(new BigDecimal(12), this.c12_16c.greaterOfLowerLimits(this.c1_10c));
+    Assert.assertEquals(new BigDecimal(5), c5_10c.greaterOfLowerLimits(c1_10c));
+    Assert.assertEquals(new BigDecimal(5), c1_10c.greaterOfLowerLimits(c5_10c));
+    Assert.assertEquals(new BigDecimal(12), c1_10c.greaterOfLowerLimits(c12_16c));
+    Assert.assertEquals(new BigDecimal(12), c12_16c.greaterOfLowerLimits(c1_10c));
   }
 
   public void testLesserOfUpperLimits() {
-    Assert.assertEquals(new BigDecimal(10), this.c5_10c.lesserOfUpperLimits(this.c1_10c));
-    Assert.assertEquals(new BigDecimal(10), this.c1_10c.lesserOfUpperLimits(this.c5_10c));
-    Assert.assertEquals(new BigDecimal(6), this.c4_6c.lesserOfUpperLimits(this.c12_16c));
-    Assert.assertEquals(new BigDecimal(6), this.c12_16c.lesserOfUpperLimits(this.c4_6c));
+    Assert.assertEquals(new BigDecimal(10), c5_10c.lesserOfUpperLimits(c1_10c));
+    Assert.assertEquals(new BigDecimal(10), c1_10c.lesserOfUpperLimits(c5_10c));
+    Assert.assertEquals(new BigDecimal(6), c4_6c.lesserOfUpperLimits(c12_16c));
+    Assert.assertEquals(new BigDecimal(6), c12_16c.lesserOfUpperLimits(c4_6c));
   }
 
   public void testCoversInterval() {
-    Assert.assertFalse(this.c5_10c.covers(this.c1_10c));
-    Assert.assertTrue(this.c1_10c.covers(this.c5_10c));
-    Assert.assertFalse(this.c4_6c.covers(this.c1_10c));
-    Assert.assertTrue(this.c1_10c.covers(this.c4_6c));
-    Assert.assertTrue(this.c5_10c.covers(this.c5_10c));
+    Assert.assertFalse(c5_10c.covers(c1_10c));
+    Assert.assertTrue(c1_10c.covers(c5_10c));
+    Assert.assertFalse(c4_6c.covers(c1_10c));
+    Assert.assertTrue(c1_10c.covers(c4_6c));
+    Assert.assertTrue(c5_10c.covers(c5_10c));
     Interval<BigDecimal> halfOpen5_10 = Interval.over(new BigDecimal(5), false, new BigDecimal(10), true);
-    Assert.assertTrue("closed incl left-open", this.c5_10c.covers(halfOpen5_10));
+    Assert.assertTrue("closed incl left-open", c5_10c.covers(halfOpen5_10));
     Assert.assertTrue("left-open incl left-open", halfOpen5_10.covers(halfOpen5_10));
-    Assert.assertFalse("left-open doesn't include closed", halfOpen5_10.covers(this.c5_10c));
+    Assert.assertFalse("left-open doesn't include closed", halfOpen5_10.covers(c5_10c));
     //TODO: Need to test other half-open case and full-open case.
   }
 
@@ -264,22 +264,22 @@ public class IntervalTest extends TestCase {
   }
 
   public void testIsSingleElement() {
-    Assert.assertTrue(this.o1_1c.isSingleElement());
-    Assert.assertTrue(this.c1_1c.isSingleElement());
-    Assert.assertTrue(this.c1_1o.isSingleElement());
-    Assert.assertFalse(this.c1_10c.isSingleElement());
-    Assert.assertFalse(this.o1_1o.isSingleElement());
+    Assert.assertTrue(o1_1c.isSingleElement());
+    Assert.assertTrue(c1_1c.isSingleElement());
+    Assert.assertTrue(c1_1o.isSingleElement());
+    Assert.assertFalse(c1_10c.isSingleElement());
+    Assert.assertFalse(o1_1o.isSingleElement());
   }
 
   public void testEqualsForOnePointIntervals() {
-    Assert.assertEquals(this.o1_1c, this.c1_1o);
-    Assert.assertEquals(this.o1_1c, this.c1_1c);
-    Assert.assertEquals(this.c1_1o, this.c1_1c);
-    Assert.assertFalse(this.o1_1c.equals(this.o1_1o));
+    Assert.assertEquals(o1_1c, c1_1o);
+    Assert.assertEquals(o1_1c, c1_1c);
+    Assert.assertEquals(c1_1o, c1_1c);
+    Assert.assertFalse(o1_1c.equals(o1_1o));
   }
 
   public void testEqualsForEmptyIntervals() {
-    Assert.assertEquals(this.c1_10c.emptyOfSameType(), this.c4_6c.emptyOfSameType());
+    Assert.assertEquals(c1_10c.emptyOfSameType(), c4_6c.emptyOfSameType());
   }
 
   public void testRelativeComplementEnclosedOpen() {

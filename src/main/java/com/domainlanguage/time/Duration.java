@@ -80,67 +80,67 @@ public class Duration implements Comparable<Duration>, Serializable {
   }
 
   public Duration(long quantity, TimeUnit unit) {
-    this.assertQuantityPositiveOrZero(quantity);
+    assertQuantityPositiveOrZero(quantity);
     this.quantity = quantity;
     this.unit = unit;
   }
 
   long inBaseUnits() {
-    return this.quantity * this.unit.getFactor();
+    return quantity * unit.getFactor();
   }
 
   public Duration plus(Duration other) {
-    this.assertConvertible(other);
-    long newQuantity = this.inBaseUnits() + other.inBaseUnits();
-    return new Duration(newQuantity, this.unit.baseUnit());
+    assertConvertible(other);
+    long newQuantity = inBaseUnits() + other.inBaseUnits();
+    return new Duration(newQuantity, unit.baseUnit());
   }
 
   public Duration minus(Duration other) {
-    this.assertConvertible(other);
-    this.assertGreaterThanOrEqualTo(other);
-    long newQuantity = this.inBaseUnits() - other.inBaseUnits();
-    return new Duration(newQuantity, this.unit.baseUnit());
+    assertConvertible(other);
+    assertGreaterThanOrEqualTo(other);
+    long newQuantity = inBaseUnits() - other.inBaseUnits();
+    return new Duration(newQuantity, unit.baseUnit());
   }
 
   public TimePoint addedTo(TimePoint point) {
-    return this.addAmountToTimePoint(this.inBaseUnits(), point);
+    return addAmountToTimePoint(inBaseUnits(), point);
   }
 
   public TimePoint subtractedFrom(TimePoint point) {
-    return this.addAmountToTimePoint(-1 * this.inBaseUnits(), point);
+    return addAmountToTimePoint(-1 * inBaseUnits(), point);
   }
 
   public CalendarDate addedTo(CalendarDate day) {
     //		only valid for days and larger units
-    if (this.unit.compareTo(TimeUnit.day) < 0) {
+    if (unit.compareTo(TimeUnit.day) < 0) {
       return day;
     }
     Calendar calendar = day.asJavaCalendarUniversalZoneMidnight();
-    if (this.unit.equals(TimeUnit.day)) {
-      calendar.add(Calendar.DATE, (int) this.quantity);
+    if (unit.equals(TimeUnit.day)) {
+      calendar.add(Calendar.DATE, (int) quantity);
     } else {
-      this.addAmountToCalendar(this.inBaseUnits(), calendar);
+      addAmountToCalendar(inBaseUnits(), calendar);
     }
     return CalendarDate._from(calendar);
   }
 
   public CalendarDate subtractedFrom(CalendarDate day) {
     //		only valid for days and larger units
-    if (this.unit.compareTo(TimeUnit.day) < 0) {
+    if (unit.compareTo(TimeUnit.day) < 0) {
       return day;
     }
     Calendar calendar = day.asJavaCalendarUniversalZoneMidnight();
-    if (this.unit.equals(TimeUnit.day)) {
-      calendar.add(Calendar.DATE, -1 * (int) this.quantity);
+    if (unit.equals(TimeUnit.day)) {
+      calendar.add(Calendar.DATE, -1 * (int) quantity);
     } else {
-      this.subtractAmountFromCalendar(this.inBaseUnits(), calendar);
+      subtractAmountFromCalendar(inBaseUnits(), calendar);
     }
     return CalendarDate._from(calendar);
   }
 
   public Ratio dividedBy(Duration divisor) {
-    this.assertConvertible(divisor);
-    return Ratio.of(this.inBaseUnits(), divisor.inBaseUnits());
+    assertConvertible(divisor);
+    return Ratio.of(inBaseUnits(), divisor.inBaseUnits());
   }
 
   public boolean equals(Object object) {
@@ -148,23 +148,23 @@ public class Duration implements Comparable<Duration>, Serializable {
       return false;
     }
     Duration other = (Duration) object;
-    if (!this.isConvertibleTo(other)) {
+    if (!isConvertibleTo(other)) {
       return false;
     }
-    return this.inBaseUnits() == other.inBaseUnits();
+    return inBaseUnits() == other.inBaseUnits();
   }
 
   public String toString() {
-    return this.toNormalizedString(this.unit.descendingUnitsForDisplay());
+    return toNormalizedString(unit.descendingUnitsForDisplay());
   }
 
   public String toNormalizedString() {
-    return this.toNormalizedString(this.unit.descendingUnits());
+    return toNormalizedString(unit.descendingUnits());
   }
 
   public TimeUnit normalizedUnit() {
-    TimeUnit[] units = this.unit.descendingUnits();
-    long baseAmount = this.inBaseUnits();
+    TimeUnit[] units = unit.descendingUnits();
+    long baseAmount = inBaseUnits();
     for (int i = 0; i < units.length; i++) {
       TimeUnit aUnit = units[i];
       long remainder = baseAmount % aUnit.getFactor();
@@ -177,12 +177,12 @@ public class Duration implements Comparable<Duration>, Serializable {
   }
 
   public int hashCode() {
-    return (int) this.quantity;
+    return (int) quantity;
   }
 
   public int compareTo(Duration other) {
-    this.assertConvertible(other);
-    long difference = this.inBaseUnits() - other.inBaseUnits();
+    assertConvertible(other);
+    long difference = inBaseUnits() - other.inBaseUnits();
     if (difference > 0) {
       return 1;
     }
@@ -205,51 +205,51 @@ public class Duration implements Comparable<Duration>, Serializable {
   }
 
   public boolean isGreaterThan(Duration other) {
-    assert this.unit.isConvertibleTo(other.unit);
-    return this.inBaseUnits() > other.inBaseUnits();
+    assert unit.isConvertibleTo(other.unit);
+    return inBaseUnits() > other.inBaseUnits();
   }
 
   public boolean isLessThan(Duration other) {
-    assert this.unit.isConvertibleTo(other.unit);
-    return this.inBaseUnits() < other.inBaseUnits();
+    assert unit.isConvertibleTo(other.unit);
+    return inBaseUnits() < other.inBaseUnits();
   }
 
   public boolean isGreaterThanOrEqualTo(Duration other) {
-    assert this.unit.isConvertibleTo(other.unit);
-    return this.inBaseUnits() >= other.inBaseUnits();
+    assert unit.isConvertibleTo(other.unit);
+    return inBaseUnits() >= other.inBaseUnits();
   }
 
   public boolean isLessThanOrEqualTo(Duration other) {
-    assert this.unit.isConvertibleTo(other.unit);
-    return this.inBaseUnits() <= other.inBaseUnits();
+    assert unit.isConvertibleTo(other.unit);
+    return inBaseUnits() <= other.inBaseUnits();
   }
 
   TimePoint addAmountToTimePoint(long amount, TimePoint point) {
-    if (this.unit.isConvertibleToMilliseconds()) {
+    if (unit.isConvertibleToMilliseconds()) {
       return TimePoint.from(amount + point.millisecondsFromEpoc);
     } else {
       Calendar calendar = point.asJavaCalendar();
-      this.addAmountToCalendar(amount, calendar);
+      addAmountToCalendar(amount, calendar);
       return TimePoint.from(calendar);
     }
   }
 
   void addAmountToCalendar(long amount, Calendar calendar) {
-    if (this.unit.isConvertibleToMilliseconds()) {
+    if (unit.isConvertibleToMilliseconds()) {
       calendar.setTimeInMillis(calendar.getTimeInMillis() + amount);
     } else {
-      this.assertAmountValid(amount);
-      calendar.add(this.unit.javaCalendarConstantForBaseType(), (int) amount);
+      assertAmountValid(amount);
+      calendar.add(unit.javaCalendarConstantForBaseType(), (int) amount);
     }
   }
 
   void subtractAmountFromCalendar(long amount, Calendar calendar) {
-    this.addAmountToCalendar(-1 * amount, calendar);
+    addAmountToCalendar(-1 * amount, calendar);
   }
 
   private void assertConvertible(Duration other) {
-    if (!other.unit.isConvertibleTo(this.unit)) {
-      throw new IllegalArgumentException(other.toString() + " is not convertible to: " + this.toString());
+    if (!other.unit.isConvertibleTo(unit)) {
+      throw new IllegalArgumentException(other.toString() + " is not convertible to: " + toString());
     }
   }
 
@@ -260,7 +260,7 @@ public class Duration implements Comparable<Duration>, Serializable {
   }
 
   private void assertGreaterThanOrEqualTo(Duration other) {
-    if (this.compareTo(other) < 0) {
+    if (compareTo(other) < 0) {
       throw new IllegalArgumentException(this + " is before " + other);
     }
   }
@@ -272,12 +272,12 @@ public class Duration implements Comparable<Duration>, Serializable {
   }
 
   private boolean isConvertibleTo(Duration other) {
-    return this.unit.isConvertibleTo(other.unit);
+    return unit.isConvertibleTo(other.unit);
   }
 
   private String toNormalizedString(TimeUnit[] units) {
     StringBuffer buffer = new StringBuffer();
-    long remainder = this.inBaseUnits();
+    long remainder = inBaseUnits();
     boolean first = true;
     for (int i = 0; i < units.length; i++) {
       TimeUnit aUnit = units[i];

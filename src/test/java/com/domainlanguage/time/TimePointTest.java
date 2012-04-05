@@ -28,19 +28,19 @@ public class TimePointTest extends TestCase {
   private TimePoint dec22_2003 = TimePoint.atMidnightGMT(2003, 12, 22);
 
   public void testSerialization() {
-    SerializationTester.assertCanBeSerialized(this.dec19_2003);
+    SerializationTester.assertCanBeSerialized(dec19_2003);
   }
 
   public void testCreationWithDefaultTimeZone() {
     TimePoint expected = TimePoint.atGMT(2004, 1, 1, 0, 0, 0, 0);
     Assert.assertEquals("at midnight", expected, TimePoint.atMidnightGMT(2004, 1, 1));
     Assert.assertEquals("hours in 24hr clock", expected, TimePoint.atGMT(2004, 1, 1, 0, 0));
-    Assert.assertEquals("hours in 12hr clock", expected, TimePoint.at12hr(2004, 1, 1, 12, TimePointTest.AM, 0, 0, 0, this.gmt));
+    Assert.assertEquals("hours in 12hr clock", expected, TimePoint.at12hr(2004, 1, 1, 12, TimePointTest.AM, 0, 0, 0, gmt));
     Assert.assertEquals("date from formatted String", expected, TimePoint.parseGMTFrom("2004/1/1", "yyyy/MM/dd"));
     Assert.assertEquals(
       "pm hours in 12hr clock",
       TimePoint.atGMT(2004, 1, 1, 12, 0),
-      TimePoint.at12hr(2004, 1, 1, 12, TimePointTest.PM, 0, 0, 0, this.gmt));
+      TimePoint.at12hr(2004, 1, 1, 12, TimePointTest.PM, 0, 0, 0, gmt));
   }
 
   public void testCreationWithTimeZone() {
@@ -53,28 +53,28 @@ public class TimePointTest extends TestCase {
      * The TimeLibrary does not use the default TimeZone operation in Java,
      * the selection of the appropriate Timezone is left to the application.
      */
-    TimePoint gmt10Hour = TimePoint.at(2004, 3, 5, 10, 10, 0, 0, this.gmt);
+    TimePoint gmt10Hour = TimePoint.at(2004, 3, 5, 10, 10, 0, 0, gmt);
     TimePoint default10Hour = TimePoint.atGMT(2004, 3, 5, 10, 10, 0, 0);
-    TimePoint pt2Hour = TimePoint.at(2004, 3, 5, 2, 10, 0, 0, this.pt);
+    TimePoint pt2Hour = TimePoint.at(2004, 3, 5, 2, 10, 0, 0, pt);
     Assert.assertEquals(gmt10Hour, default10Hour);
     Assert.assertEquals(gmt10Hour, pt2Hour);
 
-    TimePoint gmt6Hour = TimePoint.at(2004, 3, 5, 6, 0, 0, 0, this.gmt);
-    TimePoint ct0Hour = TimePoint.at(2004, 3, 5, 0, 0, 0, 0, this.ct);
-    TimePoint ctMidnight = TimePoint.atMidnight(2004, 3, 5, this.ct);
+    TimePoint gmt6Hour = TimePoint.at(2004, 3, 5, 6, 0, 0, 0, gmt);
+    TimePoint ct0Hour = TimePoint.at(2004, 3, 5, 0, 0, 0, 0, ct);
+    TimePoint ctMidnight = TimePoint.atMidnight(2004, 3, 5, ct);
     Assert.assertEquals(gmt6Hour, ct0Hour);
     Assert.assertEquals(gmt6Hour, ctMidnight);
   }
 
   public void testStringFormat() {
-    TimePoint point = TimePoint.at(2004, 3, 12, 5, 3, 14, 0, this.pt);
+    TimePoint point = TimePoint.at(2004, 3, 12, 5, 3, 14, 0, pt);
     // Try stupid date/time format, so that it couldn't work by accident.
-    Assert.assertEquals("3-04-12 3:5:14", point.toString("M-yy-d m:h:s", this.pt));
-    Assert.assertEquals("3-04-12", point.toString("M-yy-d", this.pt));
+    Assert.assertEquals("3-04-12 3:5:14", point.toString("M-yy-d m:h:s", pt));
+    Assert.assertEquals("3-04-12", point.toString("M-yy-d", pt));
   }
 
   private Date javaUtilDateDec20_2003() {
-    Calendar calendar = Calendar.getInstance(this.gmt);
+    Calendar calendar = Calendar.getInstance(gmt);
     calendar.clear(); // non-deterministic without this!!!
     calendar.set(Calendar.YEAR, 2003);
     calendar.set(Calendar.MONTH, Calendar.DECEMBER);
@@ -84,14 +84,14 @@ public class TimePointTest extends TestCase {
 
   public void testAsJavaUtilDate() {
     TimePoint dec20_2003 = TimePoint.atMidnightGMT(2003, 12, 20);
-    Assert.assertEquals(this.javaUtilDateDec20_2003(), dec20_2003.asJavaUtilDate());
+    Assert.assertEquals(javaUtilDateDec20_2003(), dec20_2003.asJavaUtilDate());
   }
 
   public void testBackToMidnight() {
     TimePoint threeOClock = TimePoint.atGMT(2004, 11, 22, 3, 0);
-    Assert.assertEquals(TimePoint.atMidnightGMT(2004, 11, 22), threeOClock.backToMidnight(this.gmt));
+    Assert.assertEquals(TimePoint.atMidnightGMT(2004, 11, 22), threeOClock.backToMidnight(gmt));
     TimePoint thirteenOClock = TimePoint.atGMT(2004, 11, 22, 13, 0);
-    Assert.assertEquals(TimePoint.atMidnightGMT(2004, 11, 22), thirteenOClock.backToMidnight(this.gmt));
+    Assert.assertEquals(TimePoint.atMidnightGMT(2004, 11, 22), thirteenOClock.backToMidnight(gmt));
   }
 
   public void testFromString() {
@@ -102,7 +102,7 @@ public class TimePointTest extends TestCase {
   }
 
   public void testEquals() {
-    TimePoint createdFromJavaDate = TimePoint.from(this.javaUtilDateDec20_2003());
+    TimePoint createdFromJavaDate = TimePoint.from(javaUtilDateDec20_2003());
     TimePoint dec5_2003 = TimePoint.atMidnightGMT(2003, 12, 5);
     TimePoint dec20_2003 = TimePoint.atMidnightGMT(2003, 12, 20);
     Assert.assertEquals(createdFromJavaDate, dec20_2003);
@@ -144,34 +144,34 @@ public class TimePointTest extends TestCase {
 
   public void testIncrementDuration() {
     Duration twoDays = Duration.days(2);
-    Assert.assertEquals(this.dec22_2003, this.dec20_2003.plus(twoDays));
+    Assert.assertEquals(dec22_2003, dec20_2003.plus(twoDays));
   }
 
   public void testDecrementDuration() {
     Duration twoDays = Duration.days(2);
-    Assert.assertEquals(this.dec19_2003, this.dec21_2003.minus(twoDays));
+    Assert.assertEquals(dec19_2003, dec21_2003.minus(twoDays));
   }
 
   // This is only an integration test. The primary responsibility is in
   // TimePeriod
   public void testBeforeAfterPeriod() {
-    TimeInterval period = TimeInterval.closed(this.dec20_2003, this.dec22_2003);
-    Assert.assertTrue(this.dec19_2003.isBefore(period));
-    Assert.assertFalse(this.dec19_2003.isAfter(period));
-    Assert.assertFalse(this.dec20_2003.isBefore(period));
-    Assert.assertFalse(this.dec20_2003.isAfter(period));
-    Assert.assertFalse(this.dec21_2003.isBefore(period));
-    Assert.assertFalse(this.dec21_2003.isAfter(period));
+    TimeInterval period = TimeInterval.closed(dec20_2003, dec22_2003);
+    Assert.assertTrue(dec19_2003.isBefore(period));
+    Assert.assertFalse(dec19_2003.isAfter(period));
+    Assert.assertFalse(dec20_2003.isBefore(period));
+    Assert.assertFalse(dec20_2003.isAfter(period));
+    Assert.assertFalse(dec21_2003.isBefore(period));
+    Assert.assertFalse(dec21_2003.isAfter(period));
   }
 
   public void testNextDay() {
-    Assert.assertEquals(this.dec20_2003, this.dec19_2003.nextDay());
+    Assert.assertEquals(dec20_2003, dec19_2003.nextDay());
   }
 
   public void testCompare() {
-    Assert.assertTrue(this.dec19_2003.compareTo(this.dec20_2003) < 0);
-    Assert.assertTrue(this.dec20_2003.compareTo(this.dec19_2003) > 0);
-    Assert.assertTrue(this.dec20_2003.compareTo(this.dec20_2003) == 0);
+    Assert.assertTrue(dec19_2003.compareTo(dec20_2003) < 0);
+    Assert.assertTrue(dec20_2003.compareTo(dec19_2003) > 0);
+    Assert.assertTrue(dec20_2003.compareTo(dec20_2003) == 0);
   }
 
   // This test verifies bug #1336072 fix
@@ -188,10 +188,10 @@ public class TimePointTest extends TestCase {
 
   // TimePoint.at() ignores the minute parameter.
   public void testNotIgnoringMinuteParameter() {
-    TimePoint point = TimePoint.at(2006, 03, 22, 13, 45, 59, 499, this.gmt);
-    Assert.assertEquals("2006-03-22 13:45:59:499", point.toString("yyyy-MM-dd HH:mm:ss:SSS", this.gmt));
-    TimePoint pointNoMilli = TimePoint.at(2006, 03, 22, 13, 45, 59, this.gmt);
-    Assert.assertEquals("2006-03-22 13:45:59:000", pointNoMilli.toString("yyyy-MM-dd HH:mm:ss:SSS", this.gmt));
+    TimePoint point = TimePoint.at(2006, 03, 22, 13, 45, 59, 499, gmt);
+    Assert.assertEquals("2006-03-22 13:45:59:499", point.toString("yyyy-MM-dd HH:mm:ss:SSS", gmt));
+    TimePoint pointNoMilli = TimePoint.at(2006, 03, 22, 13, 45, 59, gmt);
+    Assert.assertEquals("2006-03-22 13:45:59:000", pointNoMilli.toString("yyyy-MM-dd HH:mm:ss:SSS", gmt));
   }
 
   public void testAtWithTimeZone() {
