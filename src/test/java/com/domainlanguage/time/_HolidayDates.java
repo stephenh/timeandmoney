@@ -53,8 +53,8 @@ class _HolidayDates {
             "2006/12/25", /* Christmas Day, December 25 */
     };
 
-    static Set defaultHolidays() {
-        Set dates = new HashSet();
+    static Set<CalendarDate> defaultHolidays() {
+        Set<CalendarDate> dates = new HashSet<CalendarDate>();
         String[] strings = COMMON_US_HOLIDAYS;
         for (int i = 0; i < strings.length; i++)
             dates.add(CalendarDate.from(strings[i], "yyyy/MM/dd"));

@@ -11,23 +11,23 @@ import java.util.*;
 import com.domainlanguage.util.*;
 
 public class BusinessCalendar {
-    private Set holidays;
+    private Set<CalendarDate> holidays;
 
     /** Should be rewritten for each particular organization */
-    static Set defaultHolidays() {
-        return new HashSet();
+    static Set<CalendarDate> defaultHolidays() {
+        return new HashSet<CalendarDate>();
     }
 
     public BusinessCalendar() {
         holidays = defaultHolidays();
     }
-    public void addHolidays(Set days) {
+    public void addHolidays(Set<CalendarDate> days) {
         holidays.addAll(days);
     }
 
     public int getElapsedBusinessDays(CalendarInterval interval) {
         int tally = 0;
-        Iterator iterator=businessDaysOnly(interval.daysIterator());
+        Iterator<CalendarDate> iterator=businessDaysOnly(interval.daysIterator());
         while (iterator.hasNext()) {
             iterator.next();
             tally += 1;
@@ -57,8 +57,8 @@ public class BusinessCalendar {
         return !isWeekend(day) && !isHoliday(day);
     }
 
-    public Iterator businessDaysOnly(final Iterator calendarDays) {
-        return new ImmutableIterator() {
+    public Iterator<CalendarDate> businessDaysOnly(final Iterator<CalendarDate> calendarDays) {
+        return new ImmutableIterator<CalendarDate>() {
             CalendarDate lookAhead = null;
             {
                 next();
@@ -67,7 +67,7 @@ public class BusinessCalendar {
                 return lookAhead != null;
             }
 
-            public Object next() {
+            public CalendarDate next() {
                 CalendarDate next = lookAhead;
                 lookAhead = nextBusinessDate();
                 return next;
@@ -86,22 +86,22 @@ public class BusinessCalendar {
     public CalendarDate plusBusinessDays(CalendarDate startDate, int numberOfDays) {
         if (numberOfDays < 0)
             throw new IllegalArgumentException("Negative numberOfDays not supported");
-        Iterator iterator=CalendarInterval.everFrom(startDate).daysIterator();
+        Iterator<CalendarDate> iterator=CalendarInterval.everFrom(startDate).daysIterator();
         return nextNumberOfBusinessDays(numberOfDays, iterator);
     }
     
     public CalendarDate minusBusinessDays(CalendarDate startDate, int numberOfDays) {
         if (numberOfDays < 0)
             throw new IllegalArgumentException("Negative numberOfDays not supported");
-        Iterator iterator=CalendarInterval.everPreceding(startDate).daysInReverseIterator();
+        Iterator<CalendarDate> iterator=CalendarInterval.everPreceding(startDate).daysInReverseIterator();
         return nextNumberOfBusinessDays(numberOfDays, iterator);
     }
 
-    private CalendarDate nextNumberOfBusinessDays(int numberOfDays, Iterator calendarDays) {
-        Iterator businessDays=businessDaysOnly(calendarDays);
+    private CalendarDate nextNumberOfBusinessDays(int numberOfDays, Iterator<CalendarDate> calendarDays) {
+        Iterator<CalendarDate> businessDays=businessDaysOnly(calendarDays);
         CalendarDate result=null;
         for (int i=0; i <= numberOfDays; i++) {
-            result=(CalendarDate)businessDays.next();
+            result=businessDays.next();
         }
         return result;
     }

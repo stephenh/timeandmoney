@@ -84,7 +84,7 @@ public class BusinessCalendarTest extends TestCase {
         CalendarDate start = CalendarDate.from(2004, 2, 5);
         CalendarDate end = CalendarDate.from(2004, 2, 8);
         CalendarInterval interval = CalendarInterval.inclusive(start, end);
-        Iterator it = businessCalendar().businessDaysOnly(interval.daysIterator());
+        Iterator<CalendarDate> it = businessCalendar().businessDaysOnly(interval.daysIterator());
         assertTrue(it.hasNext());
         assertEquals(start, it.next());
         assertTrue(it.hasNext());
@@ -126,7 +126,7 @@ public class BusinessCalendarTest extends TestCase {
         CalendarDate friday=CalendarDate.from(2006, 06, 16);
         CalendarDate nextTuesday=CalendarDate.from(2006, 06, 20);
         CalendarInterval interval = CalendarInterval.inclusive(friday, nextTuesday);
-        Iterator it = businessCalendar().businessDaysOnly(interval.daysInReverseIterator());
+        Iterator<CalendarDate> it = businessCalendar().businessDaysOnly(interval.daysInReverseIterator());
         assertTrue(it.hasNext());
         assertEquals(nextTuesday, it.next());
         assertTrue(it.hasNext());
