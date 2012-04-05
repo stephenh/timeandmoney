@@ -7,6 +7,7 @@
 package com.domainlanguage.time;
 
 class FloatingDateSpecification extends AnnualDateSpecification {
+
     private final int month;
     private final int dayOfWeek;
     private final int occurrence;
@@ -17,6 +18,7 @@ class FloatingDateSpecification extends AnnualDateSpecification {
         this.occurrence = occurrence;
     }
 
+    @Override
     public CalendarDate ofYear(int year) {
         CalendarDate firstOfMonth = CalendarDate.date(year, month, 1);
         int dayOfWeekOffset = dayOfWeek - firstOfMonth.dayOfWeek();
@@ -25,6 +27,7 @@ class FloatingDateSpecification extends AnnualDateSpecification {
         return CalendarDate.date(year, month, date);
     }
 
+    @Override
     public boolean isSatisfiedBy(CalendarDate date) {
         return ofYear(date.getYear()).equals(date);
     }

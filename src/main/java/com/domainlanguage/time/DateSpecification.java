@@ -22,6 +22,6 @@ public abstract class DateSpecification {
 
     public abstract CalendarDate firstOccurrenceIn(CalendarInterval interval);
 
-    public abstract Iterator iterateOver(CalendarInterval interval);
+    public abstract Iterator<CalendarDate> iterateOver(CalendarInterval interval);
 
 }

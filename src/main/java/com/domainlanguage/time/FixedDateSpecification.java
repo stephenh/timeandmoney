@@ -7,6 +7,7 @@
 package com.domainlanguage.time;
 
 class FixedDateSpecification extends AnnualDateSpecification {
+
     private final int month;
     private final int day;
 
@@ -15,10 +16,12 @@ class FixedDateSpecification extends AnnualDateSpecification {
         this.day = day;
     }
 
+    @Override
     public CalendarDate ofYear(int year) {
         return CalendarDate.date(year, month, day);
     }
 
+    @Override
     public boolean isSatisfiedBy(CalendarDate date) {
         return day == date.getDay() && month == date.getMonth();
     }

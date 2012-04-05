@@ -37,7 +37,7 @@ public class DateSpecificationTest extends TestCase {
         // Calculate all the Thanksgivings over a three year interval.
         CalendarInterval y2002_2004 = CalendarInterval.inclusive(2002, 1, 1, 2004, 12, 31);
         assertEquals(CalendarDate.date(2002, 11, 28), thanksgiving.firstOccurrenceIn(y2002_2004));
-        Iterator iterator = thanksgiving.iterateOver(y2002_2004);
+        Iterator<CalendarDate> iterator = thanksgiving.iterateOver(y2002_2004);
         assertTrue(iterator.hasNext());
         assertEquals(CalendarDate.date(2002, 11, 28), iterator.next());
         assertTrue(iterator.hasNext());
@@ -62,7 +62,7 @@ public class DateSpecificationTest extends TestCase {
     public void testIterateThroughInterval() {
         DateSpecification independenceDay = DateSpecification.fixed(7, 4);
         CalendarInterval ylate2002_early2005 = CalendarInterval.inclusive(2002, 8, 1, 2005, 6, 31);
-        Iterator it = independenceDay.iterateOver(ylate2002_early2005);
+        Iterator<CalendarDate> it = independenceDay.iterateOver(ylate2002_early2005);
         assertTrue(it.hasNext());
         assertEquals(CalendarDate.date(2003, 7, 4), it.next());
         assertTrue(it.hasNext());

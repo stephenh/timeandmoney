@@ -14,6 +14,7 @@ public abstract class AnnualDateSpecification extends DateSpecification {
 
     public abstract CalendarDate ofYear(int year);
 
+    @Override
     public CalendarDate firstOccurrenceIn(CalendarInterval interval) {
         CalendarDate firstTry = ofYear(interval.start().getYear());
         if (interval.includes(firstTry))
@@ -24,9 +25,10 @@ public abstract class AnnualDateSpecification extends DateSpecification {
         return null;
     }
 
-    public Iterator iterateOver(final CalendarInterval interval) {
+    @Override
+    public Iterator<CalendarDate> iterateOver(final CalendarInterval interval) {
         final AnnualDateSpecification spec = this;
-        return new ImmutableIterator() {
+        return new ImmutableIterator<CalendarDate>() {
             CalendarDate next = firstOccurrenceIn(interval);
             int year = next.getYear();
 
@@ -34,10 +36,10 @@ public abstract class AnnualDateSpecification extends DateSpecification {
                 return next != null;
             }
 
-            public Object next() {
+            public CalendarDate next() {
                 if (next == null)
                     return null;
-                Object current = next;
+                CalendarDate current = next;
                 year += 1;
                 next = spec.ofYear(year);
                 if (!interval.includes(next))
