@@ -18,7 +18,7 @@ import com.domainlanguage.base.Ratio;
 import com.domainlanguage.base.Rounding;
 import com.domainlanguage.time.Duration;
 
-public class Money implements Comparable, Serializable {
+public class Money implements Comparable<Money>, Serializable {
 	private static final Currency USD = Currency.getInstance("USD");
 	private static final Currency EUR = Currency.getInstance("EUR");
 	private static final int DEFAULT_ROUNDING_MODE = Rounding.HALF_EVEN;
@@ -102,14 +102,14 @@ public class Money implements Comparable, Serializable {
 		return Money.valueOf(amount, EUR);
 	}
     
-    public static Money sum(Collection monies) {
+    public static Money sum(Collection<Money> monies) {
         //TODO Return Default Currency
         if (monies.isEmpty())
             return Money.dollars(0.00);
-        Iterator iterator = monies.iterator();
-        Money sum = (Money) iterator.next();
+        Iterator<Money> iterator = monies.iterator();
+        Money sum = iterator.next();
         while (iterator.hasNext()){
-            Money each = (Money) iterator.next();
+            Money each = iterator.next();
             sum = sum.plus(each);
         }
         return sum;
@@ -148,10 +148,10 @@ public class Money implements Comparable, Serializable {
 	/**
 	 * Return the sum of <code>money</code>
 	 */
-	public static Money sum(List money) {
+	public static Money sum(List<Money> money) {
 		Money total = Money.dollars(0.00);
-		for (Iterator i = money.iterator(); i.hasNext();) {
-			total = total.plus((Money) i.next());
+		for (Iterator<Money> i = money.iterator(); i.hasNext();) {
+			total = total.plus(i.next());
 		}
 		return total;
 	}
@@ -296,11 +296,8 @@ public class Money implements Comparable, Serializable {
 	public Money times(int i) {
 		return times(new BigDecimal(i));
 	}
-
-	public int compareTo(Object other) {
-		return compareTo((Money)other);
-	}
 	
+	@Override
 	public int compareTo(Money other) {
 		if (!hasSameCurrencyAs(other)) 
             throw new IllegalArgumentException("Compare is not defined between different currencies");
