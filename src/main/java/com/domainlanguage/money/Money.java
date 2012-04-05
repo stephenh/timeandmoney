@@ -165,22 +165,6 @@ public class Money implements Comparable<Money>, Serializable {
     this.amount = amount;
   }
 
-  /**
-   * How best to handle access to the internals? It is needed for
-   * database mapping, UI presentation, and perhaps a few other
-   * uses. Yet giving public access invites people to do the
-   * real work of the Money object elsewhere.
-   * Here is an experimental approach, giving access with a 
-   * warning label of sorts. Let us know how you like it.
-   */
-  public BigDecimal breachEncapsulationOfAmount() {
-    return amount;
-  }
-
-  public Currency breachEncapsulationOfCurrency() {
-    return currency;
-  }
-
   public Money negated() {
     return Money.valueOf(amount.negate(), currency);
   }
@@ -341,20 +325,11 @@ public class Money implements Comparable<Money>, Serializable {
     return new MoneyTimeRate(this, duration);
   }
 
-  //  TODO: Provide some currency-dependent formatting. Java 1.4 Currency doesn't
-  //  do it.
-  //  public String formatString() {
-  //      return currency.formatString(amount());
-  //  }
-  //  public String localString() {
-  //      return currency.getFormat().format(amount());
-  //  }
-
-  BigDecimal getAmount() {
+  public BigDecimal getAmount() {
     return amount;
   }
 
-  Currency getCurrency() {
+  public Currency getCurrency() {
     return currency;
   }
 

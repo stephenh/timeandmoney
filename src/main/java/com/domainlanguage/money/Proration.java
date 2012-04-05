@@ -52,14 +52,14 @@ public class Proration {
     // But we do the simple thing for now as that is all CBAS is passing in.
     boolean dividesEvenly = true;
     for (int i = 0; i < ratios.size(); i++) {
-      if (!ratios.get(i).isMultipleOfDenominator(total.breachEncapsulationOfAmount())) {
+      if (!ratios.get(i).isMultipleOfDenominator(total.getAmount())) {
         dividesEvenly = false;
         break;
       }
     }
     if (dividesEvenly) {
       for (int i = 0; i < ratios.size(); i++) {
-        simpleResult[i] = Money.dollars(ratios.get(i).times(total.breachEncapsulationOfAmount()).decimalValue(scale, Rounding.DOWN));
+        simpleResult[i] = Money.dollars(ratios.get(i).times(total.getAmount()).decimalValue(scale, Rounding.DOWN));
       }
       return simpleResult;
     }
