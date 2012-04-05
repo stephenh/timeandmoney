@@ -7,6 +7,7 @@
 package com.domainlanguage.money;
 
 import java.math.*;
+import java.util.Arrays;
 import java.util.List;
 
 import com.domainlanguage.base.*;
@@ -59,12 +60,12 @@ public class Proration {
 		return proratedOver(total, ratios(proportions));
 	}
 
-	public static Money[] proratedOver(Money total, List ratios) {
-		return proratedOver(total, (Ratio[]) ratios.toArray(new Ratio[ratios.size()]));
+	public static Money[] proratedOver(Money total, Ratio[] ratios) {
+		return proratedOver(total, Arrays.asList(ratios));
 	}
 
-	public static Money[] proratedOver(Money total, Ratio[] ratios) {
-		Money[] simpleResult = new Money[ratios.length];
+	public static Money[] proratedOver(Money total, List<Ratio> ratios) {
+		Money[] simpleResult = new Money[ratios.size()];
 		int scale = defaultScaleForIntermediateCalculations(total);
 
 		// Check to see if the the total is a multiple of all the denominators,
@@ -73,21 +74,21 @@ public class Proration {
 		// lowest common denominator, and see if total is a multiple of that.
 		// But we do the simple thing for now as that is all CBAS is passing in.
 		boolean dividesEvenly = true;
-		for (int i = 0; i < ratios.length; i++) {
-			if (!ratios[i].isMultipleOfDenominator(total.breachEncapsulationOfAmount())) {
+		for (int i = 0; i < ratios.size(); i++) {
+			if (!ratios.get(i).isMultipleOfDenominator(total.breachEncapsulationOfAmount())) {
 				dividesEvenly = false;
 				break;
 			}
 		}
 		if (dividesEvenly) {
-			for (int i = 0; i < ratios.length; i++) {
-				simpleResult[i] = Money.dollars(ratios[i].times(total.breachEncapsulationOfAmount()).decimalValue(scale, Rounding.DOWN));
+			for (int i = 0; i < ratios.size(); i++) {
+				simpleResult[i] = Money.dollars(ratios.get(i).times(total.breachEncapsulationOfAmount()).decimalValue(scale, Rounding.DOWN));
 			}
 			return simpleResult;
 		}
 
-		for (int i = 0; i < ratios.length; i++) {
-			BigDecimal multiplier = ratios[i].decimalValue(scale, Rounding.DOWN);
+		for (int i = 0; i < ratios.size(); i++) {
+			BigDecimal multiplier = ratios.get(i).decimalValue(scale, Rounding.DOWN);
 			simpleResult[i] = total.times(multiplier, Rounding.DOWN);
 		}
 		Money remainder = total.minus(sum(simpleResult));
