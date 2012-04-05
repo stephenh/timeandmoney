@@ -6,21 +6,22 @@
 
 package com.domainlanguage.timeutil;
 
-import java.util.*;
+import java.util.Date;
 
-import com.domainlanguage.time.*;
+import com.domainlanguage.time.TimePoint;
+import com.domainlanguage.time.TimeSource;
 
 public class SystemClock {
-    
-    public static TimeSource timeSource() {
-        return new TimeSource() {
-            public TimePoint now() {
-                return SystemClock.now();
-            }
-        };
-    }
 
-    public static TimePoint now() {
-        return TimePoint.from(new Date());
-    }
+  public static TimeSource timeSource() {
+    return new TimeSource() {
+      public TimePoint now() {
+        return SystemClock.now();
+      }
+    };
+  }
+
+  public static TimePoint now() {
+    return TimePoint.from(new Date());
+  }
 }

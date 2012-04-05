@@ -7,43 +7,48 @@
 package com.domainlanguage.timeutil;
 
 import java.util.TimeZone;
-import com.domainlanguage.time.*;
+
+import com.domainlanguage.time.CalendarDate;
+import com.domainlanguage.time.TimePoint;
+import com.domainlanguage.time.TimeSource;
 
 public class Clock {
-	private static TimeSource timeSource;
-	private static TimeZone defaultTimeZone;
+  private static TimeSource timeSource;
+  private static TimeZone defaultTimeZone;
 
-	public static TimeZone defaultTimeZone() {
-		//There is no reasonable automatic default.
-		return defaultTimeZone;
-	}
-	
-	public static void setDefaultTimeZone(TimeZone defaultTimeZone) {
-		Clock.defaultTimeZone = defaultTimeZone;
-	}
-	
-	public static TimeSource timeSource() {
-		if (timeSource==null) {
-			setTimeSource(SystemClock.timeSource());
-		}
-		return timeSource;
-	}
-	
-	public static void setTimeSource(TimeSource timeSource) {
-		Clock.timeSource = timeSource;
-	}
-	
-	public static TimePoint now() {
-		return timeSource().now();
-	}
-	
-	public static CalendarDate today() {
-		if (defaultTimeZone()==null) throw new RuntimeException("CalendarDate cannot be computed without setting a default TimeZone.");
-		return now().calendarDate(defaultTimeZone());
-	}
+  public static TimeZone defaultTimeZone() {
+    //There is no reasonable automatic default.
+    return Clock.defaultTimeZone;
+  }
 
-	public static void reset() {
-		defaultTimeZone = null;
-		timeSource = null;
-	}
+  public static void setDefaultTimeZone(TimeZone defaultTimeZone) {
+    Clock.defaultTimeZone = defaultTimeZone;
+  }
+
+  public static TimeSource timeSource() {
+    if (Clock.timeSource == null) {
+      Clock.setTimeSource(SystemClock.timeSource());
+    }
+    return Clock.timeSource;
+  }
+
+  public static void setTimeSource(TimeSource timeSource) {
+    Clock.timeSource = timeSource;
+  }
+
+  public static TimePoint now() {
+    return Clock.timeSource().now();
+  }
+
+  public static CalendarDate today() {
+    if (Clock.defaultTimeZone() == null) {
+      throw new RuntimeException("CalendarDate cannot be computed without setting a default TimeZone.");
+    }
+    return Clock.now().calendarDate(Clock.defaultTimeZone());
+  }
+
+  public static void reset() {
+    Clock.defaultTimeZone = null;
+    Clock.timeSource = null;
+  }
 }

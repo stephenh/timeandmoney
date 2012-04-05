@@ -24,59 +24,59 @@ import java.math.BigDecimal;
 
 public class Ratio {
 
-    private final BigDecimal numerator;
-    private final BigDecimal denominator;
+  private final BigDecimal numerator;
+  private final BigDecimal denominator;
 
-    public static Ratio of(BigDecimal numerator, BigDecimal denominator) {
-        return new Ratio(numerator, denominator);
-    }
+  public static Ratio of(BigDecimal numerator, BigDecimal denominator) {
+    return new Ratio(numerator, denominator);
+  }
 
-    public static Ratio of(long numerator, long denominator) {
-        return new Ratio(BigDecimal.valueOf(numerator), BigDecimal.valueOf(denominator));
-    }
+  public static Ratio of(long numerator, long denominator) {
+    return new Ratio(BigDecimal.valueOf(numerator), BigDecimal.valueOf(denominator));
+  }
 
-    public static Ratio of(BigDecimal fractional) {
-        return new Ratio(fractional, BigDecimal.valueOf(1));
-    }
+  public static Ratio of(BigDecimal fractional) {
+    return new Ratio(fractional, BigDecimal.valueOf(1));
+  }
 
-    public Ratio(BigDecimal numerator, BigDecimal denominator) {
-        this.numerator = numerator;
-        this.denominator = denominator;
-    }
+  public Ratio(BigDecimal numerator, BigDecimal denominator) {
+    this.numerator = numerator;
+    this.denominator = denominator;
+  }
 
-    public BigDecimal decimalValue(int scale, int roundingRule) {
-        return numerator.divide(denominator, scale, roundingRule);
-    }
+  public BigDecimal decimalValue(int scale, int roundingRule) {
+    return this.numerator.divide(this.denominator, scale, roundingRule);
+  }
 
-    public Ratio times(BigDecimal multiplier) {
-        return Ratio.of(numerator.multiply(multiplier), denominator);
-    }
+  public Ratio times(BigDecimal multiplier) {
+    return Ratio.of(this.numerator.multiply(multiplier), this.denominator);
+  }
 
-    public Ratio times(Ratio multiplier) {
-        return Ratio.of(numerator.multiply(multiplier.numerator), denominator.multiply(multiplier.denominator));
-    }
+  public Ratio times(Ratio multiplier) {
+    return Ratio.of(this.numerator.multiply(multiplier.numerator), this.denominator.multiply(multiplier.denominator));
+  }
 
-    public boolean isMultipleOfDenominator(BigDecimal other) {
-        return other.remainder(this.denominator).unscaledValue().intValue() == 0;
-    }
+  public boolean isMultipleOfDenominator(BigDecimal other) {
+    return other.remainder(this.denominator).unscaledValue().intValue() == 0;
+  }
 
-    @Override
-    public boolean equals(Object anObject) {
-        if (anObject instanceof Ratio) {
-            Ratio other = (Ratio) anObject;
-            return this.numerator.equals(other.numerator) && this.denominator.equals(other.denominator);
-        }
-        return false;
+  @Override
+  public boolean equals(Object anObject) {
+    if (anObject instanceof Ratio) {
+      Ratio other = (Ratio) anObject;
+      return this.numerator.equals(other.numerator) && this.denominator.equals(other.denominator);
     }
+    return false;
+  }
 
-    @Override
-    public String toString() {
-        return numerator.toString() + "/" + denominator;
-    }
+  @Override
+  public String toString() {
+    return this.numerator.toString() + "/" + this.denominator;
+  }
 
-    @Override
-    public int hashCode() {
-        return numerator.hashCode();
-    }
+  @Override
+  public int hashCode() {
+    return this.numerator.hashCode();
+  }
 
 }

@@ -6,27 +6,28 @@
 
 package com.domainlanguage.util;
 
-import java.util.*;
+import java.util.Iterator;
 
-import junit.framework.*;
+import junit.framework.Assert;
+import junit.framework.TestCase;
 
 public class ImmutableIteratorTest extends TestCase {
 
-    public void testRemove() {
-        Iterator<Object> iterator = new ImmutableIterator<Object>() {
-            public boolean hasNext() {
-                return true;
-            }
+  public void testRemove() {
+    Iterator<Object> iterator = new ImmutableIterator<Object>() {
+      public boolean hasNext() {
+        return true;
+      }
 
-            public Object next() {
-                return null;
-            }
-        };
-        try {
-            iterator.remove();
-            fail("remove is unsupported");
-        } catch (UnsupportedOperationException expected) {
-        }
+      public Object next() {
+        return null;
+      }
+    };
+    try {
+      iterator.remove();
+      Assert.fail("remove is unsupported");
+    } catch (UnsupportedOperationException expected) {
     }
+  }
 
 }

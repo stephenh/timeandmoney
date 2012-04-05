@@ -14,74 +14,77 @@ import java.util.Map;
 
 public class LinearIntervalMap<K extends Comparable<K>, V> implements IntervalMap<K, V> {
 
-    private final Map<Interval<K>, V> keyValues;
+  private final Map<Interval<K>, V> keyValues;
 
-    public LinearIntervalMap() {
-        keyValues = new HashMap<Interval<K>, V>();
-    }
-    
-    @Override
-    public void put(Interval<K> keyInterval, V value) {
-        remove(keyInterval);
-        keyValues.put(keyInterval, value);
-    }
+  public LinearIntervalMap() {
+    this.keyValues = new HashMap<Interval<K>, V>();
+  }
 
-    @Override
-    public void remove(Interval<K> keyInterval) {
-        List<Interval<K>> intervalSequence = intersectingKeys(keyInterval);
-        for (Iterator<Interval<K>> iter = intervalSequence.iterator(); iter.hasNext();) {
-            Interval<K> oldInterval = iter.next();
-            V oldValue = keyValues.get(oldInterval);
-            keyValues.remove(oldInterval);
-            List<Interval<K>> complementIntervalSequence = keyInterval.complementRelativeTo(oldInterval);
-            directPut(complementIntervalSequence, oldValue);
-        }
-    }
+  @Override
+  public void put(Interval<K> keyInterval, V value) {
+    this.remove(keyInterval);
+    this.keyValues.put(keyInterval, value);
+  }
 
-    private void directPut(List<Interval<K>> intervalSequence, V value) {
-        for (Iterator<Interval<K>> iter = intervalSequence.iterator(); iter.hasNext();)
-            keyValues.put(iter.next(), value);
+  @Override
+  public void remove(Interval<K> keyInterval) {
+    List<Interval<K>> intervalSequence = this.intersectingKeys(keyInterval);
+    for (Iterator<Interval<K>> iter = intervalSequence.iterator(); iter.hasNext();) {
+      Interval<K> oldInterval = iter.next();
+      V oldValue = this.keyValues.get(oldInterval);
+      this.keyValues.remove(oldInterval);
+      List<Interval<K>> complementIntervalSequence = keyInterval.complementRelativeTo(oldInterval);
+      this.directPut(complementIntervalSequence, oldValue);
     }
+  }
 
-    @Override
-    public V get(K key) {
-        Interval<K> keyInterval = findKeyIntervalContaining(key);
-        //		if (keyInterval == null) return null;
-        return keyValues.get(keyInterval);
+  private void directPut(List<Interval<K>> intervalSequence, V value) {
+    for (Iterator<Interval<K>> iter = intervalSequence.iterator(); iter.hasNext();) {
+      this.keyValues.put(iter.next(), value);
     }
+  }
 
-    @Override
-    public boolean containsKey(K key) {
-        return findKeyIntervalContaining(key) != null;
-    }
+  @Override
+  public V get(K key) {
+    Interval<K> keyInterval = this.findKeyIntervalContaining(key);
+    //		if (keyInterval == null) return null;
+    return this.keyValues.get(keyInterval);
+  }
 
-    private Interval<K> findKeyIntervalContaining(K key) {
-        if (key == null)
-            return null;
-        Iterator<Interval<K>> it = keyValues.keySet().iterator();
-        while (it.hasNext()) {
-            Interval<K> interval = it.next();
-            if (interval.includes(key))
-                return interval;
-        }
-        return null;
-    }
+  @Override
+  public boolean containsKey(K key) {
+    return this.findKeyIntervalContaining(key) != null;
+  }
 
-    private List<Interval<K>> intersectingKeys(Interval<K> otherInterval) {
-        List<Interval<K>> intervalSequence = new ArrayList<Interval<K>>();
-        Iterator<Interval<K>> it = keyValues.keySet().iterator();
-        while (it.hasNext()) {
-            Interval<K> keyInterval = it.next();
-            if (keyInterval.intersects(otherInterval))
-                intervalSequence.add(keyInterval);
-        }
-        return intervalSequence;
+  private Interval<K> findKeyIntervalContaining(K key) {
+    if (key == null) {
+      return null;
     }
+    Iterator<Interval<K>> it = this.keyValues.keySet().iterator();
+    while (it.hasNext()) {
+      Interval<K> interval = it.next();
+      if (interval.includes(key)) {
+        return interval;
+      }
+    }
+    return null;
+  }
 
-    @Override
-    public boolean containsIntersectingKey(Interval<K> otherInterval) {
-        return !intersectingKeys(otherInterval).isEmpty();
+  private List<Interval<K>> intersectingKeys(Interval<K> otherInterval) {
+    List<Interval<K>> intervalSequence = new ArrayList<Interval<K>>();
+    Iterator<Interval<K>> it = this.keyValues.keySet().iterator();
+    while (it.hasNext()) {
+      Interval<K> keyInterval = it.next();
+      if (keyInterval.intersects(otherInterval)) {
+        intervalSequence.add(keyInterval);
+      }
     }
+    return intervalSequence;
+  }
+
+  @Override
+  public boolean containsIntersectingKey(Interval<K> otherInterval) {
+    return !this.intersectingKeys(otherInterval).isEmpty();
+  }
 
 }
-

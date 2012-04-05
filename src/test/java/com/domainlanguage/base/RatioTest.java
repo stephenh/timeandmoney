@@ -6,57 +6,58 @@
 
 package com.domainlanguage.base;
 
-import java.math.*;
+import java.math.BigDecimal;
 
-import junit.framework.*;
+import junit.framework.Assert;
+import junit.framework.TestCase;
 
 public class RatioTest extends TestCase {
 
-    public void testBigDecimalRatio() {
-        Ratio r3over2 = Ratio.of(new BigDecimal(3), new BigDecimal(2));
-        BigDecimal result = r3over2.decimalValue(1, Rounding.UNNECESSARY);
-        assertEquals(new BigDecimal("1.5"), result);
+  public void testBigDecimalRatio() {
+    Ratio r3over2 = Ratio.of(new BigDecimal(3), new BigDecimal(2));
+    BigDecimal result = r3over2.decimalValue(1, Rounding.UNNECESSARY);
+    Assert.assertEquals(new BigDecimal("1.5"), result);
 
-        Ratio r10over3 = Ratio.of(new BigDecimal(10), new BigDecimal(3));
-        result = r10over3.decimalValue(3, Rounding.DOWN);
-        assertEquals(new BigDecimal("3.333"), result);
+    Ratio r10over3 = Ratio.of(new BigDecimal(10), new BigDecimal(3));
+    result = r10over3.decimalValue(3, Rounding.DOWN);
+    Assert.assertEquals(new BigDecimal("3.333"), result);
 
-        result = r10over3.decimalValue(3, Rounding.UP);
-        assertEquals(new BigDecimal("3.334"), result);
+    result = r10over3.decimalValue(3, Rounding.UP);
+    Assert.assertEquals(new BigDecimal("3.334"), result);
 
-        Ratio rManyDigits = Ratio.of(new BigDecimal("9.001"), new BigDecimal(3));
-        result = rManyDigits.decimalValue(6, Rounding.UP);
-        assertEquals(new BigDecimal("3.000334"), result);
+    Ratio rManyDigits = Ratio.of(new BigDecimal("9.001"), new BigDecimal(3));
+    result = rManyDigits.decimalValue(6, Rounding.UP);
+    Assert.assertEquals(new BigDecimal("3.000334"), result);
 
-        result = rManyDigits.decimalValue(7, Rounding.UP);
-        assertEquals(new BigDecimal("3.0003334"), result);
+    result = rManyDigits.decimalValue(7, Rounding.UP);
+    Assert.assertEquals(new BigDecimal("3.0003334"), result);
 
-        result = rManyDigits.decimalValue(7, Rounding.HALF_UP);
-        assertEquals(new BigDecimal("3.0003333"), result);
-    }
+    result = rManyDigits.decimalValue(7, Rounding.HALF_UP);
+    Assert.assertEquals(new BigDecimal("3.0003333"), result);
+  }
 
-    public void testLongRatio() {
-        Ratio rManyDigits = Ratio.of(9001l, 3000l);
-        BigDecimal result = rManyDigits.decimalValue(6, Rounding.UP);
-        assertEquals(new BigDecimal("3.000334"), result);
-    }
+  public void testLongRatio() {
+    Ratio rManyDigits = Ratio.of(9001l, 3000l);
+    BigDecimal result = rManyDigits.decimalValue(6, Rounding.UP);
+    Assert.assertEquals(new BigDecimal("3.000334"), result);
+  }
 
-    public void testEquals() {
-        assertTrue(Ratio.of(100, 200).equals(Ratio.of(100, 200)));
-        assertEquals(Ratio.of(100, 200), Ratio.of(100, 200));
-        assertEquals(Ratio.of(100, 200), Ratio.of(new BigDecimal("100"), new BigDecimal("200")));
-    }
+  public void testEquals() {
+    Assert.assertTrue(Ratio.of(100, 200).equals(Ratio.of(100, 200)));
+    Assert.assertEquals(Ratio.of(100, 200), Ratio.of(100, 200));
+    Assert.assertEquals(Ratio.of(100, 200), Ratio.of(new BigDecimal("100"), new BigDecimal("200")));
+  }
 
-    public void testMultiplyNumerator() {
-        Ratio rManyDigits = Ratio.of(9001, 3000);
-        Ratio product = rManyDigits.times(new BigDecimal("1.1"));
-        assertEquals(Ratio.of(new BigDecimal("9901.1"), new BigDecimal(3000)), product);
-    }
+  public void testMultiplyNumerator() {
+    Ratio rManyDigits = Ratio.of(9001, 3000);
+    Ratio product = rManyDigits.times(new BigDecimal("1.1"));
+    Assert.assertEquals(Ratio.of(new BigDecimal("9901.1"), new BigDecimal(3000)), product);
+  }
 
-    public void testMultiplyByRatio() {
-        Ratio r1 = Ratio.of(9001, 3000);
-        Ratio r2 = Ratio.of(3, 2);
-        Ratio expectedProduct = Ratio.of(27003, 6000);
-        assertEquals(expectedProduct, r1.times(r2));
-    }
+  public void testMultiplyByRatio() {
+    Ratio r1 = Ratio.of(9001, 3000);
+    Ratio r2 = Ratio.of(3, 2);
+    Ratio expectedProduct = Ratio.of(27003, 6000);
+    Assert.assertEquals(expectedProduct, r1.times(r2));
+  }
 }

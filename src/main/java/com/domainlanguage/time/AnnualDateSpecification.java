@@ -6,46 +6,50 @@
 
 package com.domainlanguage.time;
 
-import java.util.*;
+import java.util.Iterator;
 
-import com.domainlanguage.util.*;
+import com.domainlanguage.util.ImmutableIterator;
 
 public abstract class AnnualDateSpecification extends DateSpecification {
 
-    public abstract CalendarDate ofYear(int year);
+  public abstract CalendarDate ofYear(int year);
 
-    @Override
-    public CalendarDate firstOccurrenceIn(CalendarInterval interval) {
-        CalendarDate firstTry = ofYear(interval.start().getYear());
-        if (interval.includes(firstTry))
-            return firstTry;
-        CalendarDate secondTry = ofYear(interval.start().getYear() + 1);
-        if (interval.includes(secondTry))
-            return secondTry;
-        return null;
+  @Override
+  public CalendarDate firstOccurrenceIn(CalendarInterval interval) {
+    CalendarDate firstTry = this.ofYear(interval.start().getYear());
+    if (interval.includes(firstTry)) {
+      return firstTry;
     }
-
-    @Override
-    public Iterator<CalendarDate> iterateOver(final CalendarInterval interval) {
-        final AnnualDateSpecification spec = this;
-        return new ImmutableIterator<CalendarDate>() {
-            CalendarDate next = firstOccurrenceIn(interval);
-            int year = next.getYear();
-
-            public boolean hasNext() {
-                return next != null;
-            }
-
-            public CalendarDate next() {
-                if (next == null)
-                    return null;
-                CalendarDate current = next;
-                year += 1;
-                next = spec.ofYear(year);
-                if (!interval.includes(next))
-                    next = null;
-                return current;
-            }
-        };
+    CalendarDate secondTry = this.ofYear(interval.start().getYear() + 1);
+    if (interval.includes(secondTry)) {
+      return secondTry;
     }
+    return null;
+  }
+
+  @Override
+  public Iterator<CalendarDate> iterateOver(final CalendarInterval interval) {
+    final AnnualDateSpecification spec = this;
+    return new ImmutableIterator<CalendarDate>() {
+      CalendarDate next = AnnualDateSpecification.this.firstOccurrenceIn(interval);
+      int year = this.next.getYear();
+
+      public boolean hasNext() {
+        return this.next != null;
+      }
+
+      public CalendarDate next() {
+        if (this.next == null) {
+          return null;
+        }
+        CalendarDate current = this.next;
+        this.year += 1;
+        this.next = spec.ofYear(this.year);
+        if (!interval.includes(this.next)) {
+          this.next = null;
+        }
+        return current;
+      }
+    };
+  }
 }

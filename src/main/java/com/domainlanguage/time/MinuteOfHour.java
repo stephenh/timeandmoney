@@ -6,41 +6,47 @@
 package com.domainlanguage.time;
 
 public class MinuteOfHour {
-    int value;
-    
-    public static MinuteOfHour value(int initial) {
-        return new MinuteOfHour(initial);
-    }
-    private MinuteOfHour(int initial) {
-        if (initial < 0 || initial > 59)
-            throw new IllegalArgumentException("Illegal value for minute: " + initial + ", please use a value between 0 and 59");
-        value = initial;
-    }
-    
-    public boolean equals(Object another) {
-        if (!(another instanceof MinuteOfHour))
-            return false;
-        return equals((MinuteOfHour)another);
-    }
-    public boolean equals(MinuteOfHour another) {
-        return value == another.value;
-    }
-    public int hashCode() {
-        return value;
-    }
+  int value;
 
-    public boolean isAfter(MinuteOfHour another) {
-        return value > another.value;
-    }
+  public static MinuteOfHour value(int initial) {
+    return new MinuteOfHour(initial);
+  }
 
-    public boolean isBefore(MinuteOfHour another) {
-        return value < another.value;
+  private MinuteOfHour(int initial) {
+    if (initial < 0 || initial > 59) {
+      throw new IllegalArgumentException("Illegal value for minute: " + initial + ", please use a value between 0 and 59");
     }
+    this.value = initial;
+  }
 
-    public int value() {
-        return value;
+  public boolean equals(Object another) {
+    if (!(another instanceof MinuteOfHour)) {
+      return false;
     }
-    public String toString() {
-        return String.valueOf(value);
-    }
+    return this.equals((MinuteOfHour) another);
+  }
+
+  public boolean equals(MinuteOfHour another) {
+    return this.value == another.value;
+  }
+
+  public int hashCode() {
+    return this.value;
+  }
+
+  public boolean isAfter(MinuteOfHour another) {
+    return this.value > another.value;
+  }
+
+  public boolean isBefore(MinuteOfHour another) {
+    return this.value < another.value;
+  }
+
+  public int value() {
+    return this.value;
+  }
+
+  public String toString() {
+    return String.valueOf(this.value);
+  }
 }

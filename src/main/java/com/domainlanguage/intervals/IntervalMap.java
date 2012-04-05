@@ -8,13 +8,13 @@ package com.domainlanguage.intervals;
 
 public interface IntervalMap<K extends Comparable<K>, V> {
 
-    void put(Interval<K> keyInterval, V value);
+  void put(Interval<K> keyInterval, V value);
 
-    V get(K key);
+  V get(K key);
 
-    void remove(Interval<K> keyInterval);
+  void remove(Interval<K> keyInterval);
 
-    boolean containsKey(K key);
+  boolean containsKey(K key);
 
-    boolean containsIntersectingKey(Interval<K> interval);
+  boolean containsIntersectingKey(Interval<K> interval);
 }

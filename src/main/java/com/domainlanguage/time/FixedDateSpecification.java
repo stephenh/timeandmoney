@@ -8,22 +8,22 @@ package com.domainlanguage.time;
 
 class FixedDateSpecification extends AnnualDateSpecification {
 
-    private final int month;
-    private final int day;
+  private final int month;
+  private final int day;
 
-    FixedDateSpecification(int month, int day) {
-        this.month = month;
-        this.day = day;
-    }
+  FixedDateSpecification(int month, int day) {
+    this.month = month;
+    this.day = day;
+  }
 
-    @Override
-    public CalendarDate ofYear(int year) {
-        return CalendarDate.date(year, month, day);
-    }
+  @Override
+  public CalendarDate ofYear(int year) {
+    return CalendarDate.date(year, this.month, this.day);
+  }
 
-    @Override
-    public boolean isSatisfiedBy(CalendarDate date) {
-        return day == date.getDay() && month == date.getMonth();
-    }
+  @Override
+  public boolean isSatisfiedBy(CalendarDate date) {
+    return this.day == date.getDay() && this.month == date.getMonth();
+  }
 
 }

@@ -6,73 +6,76 @@
 
 package com.domainlanguage.time;
 
-import java.util.*;
+import java.util.Calendar;
 
-import junit.framework.*;
+import junit.framework.Assert;
+import junit.framework.TestCase;
 
-import com.domainlanguage.tests.*;
+import com.domainlanguage.tests.SerializationTester;
 
 public class TimeUnitTest extends TestCase {
-    public static TimeUnit exampleForPersistentMappingTesting() {
-        return TimeUnit.second;
-    }
-    public static TimeUnit.Type exampleTypeForPersistentMappingTesting() {
-        return TimeUnit.Type.hour;
-    }
-    public void testSerialization() {
-        SerializationTester.assertCanBeSerialized(TimeUnit.month);
-    }
+  public static TimeUnit exampleForPersistentMappingTesting() {
+    return TimeUnit.second;
+  }
 
-    public void testToString() {
-        assertEquals("month", TimeUnit.month.toString());
-    }
+  public static TimeUnit.Type exampleTypeForPersistentMappingTesting() {
+    return TimeUnit.Type.hour;
+  }
 
-    public void testConvertibleToMilliseconds() {
-        assertTrue(TimeUnit.millisecond.isConvertibleToMilliseconds());
-        assertTrue(TimeUnit.hour.isConvertibleToMilliseconds());
-        assertTrue(TimeUnit.day.isConvertibleToMilliseconds());
-        assertTrue(TimeUnit.week.isConvertibleToMilliseconds());
-        assertFalse(TimeUnit.month.isConvertibleToMilliseconds());
-        assertFalse(TimeUnit.year.isConvertibleToMilliseconds());
-    }
+  public void testSerialization() {
+    SerializationTester.assertCanBeSerialized(TimeUnit.month);
+  }
 
-    public void testComparison() {
-        assertEquals(0, TimeUnit.hour.compareTo(TimeUnit.hour));
-        assertTrue(TimeUnit.hour.compareTo(TimeUnit.millisecond) > 0);
-        assertTrue(TimeUnit.millisecond.compareTo(TimeUnit.hour) < 0);
-        assertTrue(TimeUnit.day.compareTo(TimeUnit.hour) > 0);
-        assertTrue(TimeUnit.hour.compareTo(TimeUnit.day) < 0);
+  public void testToString() {
+    Assert.assertEquals("month", TimeUnit.month.toString());
+  }
 
-        assertTrue(TimeUnit.month.compareTo(TimeUnit.day) > 0);
-        assertTrue(TimeUnit.day.compareTo(TimeUnit.month) < 0);
-        assertTrue(TimeUnit.quarter.compareTo(TimeUnit.hour) > 0);
+  public void testConvertibleToMilliseconds() {
+    Assert.assertTrue(TimeUnit.millisecond.isConvertibleToMilliseconds());
+    Assert.assertTrue(TimeUnit.hour.isConvertibleToMilliseconds());
+    Assert.assertTrue(TimeUnit.day.isConvertibleToMilliseconds());
+    Assert.assertTrue(TimeUnit.week.isConvertibleToMilliseconds());
+    Assert.assertFalse(TimeUnit.month.isConvertibleToMilliseconds());
+    Assert.assertFalse(TimeUnit.year.isConvertibleToMilliseconds());
+  }
 
-        assertEquals(0, TimeUnit.month.compareTo(TimeUnit.month));
-        assertTrue(TimeUnit.quarter.compareTo(TimeUnit.year) < 0);
-        assertTrue(TimeUnit.year.compareTo(TimeUnit.quarter) > 0);
-    }
+  public void testComparison() {
+    Assert.assertEquals(0, TimeUnit.hour.compareTo(TimeUnit.hour));
+    Assert.assertTrue(TimeUnit.hour.compareTo(TimeUnit.millisecond) > 0);
+    Assert.assertTrue(TimeUnit.millisecond.compareTo(TimeUnit.hour) < 0);
+    Assert.assertTrue(TimeUnit.day.compareTo(TimeUnit.hour) > 0);
+    Assert.assertTrue(TimeUnit.hour.compareTo(TimeUnit.day) < 0);
 
-    public void testJavaCalendarConstantForBaseType() {
-        assertEquals(Calendar.MILLISECOND, TimeUnit.millisecond.javaCalendarConstantForBaseType());
-        assertEquals(Calendar.MILLISECOND, TimeUnit.hour.javaCalendarConstantForBaseType());
-        assertEquals(Calendar.MILLISECOND, TimeUnit.day.javaCalendarConstantForBaseType());
-        assertEquals(Calendar.MILLISECOND, TimeUnit.week.javaCalendarConstantForBaseType());
-        assertEquals(Calendar.MONTH, TimeUnit.month.javaCalendarConstantForBaseType());
-        assertEquals(Calendar.MONTH, TimeUnit.quarter.javaCalendarConstantForBaseType());
-        assertEquals(Calendar.MONTH, TimeUnit.year.javaCalendarConstantForBaseType());
-    }
+    Assert.assertTrue(TimeUnit.month.compareTo(TimeUnit.day) > 0);
+    Assert.assertTrue(TimeUnit.day.compareTo(TimeUnit.month) < 0);
+    Assert.assertTrue(TimeUnit.quarter.compareTo(TimeUnit.hour) > 0);
 
-    public void testIsConvertableTo() {
-        assertTrue(TimeUnit.hour.isConvertibleTo(TimeUnit.minute));
-        assertTrue(TimeUnit.minute.isConvertibleTo(TimeUnit.hour));
-        assertTrue(TimeUnit.year.isConvertibleTo(TimeUnit.month));
-        assertTrue(TimeUnit.month.isConvertibleTo(TimeUnit.year));
-        assertFalse(TimeUnit.month.isConvertibleTo(TimeUnit.hour));
-        assertFalse(TimeUnit.hour.isConvertibleTo(TimeUnit.month));
-    }
+    Assert.assertEquals(0, TimeUnit.month.compareTo(TimeUnit.month));
+    Assert.assertTrue(TimeUnit.quarter.compareTo(TimeUnit.year) < 0);
+    Assert.assertTrue(TimeUnit.year.compareTo(TimeUnit.quarter) > 0);
+  }
 
-    public void testNextFinerUnit() {
-        assertEquals(TimeUnit.minute, TimeUnit.hour.nextFinerUnit());
-        assertEquals(TimeUnit.month, TimeUnit.quarter.nextFinerUnit());
-    }
+  public void testJavaCalendarConstantForBaseType() {
+    Assert.assertEquals(Calendar.MILLISECOND, TimeUnit.millisecond.javaCalendarConstantForBaseType());
+    Assert.assertEquals(Calendar.MILLISECOND, TimeUnit.hour.javaCalendarConstantForBaseType());
+    Assert.assertEquals(Calendar.MILLISECOND, TimeUnit.day.javaCalendarConstantForBaseType());
+    Assert.assertEquals(Calendar.MILLISECOND, TimeUnit.week.javaCalendarConstantForBaseType());
+    Assert.assertEquals(Calendar.MONTH, TimeUnit.month.javaCalendarConstantForBaseType());
+    Assert.assertEquals(Calendar.MONTH, TimeUnit.quarter.javaCalendarConstantForBaseType());
+    Assert.assertEquals(Calendar.MONTH, TimeUnit.year.javaCalendarConstantForBaseType());
+  }
+
+  public void testIsConvertableTo() {
+    Assert.assertTrue(TimeUnit.hour.isConvertibleTo(TimeUnit.minute));
+    Assert.assertTrue(TimeUnit.minute.isConvertibleTo(TimeUnit.hour));
+    Assert.assertTrue(TimeUnit.year.isConvertibleTo(TimeUnit.month));
+    Assert.assertTrue(TimeUnit.month.isConvertibleTo(TimeUnit.year));
+    Assert.assertFalse(TimeUnit.month.isConvertibleTo(TimeUnit.hour));
+    Assert.assertFalse(TimeUnit.hour.isConvertibleTo(TimeUnit.month));
+  }
+
+  public void testNextFinerUnit() {
+    Assert.assertEquals(TimeUnit.minute, TimeUnit.hour.nextFinerUnit());
+    Assert.assertEquals(TimeUnit.month, TimeUnit.quarter.nextFinerUnit());
+  }
 }

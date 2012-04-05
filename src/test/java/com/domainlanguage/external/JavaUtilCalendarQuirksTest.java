@@ -8,6 +8,7 @@ package com.domainlanguage.external;
 import java.util.Calendar;
 import java.util.TimeZone;
 
+import junit.framework.Assert;
 import junit.framework.TestCase;
 
 /**
@@ -16,36 +17,37 @@ import junit.framework.TestCase;
  * CalendarDateTest.testConversionToJavaUtil(). These tests are mainly for peace of mind.
  */
 public class JavaUtilCalendarQuirksTest extends TestCase {
-    
-    public void testHour() {
-        TimeZone gmt = TimeZone.getTimeZone("Universal");
-        Calendar test = Calendar.getInstance(gmt);
-        test.set(Calendar.YEAR, 1969);
-        test.set(Calendar.MONTH, Calendar.JULY);
-        test.set(Calendar.DATE, 20);
-        test.set(Calendar.HOUR, 5);
-        test.set(Calendar.AM_PM, Calendar.PM);
-        
-        assertEquals(1969, test.get(Calendar.YEAR));
-        assertEquals(Calendar.JULY, test.get(Calendar.MONTH));
-        assertEquals(20, test.get(Calendar.DATE));
-        assertEquals(5, test.get(Calendar.HOUR));
-        assertEquals(Calendar.PM, test.get(Calendar.AM_PM));
-        assertEquals(17, test.get(Calendar.HOUR_OF_DAY));
-    }
-    public void testHourOfDay() {
-        TimeZone gmt = TimeZone.getTimeZone("Universal");
-        Calendar test = Calendar.getInstance(gmt);
-        test.set(Calendar.YEAR, 1969);
-        test.set(Calendar.MONTH, Calendar.JULY);
-        test.set(Calendar.DATE, 20);
-        test.set(Calendar.HOUR_OF_DAY, 3);
-        
-        assertEquals(1969, test.get(Calendar.YEAR));
-        assertEquals(Calendar.JULY, test.get(Calendar.MONTH));
-        assertEquals(20, test.get(Calendar.DATE));
-        assertEquals(3, test.get(Calendar.HOUR));
-        assertEquals(Calendar.AM, test.get(Calendar.AM_PM));
-        assertEquals(3, test.get(Calendar.HOUR_OF_DAY));
-    }
+
+  public void testHour() {
+    TimeZone gmt = TimeZone.getTimeZone("Universal");
+    Calendar test = Calendar.getInstance(gmt);
+    test.set(Calendar.YEAR, 1969);
+    test.set(Calendar.MONTH, Calendar.JULY);
+    test.set(Calendar.DATE, 20);
+    test.set(Calendar.HOUR, 5);
+    test.set(Calendar.AM_PM, Calendar.PM);
+
+    Assert.assertEquals(1969, test.get(Calendar.YEAR));
+    Assert.assertEquals(Calendar.JULY, test.get(Calendar.MONTH));
+    Assert.assertEquals(20, test.get(Calendar.DATE));
+    Assert.assertEquals(5, test.get(Calendar.HOUR));
+    Assert.assertEquals(Calendar.PM, test.get(Calendar.AM_PM));
+    Assert.assertEquals(17, test.get(Calendar.HOUR_OF_DAY));
+  }
+
+  public void testHourOfDay() {
+    TimeZone gmt = TimeZone.getTimeZone("Universal");
+    Calendar test = Calendar.getInstance(gmt);
+    test.set(Calendar.YEAR, 1969);
+    test.set(Calendar.MONTH, Calendar.JULY);
+    test.set(Calendar.DATE, 20);
+    test.set(Calendar.HOUR_OF_DAY, 3);
+
+    Assert.assertEquals(1969, test.get(Calendar.YEAR));
+    Assert.assertEquals(Calendar.JULY, test.get(Calendar.MONTH));
+    Assert.assertEquals(20, test.get(Calendar.DATE));
+    Assert.assertEquals(3, test.get(Calendar.HOUR));
+    Assert.assertEquals(Calendar.AM, test.get(Calendar.AM_PM));
+    Assert.assertEquals(3, test.get(Calendar.HOUR_OF_DAY));
+  }
 }

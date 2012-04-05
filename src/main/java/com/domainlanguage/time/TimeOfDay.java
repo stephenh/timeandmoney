@@ -5,63 +5,65 @@
  */
 package com.domainlanguage.time;
 
-import java.util.*;
+import java.util.TimeZone;
 
 public class TimeOfDay {
-    private final HourOfDay hour;
-    private final MinuteOfHour minute;
-    
-    public static TimeOfDay hourAndMinute(int hour, int minute) {
-        return new TimeOfDay(hour, minute);
-    }
-    
-    private TimeOfDay(int hour, int minute) {
-        this.hour = HourOfDay.value(hour);
-        this.minute = MinuteOfHour.value(minute);
-    }
+  private final HourOfDay hour;
+  private final MinuteOfHour minute;
 
-    public CalendarMinute on(CalendarDate date) {
-        return CalendarMinute.dateAndTimeOfDay(date, this);
-    }
-    public String toString() {
-        return hour.toString() + ":" + minute.toString();
-    }
-    public boolean equals(Object anotherObject) {
-        if (!(anotherObject instanceof TimeOfDay))
-            return false;
-        return equals((TimeOfDay)anotherObject);
-    }
-    public boolean equals(TimeOfDay another) {
-        if (another == null)
-            return false;
-        return hour.equals(another.hour) && minute.equals(another.minute);
-    }
-    public int hashCode() {
-        return hour.hashCode() ^ minute.hashCode();
-    }
+  public static TimeOfDay hourAndMinute(int hour, int minute) {
+    return new TimeOfDay(hour, minute);
+  }
 
-    public boolean isAfter(TimeOfDay another) {
-        return
-            hour.isAfter(another.hour) ||
-            hour.equals(another) && minute.isAfter(another.minute);
-    }
+  private TimeOfDay(int hour, int minute) {
+    this.hour = HourOfDay.value(hour);
+    this.minute = MinuteOfHour.value(minute);
+  }
 
-    public boolean isBefore(TimeOfDay another) {
-        return
-            hour.isBefore(another.hour) ||
-            hour.equals(another) && minute.isBefore(another.minute);
-    }
+  public CalendarMinute on(CalendarDate date) {
+    return CalendarMinute.dateAndTimeOfDay(date, this);
+  }
 
-    int getHour() {
-        return hour.value();
-    }
+  public String toString() {
+    return this.hour.toString() + ":" + this.minute.toString();
+  }
 
-    int getMinute() {
-        return minute.value();
+  public boolean equals(Object anotherObject) {
+    if (!(anotherObject instanceof TimeOfDay)) {
+      return false;
     }
+    return this.equals((TimeOfDay) anotherObject);
+  }
 
-    public TimePoint asTimePointGiven(CalendarDate date, TimeZone timeZone) {
-        CalendarMinute timeOfDayOnDate = on(date);
-        return timeOfDayOnDate.asTimePoint(timeZone);
+  public boolean equals(TimeOfDay another) {
+    if (another == null) {
+      return false;
     }
+    return this.hour.equals(another.hour) && this.minute.equals(another.minute);
+  }
+
+  public int hashCode() {
+    return this.hour.hashCode() ^ this.minute.hashCode();
+  }
+
+  public boolean isAfter(TimeOfDay another) {
+    return this.hour.isAfter(another.hour) || this.hour.equals(another) && this.minute.isAfter(another.minute);
+  }
+
+  public boolean isBefore(TimeOfDay another) {
+    return this.hour.isBefore(another.hour) || this.hour.equals(another) && this.minute.isBefore(another.minute);
+  }
+
+  int getHour() {
+    return this.hour.value();
+  }
+
+  int getMinute() {
+    return this.minute.value();
+  }
+
+  public TimePoint asTimePointGiven(CalendarDate date, TimeZone timeZone) {
+    CalendarMinute timeOfDayOnDate = this.on(date);
+    return timeOfDayOnDate.asTimePoint(timeZone);
+  }
 }
