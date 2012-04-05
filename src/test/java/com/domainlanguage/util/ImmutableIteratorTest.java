@@ -13,7 +13,7 @@ import junit.framework.*;
 public class ImmutableIteratorTest extends TestCase {
 
     public void testRemove() {
-        Iterator iterator = new ImmutableIterator() {
+        Iterator<Object> iterator = new ImmutableIterator<Object>() {
             public boolean hasNext() {
                 return true;
             }
