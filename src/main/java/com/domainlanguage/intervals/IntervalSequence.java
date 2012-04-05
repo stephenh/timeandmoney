@@ -8,18 +8,19 @@ package com.domainlanguage.intervals;
 
 import java.util.*;
 
-public class IntervalSequence {
-    List intervals;
+public class IntervalSequence<T extends Comparable<T>> {
+
+    List<Interval<T>> intervals;
 
     public IntervalSequence() {
-        intervals = new ArrayList();
+        intervals = new ArrayList<Interval<T>>();
     }
     
-    public Iterator iterator() {
+    public Iterator<Interval<T>> iterator() {
         return intervals.iterator();
     }
 
-    public void add(Interval interval) {
+    public void add(Interval<T> interval) {
         intervals.add(interval);
         Collections.sort(intervals); 
     }
@@ -28,29 +29,29 @@ public class IntervalSequence {
         return intervals.isEmpty();
     }
 
-    public IntervalSequence gaps() {
-        IntervalSequence gaps = new IntervalSequence();
+    public IntervalSequence<T> gaps() {
+        IntervalSequence<T> gaps = new IntervalSequence<T>();
         if (intervals.size() < 2)
-            return new IntervalSequence();
+            return new IntervalSequence<T>();
         for (int i = 1; i < intervals.size(); i++) {
-            Interval left = (Interval) intervals.get(i - 1);
-            Interval right = (Interval) intervals.get(i);
-            Interval gap = left.gap(right);
+            Interval<T> left = intervals.get(i - 1);
+            Interval<T> right = intervals.get(i);
+            Interval<T> gap = left.gap(right);
             if (!gap.isEmpty())
                 gaps.add(gap);
         }
         return gaps;
     }
 
-    public Interval extent() {
+    public Interval<T> extent() {
         if (intervals.isEmpty())
             return null;
         //TODO: Add a creation method to Interval for empty(), if it can be
         // polymorphic.
         if (intervals.size() == 1)
-            return (Interval) intervals.get(0);
-        Interval left = (Interval) intervals.get(0);
-        Interval right = (Interval) intervals.get(intervals.size() - 1);
+            return intervals.get(0);
+        Interval<T> left = intervals.get(0);
+        Interval<T> right = intervals.get(intervals.size() - 1);
         return left.newOfSameType(left.lowerLimit(), left.includesLowerLimit(), right.upperLimit(), right.includesUpperLimit());
     }
     //Only for use by persistence mapping frameworks
