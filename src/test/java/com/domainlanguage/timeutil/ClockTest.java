@@ -17,11 +17,10 @@ import com.domainlanguage.time.TimeSource;
 
 public class ClockTest extends TestCase {
 
-  TimePoint dec1_5am_gmt = TimePoint.atGMT(2004, 12, 1, 5, 0);
-  TimeZone gmt = TimeZone.getTimeZone("Universal");
-  TimeZone pt = TimeZone.getTimeZone("America/Los_Angeles");
-  TimeZone ct = TimeZone.getTimeZone("America/Chicago");
-  TimeSource dummySourceDec1_5h = dummyTimeSource(dec1_5am_gmt);
+  private static final TimePoint dec1_5am_gmt = TimePoint.atGMT(2004, 12, 1, 5, 0);
+  private static final TimeZone gmt = TimeZone.getTimeZone("Universal");
+  private static final TimeZone pt = TimeZone.getTimeZone("America/Los_Angeles");
+  private static final TimeSource dummySourceDec1_5h = dummyTimeSource(dec1_5am_gmt);
 
   public void tearDown() {
     Clock.reset();
@@ -68,7 +67,7 @@ public class ClockTest extends TestCase {
 
   }
 
-  private TimeSource dummyTimeSource(final TimePoint returnValueForNow) {
+  private static TimeSource dummyTimeSource(final TimePoint returnValueForNow) {
     return new TimeSource() {
       public TimePoint now() {
         return returnValueForNow;

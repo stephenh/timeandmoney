@@ -12,12 +12,9 @@ import java.util.Calendar;
 import com.domainlanguage.base.Ratio;
 
 public class Duration implements Comparable<Duration>, Serializable {
-  /**
-   * 
-   */
-  private static final long serialVersionUID = 1L;
 
   public static final Duration NONE = Duration.milliseconds(0);
+  private static final long serialVersionUID = 1L;
 
   private final long quantity;
   private final TimeUnit unit;
@@ -85,10 +82,6 @@ public class Duration implements Comparable<Duration>, Serializable {
     this.unit = unit;
   }
 
-  long inBaseUnits() {
-    return quantity * unit.getFactor();
-  }
-
   public Duration plus(Duration other) {
     assertConvertible(other);
     long newQuantity = inBaseUnits() + other.inBaseUnits();
@@ -143,25 +136,6 @@ public class Duration implements Comparable<Duration>, Serializable {
     return Ratio.of(inBaseUnits(), divisor.inBaseUnits());
   }
 
-  public boolean equals(Object object) {
-    if (!(object instanceof Duration)) {
-      return false;
-    }
-    Duration other = (Duration) object;
-    if (!isConvertibleTo(other)) {
-      return false;
-    }
-    return inBaseUnits() == other.inBaseUnits();
-  }
-
-  public String toString() {
-    return toNormalizedString(unit.descendingUnitsForDisplay());
-  }
-
-  public String toNormalizedString() {
-    return toNormalizedString(unit.descendingUnits());
-  }
-
   public TimeUnit normalizedUnit() {
     TimeUnit[] units = unit.descendingUnits();
     long baseAmount = inBaseUnits();
@@ -174,22 +148,6 @@ public class Duration implements Comparable<Duration>, Serializable {
     }
     return null;
 
-  }
-
-  public int hashCode() {
-    return (int) quantity;
-  }
-
-  public int compareTo(Duration other) {
-    assertConvertible(other);
-    long difference = inBaseUnits() - other.inBaseUnits();
-    if (difference > 0) {
-      return 1;
-    }
-    if (difference < 0) {
-      return -1;
-    }
-    return 0;
   }
 
   public TimeInterval startingFrom(TimePoint start) {
@@ -222,6 +180,49 @@ public class Duration implements Comparable<Duration>, Serializable {
   public boolean isLessThanOrEqualTo(Duration other) {
     assert unit.isConvertibleTo(other.unit);
     return inBaseUnits() <= other.inBaseUnits();
+  }
+
+  @Override
+  public String toString() {
+    return toNormalizedString(unit.descendingUnitsForDisplay());
+  }
+
+  public String toNormalizedString() {
+    return toNormalizedString(unit.descendingUnits());
+  }
+
+  @Override
+  public boolean equals(Object object) {
+    if (object instanceof Duration) {
+      Duration other = (Duration) object;
+      if (!isConvertibleTo(other)) {
+        return false;
+      }
+      return inBaseUnits() == other.inBaseUnits();
+    }
+    return false;
+  }
+
+  @Override
+  public int hashCode() {
+    return (int) quantity;
+  }
+
+  @Override
+  public int compareTo(Duration other) {
+    assertConvertible(other);
+    long difference = inBaseUnits() - other.inBaseUnits();
+    if (difference > 0) {
+      return 1;
+    }
+    if (difference < 0) {
+      return -1;
+    }
+    return 0;
+  }
+
+  long inBaseUnits() {
+    return quantity * unit.getFactor();
   }
 
   TimePoint addAmountToTimePoint(long amount, TimePoint point) {

@@ -15,35 +15,6 @@ import com.domainlanguage.base.Rounding;
 
 public class Proration {
 
-  static Money sum(Money[] elements) {
-    Money sum = Money.valueOf(0, elements[0].getCurrency());
-    for (int i = 0; i < elements.length; i++) {
-      sum = sum.plus(elements[i]);
-    }
-    return sum;
-  }
-
-  static BigDecimal sum(BigDecimal[] elements) {
-    BigDecimal sum = new BigDecimal(0);
-    for (int i = 0; i < elements.length; i++) {
-      sum = sum.add(elements[i]);
-    }
-    return sum;
-  }
-
-  static Ratio[] ratios(BigDecimal[] proportions) {
-    BigDecimal total = Proration.sum(proportions);
-    Ratio[] ratios = new Ratio[proportions.length];
-    for (int i = 0; i < ratios.length; i++) {
-      ratios[i] = Ratio.of(proportions[i], total);
-    }
-    return ratios;
-  }
-
-  private static int defaultScaleForIntermediateCalculations(Money total) {
-    return total.getCurrency().getDefaultFractionDigits() + 1;
-  }
-
   public static Money[] dividedEvenlyIntoParts(Money total, int n) {
     Money lowResult = total.dividedBy(BigDecimal.valueOf(n), Rounding.DOWN);
     Money[] lowResults = new Money[n];
@@ -123,6 +94,35 @@ public class Proration {
       results[i % results.length] = results[i % results.length].incremented();
     }
     return results;
+  }
+
+  static Money sum(Money[] elements) {
+    Money sum = Money.valueOf(0, elements[0].getCurrency());
+    for (int i = 0; i < elements.length; i++) {
+      sum = sum.plus(elements[i]);
+    }
+    return sum;
+  }
+
+  static BigDecimal sum(BigDecimal[] elements) {
+    BigDecimal sum = new BigDecimal(0);
+    for (int i = 0; i < elements.length; i++) {
+      sum = sum.add(elements[i]);
+    }
+    return sum;
+  }
+
+  static Ratio[] ratios(BigDecimal[] proportions) {
+    BigDecimal total = Proration.sum(proportions);
+    Ratio[] ratios = new Ratio[proportions.length];
+    for (int i = 0; i < ratios.length; i++) {
+      ratios[i] = Ratio.of(proportions[i], total);
+    }
+    return ratios;
+  }
+
+  private static int defaultScaleForIntermediateCalculations(Money total) {
+    return total.getCurrency().getDefaultFractionDigits() + 1;
   }
 
   private static void assertAmountsLengthLessThanOrEqualTo(Money[] amounts, int increments) {

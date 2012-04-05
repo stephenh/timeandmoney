@@ -33,18 +33,21 @@ public class MoneyTimeRate {
     return Money.valueOf(rate.over(duration, scale, roundRule), currency);
   }
 
-  public boolean equals(Object other) {
-    try {
-      return equals((MoneyTimeRate) other);
-    } catch (ClassCastException ex) {
-      return false;
+  @Override
+  public boolean equals(Object object) {
+    if (object instanceof MoneyTimeRate) {
+      MoneyTimeRate other = (MoneyTimeRate) object;
+      return rate.equals(other.rate) && currency.equals(other.currency);
     }
+    return false;
   }
 
-  public boolean equals(MoneyTimeRate another) {
-    return another != null && rate.equals(another.rate) && currency.equals(another.currency);
+  @Override
+  public int hashCode() {
+    return rate.hashCode() ^ currency.hashCode();
   }
 
+  @Override
   public String toString() {
     return rate.toString();
   }

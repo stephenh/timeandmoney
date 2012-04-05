@@ -144,27 +144,6 @@ public class Interval<T extends Comparable<T>> implements Comparable<Interval<T>
     return comparison > 0 || comparison == 0 && !includesLowerLimit();
   }
 
-  @Override
-  public int compareTo(Interval<T> other) {
-    if (lowerLimit() == null) {
-      return other.lowerLimit() == null ? 0 : -1;
-    }
-    if (upperLimit() == null) {
-      return other.upperLimit() == null ? 0 : 1;
-    }
-
-    if (!upperLimit().equals(other.upperLimit())) {
-      return upperLimit().compareTo(other.upperLimit());
-    }
-    if (includesLowerLimit() && !other.includesLowerLimit()) {
-      return -1;
-    }
-    if (!includesLowerLimit() && other.includesLowerLimit()) {
-      return 1;
-    }
-    return lowerLimit().compareTo(other.lowerLimit());
-  }
-
   public boolean intersects(Interval<T> other) {
     int comparison = greaterOfLowerLimits(other).compareTo(lesserOfUpperLimits(other));
     if (comparison < 0) {
@@ -216,6 +195,26 @@ public class Interval<T extends Comparable<T>> implements Comparable<Interval<T>
       intervalSequence.add(right);
     }
     return intervalSequence;
+  }
+
+  @Override
+  public int compareTo(Interval<T> other) {
+    if (lowerLimit() == null) {
+      return other.lowerLimit() == null ? 0 : -1;
+    }
+    if (upperLimit() == null) {
+      return other.upperLimit() == null ? 0 : 1;
+    }
+    if (!upperLimit().equals(other.upperLimit())) {
+      return upperLimit().compareTo(other.upperLimit());
+    }
+    if (includesLowerLimit() && !other.includesLowerLimit()) {
+      return -1;
+    }
+    if (!includesLowerLimit() && other.includesLowerLimit()) {
+      return 1;
+    }
+    return lowerLimit().compareTo(other.lowerLimit());
   }
 
   @Override

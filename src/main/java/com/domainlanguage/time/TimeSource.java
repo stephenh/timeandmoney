@@ -7,5 +7,7 @@
 package com.domainlanguage.time;
 
 public interface TimeSource {
+
   TimePoint now();
+
 }

@@ -6,7 +6,8 @@
 package com.domainlanguage.time;
 
 public class HourOfDay {
-  int value;
+
+  private final int value;
 
   public static HourOfDay value(int initial) {
     return new HourOfDay(initial);
@@ -35,21 +36,6 @@ public class HourOfDay {
     value = initial;
   }
 
-  public boolean equals(Object another) {
-    if (!(another instanceof HourOfDay)) {
-      return false;
-    }
-    return equals((HourOfDay) another);
-  }
-
-  public boolean equals(HourOfDay another) {
-    return value == another.value;
-  }
-
-  public int hashCode() {
-    return value;
-  }
-
   public boolean isAfter(HourOfDay another) {
     return value > another.value;
   }
@@ -62,7 +48,22 @@ public class HourOfDay {
     return value;
   }
 
+  @Override
   public String toString() {
     return String.valueOf(value);
+  }
+
+  @Override
+  public boolean equals(Object object) {
+    if (object instanceof HourOfDay) {
+      HourOfDay other = (HourOfDay) object;
+      return value == other.value;
+    }
+    return false;
+  }
+
+  @Override
+  public int hashCode() {
+    return value;
   }
 }

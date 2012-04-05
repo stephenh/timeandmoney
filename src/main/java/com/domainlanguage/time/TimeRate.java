@@ -8,6 +8,7 @@ package com.domainlanguage.time;
 import java.math.BigDecimal;
 
 public class TimeRate {
+
   private final BigDecimal quantity;
   private final Duration unit;
 
@@ -36,27 +37,30 @@ public class TimeRate {
     return duration.dividedBy(unit).times(quantity).decimalValue(scale, roundRule);
   }
 
-  public boolean equals(Object another) {
-    try {
-      return equals((TimeRate) another);
-    } catch (ClassCastException ex) {
-      return false;
-    }
-  }
-
-  public boolean equals(TimeRate another) {
-    return another != null && quantity.equals(another.quantity) && unit.equals(another.unit);
-  }
-
   public int scale() {
     return quantity.scale();
   }
 
+  @Override
   public String toString() {
     StringBuffer buffer = new StringBuffer();
     buffer.append(quantity);
     buffer.append(" per ");
     buffer.append(unit);
     return buffer.toString();
+  }
+
+  @Override
+  public boolean equals(Object object) {
+    if (object instanceof TimeRate) {
+      TimeRate other = (TimeRate) object;
+      return quantity.equals(other.quantity) && unit.equals(other.unit);
+    }
+    return false;
+  }
+
+  @Override
+  public int hashCode() {
+    return quantity.hashCode() ^ unit.hashCode();
   }
 }

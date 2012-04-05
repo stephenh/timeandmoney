@@ -6,7 +6,8 @@
 package com.domainlanguage.time;
 
 public class MinuteOfHour {
-  int value;
+
+  private final int value;
 
   public static MinuteOfHour value(int initial) {
     return new MinuteOfHour(initial);
@@ -17,21 +18,6 @@ public class MinuteOfHour {
       throw new IllegalArgumentException("Illegal value for minute: " + initial + ", please use a value between 0 and 59");
     }
     value = initial;
-  }
-
-  public boolean equals(Object another) {
-    if (!(another instanceof MinuteOfHour)) {
-      return false;
-    }
-    return equals((MinuteOfHour) another);
-  }
-
-  public boolean equals(MinuteOfHour another) {
-    return value == another.value;
-  }
-
-  public int hashCode() {
-    return value;
   }
 
   public boolean isAfter(MinuteOfHour another) {
@@ -46,7 +32,22 @@ public class MinuteOfHour {
     return value;
   }
 
+  @Override
   public String toString() {
     return String.valueOf(value);
+  }
+
+  @Override
+  public boolean equals(Object object) {
+    if (object instanceof MinuteOfHour) {
+      MinuteOfHour other = (MinuteOfHour) object;
+      return value == other.value;
+    }
+    return false;
+  }
+
+  @Override
+  public int hashCode() {
+    return value;
   }
 }

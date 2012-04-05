@@ -15,17 +15,18 @@ import junit.framework.TestCase;
 import com.domainlanguage.tests.SerializationTester;
 
 public class IntervalTest extends TestCase {
-  private Interval<BigDecimal> empty = Interval.open(new BigDecimal(1), new BigDecimal(1));
-  private Interval<BigDecimal> c5_10c = Interval.closed(new BigDecimal(5), new BigDecimal(10));
-  private Interval<BigDecimal> c1_10c = Interval.closed(new BigDecimal(1), new BigDecimal(10));
-  private Interval<BigDecimal> c4_6c = Interval.closed(new BigDecimal(4), new BigDecimal(6));
-  private Interval<BigDecimal> c5_15c = Interval.closed(new BigDecimal(5), new BigDecimal(15));
-  private Interval<BigDecimal> c12_16c = Interval.closed(new BigDecimal(12), new BigDecimal(16));
-  private Interval<BigDecimal> o10_12c = Interval.over(new BigDecimal(10), false, new BigDecimal(12), true);
-  private Interval<BigDecimal> o1_1c = Interval.over(new BigDecimal(1), false, new BigDecimal(1), true);
-  private Interval<BigDecimal> c1_1o = Interval.over(new BigDecimal(1), true, new BigDecimal(1), false);
-  private Interval<BigDecimal> c1_1c = Interval.over(new BigDecimal(1), true, new BigDecimal(1), true);
-  private Interval<BigDecimal> o1_1o = Interval.over(new BigDecimal(1), false, new BigDecimal(1), false);
+
+  private static final Interval<BigDecimal> empty = Interval.open(new BigDecimal(1), new BigDecimal(1));
+  private static final Interval<BigDecimal> c5_10c = Interval.closed(new BigDecimal(5), new BigDecimal(10));
+  private static final Interval<BigDecimal> c1_10c = Interval.closed(new BigDecimal(1), new BigDecimal(10));
+  private static final Interval<BigDecimal> c4_6c = Interval.closed(new BigDecimal(4), new BigDecimal(6));
+  private static final Interval<BigDecimal> c5_15c = Interval.closed(new BigDecimal(5), new BigDecimal(15));
+  private static final Interval<BigDecimal> c12_16c = Interval.closed(new BigDecimal(12), new BigDecimal(16));
+  private static final Interval<BigDecimal> o10_12c = Interval.over(new BigDecimal(10), false, new BigDecimal(12), true);
+  private static final Interval<BigDecimal> o1_1c = Interval.over(new BigDecimal(1), false, new BigDecimal(1), true);
+  private static final Interval<BigDecimal> c1_1o = Interval.over(new BigDecimal(1), true, new BigDecimal(1), false);
+  private static final Interval<BigDecimal> c1_1c = Interval.over(new BigDecimal(1), true, new BigDecimal(1), true);
+  private static final Interval<BigDecimal> o1_1o = Interval.over(new BigDecimal(1), false, new BigDecimal(1), false);
 
   public static IntervalLimit<Integer> exampleLimitForPersistentMappingTesting() {
     return IntervalLimit.upper(true, new Integer(78));

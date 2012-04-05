@@ -16,16 +16,16 @@ import junit.framework.TestCase;
 import com.domainlanguage.tests.SerializationTester;
 
 public class TimePointTest extends TestCase {
+
   private static final String AM = "AM";
   private static final String PM = "PM";
-
-  private TimeZone gmt = TimeZone.getTimeZone("Universal");
-  private TimeZone pt = TimeZone.getTimeZone("America/Los_Angeles");
-  private TimeZone ct = TimeZone.getTimeZone("America/Chicago");
-  private TimePoint dec19_2003 = TimePoint.atMidnightGMT(2003, 12, 19);
-  private TimePoint dec20_2003 = TimePoint.atMidnightGMT(2003, 12, 20);
-  private TimePoint dec21_2003 = TimePoint.atMidnightGMT(2003, 12, 21);
-  private TimePoint dec22_2003 = TimePoint.atMidnightGMT(2003, 12, 22);
+  private static final TimeZone gmt = TimeZone.getTimeZone("Universal");
+  private static final TimeZone pt = TimeZone.getTimeZone("America/Los_Angeles");
+  private static final TimeZone ct = TimeZone.getTimeZone("America/Chicago");
+  private static final TimePoint dec19_2003 = TimePoint.atMidnightGMT(2003, 12, 19);
+  private static final TimePoint dec20_2003 = TimePoint.atMidnightGMT(2003, 12, 20);
+  private static final TimePoint dec21_2003 = TimePoint.atMidnightGMT(2003, 12, 21);
+  private static final TimePoint dec22_2003 = TimePoint.atMidnightGMT(2003, 12, 22);
 
   public void testSerialization() {
     SerializationTester.assertCanBeSerialized(dec19_2003);

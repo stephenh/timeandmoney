@@ -18,12 +18,12 @@ import junit.framework.TestCase;
 public class TimeOfDayTest extends TestCase {
 
   private static final TimeZone CST = TimeZone.getTimeZone("CST");
-  private CalendarDate feb17 = CalendarDate.from(2006, 2, 17);
-  private TimeOfDay midnight = TimeOfDay.hourAndMinute(0, 0);
-  private TimeOfDay morning = TimeOfDay.hourAndMinute(10, 20);
-  private TimeOfDay noon = TimeOfDay.hourAndMinute(12, 0);
-  private TimeOfDay afternoon = TimeOfDay.hourAndMinute(15, 40);
-  private TimeOfDay twoMinutesBeforeMidnight = TimeOfDay.hourAndMinute(23, 58);
+  private static final CalendarDate feb17 = CalendarDate.from(2006, 2, 17);
+  private static final TimeOfDay midnight = TimeOfDay.hourAndMinute(0, 0);
+  private static final TimeOfDay morning = TimeOfDay.hourAndMinute(10, 20);
+  private static final TimeOfDay noon = TimeOfDay.hourAndMinute(12, 0);
+  private static final TimeOfDay afternoon = TimeOfDay.hourAndMinute(15, 40);
+  private static final TimeOfDay twoMinutesBeforeMidnight = TimeOfDay.hourAndMinute(23, 58);
 
   /**
    * Constructs a TimeOfDayTest.

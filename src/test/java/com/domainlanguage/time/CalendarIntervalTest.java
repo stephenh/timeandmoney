@@ -18,16 +18,16 @@ import com.domainlanguage.tests.SerializationTester;
 
 public class CalendarIntervalTest extends TestCase {
 
-  private CalendarDate may1 = CalendarDate.date(2004, 5, 1);
-  private CalendarDate may2 = CalendarDate.date(2004, 5, 2);
-  private CalendarDate may3 = CalendarDate.date(2004, 5, 3);
-  private CalendarDate may14 = CalendarDate.date(2004, 5, 14);
-  private CalendarDate may20 = CalendarDate.date(2004, 5, 20);
-  private CalendarDate may31 = CalendarDate.date(2004, 5, 31);
-  private CalendarDate apr15 = CalendarDate.date(2004, 4, 15);
-  private CalendarDate jun1 = CalendarDate.date(2004, 6, 1);
-  private CalendarInterval may = CalendarInterval.inclusive(2004, 5, 1, 2004, 5, 31);
-  private TimeZone ct = TimeZone.getTimeZone("America/Chicago");
+  private static final CalendarDate may1 = CalendarDate.date(2004, 5, 1);
+  private static final CalendarDate may2 = CalendarDate.date(2004, 5, 2);
+  private static final CalendarDate may3 = CalendarDate.date(2004, 5, 3);
+  private static final CalendarDate may14 = CalendarDate.date(2004, 5, 14);
+  private static final CalendarDate may20 = CalendarDate.date(2004, 5, 20);
+  private static final CalendarDate may31 = CalendarDate.date(2004, 5, 31);
+  private static final CalendarDate apr15 = CalendarDate.date(2004, 4, 15);
+  private static final CalendarDate jun1 = CalendarDate.date(2004, 6, 1);
+  private static final CalendarInterval may = CalendarInterval.inclusive(2004, 5, 1, 2004, 5, 31);
+  private static final TimeZone ct = TimeZone.getTimeZone("America/Chicago");
 
   public void testSerialization() {
     SerializationTester.assertCanBeSerialized(may);

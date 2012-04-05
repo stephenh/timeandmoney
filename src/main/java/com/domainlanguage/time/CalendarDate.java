@@ -12,9 +12,6 @@ import java.util.TimeZone;
 
 public class CalendarDate implements Comparable<CalendarDate>, Serializable {
 
-  /**
-   * 
-   */
   private static final long serialVersionUID = 1L;
   private static final int MAX_YEAR = 9999;
   private final int year;
@@ -75,18 +72,6 @@ public class CalendarDate implements Comparable<CalendarDate>, Serializable {
     this.day = day;
   }
 
-  @Override
-  public String toString() {
-    return toString("yyyy-M-d"); //default for console
-  }
-
-  public String toString(String pattern) {
-    TimeZone arbitraryZone = TimeZone.getTimeZone("Universal");
-    //Any timezone works, as long as the same one is used throughout.
-    TimePoint point = startAsTimePoint(arbitraryZone);
-    return point.toString(pattern, arbitraryZone);
-  }
-
   public boolean isBefore(CalendarDate other) {
     if (other == null) {
       return false;
@@ -130,6 +115,18 @@ public class CalendarDate implements Comparable<CalendarDate>, Serializable {
   }
 
   @Override
+  public String toString() {
+    return toString("yyyy-M-d"); //default for console
+  }
+
+  public String toString(String pattern) {
+    TimeZone arbitraryZone = TimeZone.getTimeZone("Universal");
+    //Any timezone works, as long as the same one is used throughout.
+    TimePoint point = startAsTimePoint(arbitraryZone);
+    return point.toString(pattern, arbitraryZone);
+  }
+
+  @Override
   public int compareTo(CalendarDate other) {
     if (other == null) {
       return -1;
@@ -145,15 +142,11 @@ public class CalendarDate implements Comparable<CalendarDate>, Serializable {
 
   @Override
   public boolean equals(Object object) {
-    try {
-      return equals((CalendarDate) object);
-    } catch (ClassCastException ex) {
-      return false;
+    if (object instanceof CalendarDate) {
+      CalendarDate other = (CalendarDate) object;
+      return year == other.year && month == other.month && day == other.day;
     }
-  }
-
-  public boolean equals(CalendarDate other) {
-    return other != null && year == other.year && month == other.month && day == other.day;
+    return false;
   }
 
   @Override
@@ -223,19 +216,6 @@ public class CalendarDate implements Comparable<CalendarDate>, Serializable {
     return length.addedTo(this);
   }
 
-  Calendar asJavaCalendarUniversalZoneMidnight() {
-    TimeZone zone = TimeZone.getTimeZone("Universal");
-    Calendar calendar = Calendar.getInstance(zone);
-    calendar.set(Calendar.YEAR, year);
-    calendar.set(Calendar.MONTH, month - 1);
-    calendar.set(Calendar.DATE, day);
-    calendar.set(Calendar.HOUR_OF_DAY, 0);
-    calendar.set(Calendar.MINUTE, 0);
-    calendar.set(Calendar.SECOND, 0);
-    calendar.set(Calendar.MILLISECOND, 0);
-    return calendar;
-  }
-
   public TimeInterval asTimeInterval(TimeZone zone) {
     return TimeInterval.startingFrom(startAsTimePoint(zone), true, Duration.days(1), false);
   }
@@ -296,6 +276,19 @@ public class CalendarDate implements Comparable<CalendarDate>, Serializable {
 
   public CalendarMinute at(TimeOfDay timeOfDay) {
     return CalendarMinute.dateAndTimeOfDay(this, timeOfDay);
+  }
+
+  Calendar asJavaCalendarUniversalZoneMidnight() {
+    TimeZone zone = TimeZone.getTimeZone("Universal");
+    Calendar calendar = Calendar.getInstance(zone);
+    calendar.set(Calendar.YEAR, year);
+    calendar.set(Calendar.MONTH, month - 1);
+    calendar.set(Calendar.DATE, day);
+    calendar.set(Calendar.HOUR_OF_DAY, 0);
+    calendar.set(Calendar.MINUTE, 0);
+    calendar.set(Calendar.SECOND, 0);
+    calendar.set(Calendar.MILLISECOND, 0);
+    return calendar;
   }
 
 }

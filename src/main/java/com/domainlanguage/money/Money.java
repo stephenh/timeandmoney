@@ -29,65 +29,52 @@ public class Money implements Comparable<Money>, Serializable {
   private final Currency currency;
 
   /**
-     * The constructor does not complex computations and requires simple, inputs
-     * consistent with the class invariant. Other creation methods are available
-     * for convenience.
-     */
-  public Money(BigDecimal amount, Currency currency) {
-    if (amount.scale() != currency.getDefaultFractionDigits()) {
-      throw new IllegalArgumentException("Scale of amount does not match currency");
-    }
-    this.currency = currency;
-    this.amount = amount;
-  }
-
-  /**
-     * This creation method is safe to use. It will adjust scale, but will not
-     * round off the amount.
-     */
-  public static Money valueOf(BigDecimal amount, Currency currency) {
-    return Money.valueOf(amount, currency, Rounding.UNNECESSARY);
-  }
-
-  /**
-     * For convenience, an amount can be rounded to create a Money.
-     */
+   * For convenience, an amount can be rounded to create a Money.
+   */
   public static Money valueOf(BigDecimal rawAmount, Currency currency, int roundingMode) {
     BigDecimal amount = rawAmount.setScale(currency.getDefaultFractionDigits(), roundingMode);
     return new Money(amount, currency);
   }
 
   /**
-     * WARNING: Because of the indefinite precision of double, this method must
-     * round off the value.
-     */
+   * WARNING: Because of the indefinite precision of double, this method must
+   * round off the value.
+   */
   public static Money valueOf(double dblAmount, Currency currency) {
     return Money.valueOf(dblAmount, currency, Money.DEFAULT_ROUNDING_MODE);
   }
 
   /**
-     * Because of the indefinite precision of double, this method must round off
-     * the value. This method gives the client control of the rounding mode.
-     */
+   * Because of the indefinite precision of double, this method must round off
+   * the value. This method gives the client control of the rounding mode.
+   */
   public static Money valueOf(double dblAmount, Currency currency, int roundingMode) {
     BigDecimal rawAmount = new BigDecimal(dblAmount);
     return Money.valueOf(rawAmount, currency, roundingMode);
   }
 
   /**
-     * WARNING: Because of the indefinite precision of double, thismethod must
-     * round off the value.
-     */
+   * WARNING: Because of the indefinite precision of double, thismethod must
+   * round off the value.
+   */
   public static Money dollars(double amount) {
     return Money.valueOf(amount, Money.USD);
   }
 
   /**
-     * This creation method is safe to use. It will adjust scale, but will not
-     * round off the amount.
-     */
+   * This creation method is safe to use. It will adjust scale, but will not
+   * round off the amount.
+   */
   public static Money dollars(BigDecimal amount) {
     return Money.valueOf(amount, Money.USD);
+  }
+
+  /**
+   * This creation method is safe to use. It will adjust scale, but will not
+   * round off the amount.
+   */
+  public static Money valueOf(BigDecimal amount, Currency currency) {
+    return Money.valueOf(amount, currency, Rounding.UNNECESSARY);
   }
 
   /**
@@ -166,6 +153,19 @@ public class Money implements Comparable<Money>, Serializable {
   }
 
   /**
+   * The constructor does not complex computations and requires simple, inputs
+   * consistent with the class invariant. Other creation methods are available
+   * for convenience.
+   */
+  public Money(BigDecimal amount, Currency currency) {
+    if (amount.scale() != currency.getDefaultFractionDigits()) {
+      throw new IllegalArgumentException("Scale of amount does not match currency");
+    }
+    this.currency = currency;
+    this.amount = amount;
+  }
+
+  /**
    * How best to handle access to the internals? It is needed for
    * database mapping, UI presentation, and perhaps a few other
    * uses. Yet giving public access invites people to do the
@@ -179,25 +179,6 @@ public class Money implements Comparable<Money>, Serializable {
 
   public Currency breachEncapsulationOfCurrency() {
     return currency;
-  }
-
-  /**
-     * This probably should be Currency responsibility. Even then, it may need
-     * to be customized for specialty apps because there are other cases, where
-     * the smallest increment is not the smallest unit.
-     */
-  Money minimumIncrement() {
-    BigDecimal one = new BigDecimal(1);
-    BigDecimal increment = one.movePointLeft(currency.getDefaultFractionDigits());
-    return Money.valueOf(increment, currency);
-  }
-
-  Money incremented() {
-    return plus(minimumIncrement());
-  }
-
-  boolean hasSameCurrencyAs(Money arg) {
-    return currency.equals(arg.currency);
   }
 
   public Money negated() {
@@ -301,14 +282,6 @@ public class Money implements Comparable<Money>, Serializable {
     return times(new BigDecimal(i));
   }
 
-  @Override
-  public int compareTo(Money other) {
-    if (!hasSameCurrencyAs(other)) {
-      throw new IllegalArgumentException("Compare is not defined between different currencies");
-    }
-    return amount.compareTo(other.amount);
-  }
-
   public boolean isGreaterThan(Money other) {
     return compareTo(other) > 0;
   }
@@ -325,22 +298,29 @@ public class Money implements Comparable<Money>, Serializable {
     return compareTo(other) <= 0;
   }
 
-  public boolean equals(Object other) {
-    try {
-      return equals((Money) other);
-    } catch (ClassCastException ex) {
-      return false;
+  @Override
+  public int compareTo(Money other) {
+    if (!hasSameCurrencyAs(other)) {
+      throw new IllegalArgumentException("Compare is not defined between different currencies");
     }
+    return amount.compareTo(other.amount);
   }
 
-  public boolean equals(Money other) {
-    return other != null && hasSameCurrencyAs(other) && amount.equals(other.amount);
+  @Override
+  public boolean equals(Object object) {
+    if (object instanceof Money) {
+      Money other = (Money) object;
+      return hasSameCurrencyAs(other) && amount.equals(other.amount);
+    }
+    return false;
   }
 
+  @Override
   public int hashCode() {
     return amount.hashCode();
   }
 
+  @Override
   public String toString() {
     String symbol = currency.getSymbol();
     if (!"$".equals(symbol)) {
@@ -376,6 +356,25 @@ public class Money implements Comparable<Money>, Serializable {
 
   Currency getCurrency() {
     return currency;
+  }
+
+  /**
+   * This probably should be Currency responsibility. Even then, it may need
+   * to be customized for specialty apps because there are other cases, where
+   * the smallest increment is not the smallest unit.
+   */
+  Money minimumIncrement() {
+    BigDecimal one = new BigDecimal(1);
+    BigDecimal increment = one.movePointLeft(currency.getDefaultFractionDigits());
+    return Money.valueOf(increment, currency);
+  }
+
+  Money incremented() {
+    return plus(minimumIncrement());
+  }
+
+  boolean hasSameCurrencyAs(Money arg) {
+    return currency.equals(arg.currency);
   }
 
   private void assertHasSameCurrencyAs(Money aMoney) {

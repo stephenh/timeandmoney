@@ -13,6 +13,7 @@ import com.domainlanguage.time.TimePoint;
 import com.domainlanguage.time.TimeSource;
 
 public class Clock {
+
   private static TimeSource timeSource;
   private static TimeZone defaultTimeZone;
 

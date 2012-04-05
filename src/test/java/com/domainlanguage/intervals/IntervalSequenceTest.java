@@ -13,13 +13,14 @@ import junit.framework.Assert;
 import junit.framework.TestCase;
 
 public class IntervalSequenceTest extends TestCase {
-  private Interval<Integer> c5_10c = Interval.closed(new Integer(5), new Integer(10));
-  private Interval<Integer> o10_12c = Interval.over(new Integer(10), false, new Integer(12), true);
-  private Interval<Integer> o11_20c = Interval.over(new Integer(11), false, new Integer(20), true);
-  private Interval<Integer> o12_20o = Interval.open(new Integer(12), new Integer(20));
-  private Interval<Integer> c20_25c = Interval.closed(new Integer(20), new Integer(25));
-  private Interval<Integer> o25_30c = Interval.over(new Integer(25), false, new Integer(30), true);
-  private Interval<Integer> o30_35o = Interval.open(new Integer(30), new Integer(35));
+
+  private static final Interval<Integer> c5_10c = Interval.closed(new Integer(5), new Integer(10));
+  private static final Interval<Integer> o10_12c = Interval.over(new Integer(10), false, new Integer(12), true);
+  private static final Interval<Integer> o11_20c = Interval.over(new Integer(11), false, new Integer(20), true);
+  private static final Interval<Integer> o12_20o = Interval.open(new Integer(12), new Integer(20));
+  private static final Interval<Integer> c20_25c = Interval.closed(new Integer(20), new Integer(25));
+  private static final Interval<Integer> o25_30c = Interval.over(new Integer(25), false, new Integer(30), true);
+  private static final Interval<Integer> o30_35o = Interval.open(new Integer(30), new Integer(35));
 
   public void testIterate() {
     IntervalSequence<Integer> intervalSequence = new IntervalSequence<Integer>();

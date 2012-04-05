@@ -14,11 +14,12 @@ import junit.framework.TestCase;
 import com.domainlanguage.tests.SerializationTester;
 
 public class TimeIntervalTest extends TestCase {
-  private TimePoint dec19_2003 = TimePoint.atMidnightGMT(2003, 12, 19);
-  private TimePoint dec20_2003 = TimePoint.atMidnightGMT(2003, 12, 20);
-  private TimePoint dec21_2003 = TimePoint.atMidnightGMT(2003, 12, 21);
-  private TimePoint dec22_2003 = TimePoint.atMidnightGMT(2003, 12, 22);
-  private TimePoint dec23_2003 = TimePoint.atMidnightGMT(2003, 12, 23);
+
+  private static final TimePoint dec19_2003 = TimePoint.atMidnightGMT(2003, 12, 19);
+  private static final TimePoint dec20_2003 = TimePoint.atMidnightGMT(2003, 12, 20);
+  private static final TimePoint dec21_2003 = TimePoint.atMidnightGMT(2003, 12, 21);
+  private static final TimePoint dec22_2003 = TimePoint.atMidnightGMT(2003, 12, 22);
+  private static final TimePoint dec23_2003 = TimePoint.atMidnightGMT(2003, 12, 23);
 
   public void testSerialization() {
     TimeInterval interval = TimeInterval.closed(dec20_2003, dec22_2003);

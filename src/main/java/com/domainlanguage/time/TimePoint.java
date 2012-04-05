@@ -16,16 +16,10 @@ import java.util.TimeZone;
 
 public class TimePoint implements Comparable<TimePoint>, Serializable {
 
-  /**
-   * 
-   */
+  private static final TimeZone GMT = TimeZone.getTimeZone("Universal");
   private static final long serialVersionUID = 1L;
 
-  private static final TimeZone GMT = TimeZone.getTimeZone("Universal");
-
   final long millisecondsFromEpoc;
-
-  // CREATION METHODS
 
   public static TimePoint atMidnightGMT(int year, int month, int date) {
     return TimePoint.atMidnight(year, month, date, TimePoint.GMT);
@@ -61,18 +55,6 @@ public class TimePoint implements Comparable<TimePoint>, Serializable {
     return hour + translatedAmPm;
   }
 
-  public static TimePoint at(int year, int month, int date, int hour, int minute, int second, int millisecond, TimeZone zone) {
-    Calendar calendar = Calendar.getInstance(zone);
-    calendar.set(Calendar.YEAR, year);
-    calendar.set(Calendar.MONTH, month - 1);
-    calendar.set(Calendar.DATE, date);
-    calendar.set(Calendar.HOUR_OF_DAY, hour);
-    calendar.set(Calendar.MINUTE, minute);
-    calendar.set(Calendar.SECOND, second);
-    calendar.set(Calendar.MILLISECOND, millisecond);
-    return TimePoint.from(calendar);
-  }
-
   public static TimePoint parseGMTFrom(String dateString, String pattern) {
     return TimePoint.parseFrom(dateString, pattern, TimePoint.GMT);
   }
@@ -97,24 +79,22 @@ public class TimePoint implements Comparable<TimePoint>, Serializable {
     //assert FAR_FUTURE == null || result.isBefore(FAR_FUTURE);
     //assert FAR_PAST == null || result.isAfter(FAR_PAST);
     return result;
+  }
 
+  public static TimePoint at(int year, int month, int date, int hour, int minute, int second, int millisecond, TimeZone zone) {
+    Calendar calendar = Calendar.getInstance(zone);
+    calendar.set(Calendar.YEAR, year);
+    calendar.set(Calendar.MONTH, month - 1);
+    calendar.set(Calendar.DATE, date);
+    calendar.set(Calendar.HOUR_OF_DAY, hour);
+    calendar.set(Calendar.MINUTE, minute);
+    calendar.set(Calendar.SECOND, second);
+    calendar.set(Calendar.MILLISECOND, millisecond);
+    return TimePoint.from(calendar);
   }
 
   private TimePoint(long milliseconds) {
     millisecondsFromEpoc = milliseconds;
-  }
-
-  // BEHAVIORAL METHODS
-  @Override
-  public boolean equals(Object other) {
-    return
-    //revisit: maybe use: Reflection.equalsOverClassAndNull(this, other)
-    other instanceof TimePoint && ((TimePoint) other).millisecondsFromEpoc == millisecondsFromEpoc;
-  }
-
-  @Override
-  public int hashCode() {
-    return (int) millisecondsFromEpoc;
   }
 
   public TimePoint backToMidnight(TimeZone zone) {
@@ -129,34 +109,12 @@ public class TimePoint implements Comparable<TimePoint>, Serializable {
     return calendarDate(zone).equals(other.calendarDate(zone));
   }
 
-  @Override
-  public String toString() {
-    return asJavaUtilDate().toString(); //for better readability
-  }
-
-  public String toString(String pattern, TimeZone zone) {
-    DateFormat format = new SimpleDateFormat(pattern);
-    format.setTimeZone(zone);
-    return format.format(asJavaUtilDate());
-  }
-
   public boolean isBefore(TimePoint other) {
     return millisecondsFromEpoc < other.millisecondsFromEpoc;
   }
 
   public boolean isAfter(TimePoint other) {
     return millisecondsFromEpoc > other.millisecondsFromEpoc;
-  }
-
-  @Override
-  public int compareTo(TimePoint otherPoint) {
-    if (isBefore(otherPoint)) {
-      return -1;
-    }
-    if (isAfter(otherPoint)) {
-      return 1;
-    }
-    return 0;
   }
 
   public TimePoint nextDay() {
@@ -177,10 +135,6 @@ public class TimePoint implements Comparable<TimePoint>, Serializable {
     return asJavaCalendar(TimePoint.GMT);
   }
 
-  // CONVENIENCE METHODS
-  // (Responsibility lies elsewhere, but language is more fluid with a method
-  // here.)
-
   public boolean isBefore(TimeInterval interval) {
     return interval.isAfter(this);
   }
@@ -199,6 +153,42 @@ public class TimePoint implements Comparable<TimePoint>, Serializable {
 
   public TimeInterval until(TimePoint end) {
     return TimeInterval.over(this, end);
+  }
+
+  @Override
+  public String toString() {
+    return asJavaUtilDate().toString(); //for better readability
+  }
+
+  public String toString(String pattern, TimeZone zone) {
+    DateFormat format = new SimpleDateFormat(pattern);
+    format.setTimeZone(zone);
+    return format.format(asJavaUtilDate());
+  }
+
+  @Override
+  public boolean equals(Object object) {
+    if (object instanceof TimePoint) {
+      TimePoint other = (TimePoint) object;
+      return other.millisecondsFromEpoc == millisecondsFromEpoc;
+    }
+    return false;
+  }
+
+  @Override
+  public int hashCode() {
+    return (int) millisecondsFromEpoc;
+  }
+
+  @Override
+  public int compareTo(TimePoint otherPoint) {
+    if (isBefore(otherPoint)) {
+      return -1;
+    }
+    if (isAfter(otherPoint)) {
+      return 1;
+    }
+    return 0;
   }
 
 }

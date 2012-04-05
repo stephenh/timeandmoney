@@ -83,27 +83,6 @@ public abstract class CalendarInterval extends Interval<CalendarDate> implements
     return upperLimit();
   }
 
-  public boolean equals(Object object) {
-    try {
-      return this.equals((CalendarInterval) object);
-    } catch (ClassCastException ex) {
-      return false;
-    }
-  }
-
-  public boolean equals(CalendarInterval other) {
-    boolean lowerEquals = !hasLowerLimit() && !other.hasLowerLimit() || hasLowerLimit() && lowerLimit().equals(other.lowerLimit());
-    boolean upperEquals = !hasUpperLimit() && !other.hasUpperLimit() || hasUpperLimit() && upperLimit().equals(other.upperLimit());
-    return lowerEquals && upperEquals;
-  }
-
-  public int hashCode() {
-    int code = 27;
-    code *= lowerLimit() != null ? lowerLimit().hashCode() : 27;
-    code *= upperLimit() != null ? upperLimit().hashCode() : 27;
-    return code;
-  }
-
   public Duration length() {
     return Duration.days(lengthInDaysInt());
   }
@@ -197,6 +176,25 @@ public abstract class CalendarInterval extends Interval<CalendarDate> implements
 
   public boolean expires(CalendarInterval other) {
     return start().equals(other.start()) && !other.hasUpperLimit() && hasUpperLimit();
+  }
+
+  @Override
+  public boolean equals(Object object) {
+    if (object instanceof CalendarInterval) {
+      CalendarInterval other = (CalendarInterval) object;
+      boolean lowerEquals = !hasLowerLimit() && !other.hasLowerLimit() || hasLowerLimit() && lowerLimit().equals(other.lowerLimit());
+      boolean upperEquals = !hasUpperLimit() && !other.hasUpperLimit() || hasUpperLimit() && upperLimit().equals(other.upperLimit());
+      return lowerEquals && upperEquals;
+    }
+    return false;
+  }
+
+  @Override
+  public int hashCode() {
+    int code = 27;
+    code *= lowerLimit() != null ? lowerLimit().hashCode() : 27;
+    code *= upperLimit() != null ? upperLimit().hashCode() : 27;
+    return code;
   }
 
 }

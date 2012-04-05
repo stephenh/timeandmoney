@@ -17,23 +17,16 @@ import com.domainlanguage.base.Rounding;
 import com.domainlanguage.tests.SerializationTester;
 
 public class MoneyTest extends TestCase {
-  private static Currency USD = Currency.getInstance("USD");
-  private static Currency JPY = Currency.getInstance("JPY");
-  private static Currency EUR = Currency.getInstance("EUR");
 
-  private Money d15;
-  private Money d2_51;
-  private Money y50;
-  private Money e2_51;
-  private Money d100;
+  private static final Currency USD = Currency.getInstance("USD");
+  private static final Currency JPY = Currency.getInstance("JPY");
+  private static final Currency EUR = Currency.getInstance("EUR");
 
-  public void setUp() {
-    d15 = Money.valueOf(new BigDecimal("15.0"), MoneyTest.USD);
-    d2_51 = Money.valueOf(new BigDecimal("2.51"), MoneyTest.USD);
-    e2_51 = Money.valueOf(new BigDecimal("2.51"), MoneyTest.EUR);
-    y50 = Money.valueOf(new BigDecimal("50"), MoneyTest.JPY);
-    d100 = Money.valueOf(new BigDecimal("100.0"), MoneyTest.USD);
-  }
+  private static final Money d15 = Money.valueOf(new BigDecimal("15.0"), MoneyTest.USD);
+  private static final Money d2_51 = Money.valueOf(new BigDecimal("2.51"), MoneyTest.USD);
+  private static final Money y50 = Money.valueOf(new BigDecimal("50"), MoneyTest.JPY);
+  private static final Money e2_51 = Money.valueOf(new BigDecimal("2.51"), MoneyTest.EUR);
+  private static final Money d100 = Money.valueOf(new BigDecimal("100.0"), MoneyTest.USD);
 
   public void testSerialization() {
     SerializationTester.assertCanBeSerialized(d15);
