@@ -228,6 +228,10 @@ public class CalendarDate implements Comparable<CalendarDate>, Serializable {
     return CalendarInterval.inclusive(this, otherDate);
   }
 
+  public CalendarInterval until(CalendarDate otherDate) {
+    return CalendarInterval.inclusive(this, otherDate.previousDay());
+  }
+
   public int dayOfWeek() {
     Calendar calendar = asJavaCalendarUniversalZoneMidnight();
     return calendar.get(Calendar.DAY_OF_WEEK);
