@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.bizo</groupId>
   <artifactId>timeandmoney</artifactId>
-  <version>1.0.0</version>
+  <version>1.1.0</version>
   <distributionManagement>
     <repository>
       <id>joist-repo</id>

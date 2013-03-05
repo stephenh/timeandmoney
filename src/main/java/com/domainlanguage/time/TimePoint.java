@@ -21,6 +21,10 @@ public class TimePoint implements Comparable<TimePoint>, Serializable {
 
   final long millisecondsFromEpoc;
 
+  public static TimePoint now() {
+    return TimePoint.from(new Date());
+  }
+
   public static TimePoint atMidnightGMT(int year, int month, int date) {
     return TimePoint.atMidnight(year, month, date, TimePoint.GMT);
   }
