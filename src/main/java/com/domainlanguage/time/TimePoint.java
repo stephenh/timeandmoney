@@ -8,7 +8,7 @@ package com.domainlanguage.time;
 
 import java.io.Serializable;
 import java.text.DateFormat;
-import java.text.ParsePosition;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -66,8 +66,12 @@ public class TimePoint implements Comparable<TimePoint>, Serializable {
   public static TimePoint parseFrom(String dateString, String pattern, TimeZone zone) {
     DateFormat format = new SimpleDateFormat(pattern);
     format.setTimeZone(zone);
-    Date date = format.parse(dateString, new ParsePosition(0));
-    return TimePoint.from(date);
+    format.setLenient(false);
+    try {
+      return TimePoint.from(format.parse(dateString));
+    } catch (ParseException pe) {
+      throw new RuntimeException(pe.getMessage(), pe);
+    }
   }
 
   public static TimePoint from(Date javaDate) {

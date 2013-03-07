@@ -206,4 +206,12 @@ public class TimePointTest extends TestCase {
     Assert.assertEquals(33, someTimeAsJavaCalendar.get(Calendar.SECOND));
   }
 
+  public void testParseIsNotLenient() {
+    try {
+      TimePoint.parseGMTFrom("Jan 1 2004", "yyyy/MM/dd");
+      Assert.fail();
+    } catch (RuntimeException re) {
+      Assert.assertEquals("Unparseable date: \"Jan 1 2004\"", re.getMessage());
+    }
+  }
 }
