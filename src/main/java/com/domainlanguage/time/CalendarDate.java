@@ -55,19 +55,11 @@ public class CalendarDate implements Comparable<CalendarDate>, Serializable {
   }
 
   public static CalendarDate max(CalendarDate d1, CalendarDate d2) {
-    if (d1.isAfter(d2)) {
-      return d1;
-    } else {
-      return d2;
-    }
+    return d1.isAfter(d2) ? d1 : d2;
   }
 
   public static CalendarDate min(CalendarDate d1, CalendarDate d2) {
-    if (d1.isBefore(d2)) {
-      return d1;
-    } else {
-      return d2;
-    }
+    return d1.isBefore(d2) ? d1 : d2;
   }
 
   CalendarDate(int year, int month, int day) {

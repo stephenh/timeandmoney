@@ -53,6 +53,14 @@ public class TimePoint implements Comparable<TimePoint>, Serializable {
     return TimePoint.at(year, month, date, TimePoint.convertedTo24hour(hour, am_pm), minute, second, millisecond, zone);
   }
 
+  public static TimePoint max(TimePoint t1, TimePoint t2) {
+    return t1.isAfter(t2) ? t1 : t2;
+  }
+
+  public static TimePoint min(TimePoint t1, TimePoint t2) {
+    return t1.isBefore(t2) ? t1 : t2;
+  }
+
   private static int convertedTo24hour(int hour, String am_pm) {
     int translatedAmPm = "AM".equalsIgnoreCase(am_pm) ? 0 : 12;
     translatedAmPm -= hour == 12 ? 12 : 0;
