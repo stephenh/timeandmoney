@@ -8,6 +8,7 @@ package com.domainlanguage.time;
 
 import java.io.Serializable;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.TimeZone;
 
 public class CalendarDate implements Comparable<CalendarDate>, Serializable {
@@ -41,6 +42,14 @@ public class CalendarDate implements Comparable<CalendarDate>, Serializable {
     //Any timezone works, as long as the same one is used throughout.
     TimePoint point = TimePoint.parseFrom(dateString, pattern, arbitraryZone);
     return CalendarDate.from(point, arbitraryZone);
+  }
+
+  public static CalendarDate from(Date date, TimeZone zone) {
+    return from(TimePoint.from(date), zone);
+  }
+
+  public static CalendarDate fromInDefaultTimeZone(Date date) {
+    return from(TimePoint.from(date), TimeZone.getDefault());
   }
 
   public static CalendarDate from(TimePoint timePoint, TimeZone zone) {
