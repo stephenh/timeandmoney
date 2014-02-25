@@ -14,8 +14,8 @@ import com.domainlanguage.time.TimeSource;
 
 public class Clock {
 
-  private static TimeSource timeSource;
-  private static TimeZone defaultTimeZone;
+  private static volatile TimeSource timeSource;
+  private static volatile TimeZone defaultTimeZone;
 
   public static TimeZone defaultTimeZone() {
     //There is no reasonable automatic default.
