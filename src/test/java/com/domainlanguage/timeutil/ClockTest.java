@@ -57,14 +57,9 @@ public class ClockTest extends TestCase {
 
   public void testTodayWithoutTimeZone() {
     Clock.setTimeSource(dummySourceDec1_5h);
-
-    try {
-      Clock.today();
-      Assert.fail("Clock cannot answer today() without a timezone.");
-    } catch (RuntimeException e) {
-      Assert.assertTrue("Correctly threw exception", true);
-    }
-
+    CalendarDate a = Clock.today();
+    CalendarDate b = Clock.today(TimeZone.getDefault());
+    Assert.assertEquals(a, b);
   }
 
   private static TimeSource dummyTimeSource(final TimePoint returnValueForNow) {

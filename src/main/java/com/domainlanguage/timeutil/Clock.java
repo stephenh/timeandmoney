@@ -18,7 +18,9 @@ public class Clock {
   private static volatile TimeZone defaultTimeZone;
 
   public static TimeZone defaultTimeZone() {
-    //There is no reasonable automatic default.
+    if (Clock.defaultTimeZone == null) {
+      Clock.defaultTimeZone = TimeZone.getDefault();
+    }
     return Clock.defaultTimeZone;
   }
 
@@ -42,9 +44,6 @@ public class Clock {
   }
 
   public static CalendarDate today() {
-    if (Clock.defaultTimeZone() == null) {
-      throw new RuntimeException("CalendarDate cannot be computed without setting a default TimeZone.");
-    }
     return Clock.now().calendarDate(Clock.defaultTimeZone());
   }
 
