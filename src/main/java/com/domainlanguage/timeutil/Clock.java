@@ -43,6 +43,10 @@ public class Clock {
     return Clock.timeSource().now();
   }
 
+  public static CalendarDate today(TimeZone timeZone) {
+    return Clock.now().calendarDate(timeZone);
+  }
+
   public static CalendarDate today() {
     return Clock.now().calendarDate(Clock.defaultTimeZone());
   }
