@@ -151,6 +151,10 @@ public class TimePoint implements Comparable<TimePoint>, Serializable {
     return asJavaCalendar(TimePoint.GMT);
   }
 
+  public long getTime() {
+    return millisecondsFromEpoc;
+  }
+
   public boolean isBefore(TimeInterval interval) {
     return interval.isAfter(this);
   }

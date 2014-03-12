@@ -87,6 +87,11 @@ public class TimePointTest extends TestCase {
     Assert.assertEquals(javaUtilDateDec20_2003(), dec20_2003.asJavaUtilDate());
   }
 
+  public void testGetTime() {
+    TimePoint dec20_2003 = TimePoint.atMidnightGMT(2003, 12, 20);
+    Assert.assertEquals(javaUtilDateDec20_2003().getTime(), dec20_2003.getTime());
+  }
+
   public void testBackToMidnight() {
     TimePoint threeOClock = TimePoint.atGMT(2004, 11, 22, 3, 0);
     Assert.assertEquals(TimePoint.atMidnightGMT(2004, 11, 22), threeOClock.backToMidnight(gmt));
