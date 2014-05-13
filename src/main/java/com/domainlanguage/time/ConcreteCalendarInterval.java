@@ -22,8 +22,8 @@ class ConcreteCalendarInterval extends CalendarInterval {
   }
 
   public TimeInterval asTimeInterval(TimeZone zone) {
-    TimePoint startPoint = upperLimit().asTimeInterval(zone).start();
-    TimePoint endPoint = lowerLimit().asTimeInterval(zone).end();
+    TimePoint startPoint = lowerLimit().asTimeInterval(zone).start();
+    TimePoint endPoint = upperLimit().asTimeInterval(zone).end();
     return TimeInterval.over(startPoint, endPoint);
   }
 
