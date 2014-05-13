@@ -38,6 +38,12 @@ public class CalendarIntervalTest extends TestCase {
     Assert.assertEquals("May20Ct", TimePoint.atMidnight(2004, 5, 20, ct), day.start());
   }
 
+  public void testTranslationToTimeIntervalFromCalendarInterval() {
+    TimeInterval days = may20.through(may31).asTimeInterval(ct);
+    Assert.assertEquals("May20Ct", TimePoint.atMidnight(2004, 5, 20, ct), days.start());
+    Assert.assertEquals("May31Ct", TimePoint.atMidnight(2004, 6, 1, ct), days.end());
+  }
+
   public void testIncludes() {
     Assert.assertFalse("apr15", may.includes(apr15));
     Assert.assertTrue("may1", may.includes(may1));
