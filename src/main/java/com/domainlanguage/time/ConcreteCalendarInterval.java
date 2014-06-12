@@ -16,9 +16,22 @@ class ConcreteCalendarInterval extends CalendarInterval {
     return new ConcreteCalendarInterval(start, end);
   }
 
-  ConcreteCalendarInterval(CalendarDate start, CalendarDate end) {
-    super(start, true, end, true);
+  static ConcreteCalendarInterval from(CalendarDate start, boolean startClosed, CalendarDate end, boolean endClosed) {
+    // if we can, convert an open "2000-01-02)" to a closed "2000-01-01]" since that is more natural for calendar intervals
+    if (!endClosed && end != null && end.isAfter(start)) {
+      return new ConcreteCalendarInterval(start, startClosed, end.plusDays(-1), true);
+    } else {
+      return new ConcreteCalendarInterval(start, startClosed, end, endClosed);
+    }
+  }
+
+  private ConcreteCalendarInterval(CalendarDate start, CalendarDate end) {
+    super(start, start != null, end, end != null);
     ConcreteCalendarInterval.assertStartIsBeforeEnd(start, end);
+  }
+
+  private ConcreteCalendarInterval(CalendarDate start, boolean startClosed, CalendarDate end, boolean endClosed) {
+    super(start, startClosed, end, endClosed);
   }
 
   public TimeInterval asTimeInterval(TimeZone zone) {

@@ -26,6 +26,7 @@ public class CalendarIntervalTest extends TestCase {
   private static final CalendarDate may31 = CalendarDate.date(2004, 5, 31);
   private static final CalendarDate apr15 = CalendarDate.date(2004, 4, 15);
   private static final CalendarDate jun1 = CalendarDate.date(2004, 6, 1);
+  private static final CalendarInterval jun = CalendarInterval.inclusive(2004, 6, 1, 2004, 6, 31);
   private static final CalendarInterval may = CalendarInterval.inclusive(2004, 5, 1, 2004, 5, 31);
   private static final TimeZone ct = TimeZone.getTimeZone("America/Chicago");
 
@@ -50,6 +51,13 @@ public class CalendarIntervalTest extends TestCase {
     Assert.assertTrue("may20", may.includes(may20));
     Assert.assertFalse("jun1", may.includes(jun1));
     Assert.assertTrue("may", may.covers(may));
+  }
+
+  public void testIntersect() {
+    Assert.assertEquals(may14.through(may31), may.intersect(may14.through(jun1)));
+    Assert.assertEquals(may1.through(may14), may.intersect(apr15.through(may14)));
+    Assert.assertEquals(may1.through(may31), may.intersect(apr15.through(jun1)));
+    Assert.assertEquals(true, may.intersect(jun).isEmpty());
   }
 
   public void testEquals() {
@@ -117,6 +125,7 @@ public class CalendarIntervalTest extends TestCase {
   }
 
   public void testLength() {
+    Assert.assertEquals(Duration.days(1), may1.through(may1).length());
     Assert.assertEquals(Duration.days(3), may1.through(may3).length());
     CalendarInterval may2002_july2004 = CalendarInterval.inclusive(2002, 5, 1, 2004, 7, 1);
     // (5/1/2002-4/30/2003) 365 days + (-4/30/2004) 366 + (5/1-7/31) 31+30+1 = 793 days
@@ -158,7 +167,7 @@ public class CalendarIntervalTest extends TestCase {
   public void testEverFromToString() {
     CalendarDate x = CalendarDate.from(2007, 6, 5);
     CalendarInterval i = CalendarInterval.everFrom(x);
-    Assert.assertEquals("[2007-6-5, Infinity]", i.toString());
+    Assert.assertEquals("[2007-6-5, Infinity)", i.toString());
   }
 
   /*

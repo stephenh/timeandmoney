@@ -60,19 +60,7 @@ public abstract class CalendarInterval extends Interval<CalendarDate> implements
 
   @Override
   public CalendarInterval newOfSameType(CalendarDate lower, boolean isLowerClosed, CalendarDate upper, boolean isUpperClosed) {
-    CalendarDate includedLower = isLowerClosed ? lower : lower.plusDays(1);
-    CalendarDate includedUpper = isUpperClosed ? upper : upper.plusDays(-1);
-    return CalendarInterval.inclusive(includedLower, includedUpper);
-  }
-
-  @Override
-  public boolean includesLowerLimit() {
-    return true;
-  }
-
-  @Override
-  public boolean includesUpperLimit() {
-    return true;
+    return ConcreteCalendarInterval.from(lower, isLowerClosed, upper, isUpperClosed);
   }
 
   public CalendarDate start() {

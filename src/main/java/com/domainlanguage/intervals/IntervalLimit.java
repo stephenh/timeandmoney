@@ -62,4 +62,11 @@ class IntervalLimit<T extends Comparable<T>> implements Comparable<IntervalLimit
     }
     return value.compareTo(otherValue);
   }
+
+  @Override
+  public String toString() {
+    String prefix = lower ? "lower" : "upper";
+    return "IntervalLimit[" + prefix + "," + value + "," + closed + "]";
+  }
+
 }
