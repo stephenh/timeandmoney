@@ -61,9 +61,13 @@ public class CalendarIntervalTest extends TestCase {
   }
 
   public void testEquals() {
-    Assert.assertTrue(may.equals(CalendarInterval.inclusive(may1, may31)));
+    assertFollowsEqualsContract(may, CalendarInterval.inclusive(may1, may31));
     Assert.assertFalse(may.equals(may1));
     Assert.assertFalse(may.equals(CalendarInterval.inclusive(may1, may20)));
+  }
+
+  public void testHashCode() {
+    CalendarInterval.everFrom(may1).hashCode();
   }
 
   public void testDaysAdd() {
@@ -182,5 +186,11 @@ public class CalendarIntervalTest extends TestCase {
       problem = error;
     }
     Assert.assertNotNull(problem);
+  }
+
+  private static <T> void assertFollowsEqualsContract(T a, T b) {
+    Assert.assertEquals(a, b);
+    Assert.assertEquals(b, a);
+    Assert.assertEquals(a.hashCode(), b.hashCode());
   }
 }

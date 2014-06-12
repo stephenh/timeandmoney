@@ -1,6 +1,6 @@
 /**
  * Copyright (c) 2004 Domain Language, Inc. (http://domainlanguage.com)
- * This free software is distributed under the "MIT" licence. See file licence.txt. 
+ * This free software is distributed under the "MIT" licence. See file licence.txt.
  * For more information, see http://timeandmoney.sourceforge.net.
  */
 
@@ -14,7 +14,7 @@ import java.util.List;
  * The rules of this class are consistent with the common mathematical
  * definition of "interval". For a simple explanation, see
  * http://en.wikipedia.org/wiki/Interval_(mathematics)
- * 
+ *
  * Interval (and its "ConcreteInterval" subclass) can be used for any objects
  * that have a natural ordering reflected by implementing the Comparable
  * interface. For example, Integer implements Comparable, so if you want to
@@ -245,7 +245,12 @@ public class Interval<T extends Comparable<T>> implements Comparable<Interval<T>
 
   @Override
   public int hashCode() {
-    return lowerLimit().hashCode() ^ upperLimit().hashCode();
+    int code = 27;
+    if (!isEmpty()) {
+      code *= lowerLimit() != null ? lowerLimit().hashCode() : 27;
+      code *= upperLimit() != null ? upperLimit().hashCode() : 27;
+    }
+    return code;
   }
 
   @Override

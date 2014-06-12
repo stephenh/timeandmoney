@@ -273,14 +273,14 @@ public class IntervalTest extends TestCase {
   }
 
   public void testEqualsForOnePointIntervals() {
-    Assert.assertEquals(o1_1c, c1_1o);
-    Assert.assertEquals(o1_1c, c1_1c);
-    Assert.assertEquals(c1_1o, c1_1c);
+    assertFollowsEqualsContract(o1_1c, c1_1o);
+    assertFollowsEqualsContract(o1_1c, c1_1c);
+    assertFollowsEqualsContract(c1_1o, c1_1c);
     Assert.assertFalse(o1_1c.equals(o1_1o));
   }
 
   public void testEqualsForEmptyIntervals() {
-    Assert.assertEquals(c1_10c.emptyOfSameType(), c4_6c.emptyOfSameType());
+    assertFollowsEqualsContract(c1_10c.emptyOfSameType(), c4_6c.emptyOfSameType());
   }
 
   public void testRelativeComplementEnclosedOpen() {
@@ -292,6 +292,12 @@ public class IntervalTest extends TestCase {
     Assert.assertEquals(2, complement.size());
     Assert.assertEquals(c1_3c, complement.get(0));
     Assert.assertEquals(c5_7c, complement.get(1));
+  }
+
+  private static <T> void assertFollowsEqualsContract(T a, T b) {
+    Assert.assertEquals(a, b);
+    Assert.assertEquals(b, a);
+    Assert.assertEquals(a.hashCode(), b.hashCode());
   }
 
 }
