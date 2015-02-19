@@ -88,9 +88,22 @@ public abstract class CalendarInterval extends Interval<CalendarDate> implements
   }
 
   public int lengthInDaysInt() {
-    Calendar calStart = start().asJavaCalendarUniversalZoneMidnight();
-    Calendar calEnd = end().plusDays(1).asJavaCalendarUniversalZoneMidnight();
+    Calendar calStart;
+    if (includesLowerLimit()) {
+      calStart = start().asJavaCalendarUniversalZoneMidnight();
+    } else {
+      calStart = start().plusDays(1).asJavaCalendarUniversalZoneMidnight();
+    }
+    Calendar calEnd;
+    if (includesUpperLimit()) {
+      calEnd = end().plusDays(1).asJavaCalendarUniversalZoneMidnight();
+    } else {
+      calEnd = end().asJavaCalendarUniversalZoneMidnight();
+    }
     long diffMillis = calEnd.getTimeInMillis() - calStart.getTimeInMillis();
+    if (diffMillis < 0) {
+      return 0;
+    }
     return (int) (diffMillis / TimeUnitConversionFactors.millisecondsPerDay);
   }
 

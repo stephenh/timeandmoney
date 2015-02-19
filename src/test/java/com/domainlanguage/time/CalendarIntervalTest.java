@@ -146,6 +146,12 @@ public class CalendarIntervalTest extends TestCase {
     Assert.assertEquals(30, may1.until(may31).lengthInDaysInt());
   }
 
+  public void testLengthInDays() {
+    Assert.assertEquals(1, may1.through(may1).lengthInDaysInt());
+    Assert.assertEquals(31, may1.through(may31).lengthInDaysInt());
+    Assert.assertEquals(0, ((CalendarInterval) may.intersect(jun)).lengthInDaysInt());
+  }
+
   public void testComplements() {
     CalendarInterval may1Onward = CalendarInterval.inclusive(may1, null);
     CalendarInterval may2Onward = CalendarInterval.inclusive(may2, null);
