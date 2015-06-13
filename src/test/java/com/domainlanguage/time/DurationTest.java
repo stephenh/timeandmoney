@@ -34,6 +34,27 @@ public class DurationTest extends TestCase {
     Assert.assertEquals(dec20At1, twoMonths.addedTo(oct20At1));
   }
 
+  public void testAddMonthsToCalendarDate() {
+    CalendarDate oct20 = CalendarDate.from(2003, 10, 20);
+    CalendarDate dec20 = CalendarDate.from(2003, 12, 20);
+    Duration twoMonths = Duration.months(2);
+    Assert.assertEquals(dec20, twoMonths.addedTo(oct20));
+  }
+
+  public void testAddMonthsToPointOnLastDay() {
+    TimePoint jan31At1 = TimePoint.atGMT(2003, 1, 31, 01, 0, 0, 0);
+    TimePoint feb28At1 = TimePoint.atGMT(2003, 2, 28, 01, 0, 0, 0);
+    Duration oneMonth = Duration.months(1);
+    Assert.assertEquals(feb28At1, oneMonth.addedTo(jan31At1));
+  }
+
+  public void testAddMonthsToCalendarDateOnLastDay() {
+    CalendarDate jan31 = CalendarDate.from(2003, 1, 31);
+    CalendarDate feb28 = CalendarDate.from(2003, 2, 28);
+    Duration oneMonth = Duration.months(1);
+    Assert.assertEquals(feb28, oneMonth.addedTo(jan31));
+  }
+
   public void testSubtractMillisecondsFromPoint() {
     TimePoint dec20At1 = TimePoint.atGMT(2003, 12, 20, 01, 0, 0, 0);
     TimePoint dec18At1 = TimePoint.atGMT(2003, 12, 18, 01, 0, 0, 0);
@@ -52,7 +73,7 @@ public class DurationTest extends TestCase {
     Assert.assertEquals(dec20At1_2001, twoYears.subtractedFrom(dec20At1));
   }
 
-  public void testSubtractFromCalendarDate() {
+  public void testSubtractMonthsFromCalendarDate() {
     CalendarDate oct20 = CalendarDate.from(2003, 10, 20);
     CalendarDate dec20 = CalendarDate.from(2003, 12, 20);
 
@@ -65,6 +86,13 @@ public class DurationTest extends TestCase {
     CalendarDate dec20_2001 = CalendarDate.from(2001, 12, 20);
     Duration twoYears = Duration.years(2);
     Assert.assertEquals(dec20_2001, twoYears.subtractedFrom(dec20));
+  }
+
+  public void testSubtractMonthsFromCalendarDateOnLastDay() {
+    CalendarDate mar31 = CalendarDate.from(2003, 3, 31);
+    CalendarDate feb28 = CalendarDate.from(2003, 2, 28);
+    Duration oneMonth = Duration.months(1);
+    Assert.assertEquals(feb28, oneMonth.subtractedFrom(mar31));
   }
 
   public void testAddToCalendarDate() {
