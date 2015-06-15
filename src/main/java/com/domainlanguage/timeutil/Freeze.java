@@ -31,7 +31,7 @@ public class Freeze {
   }
 
   public static void unfreeze() {
-    Freeze.unfreeze();
+    FrozenClock.unfreeze();
   }
 
   public static void nextDay() {
