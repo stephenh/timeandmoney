@@ -19,6 +19,10 @@ public class CalendarDate implements Comparable<CalendarDate>, Serializable {
   private final int month; // 1 based: January = 1, February = 2, ...
   private final int day;
 
+  public static CalendarDate today() {
+    return todayInDefaultTimeZone();
+  }
+
   public static CalendarDate todayInDefaultTimeZone() {
     return CalendarDate.from(TimePoint.now(), TimeZone.getDefault());
   }
