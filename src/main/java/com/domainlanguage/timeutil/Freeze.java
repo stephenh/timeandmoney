@@ -26,6 +26,14 @@ public class Freeze {
     FrozenClock.freeze(TimePoint.atMidnight(year, month, day, Freeze.defaultTimeZone));
   }
 
+  public static boolean isFrozen() {
+    return FrozenClock.isFrozen();
+  }
+
+  public static void unfreeze() {
+    Freeze.unfreeze();
+  }
+
   public static void nextDay() {
     FrozenClock.freeze(Clock.today().nextDay().startAsTimePoint(Freeze.defaultTimeZone));
   }
