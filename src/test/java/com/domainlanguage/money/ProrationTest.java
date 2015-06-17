@@ -48,6 +48,13 @@ public class ProrationTest extends TestCase {
     Assert.assertEquals(Money.dollars(0), result[1]);
   }
 
+  public void testProrateZeroTotalInEuros() {
+    long[] proportions = { 3, 7 };
+    Money[] result = Proration.proratedOver(Money.euros(0), proportions);
+    Assert.assertEquals(Money.euros(0), result[0]);
+    Assert.assertEquals(Money.euros(0), result[1]);
+  }
+
   public void testProrateTotalIndivisibleBy3() {
     Money[] actual = Proration.dividedEvenlyIntoParts(Money.dollars(100), 3);
     Money[] expected = { Money.dollars(33.34), Money.dollars(33.33), Money.dollars(33.33) };

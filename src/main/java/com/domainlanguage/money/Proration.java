@@ -59,7 +59,10 @@ public class Proration {
     }
     if (dividesEvenly) {
       for (int i = 0; i < ratios.size(); i++) {
-        simpleResult[i] = Money.dollars(ratios.get(i).times(total.getAmount()).decimalValue(scale, Rounding.DOWN));
+        simpleResult[i] = new Money(ratios
+          .get(i)
+          .times(total.getAmount())
+          .decimalValue(total.getCurrency().getDefaultFractionDigits(), Rounding.DOWN), total.getCurrency());
       }
       return simpleResult;
     }
