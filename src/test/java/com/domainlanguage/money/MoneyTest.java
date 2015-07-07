@@ -7,16 +7,14 @@ package com.domainlanguage.money;
 
 import java.math.BigDecimal;
 import java.util.Currency;
-import java.util.Locale;
-
-import junit.framework.Assert;
-import junit.framework.TestCase;
 
 import com.domainlanguage.base.Ratio;
 import com.domainlanguage.base.Rounding;
-import com.domainlanguage.tests.SerializationTester;
+import com.google.gwt.junit.client.GWTTestCase;
 
-public class MoneyTest extends TestCase {
+import junit.framework.Assert;
+
+public class MoneyTest extends GWTTestCase {
 
   private static final Currency USD = Currency.getInstance("USD");
   private static final Currency JPY = Currency.getInstance("JPY");
@@ -28,10 +26,10 @@ public class MoneyTest extends TestCase {
   private static final Money e2_51 = Money.valueOf(new BigDecimal("2.51"), MoneyTest.EUR);
   private static final Money d100 = Money.valueOf(new BigDecimal("100.0"), MoneyTest.USD);
 
-  public void testSerialization() {
-    SerializationTester.assertCanBeSerialized(d15);
-  }
-
+  //  public void testSerialization() {
+  //    SerializationTester.assertCanBeSerialized(d15);
+  //  }
+  //
   public void testCreationFromDouble() {
     Assert.assertEquals(d15, Money.valueOf(15.0, MoneyTest.USD));
     Assert.assertEquals(d2_51, Money.valueOf(2.51, MoneyTest.USD));
@@ -40,7 +38,8 @@ public class MoneyTest extends TestCase {
   }
 
   public void testYen() {
-    Assert.assertEquals("JPY 50", y50.toString());
+    Assert.assertEquals("¥", MoneyTest.JPY.getSymbol());
+    Assert.assertEquals("¥ 50", y50.toString());
     Money y80 = Money.valueOf(new BigDecimal("80"), MoneyTest.JPY);
     Money y30 = Money.valueOf(30, MoneyTest.JPY);
     Assert.assertEquals(y80, y50.plus(y30));
@@ -94,8 +93,8 @@ public class MoneyTest extends TestCase {
   }
 
   public void testDivisionByMoney() {
-    Assert.assertEquals(new BigDecimal(2.50), Money.dollars(5.00).dividedBy(Money.dollars(2.00)).decimalValue(1, Rounding.UNNECESSARY));
-    Assert.assertEquals(new BigDecimal(1.25), Money.dollars(5.00).dividedBy(Money.dollars(4.00)).decimalValue(2, Rounding.UNNECESSARY));
+    Assert.assertEquals(new BigDecimal("2.5"), Money.dollars(5.00).dividedBy(Money.dollars(2.00)).decimalValue(1, Rounding.UNNECESSARY));
+    Assert.assertEquals(new BigDecimal("1.25"), Money.dollars(5.00).dividedBy(Money.dollars(4.00)).decimalValue(2, Rounding.UNNECESSARY));
     Assert.assertEquals(new BigDecimal(5), Money.dollars(5.00).dividedBy(Money.dollars(1.00)).decimalValue(0, Rounding.UNNECESSARY));
     try {
       Money.dollars(5.00).dividedBy(Money.dollars(2.00)).decimalValue(0, Rounding.UNNECESSARY);
@@ -170,8 +169,9 @@ public class MoneyTest extends TestCase {
   }
 
   public void testPrint() {
-    Assert.assertEquals("$15.00", d15.toString(Locale.US));
-    Assert.assertEquals("USD 15.00", d15.toString(Locale.UK));
+    Assert.assertEquals("$15.00", d15.toString());
+    // Assert.assertEquals("$15.00", d15.toString(Locale.US));
+    // Assert.assertEquals("USD 15.00", d15.toString(Locale.UK));
   }
 
   // TODO: Formatted printing of Money
@@ -201,13 +201,18 @@ public class MoneyTest extends TestCase {
   }
 
   public void testFractionalPennies() {
-    //        CurrencyPolicy(USD, 0.0025); 
+    //        CurrencyPolicy(USD, 0.0025);
     //        Smallest unit.unit Any Money based on this CurrencyPolicy must be some multiple of the
     //        smallest unit. "Scale" is insufficient, because the limit is not always a number of demial places.
     //        Money someFee = Money.dollars(0.0025);
     //        Money wholeMoney = someFee.times(4);
     //        assertEquals(Money.dollars(0.01), wholeMoney);
 
+  }
+
+  @Override
+  public String getModuleName() {
+    return "com.domainlanguage.TestSuite";
   }
 
 }

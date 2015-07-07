@@ -17,13 +17,13 @@ import com.domainlanguage.time.TimeSource;
 
 public class SystemClockTest extends TestCase {
 
-  public void testSystemClockTimeSource() {
+  public void testSystemClockTimeSource() throws Exception {
     // The following calls allow polymorphic substitution of TimeSources
     // either in applications or, more often, in testing.
     TimeSource source = SystemClock.timeSource();
     TimePoint expectedNow = TimePoint.from(new Date());
     TimePoint now = source.now();
-    Assert.assertTrue(now.until(expectedNow).length().compareTo(Duration.milliseconds(50)) < 0);
+    Assert.assertTrue(expectedNow.until(now).length().compareTo(Duration.milliseconds(50)) < 0);
   }
 
 }

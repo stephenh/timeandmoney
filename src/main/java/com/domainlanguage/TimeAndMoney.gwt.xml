@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE module PUBLIC "-//Google Inc.//DTD Google Web Toolkit 2.5.0//EN" "http://google-web-toolkit.googlecode.com/svn/tags/2.5.0/distro-source/core/src/gwt-module.dtd">
+<module>
+  <!-- only emulating money for now -->
+  <source path="money">
+    <exclude name="**/Stub*"/>
+  </source>
+  <source path="base">
+    <exclude name="**/Stub*"/>
+  </source>
+  <super-source path="emul" />
+
+  <inherits name="com.google.gwt.core.Core" />
+</module>

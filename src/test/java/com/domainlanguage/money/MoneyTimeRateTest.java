@@ -40,7 +40,7 @@ public class MoneyTimeRateTest extends TestCase {
 
   public void testEquals() {
     Money amount = Money.euros(11.00);
-    MoneyTimeRate rate = amount.per(Duration.days(2));
+    MoneyTimeRate rate = new MoneyTimeRate(amount, Duration.days(2));
     Assert.assertEquals(new MoneyTimeRate(Money.euros(11.00), Duration.days(2)), rate);
   }
 }

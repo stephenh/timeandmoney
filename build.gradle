@@ -6,6 +6,7 @@ group = 'com.bizo'
 version = [System.env.TRAVIS_TAG, 'SNAPSHOT'].find { it != null }
 sourceCompatibility = '1.6'
 targetCompatibility = '1.6'
+archivesBaseName = "timeandmoney-gwt"
 
 configurations {
   deployerJars
@@ -20,12 +21,25 @@ artifacts {
   archives sourcesJar
 }
 
+// Purposefully include '*.java' files as resources since this is a GWT project
+sourceSets.main.resources.filter.excludeSpecs.clear()
+sourceSets.test.resources.filter.excludeSpecs.clear()
+sourceSets.main.resources { srcDirs = ["src/main/java", "src/main/super"]; include "**/*" }
+sourceSets.test.resources { srcDirs = ["src/test/java"]; include "**/*" }
+
+test {
+  jvmArgs "-Dgwt.args=-prod"
+  forkEvery 1
+}
+
 repositories {
   mavenCentral()
 }
 
 dependencies {
-  compile 'junit:junit:3.8.2'
+  compile 'com.google.gwt:gwt-user:2.7.0'
+  compile 'com.google.gwt:gwt-dev:2.7.0'
+  testCompile 'junit:junit:3.8.2'
   deployerJars 'org.apache.maven.wagon:wagon-ssh:2.6'
 }
 

@@ -10,7 +10,6 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.Serializable;
 
 import junit.framework.Assert;
 import junit.framework.AssertionFailedError;
@@ -18,9 +17,9 @@ import junit.framework.AssertionFailedError;
 public class SerializationTester {
 
   public static void assertCanBeSerialized(Object serializable) throws AssertionFailedError {
-    if (!Serializable.class.isInstance(serializable)) {
-      throw new AssertionFailedError("Object doesn't implement java.io.Serializable interface");
-    }
+    // if (!Serializable.class.isInstance(serializable)) {
+    //  throw new AssertionFailedError("Object doesn't implement java.io.Serializable interface");
+    //}
 
     ObjectOutputStream out = null;
     ObjectInputStream in = null;

@@ -16,7 +16,6 @@ import java.util.Locale;
 
 import com.domainlanguage.base.Ratio;
 import com.domainlanguage.base.Rounding;
-import com.domainlanguage.time.Duration;
 
 public class Money implements Comparable<Money>, Serializable {
 
@@ -78,17 +77,17 @@ public class Money implements Comparable<Money>, Serializable {
   }
 
   /**
-     * WARNING: Because of the indefinite precision of double, this method must
-     * round off the value.
-     */
+   * WARNING: Because of the indefinite precision of double, this method must
+   * round off the value.
+   */
   public static Money euros(double amount) {
     return Money.valueOf(amount, Money.EUR);
   }
 
   /**
-     * This creation method is safe to use. It will adjust scale, but will not
-     * round off the amount.
-     */
+   * This creation method is safe to use. It will adjust scale, but will not
+   * round off the amount.
+   */
   public static Money euros(BigDecimal amount) {
     return Money.valueOf(amount, Money.EUR);
   }
@@ -234,22 +233,22 @@ public class Money implements Comparable<Money>, Serializable {
   }
 
   /**
-     * TODO: Many apps require carrying extra precision in intermediate
-     * calculations. The use of Ratio is a beginning, but need a comprehensive
-     * solution. Currently, an invariant of Money is that the scale is the
-     * currencies standard scale, but this will probably have to be suspended or
-     * elaborated in intermediate calcs, or handled with defered calculations
-     * like Ratio.
-     */
+   * TODO: Many apps require carrying extra precision in intermediate
+   * calculations. The use of Ratio is a beginning, but need a comprehensive
+   * solution. Currently, an invariant of Money is that the scale is the
+   * currencies standard scale, but this will probably have to be suspended or
+   * elaborated in intermediate calcs, or handled with defered calculations
+   * like Ratio.
+   */
 
   public Money times(BigDecimal factor) {
     return times(factor, Money.DEFAULT_ROUNDING_MODE);
   }
 
   /**
-     * TODO: BigDecimal.multiply() scale is sum of scales of two multiplied
-     * numbers. So what is scale of times?
-     */
+   * TODO: BigDecimal.multiply() scale is sum of scales of two multiplied
+   * numbers. So what is scale of times?
+   */
   public Money times(BigDecimal factor, int roundingMode) {
     return Money.valueOf(amount.multiply(factor), currency, roundingMode);
   }
@@ -319,10 +318,6 @@ public class Money implements Comparable<Money>, Serializable {
       symbol = symbol + " ";
     }
     return symbol + amount;
-  }
-
-  public MoneyTimeRate per(Duration duration) {
-    return new MoneyTimeRate(this, duration);
   }
 
   public BigDecimal getAmount() {
