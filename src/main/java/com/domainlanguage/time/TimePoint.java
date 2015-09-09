@@ -129,8 +129,16 @@ public class TimePoint implements Comparable<TimePoint>, Serializable {
     return millisecondsFromEpoc < other.millisecondsFromEpoc;
   }
 
+  public boolean isOnOrBefore(TimePoint other) {
+    return millisecondsFromEpoc <= other.millisecondsFromEpoc;
+  }
+
   public boolean isAfter(TimePoint other) {
     return millisecondsFromEpoc > other.millisecondsFromEpoc;
+  }
+
+  public boolean isOnOrAfter(TimePoint other) {
+    return millisecondsFromEpoc >= other.millisecondsFromEpoc;
   }
 
   public TimePoint nextDay() {

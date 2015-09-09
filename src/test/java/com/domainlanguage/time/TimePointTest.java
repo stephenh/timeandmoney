@@ -137,9 +137,11 @@ public class TimePointTest extends TestCase {
     TimePoint dec20_2003 = TimePoint.atMidnightGMT(2003, 12, 20);
     Assert.assertTrue(dec5_2003.isBefore(dec20_2003));
     Assert.assertFalse(dec20_2003.isBefore(dec20_2003));
+    Assert.assertTrue(dec20_2003.isOnOrBefore(dec20_2003));
     Assert.assertFalse(dec20_2003.isBefore(dec5_2003));
     Assert.assertFalse(dec5_2003.isAfter(dec20_2003));
     Assert.assertFalse(dec20_2003.isAfter(dec20_2003));
+    Assert.assertTrue(dec20_2003.isOnOrAfter(dec20_2003));
     Assert.assertTrue(dec20_2003.isAfter(dec5_2003));
 
     TimePoint oneSecondLater = TimePoint.atGMT(2003, 12, 20, 0, 0, 1, 0);
