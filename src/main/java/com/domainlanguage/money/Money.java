@@ -16,8 +16,9 @@ import java.util.Locale;
 
 import com.domainlanguage.base.Ratio;
 import com.domainlanguage.base.Rounding;
+import com.google.gwt.user.client.rpc.IsSerializable;
 
-public class Money implements Comparable<Money>, Serializable {
+public class Money implements Comparable<Money>, Serializable, IsSerializable {
 
   private static final long serialVersionUID = 1L;
   private static final Currency USD = Currency.getInstance("USD");
