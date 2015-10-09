@@ -9,12 +9,12 @@ import java.math.BigDecimal;
 import java.util.Currency;
 import java.util.Locale;
 
-import junit.framework.Assert;
-import junit.framework.TestCase;
-
 import com.domainlanguage.base.Ratio;
 import com.domainlanguage.base.Rounding;
 import com.domainlanguage.tests.SerializationTester;
+
+import junit.framework.Assert;
+import junit.framework.TestCase;
 
 public class MoneyTest extends TestCase {
 
@@ -170,8 +170,12 @@ public class MoneyTest extends TestCase {
   }
 
   public void testPrint() {
+    Assert.assertEquals("$15.00", d15.toString());
+    Assert.assertEquals("15.00", d15.toNumericString());
     Assert.assertEquals("$15.00", d15.toString(Locale.US));
     Assert.assertEquals("USD 15.00", d15.toString(Locale.UK));
+    Assert.assertEquals("JPY 50", y50.toString());
+    Assert.assertEquals("50", y50.toNumericString());
   }
 
   // TODO: Formatted printing of Money
@@ -201,7 +205,7 @@ public class MoneyTest extends TestCase {
   }
 
   public void testFractionalPennies() {
-    //        CurrencyPolicy(USD, 0.0025); 
+    //        CurrencyPolicy(USD, 0.0025);
     //        Smallest unit.unit Any Money based on this CurrencyPolicy must be some multiple of the
     //        smallest unit. "Scale" is insufficient, because the limit is not always a number of demial places.
     //        Money someFee = Money.dollars(0.0025);

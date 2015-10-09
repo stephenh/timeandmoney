@@ -313,6 +313,10 @@ public class Money implements Comparable<Money>, Serializable {
     return symbol + amount;
   }
 
+  public String toNumericString() {
+    return amount.toString();
+  }
+
   public String toString(Locale locale) {
     String symbol = currency.getSymbol(locale);
     if (!"$".equals(symbol)) {
