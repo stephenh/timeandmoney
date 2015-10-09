@@ -170,8 +170,11 @@ public class MoneyTest extends GWTTestCase {
 
   public void testPrint() {
     Assert.assertEquals("$15.00", d15.toString());
+    Assert.assertEquals("15.00", d15.toNumericString());
     // Assert.assertEquals("$15.00", d15.toString(Locale.US));
     // Assert.assertEquals("USD 15.00", d15.toString(Locale.UK));
+    Assert.assertEquals("JPY 50", y50.toString());
+    Assert.assertEquals("50", y50.toNumericString());
   }
 
   // TODO: Formatted printing of Money
