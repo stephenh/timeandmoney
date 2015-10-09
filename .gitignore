@@ -1,2 +1,4 @@
 /build/
 /.gradle/
+/gwt-unitCache
+/war
