@@ -306,11 +306,7 @@ public class Money implements Comparable<Money>, Serializable, IsSerializable {
 
   @Override
   public String toString() {
-    String symbol = currency.getSymbol();
-    if (!"$".equals(symbol)) {
-      symbol = symbol + " ";
-    }
-    return symbol + amount;
+    return getRealSymbol(currency) + amount;
   }
 
   public String toNumericString() {
@@ -355,6 +351,44 @@ public class Money implements Comparable<Money>, Serializable, IsSerializable {
   private void assertHasSameCurrencyAs(Money aMoney) {
     if (!hasSameCurrencyAs(aMoney)) {
       throw new IllegalArgumentException(aMoney.toString() + " is not same currency as " + toString());
+    }
+  }
+
+  /** Side-step Currency.getSymbol() only returning a symbol if given a matching locale. */
+  private static String getRealSymbol(Currency c) {
+    switch (c.getCurrencyCode()) {
+      case "USD":
+        return "$";
+      case "AUD":
+        return "AU$";
+      case "CAD":
+        return "CA$";
+      case "NZD":
+        return "NZ$";
+      case "BRL":
+        return "R$";
+      case "EUR":
+        return "€";
+      case "GBP":
+        return "£";
+      case "SEK":
+      case "DKK":
+      case "NOK":
+        return "kr";
+      case "SGD":
+        return "S$";
+      case "HKD":
+        return "HK$";
+      case "INR":
+        return "₹";
+      case "JPY":
+        return "¥";
+      case "ZAR":
+        return "R";
+      case "CHF":
+        return "CHF";
+      default:
+        return c.getSymbol();
     }
   }
 

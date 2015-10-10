@@ -38,8 +38,7 @@ public class MoneyTest extends GWTTestCase {
   }
 
   public void testYen() {
-    Assert.assertEquals("¥", MoneyTest.JPY.getSymbol());
-    Assert.assertEquals("¥ 50", y50.toString());
+    Assert.assertEquals("¥50", y50.toString());
     Money y80 = Money.valueOf(new BigDecimal("80"), MoneyTest.JPY);
     Money y30 = Money.valueOf(30, MoneyTest.JPY);
     Assert.assertEquals(y80, y50.plus(y30));
@@ -173,7 +172,7 @@ public class MoneyTest extends GWTTestCase {
     Assert.assertEquals("15.00", d15.toNumericString());
     // Assert.assertEquals("$15.00", d15.toString(Locale.US));
     // Assert.assertEquals("USD 15.00", d15.toString(Locale.UK));
-    Assert.assertEquals("JPY 50", y50.toString());
+    Assert.assertEquals("¥50", y50.toString());
     Assert.assertEquals("50", y50.toNumericString());
   }
 
