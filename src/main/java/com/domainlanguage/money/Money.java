@@ -49,7 +49,7 @@ public class Money implements Comparable<Money>, Serializable {
   }
 
   /**
-   * WARNING: Because of the indefinite precision of double, thismethod must round off the value.
+   * WARNING: Because of the indefinite precision of double, this method must round off the value.
    */
   public static Money dollars(double amount) {
     return Money.valueOf(amount, Money.USD);
