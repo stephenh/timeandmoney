@@ -1,6 +1,7 @@
 
 apply plugin: 'java'
 apply plugin: 'maven'
+apply plugin: 'eclipse'
 
 group = 'com.bizo'
 version = [System.env.TRAVIS_TAG, 'SNAPSHOT'].find { it != null }
