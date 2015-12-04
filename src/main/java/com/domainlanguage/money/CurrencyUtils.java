@@ -2,7 +2,7 @@ package com.domainlanguage.money;
 
 import java.util.Currency;
 
-public class CurrencyTypeUtils {
+public class CurrencyUtils {
 
   /** Side-step Currency.getSymbol() only returning a symbol if given a matching locale. */
   public static String getSymbol(final Currency currency) {

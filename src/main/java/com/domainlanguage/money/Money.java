@@ -292,7 +292,7 @@ public class Money implements Comparable<Money>, Serializable {
 
   @Override
   public String toString() {
-    return CurrencyTypeUtils.getSymbol(currency)
+    return CurrencyUtils.getSymbol(currency)
       + NumberFormatter.commas(amount.doubleValue(), currency.getDefaultFractionDigits());
   }
 

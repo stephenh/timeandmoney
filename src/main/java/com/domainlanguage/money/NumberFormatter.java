@@ -3,7 +3,7 @@ package com.domainlanguage.money;
 
 public class NumberFormatter {
   public static String commas(final Money amount) {
-    return CurrencyTypeUtils.getSymbol(amount.getCurrency())
+    return CurrencyUtils.getSymbol(amount.getCurrency())
         + commas(amount.getAmount().doubleValue(), amount.getCurrency().getDefaultFractionDigits());
   }
 
