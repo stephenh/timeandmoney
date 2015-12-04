@@ -27,7 +27,7 @@ repositories {
 
 dependencies {
   compile 'junit:junit:3.8.2'
-  deployerJars 'org.apache.maven.wagon:wagon-ssh:2.10'
+  deployerJars 'org.apache.maven.wagon:wagon-ssh:2.9'
 }
 
 uploadArchives {
