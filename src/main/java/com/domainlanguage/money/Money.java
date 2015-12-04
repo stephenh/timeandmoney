@@ -8,11 +8,7 @@ package com.domainlanguage.money;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Collection;
-import java.util.Currency;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 import com.domainlanguage.base.Ratio;
 import com.domainlanguage.base.Rounding;
@@ -37,16 +33,15 @@ public class Money implements Comparable<Money>, Serializable {
   }
 
   /**
-   * WARNING: Because of the indefinite precision of double, this method must
-   * round off the value.
+   * WARNING: Because of the indefinite precision of double, this method must round off the value.
    */
   public static Money valueOf(double dblAmount, Currency currency) {
     return Money.valueOf(dblAmount, currency, Money.DEFAULT_ROUNDING_MODE);
   }
 
   /**
-   * Because of the indefinite precision of double, this method must round off
-   * the value. This method gives the client control of the rounding mode.
+   * Because of the indefinite precision of double, this method must round off the value. This method gives the client
+   * control of the rounding mode.
    */
   public static Money valueOf(double dblAmount, Currency currency, int roundingMode) {
     BigDecimal rawAmount = new BigDecimal(dblAmount);
@@ -54,47 +49,42 @@ public class Money implements Comparable<Money>, Serializable {
   }
 
   /**
-   * WARNING: Because of the indefinite precision of double, thismethod must
-   * round off the value.
+   * WARNING: Because of the indefinite precision of double, thismethod must round off the value.
    */
   public static Money dollars(double amount) {
     return Money.valueOf(amount, Money.USD);
   }
 
   /**
-   * This creation method is safe to use. It will adjust scale, but will not
-   * round off the amount.
+   * This creation method is safe to use. It will adjust scale, but will not round off the amount.
    */
   public static Money dollars(BigDecimal amount) {
     return Money.valueOf(amount, Money.USD);
   }
 
   /**
-   * This creation method is safe to use. It will adjust scale, but will not
-   * round off the amount.
+   * This creation method is safe to use. It will adjust scale, but will not round off the amount.
    */
   public static Money valueOf(BigDecimal amount, Currency currency) {
     return Money.valueOf(amount, currency, Rounding.UNNECESSARY);
   }
 
   /**
-     * WARNING: Because of the indefinite precision of double, this method must
-     * round off the value.
-     */
+   * WARNING: Because of the indefinite precision of double, this method must round off the value.
+   */
   public static Money euros(double amount) {
     return Money.valueOf(amount, Money.EUR);
   }
 
   /**
-     * This creation method is safe to use. It will adjust scale, but will not
-     * round off the amount.
-     */
+   * This creation method is safe to use. It will adjust scale, but will not round off the amount.
+   */
   public static Money euros(BigDecimal amount) {
     return Money.valueOf(amount, Money.EUR);
   }
 
   public static Money sum(Collection<Money> monies) {
-    //TODO Return Default Currency
+    // TODO Return Default Currency
     if (monies.isEmpty()) {
       return Money.dollars(0.00);
     }
@@ -153,9 +143,8 @@ public class Money implements Comparable<Money>, Serializable {
   }
 
   /**
-   * The constructor does not complex computations and requires simple, inputs
-   * consistent with the class invariant. Other creation methods are available
-   * for convenience.
+   * The constructor does not complex computations and requires simple, inputs consistent with the class invariant.
+   * Other creation methods are available for convenience.
    */
   public Money(BigDecimal amount, Currency currency) {
     if (amount.scale() != currency.getDefaultFractionDigits()) {
@@ -234,22 +223,19 @@ public class Money implements Comparable<Money>, Serializable {
   }
 
   /**
-     * TODO: Many apps require carrying extra precision in intermediate
-     * calculations. The use of Ratio is a beginning, but need a comprehensive
-     * solution. Currently, an invariant of Money is that the scale is the
-     * currencies standard scale, but this will probably have to be suspended or
-     * elaborated in intermediate calcs, or handled with defered calculations
-     * like Ratio.
-     */
+   * TODO: Many apps require carrying extra precision in intermediate calculations. The use of Ratio is a beginning, but
+   * need a comprehensive solution. Currently, an invariant of Money is that the scale is the currencies standard scale,
+   * but this will probably have to be suspended or elaborated in intermediate calcs, or handled with defered
+   * calculations like Ratio.
+   */
 
   public Money times(BigDecimal factor) {
     return times(factor, Money.DEFAULT_ROUNDING_MODE);
   }
 
   /**
-     * TODO: BigDecimal.multiply() scale is sum of scales of two multiplied
-     * numbers. So what is scale of times?
-     */
+   * TODO: BigDecimal.multiply() scale is sum of scales of two multiplied numbers. So what is scale of times?
+   */
   public Money times(BigDecimal factor, int roundingMode) {
     return Money.valueOf(amount.multiply(factor), currency, roundingMode);
   }
@@ -306,11 +292,11 @@ public class Money implements Comparable<Money>, Serializable {
 
   @Override
   public String toString() {
-    return getRealSymbol(currency) + amount;
+    return getRealSymbol(currency) + NumberFormatter.commas(amount.doubleValue(), currency.getDefaultFractionDigits());
   }
 
   public String toNumericString() {
-    return amount.toString();
+    return NumberFormatter.commas(amount.doubleValue(), currency.getDefaultFractionDigits());
   }
 
   public String toString(Locale locale) {
@@ -318,7 +304,7 @@ public class Money implements Comparable<Money>, Serializable {
     if (!"$".equals(symbol)) {
       symbol = symbol + " ";
     }
-    return symbol + amount;
+    return symbol + NumberFormatter.commas(amount.doubleValue(), currency.getDefaultFractionDigits());
   }
 
   public MoneyTimeRate per(Duration duration) {
@@ -334,9 +320,8 @@ public class Money implements Comparable<Money>, Serializable {
   }
 
   /**
-   * This probably should be Currency responsibility. Even then, it may need
-   * to be customized for specialty apps because there are other cases, where
-   * the smallest increment is not the smallest unit.
+   * This probably should be Currency responsibility. Even then, it may need to be customized for specialty apps because
+   * there are other cases, where the smallest increment is not the smallest unit.
    */
   Money minimumIncrement() {
     BigDecimal one = new BigDecimal(1);
@@ -361,38 +346,38 @@ public class Money implements Comparable<Money>, Serializable {
   /** Side-step Currency.getSymbol() only returning a symbol if given a matching locale. */
   private static String getRealSymbol(Currency c) {
     switch (c.getCurrencyCode()) {
-      case "USD":
-        return "$";
-      case "AUD":
-        return "AU$";
-      case "CAD":
-        return "CA$";
-      case "NZD":
-        return "NZ$";
-      case "BRL":
-        return "R$";
-      case "EUR":
-        return "€";
-      case "GBP":
-        return "£";
-      case "SEK":
-      case "DKK":
-      case "NOK":
-        return "kr";
-      case "SGD":
-        return "S$";
-      case "HKD":
-        return "HK$";
-      case "INR":
-        return "₹";
-      case "JPY":
-        return "¥";
-      case "ZAR":
-        return "R";
-      case "CHF":
-        return "CHF";
-      default:
-        return c.getSymbol();
+    case "USD":
+      return "$";
+    case "AUD":
+      return "AU$";
+    case "CAD":
+      return "CA$";
+    case "NZD":
+      return "NZ$";
+    case "BRL":
+      return "R$";
+    case "EUR":
+      return "€";
+    case "GBP":
+      return "£";
+    case "SEK":
+    case "DKK":
+    case "NOK":
+      return "kr";
+    case "SGD":
+      return "S$";
+    case "HKD":
+      return "HK$";
+    case "INR":
+      return "₹";
+    case "JPY":
+      return "¥";
+    case "ZAR":
+      return "R";
+    case "CHF":
+      return "CHF";
+    default:
+      return c.getSymbol();
     }
   }
 
