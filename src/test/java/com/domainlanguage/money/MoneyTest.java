@@ -7,6 +7,7 @@ package com.domainlanguage.money;
 
 import java.math.BigDecimal;
 import java.util.Currency;
+import java.util.Locale;
 
 import com.domainlanguage.base.Ratio;
 import com.domainlanguage.base.Rounding;
@@ -51,7 +52,8 @@ public class MoneyTest extends GWTTestCase {
     Assert.assertEquals(MoneyTest.USD, d69_99.getCurrency());
     try {
       new Money(new BigDecimal("69.999"), MoneyTest.USD);
-      Assert.fail("Money constructor shall never round, and shall not accept a value whose scale doesn't fit the Currency.");
+      Assert.fail(
+        "Money constructor shall never round, and shall not accept a value whose scale doesn't fit the Currency.");
     } catch (IllegalArgumentException correctResponse) {
     }
   }
@@ -92,9 +94,15 @@ public class MoneyTest extends GWTTestCase {
   }
 
   public void testDivisionByMoney() {
-    Assert.assertEquals(new BigDecimal("2.5"), Money.dollars(5.00).dividedBy(Money.dollars(2.00)).decimalValue(1, Rounding.UNNECESSARY));
-    Assert.assertEquals(new BigDecimal("1.25"), Money.dollars(5.00).dividedBy(Money.dollars(4.00)).decimalValue(2, Rounding.UNNECESSARY));
-    Assert.assertEquals(new BigDecimal(5), Money.dollars(5.00).dividedBy(Money.dollars(1.00)).decimalValue(0, Rounding.UNNECESSARY));
+    Assert.assertEquals(
+      new BigDecimal("2.5"),
+      Money.dollars(5.00).dividedBy(Money.dollars(2.00)).decimalValue(1, Rounding.UNNECESSARY));
+    Assert.assertEquals(
+      new BigDecimal("1.25"),
+      Money.dollars(5.00).dividedBy(Money.dollars(4.00)).decimalValue(2, Rounding.UNNECESSARY));
+    Assert.assertEquals(
+      new BigDecimal(5),
+      Money.dollars(5.00).dividedBy(Money.dollars(1.00)).decimalValue(0, Rounding.UNNECESSARY));
     try {
       Money.dollars(5.00).dividedBy(Money.dollars(2.00)).decimalValue(0, Rounding.UNNECESSARY);
       Assert.fail("dividedBy(Money) does not allow rounding.");
@@ -139,12 +147,12 @@ public class MoneyTest extends GWTTestCase {
     Object objectNull = null;
     Assert.assertFalse(d2_51a.equals(objectNull));
 
-    //This next test seems just like the previous, but it's not
-    //The Java Compiler early binds message sends and
-    //it will bind the next call to equals(Money) and
-    //the previous will bind to equals(Object)
-    //I renamed the original equals(Money) to
-    //equalsMoney(Money) to prevent wrong binding.
+    // This next test seems just like the previous, but it's not
+    // The Java Compiler early binds message sends and
+    // it will bind the next call to equals(Money) and
+    // the previous will bind to equals(Object)
+    // I renamed the original equals(Money) to
+    // equalsMoney(Money) to prevent wrong binding.
     Money moneyNull = null;
     Assert.assertFalse(d2_51a.equals(moneyNull));
   }
@@ -174,13 +182,26 @@ public class MoneyTest extends GWTTestCase {
     // Assert.assertEquals("USD 15.00", d15.toString(Locale.UK));
     Assert.assertEquals("¥50", y50.toString());
     Assert.assertEquals("50", y50.toNumericString());
+
+    Assert.assertEquals("$150,000,000.00", d15.times(10_000_000).toString());
+    Assert.assertEquals("150,000,000.00", d15.times(10_000_000).toNumericString());
+    Assert.assertEquals("$150,000,000.00", d15.times(10_000_000).toString(Locale.US));
+    Assert.assertEquals("USD 150,000,000.00", d15.times(10_000_000).toString(Locale.UK));
+    Assert.assertEquals("¥500,000,000", y50.times(10_000_000).toString());
+    Assert.assertEquals("500,000,000", y50.times(10_000_000).toNumericString());
+  }
+
+  public void testFormatMoneyNicely() {
+    Assert.assertEquals(Money.dollars(1999100.00).toString(), "$1,999,100.00");
+    final Money d2_51_longNumber = Money.valueOf(new BigDecimal("21999100.51"), MoneyTest.USD);
+    Assert.assertEquals(d2_51_longNumber.toString(Locale.US), "$21,999,100.51");
   }
 
   // TODO: Formatted printing of Money
-  //	public void testLocalPrinting() {
-  //		assertEquals("$15.00", d15.localString());
-  //		assertEquals("2,51 DM", m2_51.localString());
-  //	}
+  // public void testLocalPrinting() {
+  // assertEquals("$15.00", d15.localString());
+  // assertEquals("2,51 DM", m2_51.localString());
+  // }
 
   public void testRound() {
     Money dRounded = Money.dollars(1.2350);
@@ -203,12 +224,12 @@ public class MoneyTest extends GWTTestCase {
   }
 
   public void testFractionalPennies() {
-    //        CurrencyPolicy(USD, 0.0025);
-    //        Smallest unit.unit Any Money based on this CurrencyPolicy must be some multiple of the
-    //        smallest unit. "Scale" is insufficient, because the limit is not always a number of demial places.
-    //        Money someFee = Money.dollars(0.0025);
-    //        Money wholeMoney = someFee.times(4);
-    //        assertEquals(Money.dollars(0.01), wholeMoney);
+    // CurrencyPolicy(USD, 0.0025);
+    // Smallest unit.unit Any Money based on this CurrencyPolicy must be some multiple of the
+    // smallest unit. "Scale" is insufficient, because the limit is not always a number of demial places.
+    // Money someFee = Money.dollars(0.0025);
+    // Money wholeMoney = someFee.times(4);
+    // assertEquals(Money.dollars(0.01), wholeMoney);
 
   }
 
