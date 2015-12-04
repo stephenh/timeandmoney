@@ -293,11 +293,11 @@ public class Money implements Comparable<Money>, Serializable {
   @Override
   public String toString() {
     return CurrencyUtils.getSymbol(currency)
-      + NumberFormatter.commas(amount.doubleValue(), currency.getDefaultFractionDigits());
+      + NumberUtils.format(amount.doubleValue(), currency.getDefaultFractionDigits());
   }
 
   public String toNumericString() {
-    return NumberFormatter.commas(amount.doubleValue(), currency.getDefaultFractionDigits());
+    return NumberUtils.format(amount.doubleValue(), currency.getDefaultFractionDigits());
   }
 
   public String toString(Locale locale) {
@@ -305,7 +305,7 @@ public class Money implements Comparable<Money>, Serializable {
     if (!"$".equals(symbol)) {
       symbol = symbol + " ";
     }
-    return symbol + NumberFormatter.commas(amount.doubleValue(), currency.getDefaultFractionDigits());
+    return symbol + NumberUtils.format(amount.doubleValue(), currency.getDefaultFractionDigits());
   }
 
   public MoneyTimeRate per(Duration duration) {

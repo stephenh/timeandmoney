@@ -1,6 +1,7 @@
 package com.domainlanguage.money;
 
 public class NumberUtils {
+
   /** @return {@code value} formatted with commas, e.g. 1000 as "1,000". */
   public static String format(final long value) {
     boolean negative = value < 0;
