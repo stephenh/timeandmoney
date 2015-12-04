@@ -3,6 +3,8 @@ package com.domainlanguage.money;
 import java.util.Currency;
 
 public class CurrencyTypeUtils {
+
+  /** Side-step Currency.getSymbol() only returning a symbol if given a matching locale. */
   public static String getSymbol(final Currency currency) {
     switch (currency.getCurrencyCode()) {
     case "USD":
