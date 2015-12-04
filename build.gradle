@@ -41,7 +41,7 @@ dependencies {
   compile 'com.google.gwt:gwt-user:2.7.0'
   compile 'com.google.gwt:gwt-dev:2.7.0'
   testCompile 'junit:junit:3.8.2'
-  deployerJars 'org.apache.maven.wagon:wagon-ssh:2.10'
+  deployerJars 'org.apache.maven.wagon:wagon-ssh:2.9'
 }
 
 uploadArchives {
