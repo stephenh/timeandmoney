@@ -104,7 +104,7 @@ public class ProrationTest extends TestCase {
     Assert.assertEquals(Money.dollars(3.33), Proration.partOfWhole(total, portion, whole));
   }
 
-  public void testPrecisionProratingOverPercents() {
+  public void testProratePercentPrecision() {
     Money total = Money.valueOf(57693, JPY);
     long[] percents = { 10, 15, 40, 10, 25 };
     Money[] result = Proration.proratedOver(total, percents);
