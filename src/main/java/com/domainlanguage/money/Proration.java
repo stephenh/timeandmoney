@@ -125,7 +125,7 @@ public class Proration {
   }
 
   private static int defaultScaleForIntermediateCalculations(Money total) {
-    return total.getCurrency().getDefaultFractionDigits() + 1;
+    return total.getCurrency().getDefaultFractionDigits() + 2;
   }
 
   private static void assertAmountsLengthLessThanOrEqualTo(Money[] amounts, int increments) {

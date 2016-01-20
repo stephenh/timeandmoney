@@ -6,10 +6,14 @@
 
 package com.domainlanguage.money;
 
+import java.util.Currency;
+
 import junit.framework.Assert;
 import junit.framework.TestCase;
 
 public class ProrationTest extends TestCase {
+
+  private static Currency JPY = Currency.getInstance("JPY");
 
   public void testAllocate1() {
     long[] proportions = { 1, 1 };
@@ -100,4 +104,14 @@ public class ProrationTest extends TestCase {
     Assert.assertEquals(Money.dollars(3.33), Proration.partOfWhole(total, portion, whole));
   }
 
+  public void testProratePercentPrecision() {
+    Money total = Money.valueOf(57693, JPY);
+    long[] percents = { 10, 15, 40, 10, 25 };
+    Money[] result = Proration.proratedOver(total, percents);
+    Assert.assertEquals(Money.valueOf(5770, JPY), result[0]);
+    Assert.assertEquals(Money.valueOf(8654, JPY), result[1]);
+    Assert.assertEquals(Money.valueOf(23077, JPY), result[2]);
+    Assert.assertEquals(Money.valueOf(5769, JPY), result[3]);
+    Assert.assertEquals(Money.valueOf(14423, JPY), result[4]);
+  }
 }
