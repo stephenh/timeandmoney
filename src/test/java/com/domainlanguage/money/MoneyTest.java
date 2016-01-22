@@ -184,11 +184,11 @@ public class MoneyTest extends GWTTestCase {
     Assert.assertEquals("50", y50.toNumericString());
 
     Assert.assertEquals("$150,000,000.00", d15.times(10_000_000).toString());
-    Assert.assertEquals("150,000,000.00", d15.times(10_000_000).toNumericString());
+    Assert.assertEquals("150000000.00", d15.times(10_000_000).toNumericString());
     Assert.assertEquals("$150,000,000.00", d15.times(10_000_000).toString(Locale.US));
     Assert.assertEquals("USD 150,000,000.00", d15.times(10_000_000).toString(Locale.UK));
     Assert.assertEquals("¥500,000,000", y50.times(10_000_000).toString());
-    Assert.assertEquals("500,000,000", y50.times(10_000_000).toNumericString());
+    Assert.assertEquals("500000000", y50.times(10_000_000).toNumericString());
   }
 
   public void testFormatMoneyNicely() {
