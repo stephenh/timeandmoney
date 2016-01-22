@@ -297,7 +297,7 @@ public class Money implements Comparable<Money>, Serializable {
   }
 
   public String toNumericString() {
-    return NumberUtils.format(amount.doubleValue(), currency.getDefaultFractionDigits());
+    return amount.toString();
   }
 
   public String toString(Locale locale) {
