@@ -34,7 +34,7 @@ uploadArchives {
   repositories.mavenDeployer {
     configuration = configurations.deployerJars
     repository(url: 'scp://repo.joist.ws/var/www/joist.repo') {
-      authentication(userName: System.env.REPO_USERNAME, password: System.env.REPO_PASSWORD)
+      authentication(userName: "root", privateKey: "/home/stephen/.ssh/id_rsa")
     }
   }
 }
